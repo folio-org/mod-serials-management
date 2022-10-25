@@ -1,4 +1,4 @@
-package org.olf.oa
+package org.olf
 
 import grails.core.GrailsApplication
 import grails.plugins.*

@@ -1,4 +1,4 @@
-package org.olf.oa
+package org.olf
 
 class UrlMappings {
 
