@@ -1,0 +1,86 @@
+name: Grails CI
+on:
+  push:
+    branches:
+      - master 
+  pull_request:
+    branches:
+      - master 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./service
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - uses: actions/cache@v1 
+        with:
+          path: ~/.gradle/caches  
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }} 
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+
+      - name: Start containers
+        run: |
+          cd ../tools/testing
+          docker-compose -f "docker-compose.yml" up -d
+
+      - name: Build with Gradle
+        run: |
+          ./gradlew --refresh-dependencies clean
+          ./gradlew build jacocoTestReport
+          ls ./build/test-results/integrationTest/*
+
+      - name: Stop containers
+        run: |
+          cd ../tools/testing
+          docker-compose -f "docker-compose.yml" down -v
+
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Unit Test Results
+          path: |
+            service/build/test-results/**/*.xml
+            service/build/spock-reports/*.html
+            service/build/reports/jacoco/test/**/*.html
+            service/build/reports/jacoco/test/**/*.csv
+            service/build/reports/jacoco/test/**/*.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: |
+            service/build/test-results/**/*.xml
+
+      - name: Publish Docker Image
+        if: github.ref == 'refs/heads/master'
+        run: |
+          cd ..
+          cat ./service/gradle.properties
+          APP_VERSION=$(grep appVersion ./service/gradle.properties| cut -f2 -d=)
+          echo "APP_VERSION_2=`grep appVersion ./service/gradle.properties| cut -f2 -d=`" >> $GITHUB_ENV
+          echo "See https://github.com/marketplace/actions/build-and-push-docker-images"
+          echo "Also https://www.prestonlamb.com/blog/creating-a-docker-image-with-github-actions"
+          echo "Run number is $GITHUB_RUN_NUMBER"
+          echo "Parsed APP_VERSION to ${APP_VERSION}"
+          if [[ "${APP_VERSION}" =~ .*SNAPSHOT.* ]]; then
+            echo Publish as snapshot 
+            docker build . --file Dockerfile --tag knowledgeintegration/mod-serials-management:${APP_VERSION}
+            docker build . --file Dockerfile --tag knowledgeintegration/mod-serials-management:snapshot-latest
+          else
+            echo Publish as release
+            docker build . --file Dockerfile --tag knowledgeintegration/mod-serials-management:${APP_VERSION}
+            docker build . --file Dockerfile --tag knowledgeintegration/mod-serials-management:latest
+          fi
