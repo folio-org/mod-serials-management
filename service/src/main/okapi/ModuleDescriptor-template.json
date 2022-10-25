@@ -1,0 +1,120 @@
+{
+  "id": "${info.app.name}-${info.app.version}",
+  "name": "${info.app.name}",
+  "provides": [
+    {
+      "id": "serials-management",
+      "version": "${info.app.minorVersion}",
+      "handlers" : [
+        {
+          "methods": [ "GET" ],
+          "pathPattern": "/serials-management/settings*",
+          "permissionsRequired": [ "serialsManagement.settings.get" ]
+        },
+        {
+          "methods": [ "POST" ],
+          "pathPattern": "/serials-management/settings*",
+          "permissionsRequired": [ "serialsManagement.settings.post" ]
+        },
+        {
+          "methods": [ "PUT" ],
+          "pathPattern": "/serials-management/settings*",
+          "permissionsRequired": [ "serialsManagement.settings.put" ]
+        },
+        {
+          "methods": [ "DELETE" ],
+          "pathPattern": "/serials-management/settings*",
+          "permissionsRequired": [ "serialsManagement.settings.delete" ]
+        }
+      ]
+    },
+    {
+      "id": "_tenant",
+      "version": "1.2",
+      "interfaceType" : "system",
+      "handlers": [
+        {
+          "permissionsRequired" : [],
+          "methods": ["POST", "DELETE"],
+          "pathPattern": "/_/tenant"
+        }, 
+        {
+         "permissionsRequired" : [],
+         "methods" : [ "POST" ],
+         "pathPattern" : "/_/tenant/disable"
+        }
+
+      ]
+    }
+  ],
+  "requires":[
+  ],
+  "optional":[
+  ],
+  "permissionSets": [
+    {
+      "permissionName": "serialsManagement.settings.get",
+      "displayName": "settings get",
+      "description": "get settings",
+      "visible": false
+    }, 
+    {
+      "permissionName": "serialsManagement.settings.post",
+      "displayName": "settings post",
+      "description": "post settings",
+      "visible": false
+    }, 
+    {
+      "permissionName": "serialsManagement.settings.put",
+      "displayName": "settings put",
+      "description": "put settings",
+      "visible": false
+    }, 
+    {
+      "permissionName": "serialsManagement.settings.delete",
+      "displayName": "settings delete",
+      "description": "delete settings",
+      "visible": false
+    },
+    {
+      "permissionName": "serialsManagement.settings.read",
+      "displayName": "settings read",
+      "description": "read settings",
+      "visible": false,
+      "subPermissions": [
+          "serialsManagement.settings.get"
+      ]
+    },
+    {
+      "permissionName": "serialsManagement.settings.write",
+      "displayName": "settings write",
+      "description": "write settings",
+      "visible": false,
+      "subPermissions": [
+          "serialsManagement.settings.read",
+          "serialsManagement.settings.post",
+          "serialsManagement.settings.put",
+          "serialsManagement.settings.delete"
+      ]
+    }
+  ],
+  "launchDescriptor": {
+    "dockerImage": "${info.app.name}:${info.app.version}",
+    "dockerArgs": {
+      "HostConfig": { 
+        "Memory": 1073741824,
+        "PortBindings": { "8080/tcp":  [{ "HostPort": "%p" }] } 
+      }
+    },
+    "dockerPull" : false,
+    "env": [
+      { "name": "JAVA_OPTIONS", "value": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal" },
+      { "name": "DB_HOST", "value": "postgres" },
+      { "name": "DB_PORT", "value": "5432" },
+      { "name": "DB_USERNAME", "value": "folio_admin" },
+      { "name": "DB_PASSWORD", "value": "folio_admin" },
+      { "name": "DB_DATABASE", "value": "okapi_modules" },
+      { "name": "DB_MAXPOOLSIZE", "value": "50" }
+    ]
+  }
+}
