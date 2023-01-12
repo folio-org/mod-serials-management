@@ -65,9 +65,9 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230112-1116-001") {
     createTable(tableName: "serial_order_line") {
-      column(name: "sol_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "sol_version", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "sol_remote_id", type: "VARCHAR(50)") { constraints(nullable: "false") }
+      column(name: "rol_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "rol_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "rol_remote_id", type: "VARCHAR(50)") { constraints(nullable: "false") }
       column(name: "sol_owner", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
 
