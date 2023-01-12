@@ -12,6 +12,10 @@ class Serial implements MultiTenant<Serial> {
     orderLine: SerialOrderLine
   ]
 
+  static mappedBy = [
+    orderLine: 'owner',
+  ]
+
   static mapping = {
                  id column: 's_id', generator: 'uuid2', length: 36
         lastUpdated column: 's_last_updated'
