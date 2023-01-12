@@ -53,4 +53,26 @@ databaseChangeLog = {
     addPrimaryKey(columnNames: "rdv_id", constraintName: "refdata_valuePK", tableName: "refdata_value")
 
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230112-1113-001") {
+    createTable(tableName: "serial") {
+      column(name: "s_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "s_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "s_date_created", type: "timestamp")
+      column(name: "s_last_updated", type: "timestamp")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230112-1116-001") {
+    createTable(tableName: "serial_order_line") {
+      column(name: "sol_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "sol_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "sol_remote_id", type: "VARCHAR(50)") { constraints(nullable: "false") }
+      column(name: "sol_owner", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+
+    addColumn(tableName: "serial") {
+      column(name: "serial_order_line_reference", type: "VARCHAR(36)")
+    }
+  }
 }
