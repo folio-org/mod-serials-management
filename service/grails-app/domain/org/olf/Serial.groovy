@@ -1,7 +1,14 @@
 package org.olf
 
+import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
+import org.hibernate.Session
+import org.hibernate.internal.SessionImpl
 
+import groovy.sql.Sql
+
+
+@GrailsCompileStatic
 class Serial implements MultiTenant<Serial> {
 
   String id
