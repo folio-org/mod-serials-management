@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.Serial
+import groovy.transform.Field
+
+def should_expand = [
+  'orderLine',
+]
+
+@Field Serial serial
+
+json g.render(serial, [expand: should_expand])

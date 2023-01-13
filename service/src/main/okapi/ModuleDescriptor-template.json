@@ -9,22 +9,46 @@
         {
           "methods": [ "GET" ],
           "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serialsManagement.settings.get" ]
+          "permissionsRequired": [ "serials-management.settings.get" ]
         },
         {
           "methods": [ "POST" ],
           "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serialsManagement.settings.post" ]
+          "permissionsRequired": [ "serials-management.settings.post" ]
         },
         {
           "methods": [ "PUT" ],
           "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serialsManagement.settings.put" ]
+          "permissionsRequired": [ "serials-management.settings.put" ]
         },
         {
           "methods": [ "DELETE" ],
           "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serialsManagement.settings.delete" ]
+          "permissionsRequired": [ "serials-management.settings.delete" ]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/serials",
+          "permissionsRequired": [ "serials-management.serials.view" ],
+          "modulePermissions": ["orders.po-lines.item.get"]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/serials/{id}",
+          "permissionsRequired": [ "serials-management.serials.view" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/serials",
+          "permissionsRequired": [ "serials-management.serials.edit" ]
+        },{
+          "methods": ["PUT"],
+          "pathPattern": "/serials-management/serials/{id}",
+          "permissionsRequired": [ "serials-management.serials.edit" ]
+        },{
+          "methods": ["DELETE"],
+          "pathPattern": "/serials-management/serials/{id}",
+          "permissionsRequired": [ "serials-management.serials.manage" ]
         }
       ]
     },
@@ -53,48 +77,83 @@
   ],
   "permissionSets": [
     {
-      "permissionName": "serialsManagement.settings.get",
+      "permissionName": "serials-management.settings.get",
       "displayName": "settings get",
       "description": "get settings",
       "visible": false
     }, 
     {
-      "permissionName": "serialsManagement.settings.post",
+      "permissionName": "serials-management.settings.post",
       "displayName": "settings post",
       "description": "post settings",
       "visible": false
     }, 
     {
-      "permissionName": "serialsManagement.settings.put",
+      "permissionName": "serials-management.settings.put",
       "displayName": "settings put",
       "description": "put settings",
       "visible": false
     }, 
     {
-      "permissionName": "serialsManagement.settings.delete",
+      "permissionName": "serials-management.settings.delete",
       "displayName": "settings delete",
       "description": "delete settings",
       "visible": false
     },
     {
-      "permissionName": "serialsManagement.settings.read",
+      "permissionName": "serials-management.settings.read",
       "displayName": "settings read",
       "description": "read settings",
       "visible": false,
       "subPermissions": [
-          "serialsManagement.settings.get"
+          "serials-management.settings.get"
       ]
     },
     {
-      "permissionName": "serialsManagement.settings.write",
+      "permissionName": "serials-management.settings.write",
       "displayName": "settings write",
       "description": "write settings",
       "visible": false,
       "subPermissions": [
-          "serialsManagement.settings.read",
-          "serialsManagement.settings.post",
-          "serialsManagement.settings.put",
-          "serialsManagement.settings.delete"
+          "serials-management.settings.read",
+          "serials-management.settings.post",
+          "serials-management.settings.put",
+          "serials-management.settings.delete"
+      ]
+    },
+    {
+      "permissionName": "serials-management.serials.collection.get",
+      "displayName": "Serial collection get",
+      "description": "Get a collection of serial records"
+    },
+    {
+      "permissionName": "serials-management.serials.item.get",
+      "displayName": "Serial item get",
+      "description": "Get a serial record"
+    },
+    {
+      "permissionName": "serials-management.serials.view",
+      "subPermissions": [
+        "serials-management.serials.collection.get",
+        "serials-management.serials.item.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.serials.item.post",
+      "displayName": "Serial item post",
+      "description": "Post a serial record"
+    },
+    {
+      "permissionName": "serials-management.serials.item.put",
+      "displayName": "Serial item put",
+      "description": "Put a serial record"
+    },
+    {
+      "permissionName": "serials-management.serials.edit",
+      "subPermissions": [
+        "serials-management.serials.view",
+        "serials-management.serials.item.post",
+        "serials-management.serials.item.put"
       ]
     }
   ],

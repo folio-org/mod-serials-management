@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.SerialOrderLine
+
+@Field SerialOrderLine serialOrderLine
+
+inherits template: "/remoteOkapiLink/remoteOkapiLink"
+
+def should_expand = []
+
+json g.render(serialOrderLine, ['excludes': ['id', 'version', 'remoteId'], 'expand':should_expand])
+
