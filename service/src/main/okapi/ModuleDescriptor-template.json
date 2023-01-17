@@ -28,6 +28,32 @@
         },
         {
           "methods": ["GET"],
+          "pathPattern": "/serials-management/refdata",
+          "permissionsRequired": [ "serials-management.refdata.collection.get" ]
+        },{
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/refdata/{domain}/{property}",
+          "permissionsRequired": [ "serials-management.refdata.collection.get" ]
+        },{
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/refdata/{id}",
+          "permissionsRequired": [ "serials-management.refdata.item.get" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/refdata",
+          "permissionsRequired": [ "serials-management.refdata.item.post" ]
+        },{
+          "methods": ["PUT"],
+          "pathPattern": "/serials-management/refdata/{id}",
+          "permissionsRequired": [ "serials-management.refdata.item.put" ]
+        },{
+          "methods": ["DELETE"],
+          "pathPattern": "/serials-management/refdata/{id}",
+          "permissionsRequired": [ "serials-management.refdata.item.delete" ]
+        },
+        {
+          "methods": ["GET"],
           "pathPattern": "/serials-management/serials",
           "permissionsRequired": [ "serials-management.serials.view" ],
           "modulePermissions": ["orders.po-lines.item.get"]
@@ -119,6 +145,64 @@
           "serials-management.settings.post",
           "serials-management.settings.put",
           "serials-management.settings.delete"
+      ]
+    },
+    {
+      "permissionName": "serials-management.refdata.collection.get",
+      "displayName": "Ref data collection get",
+      "description": "Get a collection of ref data records",
+      "visible": false
+    },
+    {
+      "permissionName": "serials-management.refdata.item.get",
+      "displayName": "Ref data item get",
+      "description": "Get a ref data record",
+      "visible": false
+    },
+    {
+      "permissionName": "serials-management.refdata.item.post",
+      "displayName": "Ref data item post",
+      "description": "Post a ref data record",
+      "visible": false
+    },
+    {
+      "permissionName": "serials-management.refdata.item.put",
+      "displayName": "Ref data item put",
+      "description": "Put a ref data record",
+      "visible": false
+    },
+    {
+      "permissionName": "serials-management.refdata.item.delete",
+      "displayName": "Ref data item delete",
+      "description": "Delete a ref data record",
+      "visible": false
+    },
+    {
+      "permissionName": "serials-management.refdata.read",
+      "displayName": "Refdata read",
+      "description": "Read refdata as items or collections",
+      "subPermissions": [
+        "serials-management.refdata.collection.get",
+        "serials-management.refdata.item.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.refdata.write",
+      "displayName": "Refdata write",
+      "description": "Read and write refdata entries",
+      "subPermissions": [
+        "serials-management.refdata.read",
+        "serials-management.refdata.item.post",
+        "serials-management.refdata.item.put"
+      ]
+    },
+    {
+      "permissionName": "serials-management.refdata.manage",
+      "displayName": "Refdata manage",
+      "description": "Read, write and delete refdata entries",
+      "subPermissions": [
+        "serials-management.refdata.write",
+        "serials-management.refdata.item.delete"
       ]
     },
     {
