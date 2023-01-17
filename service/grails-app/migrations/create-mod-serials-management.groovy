@@ -75,4 +75,11 @@ databaseChangeLog = {
       column(name: "serial_order_line_reference", type: "VARCHAR(36)")
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230117-1144-001") {
+    addColumn(tableName: "serial") {
+      column(name: "s_serial_status", type: "VARCHAR(36)")
+      column(name: "s_description", type: "TEXT")
+    }
+  }
 }
