@@ -35,7 +35,7 @@ class Serial implements MultiTenant<Serial> {
                  id column: 's_id', generator: 'uuid2', length: 36
         lastUpdated column: 's_last_updated'
         dateCreated column: 's_date_created'
-        serialStaus column: 's_serial_status'
+       serialStatus column: 's_serial_status'
         description column: 's_description'
             version column: 's_version'
          orderLine cascade: 'all-delete-orphan'
@@ -43,5 +43,9 @@ class Serial implements MultiTenant<Serial> {
   
   static constraints = {
         orderLine nullable: true
+      lastUpdated nullable: true
+      dateCreated nullable: true
+     serialStatus nullable: true
+      description nullable: true
   }   
 }
