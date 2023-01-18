@@ -23,6 +23,10 @@ class Serial implements MultiTenant<Serial> {
   @Defaults(['Active', 'Closed'])
   RefdataValue serialStatus
 
+  static hasMany = [
+    notes : SerialNote
+  ]
+
   static hasOne = [
     orderLine: SerialOrderLine
   ]
@@ -38,7 +42,9 @@ class Serial implements MultiTenant<Serial> {
        serialStatus column: 's_serial_status'
         description column: 's_description'
             version column: 's_version'
+
          orderLine cascade: 'all-delete-orphan'
+             notes cascade: 'all-delete-orphan'
   }
   
   static constraints = {
