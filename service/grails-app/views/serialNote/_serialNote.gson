@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.SerialNote
+import groovy.transform.Field
+
+@Field SerialNote serialNote
+json g.render(serialNote, [excludes: ['owner']])

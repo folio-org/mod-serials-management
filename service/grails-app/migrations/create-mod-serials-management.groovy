@@ -82,4 +82,24 @@ databaseChangeLog = {
       column(name: "s_description", type: "TEXT")
     }
   }
+  changeSet(author: "Jack-Golding (manual)", id: "20230118-1443-001") {
+    createTable(tableName: "serial_note") {
+      column(name: "sn_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "sn_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "sn_owner_fk", type:"VARCHAR(36)")
+      column(name: "sn_note", type: "TEXT")
+    }
+  }
+  changeSet(author: "Jack-Golding (manual)", id: "20230118-1551-001"){
+    addUniqueConstraint(columnNames: "s_id", constraintName: "s_id_unique", tableName: "serial")
+
+    addForeignKeyConstraint(baseColumnNames: "sn_owner_fk",
+      baseTableName: "serial_note",
+      constraintName: "serial_note_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "s_id",
+      referencedTableName: "serial"
+    )
+  }
 }
