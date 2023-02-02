@@ -1,4 +1,6 @@
-package org.olf
+package org.olf.recurrence
+
+import org.olf.Serial
 
 import grails.gorm.MultiTenant
 

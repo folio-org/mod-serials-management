@@ -1,4 +1,6 @@
-package org.olf
+package org.olf.recurrence.recurrencePattern
+
+import org.olf.recurrence.RecurrenceRule
 
 import grails.gorm.MultiTenant
 
