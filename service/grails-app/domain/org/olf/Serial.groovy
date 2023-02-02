@@ -28,11 +28,13 @@ class Serial implements MultiTenant<Serial> {
   ]
 
   static hasOne = [
-    orderLine: SerialOrderLine
+    orderLine: SerialOrderLine,
+    recurrence: Recurrence
   ]
 
   static mappedBy = [
     orderLine: 'owner',
+    recurrence: 'owner'
   ]
 
   static mapping = {
@@ -44,6 +46,7 @@ class Serial implements MultiTenant<Serial> {
             version column: 's_version'
 
          orderLine cascade: 'all-delete-orphan'
+        recurrence cascade: 'all-delete-orphan'
              notes cascade: 'all-delete-orphan'
   }
   
@@ -53,5 +56,6 @@ class Serial implements MultiTenant<Serial> {
       dateCreated nullable: true
      serialStatus nullable: true
       description nullable: true
+       recurrence nullable: true
   }   
 }
