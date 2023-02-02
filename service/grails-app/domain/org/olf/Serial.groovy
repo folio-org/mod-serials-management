@@ -34,7 +34,7 @@ class Serial implements MultiTenant<Serial> {
 
   static mappedBy = [
     orderLine: 'owner',
-    recurrence: 'owner'
+   recurrence: 'owner'
   ]
 
   static mapping = {

@@ -16,7 +16,25 @@ public class Recurrence implements MultiTenant<Recurrence> {
     // This might be a ref data list for value day/week/month/year
     Integer issues // 7
     Integer period // 3 / Frequency
-    Set<RecurrenceRule> rules // Validate to have exactly #issues of these
+
+    Set<RecurrenceRule> rules// Validate to have exactly #issues of these
+
+		static belongsTo = [
+    	owner: Serial
+  	]
+
+    static hasMany = [
+      rules : RecurrenceRule
+    ]
+
+    static mapping = {
+            id column: 're_id', generator: 'uuid2', length: 36
+         owner column: 're_owner_fk'
+			timeUnit column: 're_time_unit_fk'
+        issues column: 're_issues'
+        period column: 're_period'
+        rules cascade: 'all-delete-orphan'
+    }
 }
 
 // Example Input
@@ -42,6 +60,21 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
     /* Year_Date - 1/.../31/-1 + Jan/Feb/.../Dec (Validate date against month? (What to do about 29th Feb? - Use last?)) */
     /* Year_Weekday - 1/.../52/-1 + Mon/Tues/.../Sun */
     /* Year_Month_Weekday 1/2/3/4/-1 + Mon/Tues/.../Sun + Jan/Feb/.../Dec */
+		static belongsTo = [
+      owner : Recurrence
+    ]
+
+		static hasOne = [
+    	pattern: RecurrencePattern
+   	]
+
+		static mapping = {
+           		 id column: 'rer_id', generator: 'uuid2', length: 36
+        		owner column: 'rer_owner_fk'
+          ordinal column: 'rer_ordinal'
+      patternType column: 'rer_pattern_type_fk'
+				 pattern cascade: 'all-delete-orphan'
+    }
 }
 
 public class RecurrencePattern implements MultiTenant<RecurrencePattern> {
