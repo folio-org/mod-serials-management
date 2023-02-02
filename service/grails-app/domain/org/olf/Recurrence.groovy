@@ -29,7 +29,11 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
     String id
     Recurrence owner
     Integer ordinal /* Validated to be 1 - period of owner. Default is 1 */
-    RefdataValue patternType /* Day, Week, Month_Date, Month_Weekday, Year_Date, Year_Weekday, Year_Month_Weekday */
+
+    @CategoryId(value="RecurrenceRule.PatternType", defaultInternal=true)
+    @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
+    RefdataValue patternType
+    
     RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
     /* Day - "" */
     /* Week - Mon/Tue/Wed/Thur/Fri/Sat/Sun */
@@ -71,9 +75,9 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
 public class RecurrencePatternYearDate extends RecurrencePattern implements MultiTenant<RecurrencePatternYearDate> {
     Integer day // Validated between 1-31 and -1 against month
 
-    @CategoryId(value="RecurrencePattern.Weekday", defaultInternal=true)
-    @Defaults(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
-    RefdataValue weekday
+    @CategoryId(value="RecurrencePattern.Month" defaultInternal=true)
+    @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+    RefdataValue month
 }
 
 public class RecurrencePatternYearWeekday extends RecurrencePattern implements MultiTenant<RecurrencePatternYearWeekday> {
