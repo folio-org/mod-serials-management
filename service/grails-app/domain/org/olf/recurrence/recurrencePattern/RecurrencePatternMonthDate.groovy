@@ -7,7 +7,7 @@ public class RecurrencePatternMonthDate extends RecurrencePattern implements Mul
   // Fallback stuff?
 
   static mapping = {
-    day column: 'rep_day'
+    day column: 'repmd_day'
   }
 
   static constraints = {

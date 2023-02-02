@@ -13,7 +13,7 @@ public class RecurrencePatternWeek extends RecurrencePattern implements MultiTen
   RefdataValue weekday
 
   static mapping = {
-    weekday column: 'rep_weekday'
+    weekday column: 'repw_weekday'
   }
 
   static constraints = {

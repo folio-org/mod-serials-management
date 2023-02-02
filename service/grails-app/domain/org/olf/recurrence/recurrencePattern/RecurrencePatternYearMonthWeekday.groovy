@@ -19,9 +19,9 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
   RefdataValue month
 
   static mapping = {
-       week column: 'rep_week'
-    weekday column: 'rep_weekday_fk'
-      month column: 'rep_month_fk'
+       week column: 'repymwd_week'
+    weekday column: 'repymwd_weekday_fk'
+      month column: 'repymwd_month_fk'
   }
 
   static constraints = {

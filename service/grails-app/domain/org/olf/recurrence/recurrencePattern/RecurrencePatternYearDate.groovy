@@ -14,8 +14,8 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
   RefdataValue month
 
   static mapping = {
-      day column: 'rep_day'
-    month column: 'rep_month_fk'
+      day column: 'repyd_day'
+    month column: 'repyd_month_fk'
   }
 
   static constraints = {
