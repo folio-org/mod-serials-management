@@ -32,10 +32,10 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   ]
 
 	static mapping = {
-       	  	 id column: 'rer_id', generator: 'uuid2', length: 36
-     	  	owner column: 'rer_owner_fk'
-        ordinal column: 'rer_ordinal'
-    patternType column: 'rer_pattern_type_fk'
+       	  	 id column: 'rr_id', generator: 'uuid2', length: 36
+     	  	owner column: 'rr_owner_fk'
+        ordinal column: 'rr_ordinal'
+    patternType column: 'rr_pattern_type_fk'
 		   pattern cascade: 'all-delete-orphan'
   }
 

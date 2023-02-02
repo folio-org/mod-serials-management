@@ -28,11 +28,11 @@ public class Recurrence implements MultiTenant<Recurrence> {
   ]
 
   static mapping = {
-          id column: 're_id', generator: 'uuid2', length: 36
-       owner column: 're_owner_fk'
-    timeUnit column: 're_time_unit_fk'
-      issues column: 're_issues'
-      period column: 're_period'
+          id column: 'r_id', generator: 'uuid2', length: 36
+       owner column: 'r_owner_fk'
+    timeUnit column: 'r_time_unit_fk'
+      issues column: 'r_issues'
+      period column: 'r_period'
       rules cascade: 'all-delete-orphan'
   }
 
