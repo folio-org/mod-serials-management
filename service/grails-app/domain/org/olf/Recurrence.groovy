@@ -75,7 +75,7 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
 public class RecurrencePatternYearDate extends RecurrencePattern implements MultiTenant<RecurrencePatternYearDate> {
     Integer day // Validated between 1-31 and -1 against month
 
-    @CategoryId(value="RecurrencePattern.Month" defaultInternal=true)
+    @CategoryId(value="RecurrencePattern.Month", defaultInternal=true)
     @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
     RefdataValue month
 }
@@ -95,7 +95,7 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
     @Defaults(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
     RefdataValue weekday
 
-    @CategoryId(value="RecurrencePattern.Month" defaultInternal=true)
+    @CategoryId(value="RecurrencePattern.Month", defaultInternal=true)
     @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
     RefdataValue month
 }
