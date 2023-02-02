@@ -13,4 +13,14 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
   @CategoryId(value="RecurrencePattern.Weekday", defaultInternal=true)
   @Defaults(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
   RefdataValue weekday
+
+  static mapping = {
+      week column: 'rep_week'
+    weekday colum: 'rep_weekday_fk'
+  }
+
+  static constraints = {
+       week nullable: true
+    weekday nullable: true
+  }
 }

@@ -12,4 +12,14 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
   @CategoryId(value="RecurrencePattern.Month", defaultInternal=true)
   @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
   RefdataValue month
+
+  static mapping = {
+      day column: 'rep_day'
+    month column: 'rep_month_fk'
+  }
+
+  static constraints = {
+      day nullable: true
+    month nullable: true
+  }
 }

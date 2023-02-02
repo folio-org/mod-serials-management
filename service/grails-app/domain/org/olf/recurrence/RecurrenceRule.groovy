@@ -38,4 +38,12 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
     patternType column: 'rer_pattern_type_fk'
 		   pattern cascade: 'all-delete-orphan'
   }
+
+  static constraints = {
+             id nullable: false
+          owner nullable: false
+        ordinal nullable: false
+    patternType nullable: false
+        pattern nullable: false
+  }
 }

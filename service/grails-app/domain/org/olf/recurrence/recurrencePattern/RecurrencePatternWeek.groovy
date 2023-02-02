@@ -12,4 +12,11 @@ public class RecurrencePatternWeek extends RecurrencePattern implements MultiTen
   @Defaults(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
   RefdataValue weekday
 
+  static mapping = {
+    weekday column: 'rep_weekday'
+  }
+
+  static constraints = {
+    weekday nullable: true
+  }
 }

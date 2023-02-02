@@ -35,6 +35,15 @@ public class Recurrence implements MultiTenant<Recurrence> {
       period column: 're_period'
       rules cascade: 'all-delete-orphan'
   }
+
+    static constraints = {
+            id nullable: false
+         owner nullable: false
+      timeUnit nullable: false
+        issues nullable: false
+        period nullable: false
+         rules nullable: false
+    }
 }
 
 // Example Input
