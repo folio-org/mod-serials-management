@@ -102,4 +102,35 @@ databaseChangeLog = {
       referencedTableName: "serial"
     )
   }
+  changeSet(author: "Jack-Golding (manual)", id: "20230203-1130-001") {
+    createTable(tableName: 'recurrence') {
+      column(name: "r_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "r_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "r_time_unit_fk", type: "VARCHAR(36)")
+      column(name: "r_issues", type: "BIGINT")
+      column(name: "r_period", type: "BIGINT")
+    }
+  }
+  changeSet(author: "Jack-Golding (manual)", id: "20230203-1147-001") {
+    addForeignKeyConstraint(
+      baseColumnNames: "r_owner_fk",
+      baseTableName: "recurrence",
+      constraintName: "recurrence_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "s_id",
+      referencedTableName: "serial"
+    )
+  }
+  changeSet(author: "Jack-Golding (manual)", id: "20230203-1155-001") {
+    addForeignKeyConstraint(
+      baseColumnNames: "r_time_unit_fk",
+      baseTableName: "recurrence",
+      constraintName: "recurrence_time_unit_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
 }
