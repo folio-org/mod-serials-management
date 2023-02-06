@@ -156,6 +156,7 @@ databaseChangeLog = {
       referencedTableName: "recurrence"
     )
   }
+
   changeSet(author: "Jack-Golding (manual)", id: "20230206-1043-002") {
     addForeignKeyConstraint(
       baseColumnNames: "rr_pattern_type_fk",
@@ -165,6 +166,26 @@ databaseChangeLog = {
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
       referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1151-001") {
+    createTable(tableName: "recurrence_pattern") {
+      column(name: "rp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "rp_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1151-002") {
+    addUniqueConstraint(columnNames: "rr_id", constraintName: "rr_id_unique", tableName: "recurrence_rule")
+    addForeignKeyConstraint(
+      baseColumnNames: "rp_owner_fk",
+      baseTableName: "recurrence_pattern",
+      constraintName: "recurrence_pattern_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rr_id",
+      referencedTableName: "recurrence_rule"
     )
   }
 }

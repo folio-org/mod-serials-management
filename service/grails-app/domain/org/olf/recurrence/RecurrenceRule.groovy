@@ -30,7 +30,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   ]
 
 	static hasOne = [
-   	// pattern: RecurrencePattern
+   	pattern: RecurrencePattern
   ]
 
 	static mapping = {
@@ -38,7 +38,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
      	  	owner column: 'rr_owner_fk'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
-		  //  pattern cascade: 'all-delete-orphan'
+		   pattern cascade: 'all-delete-orphan'
   }
 
   static constraints = {
@@ -46,6 +46,6 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
           owner nullable: false
         ordinal nullable: false
     patternType nullable: false
-        // pattern nullable: false
+        pattern nullable: false
   }
 }
