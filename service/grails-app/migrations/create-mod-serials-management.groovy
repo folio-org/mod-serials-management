@@ -188,4 +188,47 @@ databaseChangeLog = {
       referencedTableName: "recurrence_rule"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-001") {
+    createTable(tableName: "recurrence_pattern_month_date") {
+      column(name: "rpmd_day", type: "BIGINT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-002") {
+    createTable(tableName: "recurrence_pattern_month_weekday") {
+      column(name: "rpmwd_week", type: "BIGINT")
+      column(name: "rpmwd_weekday_fk", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-003") {
+    createTable(tableName: "recurrence_pattern_week") {
+      column(name: "rpw_weekday_fk", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-004") {
+    createTable(tableName: "recurrence_pattern_year_date") {
+      column(name: "rpyd_day", type: "BIGINT")
+      column(name: "rpyd_month_fk", type: "VARCHAR(36)")    
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-005") {
+    createTable(tableName: "recurrence_pattern_year_month_weekday") {
+      column(name: "rpymwd_week", type: "BIGINT")
+      column(name: "rpymwd_weekday_fk", type: "VARCHAR(36)")
+      column(name: "rpymwd_month_fk", type: "VARCHAR(36)")    
+
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-006") {
+    createTable(tableName: "recurrence_pattern_year_weekday") {
+      column(name: "rpywd_week", type: "BIGINT")
+      column(name: "rpywd_weekday_fk", type: "VARCHAR(36)")
+
+    }
+  }
 }
