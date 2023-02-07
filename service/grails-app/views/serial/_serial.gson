@@ -5,7 +5,8 @@ import groovy.transform.Field
 def should_expand = [
   'orderLine',
   'serialStatus',
-  'notes'
+  'notes',
+  'recurrence',
 ]
 
 @Field Serial serial
