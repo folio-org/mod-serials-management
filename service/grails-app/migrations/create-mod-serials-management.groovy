@@ -231,4 +231,16 @@ databaseChangeLog = {
 
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230207-1134-001") {
+    addColumn(tableName: "recurrence_rule") {
+      column(name: "rr_version", type: "BIGINT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230207-1134-002") {
+    addColumn(tableName: "recurrence_pattern") {
+      column(name: "rp_version", type: "BIGINT")
+    }
+  }
 }
