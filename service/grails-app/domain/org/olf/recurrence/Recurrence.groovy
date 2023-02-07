@@ -32,6 +32,7 @@ public class Recurrence implements MultiTenant<Recurrence> {
   static mapping = {
           id column: 'r_id', generator: 'uuid2', length: 36
        owner column: 'r_owner_fk'
+     version column: 'r_version'
     timeUnit column: 'r_time_unit_fk'
       issues column: 'r_issues'
       period column: 'r_period'
