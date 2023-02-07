@@ -2,5 +2,10 @@ import groovy.transform.*
 import org.olf.recurrence.Recurrence
 import groovy.transform.Field
 
+def should_expand = [
+  'timeUnit',
+  'rules',
+]
+
 @Field Recurrence recurrence
-json g.render(recurrence, [excludes: ['owner']])
+json g.render(recurrence, [excludes: ['owner'], expand: should_expand])
