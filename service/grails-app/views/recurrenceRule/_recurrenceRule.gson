@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.recurrence.RecurrenceRule
+import groovy.transform.Field
+
+@Field RecurrenceRule recurrenceRule
+json g.render(recurrenceRule, [excludes: ['owner']])
