@@ -20,14 +20,15 @@ class SerialController extends OkapiTenantAwareController<Serial> {
     super(Serial)
   }
 
-//   @Transactional
-//   def doPost () {
-//     def objToBind = getObjectToBind();
-//     final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePatternMonthWeekday")
-//     RecurrencePattern rp = rc.newInstance()
-//     // log.debug(rp)
-//     bindData(rp, objToBind)
-//     rp.save()
-//  }
+  @Transactional
+  def save () {
+    def objToBind = getObjectToBind();
+    final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePatternMonthWeekday")
+    RecurrencePattern rp = rc.newInstance()
+    // log.debug(rp)
+    bindData(rp, objToBind)
+    rp.save()
+    respond rp
+ }
 
 }
