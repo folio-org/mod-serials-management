@@ -17,7 +17,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
   RefdataValue patternType
     
-  // RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
+  RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
   /* Day - "" */
   /* Week - Mon/Tue/Wed/Thur/Fri/Sat/Sun */
   /* Month_Date - 1/2/3/../28/-1 */ /* 1/.../31/-1 AND fallback, 29f28 etc OR default any number >28 to fallback to last */
@@ -30,7 +30,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   ]
 
 	static hasOne = [
-   	// pattern: RecurrencePattern
+   	pattern: RecurrencePattern
   ]
 
 	static mapping = {
@@ -39,7 +39,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
         version column: 'rr_version'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
-		  //  pattern cascade: 'all-delete-orphan'
+		   pattern cascade: 'all-delete-orphan'
   }
 
   static constraints = {
@@ -47,6 +47,6 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
           owner nullable: false
         ordinal nullable: false
     patternType nullable: false
-        // pattern nullable: true
+        pattern nullable: true
   }
 }
