@@ -16,6 +16,8 @@ import grails.gorm.multitenancy.CurrentTenant
 import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
 
+import java.util.regex.Pattern
+
 @Slf4j
 @CurrentTenant
 class SerialController extends OkapiTenantAwareController<Serial> {
@@ -37,12 +39,6 @@ class SerialController extends OkapiTenantAwareController<Serial> {
     Serial serial = new Serial()
     bindData serial, serialObj
 
-    log.debug("serial: ${serial}")
-    // serial.save()
-    // respond serial
-
-
-
     log.debug("objToBind: ${objToBind}")
     JSONObject orginalRecurrenceObj = objToBind.recurrence
     Set recurrenceObjKeys = new HashSet(orginalRecurrenceObj.keySet())
@@ -55,11 +51,6 @@ class SerialController extends OkapiTenantAwareController<Serial> {
     Recurrence recurrence = new Recurrence()
     bindData recurrence, recurrenceObj
     serial.recurrence = recurrence
-    // serial.save()
-    // respond serial
-
-
-
 
     log.debug(recurrence.toString())
     orginalRecurrenceObj.rules.each { JSONObject ru ->
@@ -74,7 +65,12 @@ class SerialController extends OkapiTenantAwareController<Serial> {
       RecurrenceRule recurrenceRule = new RecurrenceRule()
       bindData recurrenceRule, ruleObj
 
-      final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePatternMonthWeekday")
+      // THIS ASSUMES THE CONVENTION OF THE CLASS BEING NAMED RecurrencePattern<exact name of patternType value in CapitalCase>
+      String patternClassString = Pattern.compile("_([a-z])").matcher(recurrenceRule.patternType.value).replaceAll{match -> match.group(1).toUpperCase()}
+
+      String patternClasspathString = "org.olf.recurrence.recurrencePattern.RecurrencePattern${patternClassString.capitalize()}"
+      //final Class<? extends RecurrencePattern> rc = RecurrenceRule.PATTERN_TABLE[recurrenceRule.patternType.value]
+      final Class<? extends RecurrencePattern> rc = Class.forName(patternClasspathString)
       RecurrencePattern rp = rc.newInstance()
       JSONObject patternObj = new JSONObject(ru.pattern)
       patternObj.owner = recurrenceRule
@@ -84,7 +80,6 @@ class SerialController extends OkapiTenantAwareController<Serial> {
       recurrenceRule.pattern = rp
       recurrence.addToRules(recurrenceRule)
     }
-    // log.debug(rp.toString())
     serial.save()
     respond serial
  }
