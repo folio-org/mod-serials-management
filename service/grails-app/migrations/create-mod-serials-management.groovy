@@ -243,4 +243,62 @@ databaseChangeLog = {
       column(name: "rp_version", type: "BIGINT")
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-001") {
+    addColumn(tableName: "recurrence_pattern_month_date") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-002") {
+    addColumn(tableName: "recurrence_pattern_month_weekday") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-003") {
+    addColumn(tableName: "recurrence_pattern_week") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-004") {
+    addColumn(tableName: "recurrence_pattern_year_date") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")  
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-005") {
+    addColumn(tableName: "recurrence_pattern_year_month_weekday") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")  
+
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-006") {
+    addColumn(tableName: "recurrence_pattern_year_weekday") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")
+
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-007") {
+    createTable(tableName: "recurrence_pattern_day") {
+      column(name: "rp_id", type: "VARCHAR(36)")
+      column(name: "rp_owner_fk", type: "VARCHAR(36)")
+      column(name: "rp_version", type: "BIGINT")
+    }
+  }
 }

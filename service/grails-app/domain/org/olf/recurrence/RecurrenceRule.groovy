@@ -1,6 +1,6 @@
 package org.olf.recurrence
 
-import org.olf.recurrence.recurrencePattern.RecurrencePattern
+import org.olf.recurrence.recurrencePattern.*
 
 import grails.gorm.MultiTenant
 
@@ -17,7 +17,8 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
   RefdataValue patternType
     
-  // RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
+  RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
+
   /* Day - "" */
   /* Week - Mon/Tue/Wed/Thur/Fri/Sat/Sun */
   /* Month_Date - 1/2/3/../28/-1 */ /* 1/.../31/-1 AND fallback, 29f28 etc OR default any number >28 to fallback to last */
@@ -25,12 +26,13 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   /* Year_Date - 1/.../31/-1 + Jan/Feb/.../Dec (Validate date against month? (What to do about 29th Feb? - Use last?)) */
   /* Year_Weekday - 1/.../52/-1 + Mon/Tues/.../Sun */
   /* Year_Month_Weekday 1/2/3/4/-1 + Mon/Tues/.../Sun + Jan/Feb/.../Dec */
+
 	static belongsTo = [
     owner : Recurrence
   ]
 
 	static hasOne = [
-   	// pattern: RecurrencePattern
+   	pattern: RecurrencePattern
   ]
 
 	static mapping = {
@@ -39,7 +41,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
         version column: 'rr_version'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
-		  //  pattern cascade: 'all-delete-orphan'
+		   pattern cascade: 'all-delete-orphan'
   }
 
   static constraints = {
@@ -47,6 +49,6 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
           owner nullable: false
         ordinal nullable: false
     patternType nullable: false
-        // pattern nullable: true
+        pattern nullable: true
   }
 }
