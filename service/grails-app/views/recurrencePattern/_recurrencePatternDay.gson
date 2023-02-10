@@ -1,0 +1,9 @@
+import groovy.transform.*
+import org.olf.recurrence.recurrencePattern.RecurrencePatternDay
+import groovy.transform.Field
+
+// Important that 'RecurrencePatternDay' is named 'pattern' due to 'RecurrenceRule' template
+
+@Field RecurrencePatternDay pattern
+
+json g.render(pattern, [excludes: ['owner'], expand: should_expand])

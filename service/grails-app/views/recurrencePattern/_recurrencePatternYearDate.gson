@@ -1,0 +1,13 @@
+import groovy.transform.*
+import org.olf.recurrence.recurrencePattern.RecurrencePatternYearDate
+import groovy.transform.Field
+
+def should_expand = [
+  'month',
+]
+
+// Important that 'RecurrencePatternYearDate' is named 'pattern' due to 'RecurrenceRule' template
+
+@Field RecurrencePatternYearDate pattern
+
+json g.render(pattern, [excludes: ['owner'], expand: should_expand])
