@@ -6,4 +6,4 @@ import groovy.transform.Field
 
 @Field RecurrencePatternDay pattern
 
-json g.render(pattern, [excludes: ['owner'], expand: should_expand])
+json g.render(pattern, [excludes: ['owner']])
