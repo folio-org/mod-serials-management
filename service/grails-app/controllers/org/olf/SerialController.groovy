@@ -39,7 +39,6 @@ class SerialController extends OkapiTenantAwareController<Serial> {
     Serial serial = new Serial()
     bindData serial, serialObj
 
-    log.debug("objToBind: ${objToBind}")
     JSONObject orginalRecurrenceObj = objToBind.recurrence
     Set recurrenceObjKeys = new HashSet(orginalRecurrenceObj.keySet())
     // Removing recurrence from serial object
@@ -52,7 +51,6 @@ class SerialController extends OkapiTenantAwareController<Serial> {
     bindData recurrence, recurrenceObj
     serial.recurrence = recurrence
 
-    log.debug(recurrence.toString())
     orginalRecurrenceObj.rules.each { JSONObject ru ->
 
       Set ruleObjKeys = new HashSet(ru.keySet())
