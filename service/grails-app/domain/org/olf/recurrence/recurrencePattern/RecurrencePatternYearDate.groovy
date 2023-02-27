@@ -10,7 +10,7 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
   Integer day // Validated between 1-31 and -1 against month
 
   @CategoryId(value="RecurrencePattern.Month", defaultInternal=true)
-  @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+  @Defaults(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
   RefdataValue month
 
   static mapping = {

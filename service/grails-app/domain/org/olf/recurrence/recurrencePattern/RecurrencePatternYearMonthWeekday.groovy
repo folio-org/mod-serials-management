@@ -15,7 +15,7 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
   RefdataValue weekday
 
   @CategoryId(value="RecurrencePattern.Month", defaultInternal=true)
-  @Defaults(['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+  @Defaults(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
   RefdataValue month
 
   static mapping = {
