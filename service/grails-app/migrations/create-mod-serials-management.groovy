@@ -102,6 +102,30 @@ databaseChangeLog = {
       referencedTableName: "serial"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230309-1026-001") {
+    createTable(tableName: 'serial_ruleset') {
+      column(name: "sr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "sr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "sr_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "sr_date_created", type: "timestamp")
+      column(name: "sr_last_updated", type: "timestamp")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230309-1026-002") {
+    addUniqueConstraint(columnNames: "sr_id", constraintName: "sr_id_unique", tableName: "serial_ruleset")
+    addForeignKeyConstraint(
+      baseColumnNames: "sr_owner_fk",
+      baseTableName: "serial_ruleset",
+      constraintName: "serial_ruleset_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "s_id",
+      referencedTableName: "serial"
+    )
+  }
+
   changeSet(author: "Jack-Golding (manual)", id: "20230203-1130-001") {
     createTable(tableName: 'recurrence') {
       column(name: "r_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -112,6 +136,7 @@ databaseChangeLog = {
       column(name: "r_period", type: "BIGINT")
     }
   }
+
   changeSet(author: "Jack-Golding (manual)", id: "20230203-1147-001") {
     addForeignKeyConstraint(
       baseColumnNames: "r_owner_fk",
@@ -119,8 +144,8 @@ databaseChangeLog = {
       constraintName: "recurrence_owner_fk",
       deferrable: "false",
       initiallyDeferred: "false",
-      referencedColumnNames: "s_id",
-      referencedTableName: "serial"
+      referencedColumnNames: "sr_id",
+      referencedTableName: "serial_ruleset"
     )
   }
   changeSet(author: "Jack-Golding (manual)", id: "20230203-1155-001") {
@@ -457,4 +482,5 @@ databaseChangeLog = {
       referencedTableName: "recurrence_rule"
     )
   }
+
 }

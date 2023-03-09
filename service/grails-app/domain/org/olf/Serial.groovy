@@ -26,7 +26,7 @@ class Serial implements MultiTenant<Serial> {
   RefdataValue serialStatus
 
   static hasMany = [
-            notes : SerialNote
+            notes : SerialNote,
     serialRulesets: SerialRuleset
   ]
 

@@ -1,6 +1,6 @@
 package org.olf.recurrence
 
-import org.olf.Serial
+import org.olf.SerialRuleset
 
 import grails.gorm.MultiTenant
 
@@ -10,7 +10,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class Recurrence implements MultiTenant<Recurrence> {
   String id
-  Serial owner
+  SerialRuleset owner
 
   @CategoryId(value="Recurrence.TimeUnits", defaultInternal=true)
   @Defaults(['Day', 'Week', 'Month', 'Year'])
@@ -22,7 +22,7 @@ public class Recurrence implements MultiTenant<Recurrence> {
   Set<RecurrenceRule> rules// Validate to have exactly #issues of these
 
   static belongsTo = [
-    owner: Serial
+    owner: SerialRuleset
  	]
 
   static hasMany = [
