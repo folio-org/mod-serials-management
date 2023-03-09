@@ -26,12 +26,12 @@ class Serial implements MultiTenant<Serial> {
   RefdataValue serialStatus
 
   static hasMany = [
-    notes : SerialNote
+            notes : SerialNote
+    serialRulesets: SerialRuleset
   ]
 
   static hasOne = [
     orderLine: SerialOrderLine,
-    recurrence: Recurrence
   ]
 
   static mappedBy = [
@@ -48,7 +48,7 @@ class Serial implements MultiTenant<Serial> {
             version column: 's_version'
 
          orderLine cascade: 'all-delete-orphan'
-        recurrence cascade: 'all-delete-orphan'
+    serialRulesets cascade: 'all-delete-orphan'
              notes cascade: 'all-delete-orphan'
   }
   
@@ -58,6 +58,6 @@ class Serial implements MultiTenant<Serial> {
       dateCreated nullable: true
      serialStatus nullable: true
       description nullable: true
-       recurrence nullable: true
+   serialRulesets nullable: true
   }   
 }
