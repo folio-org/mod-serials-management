@@ -82,7 +82,7 @@ class RulesetBindingUtilities {
   static Serial bindSerial (JSONObject serialJson) {
     // If object sent has reccurrence then validate as follows
     Serial serial = new Serial()
-    if(serialJson.serialRulesets.size() > 0){
+    if(serialJson?.serialRulesets?.size() > 0){
       Set serialObjKeys = new HashSet(serialJson.keySet())
       // Removing serial rulesets from serial object
       serialObjKeys.remove('serialRulesets')
