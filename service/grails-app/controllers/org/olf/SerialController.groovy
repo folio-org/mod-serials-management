@@ -30,7 +30,7 @@ class SerialController extends OkapiTenantAwareController<Serial> {
   def save () {
     JSONObject objToBind = getObjectToBind();
     Serial serial = RulesetBindingUtilities.bindSerial(objToBind)
-    serial.save()
+    serial.save(failOnError: true, flush: true)
     respond serial
   }
  }
