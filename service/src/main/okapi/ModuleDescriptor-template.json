@@ -297,6 +297,18 @@
         "serials-management.rulesets.item.post",
         "serials-management.rulesets.item.put"
       ]
+    },
+    {
+      "permissionName": "serials-management.rulesets.item.delete",
+      "displayName": "Ruleset item delete",
+      "description": "Delete a ruleset record"
+    },
+    {
+      "permissionName": "serials-management.rulesets.manage",
+      "subPermissions": [
+        "serials-management.rulesets.edit",
+        "serials-management.rulesets.delete"
+      ]
     }
   ],
   "launchDescriptor": {
