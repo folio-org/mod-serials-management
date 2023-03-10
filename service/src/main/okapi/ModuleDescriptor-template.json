@@ -75,6 +75,29 @@
           "methods": ["DELETE"],
           "pathPattern": "/serials-management/serials/{id}",
           "permissionsRequired": [ "serials-management.serials.manage" ]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/rulesets",
+          "permissionsRequired": [ "serials-management.rulesets.view" ]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/rulesets/{id}",
+          "permissionsRequired": [ "serials-management.rulesets.view" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/rulesets",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+        },{
+          "methods": ["PUT"],
+          "pathPattern": "/serials-management/rulesets/{id}",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+        },{
+          "methods": ["DELETE"],
+          "pathPattern": "/serials-management/rulesets/{id}",
+          "permissionsRequired": [ "serials-management.rulesets.manage" ]
         }
       ]
     },
@@ -238,6 +261,41 @@
         "serials-management.serials.view",
         "serials-management.serials.item.post",
         "serials-management.serials.item.put"
+      ]
+    },
+    {
+      "permissionName": "serials-management.rulesets.collection.get",
+      "displayName": "Ruleset collection get",
+      "description": "Get a collection of ruleset records"
+    },
+    {
+      "permissionName": "serials-management.rulesets.item.get",
+      "displayName": "Ruleset item get",
+      "description": "Get a ruleset record"
+    },
+    {
+      "permissionName": "serials-management.rulesets.view",
+      "subPermissions": [
+        "serials-management.rulesets.collection.get",
+        "serials-management.rulesets.item.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.rulesets.item.post",
+      "displayName": "Ruleset item post",
+      "description": "Post a ruleset record"
+    },
+    {
+      "permissionName": "serials-management.rulesets.item.put",
+      "displayName": "Ruleset item put",
+      "description": "Put a ruleset record"
+    },
+    {
+      "permissionName": "serials-management.rulesets.edit",
+      "subPermissions": [
+        "serials-management.rulesets.view",
+        "serials-management.rulesets.item.post",
+        "serials-management.rulesets.item.put"
       ]
     }
   ],
