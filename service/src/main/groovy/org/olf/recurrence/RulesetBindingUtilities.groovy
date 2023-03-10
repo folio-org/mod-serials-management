@@ -24,6 +24,12 @@ class RulesetBindingUtilities {
 
   static SerialRuleset bindSerialRuleset (JSONObject serialRulesetJson) {
     SerialRuleset serialRuleset = new SerialRuleset()
+
+    if(serialRulesetJson?.owner?.id){
+      Serial ownerSerial = Serial.get(serialRulesetJson.owner.id);
+      serialRuleset.owner = ownerSerial
+    }
+
     if(serialRulesetJson.recurrence){
       // We need to do special logic for recurrence rules so seperate it out
       Set recurrenceObjKeys = new HashSet(serialRulesetJson.recurrence.keySet())
