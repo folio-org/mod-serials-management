@@ -17,7 +17,6 @@ public class RecurrencePattern implements MultiTenant<RecurrencePattern> {
   }
 
   static constraints = {
-       id nullable: false
     owner nullable: false
   }
 }

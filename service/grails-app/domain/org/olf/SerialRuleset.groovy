@@ -46,5 +46,6 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
       lastUpdated nullable: true
       dateCreated nullable: true
        recurrence nullable: true
+            owner nullable: false
   }   
 }

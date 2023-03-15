@@ -45,7 +45,6 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   }
 
   static constraints = {
-             id nullable: false
           owner nullable: false
         ordinal nullable: false
     patternType nullable: false

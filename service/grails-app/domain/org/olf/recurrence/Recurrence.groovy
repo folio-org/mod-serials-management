@@ -40,7 +40,6 @@ public class Recurrence implements MultiTenant<Recurrence> {
   }
 
     static constraints = {
-            id nullable: false
          owner nullable: false
       timeUnit nullable: false
         issues nullable: false
