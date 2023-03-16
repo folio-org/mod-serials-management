@@ -4,7 +4,6 @@ import org.olf.Serial
 import org.olf.recurrence.recurrencePattern.RecurrencePattern
 import org.olf.recurrence.Recurrence
 import org.olf.recurrence.RecurrenceRule
-import org.olf.recurrence.RulesetBindingUtilities
 
 import com.k_int.okapi.OkapiTenantAwareController
 
@@ -24,13 +23,5 @@ class SerialController extends OkapiTenantAwareController<Serial> {
 
   SerialController(){
     super(Serial)
-  }
-
-  @Transactional
-  def save () {
-    JSONObject objToBind = getObjectToBind();
-    Serial serial = RulesetBindingUtilities.bindSerial(objToBind)
-    serial.save(failOnError: true, flush: true)
-    respond serial
   }
  }

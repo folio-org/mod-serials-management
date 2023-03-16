@@ -1,6 +1,7 @@
 package org.olf.recurrence.recurrencePattern
 
 import grails.gorm.MultiTenant
+import grails.validation.Validateable
 
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
@@ -19,7 +20,7 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
   }
 
   static constraints = {
-      day nullable: true
-    month nullable: true
+      day nullable: false
+    month nullable: false
   }
 }

@@ -20,7 +20,7 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
   }
 
   static constraints = {
-       week nullable: true
-    weekday nullable: true
+       week nullable: false
+    weekday nullable: false
   }
 }

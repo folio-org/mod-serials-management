@@ -19,7 +19,7 @@ public class RecurrencePatternYearWeekday extends RecurrencePattern implements M
   }
 
   static constraints = {
-       week nullable: true
-    weekday nullable: true
+       week nullable: false
+    weekday nullable: false
   }
 }

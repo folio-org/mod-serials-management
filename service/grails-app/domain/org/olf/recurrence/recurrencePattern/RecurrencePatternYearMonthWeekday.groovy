@@ -25,8 +25,8 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
   }
 
   static constraints = {
-       week nullable: true
-    weekday nullable: true
-      month nullable: true
+       week nullable: false
+    weekday nullable: false
+      month nullable: false
   }
 }

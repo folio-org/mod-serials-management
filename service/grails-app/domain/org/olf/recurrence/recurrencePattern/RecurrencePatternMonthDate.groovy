@@ -11,6 +11,6 @@ public class RecurrencePatternMonthDate extends RecurrencePattern implements Mul
   }
 
   static constraints = {
-    day nullable: true
+    day nullable: false
   }
 }

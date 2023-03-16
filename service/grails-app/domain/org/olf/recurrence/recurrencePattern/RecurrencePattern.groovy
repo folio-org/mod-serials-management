@@ -3,8 +3,9 @@ package org.olf.recurrence.recurrencePattern
 import org.olf.recurrence.RecurrenceRule
 
 import grails.gorm.MultiTenant
+import grails.validation.Validateable
 
-public class RecurrencePattern implements MultiTenant<RecurrencePattern> {
+public abstract class RecurrencePattern implements MultiTenant<RecurrencePattern> {
   String id
   RecurrenceRule owner
 

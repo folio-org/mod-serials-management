@@ -3,10 +3,16 @@ package org.olf.recurrence
 import org.olf.recurrence.recurrencePattern.*
 
 import grails.gorm.MultiTenant
+import grails.databinding.BindUsing
+import grails.databinding.SimpleMapDataBindingSource
 
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
+
+import org.springframework.validation.ObjectError
+
+import java.util.regex.Pattern
 
 public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   String id
@@ -16,7 +22,23 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   @CategoryId(value="RecurrenceRule.PatternType", defaultInternal=true)
   @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
   RefdataValue patternType
-    
+
+  @BindUsing({ RecurrenceRule obj, SimpleMapDataBindingSource source ->
+  try {
+    final String patternTypeString = source['patternType'] instanceof String ? source['patternType'] : source['patternType']?.value
+    final String patternClassString = Pattern.compile("_([a-z])").matcher(patternTypeString).replaceAll{match -> match.group(1).toUpperCase()}
+    final String patternClasspathString = "org.olf.recurrence.recurrencePattern.RecurrencePattern${patternClassString.capitalize()}"
+
+    final Class<? extends RecurrencePattern> rc = Class.forName(patternClasspathString)
+    RecurrencePattern rp = source['pattern']?.id ? RecurrencePattern.get(source['pattern'].id) : rc.newInstance()
+    rp.properties = source['pattern']
+
+    rp
+  }   catch ( Exception e) {
+    // FIXME Validation not working - ask steve
+        println(e);
+      }
+  })
   RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
 
   /* Day - "" */
@@ -48,6 +70,6 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
           owner nullable: false
         ordinal nullable: false
     patternType nullable: false
-        pattern nullable: true
+        pattern nullable: false
   }
 }
