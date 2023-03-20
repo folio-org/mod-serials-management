@@ -272,58 +272,42 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-001") {
     addColumn(tableName: "recurrence_pattern_month_date") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-002") {
     addColumn(tableName: "recurrence_pattern_month_weekday") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-003") {
     addColumn(tableName: "recurrence_pattern_week") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-004") {
     addColumn(tableName: "recurrence_pattern_year_date") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")  
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-005") {
     addColumn(tableName: "recurrence_pattern_year_month_weekday") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")  
-
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-006") {
     addColumn(tableName: "recurrence_pattern_year_weekday") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")
-
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230209-1407-007") {
     createTable(tableName: "recurrence_pattern_day") {
       column(name: "rp_id", type: "VARCHAR(36)")
-      column(name: "rp_owner_fk", type: "VARCHAR(36)")
-      column(name: "rp_version", type: "BIGINT")
     }
   }
 
@@ -398,89 +382,4 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-001") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_month_date",
-      constraintName: "recurrence_pattern_month_date_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-002") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_month_weekday",
-      constraintName: "recurrence_pattern_month_weekday_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-003") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_week",
-      constraintName: "recurrence_pattern_week_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-004") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_year_date",
-      constraintName: "recurrence_pattern_year_date_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-005") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_year_month_weekday",
-      constraintName: "recurrence_pattern_year_month_weekday_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-006") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_year_weekday",
-      constraintName: "recurrence_pattern_year_weekday_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230214-1153-007") {
-    addForeignKeyConstraint(
-      baseColumnNames: "rp_owner_fk",
-      baseTableName: "recurrence_pattern_day",
-      constraintName: "recurrence_pattern_day_owner_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rr_id",
-      referencedTableName: "recurrence_rule"
-    )
-  }
-
 }
