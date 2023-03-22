@@ -1,5 +1,6 @@
 package org.olf.recurrence
 
+import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
 import org.olf.recurrence.recurrencePattern.*
 
 import grails.gorm.MultiTenant
@@ -25,6 +26,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
 
   @BindUsing({ RecurrenceRule obj, SimpleMapDataBindingSource source ->
   try {
+	  
     final String patternTypeString = source['patternType'] instanceof String ? source['patternType'] : source['patternType']?.value
     final String patternClassString = Pattern.compile("_([a-z])").matcher(patternTypeString).replaceAll{match -> match.group(1).toUpperCase()}
     final String patternClasspathString = "org.olf.recurrence.recurrencePattern.RecurrencePattern${patternClassString.capitalize()}"
@@ -32,11 +34,16 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
     final Class<? extends RecurrencePattern> rc = Class.forName(patternClasspathString)
     RecurrencePattern rp = source['pattern']?.id ? RecurrencePattern.get(source['pattern'].id) : rc.newInstance()
     rp.properties = source['pattern']
-
+	
+	DirtyCheckable dObj = obj as DirtyCheckable
+	
+	dObj.markDirty('pattern', rp)
+	
     rp
   }   catch ( Exception e) {
     // FIXME Validation not working - ask steve
         println(e);
+		throw e;
       }
   })
   RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
