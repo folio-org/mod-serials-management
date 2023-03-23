@@ -17,6 +17,6 @@ public class RecurrencePatternWeek extends RecurrencePattern implements MultiTen
   }
 
   static constraints = {
-    weekday nullable: true
+    weekday nullable: false
   }
 }

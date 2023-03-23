@@ -4,7 +4,7 @@ import org.olf.recurrence.RecurrenceRule
 
 import grails.gorm.MultiTenant
 
-public class RecurrencePattern implements MultiTenant<RecurrencePattern> {
+public abstract class RecurrencePattern implements MultiTenant<RecurrencePattern> {
   String id
   RecurrenceRule owner
 
@@ -17,7 +17,6 @@ public class RecurrencePattern implements MultiTenant<RecurrencePattern> {
   }
 
   static constraints = {
-       id nullable: false
     owner nullable: false
   }
 }

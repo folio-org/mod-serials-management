@@ -1,12 +1,19 @@
 package org.olf.recurrence
 
+import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
 import org.olf.recurrence.recurrencePattern.*
 
 import grails.gorm.MultiTenant
+import grails.databinding.BindUsing
+import grails.databinding.SimpleMapDataBindingSource
 
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
+
+import org.springframework.validation.ObjectError
+
+import java.util.regex.Pattern
 
 public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   String id
@@ -16,7 +23,10 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   @CategoryId(value="RecurrenceRule.PatternType", defaultInternal=true)
   @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
   RefdataValue patternType
-    
+
+  @BindUsing({ RecurrenceRule obj, SimpleMapDataBindingSource source ->
+		RecurrenceRuleHelpers.doRulePatternBinding(obj, source)
+  })
   RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
 
   /* Day - "" */
@@ -37,7 +47,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
 
 	static mapping = {
        	  	 id column: 'rr_id', generator: 'uuid2', length: 36
-     	  	owner column: 'rr_owner_fk'
+     	  	'owner' column: 'rr_owner_fk'
         version column: 'rr_version'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
@@ -45,10 +55,9 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   }
 
   static constraints = {
-             id nullable: false
-          owner nullable: false
+          'owner' nullable: false
         ordinal nullable: false
     patternType nullable: false
-        pattern nullable: true
+        pattern nullable: false, validator: RecurrenceRuleHelpers.rulePatternValidator
   }
 }

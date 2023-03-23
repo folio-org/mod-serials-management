@@ -6,7 +6,7 @@ def should_expand = [
   'orderLine',
   'serialStatus',
   'notes',
-  'recurrence',
+  'serialRulesets',
 ]
 
 @Field Serial serial

@@ -12,6 +12,9 @@ class UrlMappings {
     }
 
     "/serials-management/settings/appSettings" (resources: 'setting');
+
     "/serials-management/serials" (resources: 'serial')
+
+    "/serials-management/rulesets" (resources: 'serialRuleset')
   }
 }

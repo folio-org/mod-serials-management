@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.SerialRuleset
+import groovy.transform.Field
+
+def should_expand = [
+  'recurrence',
+]
+
+@Field SerialRuleset serialRuleset
+
+json g.render(serialRuleset, [expand: should_expand])

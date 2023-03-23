@@ -19,7 +19,7 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
   }
 
   static constraints = {
-      day nullable: true
-    month nullable: true
+      day nullable: false
+    month nullable: false
   }
 }
