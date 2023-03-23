@@ -25,26 +25,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   RefdataValue patternType
 
   @BindUsing({ RecurrenceRule obj, SimpleMapDataBindingSource source ->
-  try {
-	  
-    final String patternTypeString = source['patternType'] instanceof String ? source['patternType'] : source['patternType']?.value
-    final String patternClassString = Pattern.compile("_([a-z])").matcher(patternTypeString).replaceAll{match -> match.group(1).toUpperCase()}
-    final String patternClasspathString = "org.olf.recurrence.recurrencePattern.RecurrencePattern${patternClassString.capitalize()}"
-
-    final Class<? extends RecurrencePattern> rc = Class.forName(patternClasspathString)
-    RecurrencePattern rp = source['pattern']?.id ? RecurrencePattern.get(source['pattern'].id) : rc.newInstance()
-    rp.properties = source['pattern']
-	
-	DirtyCheckable dObj = obj as DirtyCheckable
-	
-	dObj.markDirty('pattern', rp)
-	
-    rp
-  }   catch ( Exception e) {
-    // FIXME Validation not working - ask steve
-        println(e);
-		throw e;
-      }
+		RecurrenceRuleHelpers.doRulePatternBinding(obj, source)
   })
   RecurrencePattern pattern // Validate that patternType Year_Weekday -> RecurrencePatternYearWeekday
 
@@ -66,7 +47,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
 
 	static mapping = {
        	  	 id column: 'rr_id', generator: 'uuid2', length: 36
-     	  	owner column: 'rr_owner_fk'
+     	  	'owner' column: 'rr_owner_fk'
         version column: 'rr_version'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
@@ -74,9 +55,9 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   }
 
   static constraints = {
-          owner nullable: false
+          'owner' nullable: false
         ordinal nullable: false
     patternType nullable: false
-        pattern nullable: false
+        pattern nullable: false, validator: RecurrenceRuleHelpers.rulePatternValidator
   }
 }
