@@ -213,7 +213,7 @@ databaseChangeLog = {
       referencedTableName: "recurrence_rule"
     )
   }
-
+  // TODO - addNotNullConstraint to individual RecurrencePatternXY value columns
   changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-001") {
     createTable(tableName: "recurrence_pattern_month_date") {
       column(name: "rpmd_day", type: "BIGINT")
