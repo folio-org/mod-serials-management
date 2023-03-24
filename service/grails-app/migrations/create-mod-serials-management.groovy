@@ -400,7 +400,7 @@ databaseChangeLog = {
       newDataType: "INT", 
       confirm: "Successfully updated the r_period column."
     ) 
-    addNotNullConstraint(columnDataType: "int", columnName: "r_period", tableName: "recurrence", validate: "true")
+    addNotNullConstraint(columnDataType: "INT", columnName: "r_period", tableName: "recurrence", validate: "true")
   }
 
   changeSet(author: "jack-golding (generated)", id: "1679657889431-4") {
