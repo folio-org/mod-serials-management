@@ -213,7 +213,7 @@ databaseChangeLog = {
       referencedTableName: "recurrence_rule"
     )
   }
-  // TODO - addNotNullConstraint to individual RecurrencePatternXY value columns
+
   changeSet(author: "Jack-Golding (manual)", id: "20230206-1223-001") {
     createTable(tableName: "recurrence_pattern_month_date") {
       column(name: "rpmd_day", type: "BIGINT")
@@ -381,5 +381,157 @@ databaseChangeLog = {
       referencedColumnNames: "rdv_id",
       referencedTableName: "refdata_value"
     )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-2") {
+    modifyDataType( 
+      tableName: "recurrence", 
+      columnName: "r_issues", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the r_issues column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "r_issues", tableName: "recurrence", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-3") {
+    modifyDataType( 
+      tableName: "recurrence", 
+      columnName: "r_period", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the r_period column."
+    ) 
+    addNotNullConstraint(columnDataType: "INT", columnName: "r_period", tableName: "recurrence", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-4") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "r_time_unit_fk", tableName: "recurrence", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-5") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_day", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-6") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_month_date", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-7") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-8") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_week", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-9") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_year_date", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-10") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_year_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-11") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rp_id", tableName: "recurrence_pattern_year_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-12") {
+    addNotNullConstraint(columnDataType: "BIGINT", columnName: "rp_version", tableName: "recurrence_pattern", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-13") {
+    modifyDataType( 
+      tableName: "recurrence_pattern_month_date", 
+      columnName: "rpmd_day", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rpmd_day column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rpmd_day", tableName: "recurrence_pattern_month_date", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-14") {
+    modifyDataType( 
+      tableName: "recurrence_pattern_month_weekday", 
+      columnName: "rpmwd_week", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rpmwd_week column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rpmwd_week", tableName: "recurrence_pattern_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-15") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpmwd_weekday_fk", tableName: "recurrence_pattern_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-16") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpw_weekday_fk", tableName: "recurrence_pattern_week", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-17") {
+    modifyDataType( 
+      tableName: "recurrence_pattern_year_date", 
+      columnName: "rpyd_day", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rpyd_day column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rpyd_day", tableName: "recurrence_pattern_year_date", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-18") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpyd_month_fk", tableName: "recurrence_pattern_year_date", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-19") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpymwd_month_fk", tableName: "recurrence_pattern_year_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-20") {
+    modifyDataType( 
+      tableName: "recurrence_pattern_year_month_weekday", 
+      columnName: "rpymwd_week", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rpymwd_week column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rpymwd_week", tableName: "recurrence_pattern_year_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-21") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpymwd_weekday_fk", tableName: "recurrence_pattern_year_month_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-22") {
+    modifyDataType( 
+      tableName: "recurrence_pattern_year_weekday", 
+      columnName: "rpywd_week", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rpywd_week column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rpywd_week", tableName: "recurrence_pattern_year_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-23") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rpywd_weekday_fk", tableName: "recurrence_pattern_year_weekday", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-24") {
+    modifyDataType( 
+      tableName: "recurrence_rule", 
+      columnName: "rr_ordinal", 
+      newDataType: "INT", 
+      confirm: "Successfully updated the rr_ordinal column."
+    )
+    addNotNullConstraint(columnDataType: "INT", columnName: "rr_ordinal", tableName: "recurrence_rule", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-25") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "rr_pattern_type_fk", tableName: "recurrence_rule", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-26") {
+    addNotNullConstraint(columnDataType: "BIGINT", columnName: "rr_version", tableName: "recurrence_rule", validate: "true")
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1679657889431-27") {
+    addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "sn_owner_fk", tableName: "serial_note", validate: "true")
   }
 }
