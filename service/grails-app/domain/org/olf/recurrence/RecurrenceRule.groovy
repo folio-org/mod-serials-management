@@ -11,14 +11,12 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-import org.springframework.validation.ObjectError
-
 import java.util.regex.Pattern
 
 public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   String id
   Recurrence owner
-  Integer ordinal /* Validated to be 1 - period of owner. Default is 1 */
+  Integer ordinal = 1 /* Validated to be 1 - period of owner. Default is 1 */
 
   @CategoryId(value="RecurrenceRule.PatternType", defaultInternal=true)
   @Defaults(['Day', 'Week', 'Month Date', 'Month Weekday', 'Year Date', 'Year Weekday', 'Year Month Weekday'])
@@ -47,7 +45,7 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
 
 	static mapping = {
        	  	 id column: 'rr_id', generator: 'uuid2', length: 36
-     	  	'owner' column: 'rr_owner_fk'
+     	  	owner column: 'rr_owner_fk'
         version column: 'rr_version'
         ordinal column: 'rr_ordinal'
     patternType column: 'rr_pattern_type_fk'
@@ -55,8 +53,12 @@ public class RecurrenceRule implements MultiTenant<RecurrenceRule> {
   }
 
   static constraints = {
-          'owner' nullable: false
-        ordinal nullable: false
+          owner nullable: false
+        ordinal nullable: false, validator: { Integer val, RecurrenceRule obj, errors -> 
+          if(!(val >= 1 && val <= obj?.owner?.period)){
+              errors.rejectValue('ordinal', 'ordinal.not.in.range', [obj?.owner?.period] as Object[], 'Invalid ordinal')
+          }
+         }
     patternType nullable: false
         pattern nullable: false, validator: RecurrenceRuleHelpers.rulePatternValidator
   }
