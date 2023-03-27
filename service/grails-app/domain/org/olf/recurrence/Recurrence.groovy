@@ -44,9 +44,9 @@ public class Recurrence implements MultiTenant<Recurrence> {
       timeUnit nullable: false
         issues nullable: false
         period nullable: false
-         rules nullable: false, validator: { Set<RecurrenceRule> rules, obj, errors -> 
-          if(!(rules?.size() == obj?.issues)){
-              errors.rejectValue('rules', 'must.equal.issues.rules')
+         rules nullable: false, validator: { Set<RecurrenceRule> rules, Recurrence obj, errors -> 
+          if(rules?.size() != obj?.issues){
+              errors.rejectValue('rules', 'rules.must.equal.issues',[rules?.size(), obj?.issues] as Object[], 'Invalid rules array size')
           }
          }
     }
