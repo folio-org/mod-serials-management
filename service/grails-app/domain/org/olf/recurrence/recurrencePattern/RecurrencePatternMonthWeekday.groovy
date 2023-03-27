@@ -20,7 +20,11 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
   }
 
   static constraints = {
-       week nullable: false
+       week nullable: false, validator: { Integer val, RecurrencePattern obj, errors -> 
+          if(!(val >= 1 && val <= 4)){
+              errors.rejectValue('week', 'recurrence.pattern.value.not.in.range', ['Week', 1, 4] as Object[], 'Invalid week')
+          }
+         }
     weekday nullable: false
   }
 }
