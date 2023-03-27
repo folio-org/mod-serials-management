@@ -11,6 +11,10 @@ public class RecurrencePatternMonthDate extends RecurrencePattern implements Mul
   }
 
   static constraints = {
-    day nullable: false
+    day nullable: false, validator: { Integer val, RecurrencePattern obj, errors -> 
+          if(!(val >= 1 && val <= 31)){
+              errors.rejectValue('day', 'recurrence.pattern.value.not.in.range', ['Day', 1, 31] as Object[], 'Invalid day')
+          }
+         }
   }
 }
