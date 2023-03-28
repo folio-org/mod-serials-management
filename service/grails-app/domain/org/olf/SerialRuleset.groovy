@@ -20,6 +20,12 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   Date lastUpdated
   Date dateCreated
 
+  String description
+
+  @CategoryId(defaultInternal=true)
+  @Defaults(['Active', 'Draft', 'Deprecated'])
+  RefdataValue rulesetStatus
+
   static hasOne = [
     recurrence: Recurrence
   ]
@@ -38,6 +44,8 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
         dateCreated column: 'sr_date_created'
               owner column: 'sr_owner_fk'
             version column: 'sr_version'
+        description column: 'sr_description'
+      rulesetStatus column: 'sr_ruleset_status_fk'
 
         recurrence cascade: 'all-delete-orphan'
   }
@@ -45,7 +53,9 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   static constraints = {
       lastUpdated nullable: true
       dateCreated nullable: true
-       recurrence nullable: true
             owner nullable: false
+    rulesetStatus nullable: false
+      description nullable: true
+       recurrence nullable: true
   }   
 }

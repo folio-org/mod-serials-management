@@ -534,4 +534,23 @@ databaseChangeLog = {
   changeSet(author: "jack-golding (generated)", id: "1679657889431-27") {
     addNotNullConstraint(columnDataType: "VARCHAR(36)", columnName: "sn_owner_fk", tableName: "serial_note", validate: "true")
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230328-1518-001") {
+    addColumn(tableName: "serial_ruleset") {
+      column(name: "sr_ruleset_status_fk", type: "VARCHAR(36)")
+      column(name: "sr_description", type: "TEXT")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230328-1518-002") {
+    addForeignKeyConstraint(
+      baseColumnNames: "sr_ruleset_status_fk",
+      baseTableName: "serial_ruleset",
+      constraintName: "serial_ruleset_status_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
 }
