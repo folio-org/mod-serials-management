@@ -8,7 +8,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class RecurrencePatternWeek extends RecurrencePattern implements MultiTenant<RecurrencePatternWeek> {
 
-  @CategoryId(value="RecurrencePattern.Weekday", defaultInternal=true)
+  @CategoryId(value="Global.Weekday", defaultInternal=true)
   @Defaults(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
   RefdataValue weekday
 
