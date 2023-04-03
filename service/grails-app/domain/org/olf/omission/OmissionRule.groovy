@@ -1,6 +1,5 @@
 package org.olf.omission
 
-import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
 import org.olf.omission.omissionPattern.*
 
 import grails.gorm.MultiTenant
@@ -11,8 +10,6 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-import java.util.regex.Pattern
-
 public class OmissionRule implements MultiTenant<OmissionRule> {
   String id
   Omission owner
@@ -21,6 +18,9 @@ public class OmissionRule implements MultiTenant<OmissionRule> {
   @Defaults(['Days in month', 'Weekdays in week', 'Weekdays in month', 'Weeks', 'Weeks in every month', 'Months', 'Nth issue'])
   RefdataValue patternType
 
+  @BindUsing({ OmissionRule obj, SimpleMapDataBindingSource source ->
+		OmissionRuleHelpers.doRulePatternBinding(obj, source)
+  })
   OmissionPattern pattern
 
 	static belongsTo = [
@@ -42,6 +42,6 @@ public class OmissionRule implements MultiTenant<OmissionRule> {
   static constraints = {
           owner nullable: false
     patternType nullable: false
-        pattern nullable: false
+        pattern nullable: false, validator: OmissionRuleHelpers.rulePatternValidator
   }
 }
