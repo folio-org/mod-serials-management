@@ -648,4 +648,24 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1545-001") {
+    createTable(tableName: "omission_pattern_nth_issue") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opni_issue", type: "INT")
+      column(name: "opni_month_fk", type: "VARCHAR(36)")    
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1545-002") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opni_month_fk",
+      baseTableName: "omission_pattern_nth_issue",
+      constraintName: "omission_pattern_nth_issue_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
 }
