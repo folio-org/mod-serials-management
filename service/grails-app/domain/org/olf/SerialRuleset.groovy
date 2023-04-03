@@ -1,6 +1,7 @@
 package org.olf
 
 import org.olf.recurrence.Recurrence
+import org.olf.omission.Omission
 
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
@@ -27,11 +28,13 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   RefdataValue rulesetStatus
 
   static hasOne = [
-    recurrence: Recurrence
+    recurrence: Recurrence,
+      omission: Omission
   ]
 
   static mappedBy = [
-   recurrence: 'owner'
+   recurrence: 'owner',
+     omission: 'owner'
   ]
 
   static belongsTo = [
@@ -48,6 +51,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
       rulesetStatus column: 'sr_ruleset_status_fk'
 
         recurrence cascade: 'all-delete-orphan'
+          omission cascade: 'all-delete-orphan'
   }
   
   static constraints = {
@@ -57,5 +61,6 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
     rulesetStatus nullable: false
       description nullable: true
        recurrence nullable: true
+         omission nullable: true
   }   
 }
