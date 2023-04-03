@@ -577,6 +577,7 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-003") {
     createTable(tableName: "omission_rule") {
       column(name: "or_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "or_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "or_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "or_pattern_type_fk", type: "VARCHAR(36)")
     }
@@ -610,6 +611,7 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-006") {
     createTable(tableName: "omission_pattern") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "op_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "op_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
@@ -629,6 +631,7 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-008") {
     createTable(tableName: "omission_pattern_days_in_month") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "opdim_day", type: "INT")
       column(name: "opdim_month_fk", type: "VARCHAR(36)")    
     }

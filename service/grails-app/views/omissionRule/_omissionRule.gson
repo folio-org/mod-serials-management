@@ -1,0 +1,17 @@
+import groovy.transform.*
+import org.olf.omission.OmissionRule
+import org.olf.omission.omissionPattern.OmissionPattern
+import groovy.transform.Field
+import java.util.regex.Pattern
+
+def should_expand = [
+  'patternType',
+]
+
+@Field OmissionRule omissionRule
+
+String patternClassString = Pattern.compile("_([a-z])").matcher(omissionRule.patternType.value).replaceAll{match -> match.group(1).toUpperCase()}
+
+json g.render(omissionRule, [excludes: ['owner', 'pattern'], expand: should_expand]) {
+  'pattern' g.render(template: "/omissionPattern/omissionPattern${patternClassString.capitalize()}", model: ['pattern' : omissionRule.pattern])
+}
