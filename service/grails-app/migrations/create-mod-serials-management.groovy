@@ -553,4 +553,96 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-001") {
+    createTable(tableName: "omission") {
+      column(name: "o_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "o_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "o_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-002") {
+    addForeignKeyConstraint(
+      baseColumnNames: "o_owner_fk",
+      baseTableName: "omission",
+      constraintName: "omission_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "sr_id",
+      referencedTableName: "serial_ruleset"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-003") {
+    createTable(tableName: "omission_rule") {
+      column(name: "or_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "or_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "or_pattern_type_fk", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-004") {
+    addUniqueConstraint(columnNames: "o_id", constraintName: "o_id_unique", tableName: "omission")
+    addForeignKeyConstraint(
+      baseColumnNames: "or_owner_fk",
+      baseTableName: "omission_rule",
+      constraintName: "omission_rule_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "o_id",
+      referencedTableName: "omission"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-005") {
+    addForeignKeyConstraint(
+      baseColumnNames: "or_pattern_type_fk",
+      baseTableName: "omission_rule",
+      constraintName: "omission_rule_pattern_type_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-006") {
+    createTable(tableName: "omission_pattern") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "op_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-007") {
+    addUniqueConstraint(columnNames: "or_id", constraintName: "or_id_unique", tableName: "omission_rule")
+    addForeignKeyConstraint(
+      baseColumnNames: "op_owner_fk",
+      baseTableName: "omission_pattern",
+      constraintName: "omission_pattern_owner_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "or_id",
+      referencedTableName: "omission_rule"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-008") {
+    createTable(tableName: "omission_pattern_days_in_month") {
+      column(name: "opdim_day", type: "INT")
+      column(name: "opdim_month_fk", type: "VARCHAR(36)")    
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-009") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opdim_month_fk",
+      baseTableName: "omission_pattern_days_in_month",
+      constraintName: "omission_pattern_days_in_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
 }
