@@ -668,4 +668,37 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-001") {
+    createTable(tableName: "omission_pattern_months") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opm_month_from_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opm_month_to_fk", type: "VARCHAR(36)") 
+      column(name: "opm_is_range", type: "BOOLEAN") { constraints(nullable: "false") }        
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-002") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opm_month_to_fk",
+      baseTableName: "omission_pattern_months",
+      constraintName: "omission_pattern_months_month_to_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-003") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opm_month_from_fk",
+      baseTableName: "omission_pattern_months",
+      constraintName: "omission_pattern__fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
 }
