@@ -1,0 +1,9 @@
+import groovy.transform.*
+import org.olf.omission.omissionPattern.OmissionPatternWeeks
+import groovy.transform.Field
+
+// Important that 'OmissionPatternWeeks' is named 'pattern' due to 'OmissionRule' template
+
+@Field OmissionPatternWeeks pattern
+
+json g.render(pattern, [excludes: ['owner']])

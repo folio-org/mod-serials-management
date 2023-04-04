@@ -701,4 +701,13 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-004") {
+    createTable(tableName: "omission_pattern_weeks") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opw_week_from", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opw_week_to", type: "VARCHAR(36)") 
+      column(name: "opw_is_range", type: "BOOLEAN") { constraints(nullable: "false") }        
+    }
+  }
 }
