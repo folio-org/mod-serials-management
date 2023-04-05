@@ -710,4 +710,20 @@ databaseChangeLog = {
       column(name: "opw_is_range", type: "BOOLEAN") { constraints(nullable: "false") }        
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-005") {
+    createTable(tableName: "omission_pattern_weekdays_in_month") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwim_month_fk", type: "VARCHAR(36)") 
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-006") {
+    createTable(tableName: "omission_pattern_weekday_values") {
+      column(name: "opwdv_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdv_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "opwdv_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdv_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
 }
