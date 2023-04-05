@@ -694,7 +694,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(
       baseColumnNames: "opm_month_from_fk",
       baseTableName: "omission_pattern_months",
-      constraintName: "omission_pattern__fk",
+      constraintName: "omission_pattern_months_month_from_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -714,16 +714,32 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-005") {
     createTable(tableName: "omission_pattern_weekdays_in_month") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwim_month_fk", type: "VARCHAR(36)") 
+      column(name: "opwim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwim_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-006") {
-    createTable(tableName: "omission_pattern_weekday_values") {
-      column(name: "opwdv_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdv_version", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "opwdv_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdv_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-    }
+  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-001") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opwim_month_fk",
+      baseTableName: "omission_pattern_weekdays_in_month",
+      constraintName: "omission_pattern_weekdays_in_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-002") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opwim_weekday_fk",
+      baseTableName: "omission_pattern_weekdays_in_month",
+      constraintName: "omission_pattern_weekdays_in_month_weekday_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
   }
 }

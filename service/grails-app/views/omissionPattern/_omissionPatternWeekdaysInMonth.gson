@@ -4,7 +4,7 @@ import groovy.transform.Field
 
 def should_expand = [
   'month',
-  'weekdays'
+  'weekday'
 ]
 
 // Important that 'OmissionPatternWeekdaysInMonth' is named 'pattern' due to 'OmissionRule' template
