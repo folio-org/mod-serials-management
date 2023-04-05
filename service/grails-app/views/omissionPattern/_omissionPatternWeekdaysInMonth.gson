@@ -1,0 +1,13 @@
+import groovy.transform.*
+import org.olf.omission.omissionPattern.OmissionPatternWeekdaysInMonth
+import groovy.transform.Field
+
+def should_expand = [
+  'month',
+  'weekday'
+]
+
+// Important that 'OmissionPatternWeekdaysInMonth' is named 'pattern' due to 'OmissionRule' template
+
+@Field OmissionPatternWeekdaysInMonth pattern
+json g.render(pattern, [excludes: ['owner'], expand: should_expand])

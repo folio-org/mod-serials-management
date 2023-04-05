@@ -4,6 +4,7 @@ import groovy.transform.Field
 
 def should_expand = [
   'recurrence',
+  'omission',
   'rulesetStatus'
 ]
 

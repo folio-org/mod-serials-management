@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.omission.omissionPattern.OmissionPattern
+import groovy.transform.Field
+
+@Field OmissionPattern omissionPattern
+json g.render(omissionPattern, [excludes: ['owner']])
