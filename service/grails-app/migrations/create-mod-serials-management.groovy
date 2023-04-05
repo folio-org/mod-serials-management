@@ -750,6 +750,7 @@ databaseChangeLog = {
       column(name: "opwdiw_week", type: "INT") { constraints(nullable: "false") }
     }
   }
+
   changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-004") {
     addForeignKeyConstraint(
       baseColumnNames: "opwdiw_weekday_fk",
@@ -760,5 +761,12 @@ databaseChangeLog = {
       referencedColumnNames: "rdv_id",
       referencedTableName: "refdata_value"
     )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-005") {
+    createTable(tableName: "omission_pattern_weeks_in_every_month") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwiem_week", type: "INT") { constraints(nullable: "false") }
+    }
   }
 }
