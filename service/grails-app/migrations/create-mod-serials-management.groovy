@@ -714,14 +714,14 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-005") {
     createTable(tableName: "omission_pattern_weekdays_in_month") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwim_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdim_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-001") {
     addForeignKeyConstraint(
-      baseColumnNames: "opwim_month_fk",
+      baseColumnNames: "opwdim_month_fk",
       baseTableName: "omission_pattern_weekdays_in_month",
       constraintName: "omission_pattern_weekdays_in_month_month_fk",
       deferrable: "false",
@@ -733,9 +733,28 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-002") {
     addForeignKeyConstraint(
-      baseColumnNames: "opwim_weekday_fk",
+      baseColumnNames: "opwdim_weekday_fk",
       baseTableName: "omission_pattern_weekdays_in_month",
       constraintName: "omission_pattern_weekdays_in_month_weekday_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-003") {
+    createTable(tableName: "omission_pattern_weekdays_in_week") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdiw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opwdiw_week", type: "INT") { constraints(nullable: "false") }
+    }
+  }
+  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-004") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opwdiw_weekday_fk",
+      baseTableName: "omission_pattern_weekdays_in_week",
+      constraintName: "omission_pattern_weekdays_in_week_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
