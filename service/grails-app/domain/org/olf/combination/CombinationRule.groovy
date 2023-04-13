@@ -14,6 +14,8 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   String id
   Combination owner
 
+  Integer issuesToCombine
+
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
   @Defaults(['Days in month', 'Weekdays in week', 'Weekdays in month', 'Weeks', 'Weeks in every month', 'Months', 'Nth issue'])
   RefdataValue patternType
@@ -32,16 +34,18 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   ]
 
 	static mapping = {
-       	  	 id column: 'cr_id', generator: 'uuid2', length: 36
-     	  	owner column: 'cr_owner_fk'
-        version column: 'cr_version'
-    patternType column: 'cr_pattern_type_fk'
-		   pattern cascade: 'all-delete-orphan'
+       	  	     id column: 'cr_id', generator: 'uuid2', length: 36
+     	      	owner column: 'cr_owner_fk'
+            version column: 'cr_version'
+    issuesToCombine column: 'cr_issues_to_combine'
+        patternType column: 'cr_pattern_type_fk'
+		       pattern cascade: 'all-delete-orphan'
   }
 
   static constraints = {
-          owner nullable: false
-    patternType nullable: false
-        pattern nullable: false, validator: CombinationRuleHelpers.rulePatternValidator
+              owner nullable: false
+    issuesToCombine nullable: false
+        patternType nullable: false
+            pattern nullable: false, validator: CombinationRuleHelpers.rulePatternValidator
   }
 }
