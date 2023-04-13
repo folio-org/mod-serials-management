@@ -17,7 +17,7 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   Integer issuesToCombine
 
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
-  @Defaults(['Days in month', 'Weekdays in week', 'Weekdays in month', 'Weeks', 'Weeks in every month', 'Months', 'Nth issue'])
+  @Defaults(['Day in a month', 'Weekday in a week', 'Weekday in a week of a month', 'Week', 'Week in a month', 'Month', 'Nth issue'])
   RefdataValue patternType
 
   @BindUsing({ CombinationRule obj, SimpleMapDataBindingSource source ->
