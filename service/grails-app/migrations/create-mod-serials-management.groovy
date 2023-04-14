@@ -814,7 +814,7 @@ databaseChangeLog = {
   changeSet(author: "jack-golding (generated)", id: "1681463077388-13") {
     createTable(tableName: "combination_pattern_nth_issue") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpni_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpni_issue", type: "INTEGER") { constraints(nullable: "false") }
     }
   }
 

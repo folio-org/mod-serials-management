@@ -11,7 +11,7 @@ public class CombinationPatternNthIssue extends CombinationPattern implements Mu
   Integer issue
 
   static mapping = {
-    issue column: 'cpni_week'
+    issue column: 'cpni_issue'
   }
 
   static constraints = {
