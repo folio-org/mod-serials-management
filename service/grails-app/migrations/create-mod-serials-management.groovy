@@ -797,7 +797,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "jack-golding (generated)", id: "1681463077388-11") {
-    createTable(tableName: "combination_pattern_day_in_a_month") {
+    createTable(tableName: "combination_pattern_day_inamonth") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cpdiam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cpdiam_day", type: "INTEGER") { constraints(nullable: "false") }
@@ -826,7 +826,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "jack-golding (generated)", id: "1681463077388-15") {
-    createTable(tableName: "combination_pattern_week_in_a_month") {
+    createTable(tableName: "combination_pattern_week_inamonth") {
       column(name: "cp_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
       column(name: "cpwioam_week", type: "INTEGER") { constraints(nullable: "false") }
       column(name: "cpwioam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -834,7 +834,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "jack-golding (generated)", id: "1681463077388-16") {
-    createTable(tableName: "combination_pattern_weekday_in_week_of_a_month") {
+    createTable(tableName: "combination_pattern_weekday_in_week_ofamonth") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cpwdiwoam_week", type: "INTEGER") { constraints(nullable: "false") }
       column(name: "cpwdiwoam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -843,7 +843,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "jack-golding (generated)", id: "1681463077388-17") {
-    createTable(tableName: "combination_pattern_weekday_in_a_week") {
+    createTable(tableName: "combination_pattern_weekday_inaweek") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cpwdiaw_week", type: "INTEGER") { constraints(nullable: "false") }
       column(name: "cpwdiaw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -903,8 +903,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-005") {
     addForeignKeyConstraint(
       baseColumnNames: "cpdiam_month_fk",
-      baseTableName: "combination_pattern_day_in_a_month",
-      constraintName: "combination_pattern_day_in_a_month_month_fk",
+      baseTableName: "combination_pattern_day_inamonth",
+      constraintName: "combination_pattern_day_inamonth_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -927,8 +927,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-007") {
     addForeignKeyConstraint(
       baseColumnNames: "cpwioam_month_fk",
-      baseTableName: "combination_pattern_week_in_a_month",
-      constraintName: "combination_pattern_week_in_a_month_month_fk",
+      baseTableName: "combination_pattern_week_inamonth",
+      constraintName: "combination_pattern_week_inamonth_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -939,8 +939,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-008") {
     addForeignKeyConstraint(
       baseColumnNames: "cpwdiwoam_weekday_fk",
-      baseTableName: "combination_pattern_weekday_in_week_of_a_month",
-      constraintName: "combination_pattern_weekday_in_week_of_a_month_weekday_fk",
+      baseTableName: "combination_pattern_weekday_in_week_ofamonth",
+      constraintName: "combination_pattern_weekday_in_week_ofamonth_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -951,8 +951,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-009") {
     addForeignKeyConstraint(
       baseColumnNames: "cpwdiwoam_month_fk",
-      baseTableName: "combination_pattern_weekday_in_week_of_a_month",
-      constraintName: "combination_pattern_weekday_in_week_of_a_month_month_fk",
+      baseTableName: "combination_pattern_weekday_in_week_ofamonth",
+      constraintName: "combination_pattern_weekday_in_week_ofamonth_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -963,8 +963,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-010") {
     addForeignKeyConstraint(
       baseColumnNames: "cpwdiaw_weekday_fk",
-      baseTableName: "combination_pattern_weekday_in_a_week",
-      constraintName: "combination_pattern_weekday_in_a_week_weekday_fk",
+      baseTableName: "combination_pattern_weekday_inaweek",
+      constraintName: "combination_pattern_weekday_inaweek_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
