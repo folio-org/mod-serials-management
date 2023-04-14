@@ -1,0 +1,17 @@
+import groovy.transform.*
+import org.olf.combination.CombinationRule
+import org.olf.combination.combinationPattern.CombinationPattern
+import groovy.transform.Field
+import java.util.regex.Pattern
+
+def should_expand = [
+  'patternType',
+]
+
+@Field CombinationRule combinationRule
+
+String patternClassString = Pattern.compile("_([a-z])").matcher(combinationRule.patternType.value).replaceAll{match -> match.group(1).toUpperCase()}
+
+json g.render(combinationRule, [excludes: ['owner', 'pattern'], expand: should_expand]) {
+  'pattern' g.render(template: "/combinationPattern/combinationPattern${patternClassString.capitalize()}", model: ['pattern' : combinationRule.pattern])
+}

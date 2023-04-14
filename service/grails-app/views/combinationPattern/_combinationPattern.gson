@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.combination.combinationPattern.CombinationPattern
+import groovy.transform.Field
+
+@Field CombinationPattern combinationPattern
+json g.render(combinationPattern, [excludes: ['owner']])
