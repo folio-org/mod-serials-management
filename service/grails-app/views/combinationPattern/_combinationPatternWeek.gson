@@ -1,0 +1,9 @@
+import groovy.transform.*
+import org.olf.combination.combinationPattern.CombinationPatternWeek
+import groovy.transform.Field
+
+// Important that 'CombinationPatternWeek' is named 'pattern' due to 'CombinationRule' template
+
+@Field CombinationPatternWeek pattern
+
+json g.render(pattern, [excludes: ['owner']])

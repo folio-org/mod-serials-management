@@ -1,0 +1,9 @@
+import groovy.transform.*
+import org.olf.combination.combinationPattern.CombinationPatternNthIssue
+import groovy.transform.Field
+
+// Important that 'CombinationPatternNthIssue' is named 'pattern' due to 'CombinationRule' template
+
+@Field CombinationPatternNthIssue pattern
+
+json g.render(pattern, [excludes: ['owner']])

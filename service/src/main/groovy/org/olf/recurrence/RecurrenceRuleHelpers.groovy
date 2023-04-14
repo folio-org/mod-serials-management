@@ -55,7 +55,7 @@ public class RecurrenceRuleHelpers {
 
 		dataBinder.bind( rp, new SimpleMapDataBindingSource(source['pattern'] as Map) )
 		
-		log.debug ('Binding Pattern of type {} to Object {}', rp, obj)
+		log.debug ('Binding Recurrence Pattern of type {} to Object {}', rp, obj)
 		
 		rp
 	}
