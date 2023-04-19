@@ -34,5 +34,5 @@ dataSource:
 ---
 server:
   host: localhost
-  port: 8077
+  port: 8076
  
