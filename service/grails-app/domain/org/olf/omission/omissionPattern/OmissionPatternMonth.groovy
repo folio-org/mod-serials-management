@@ -6,7 +6,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class OmissionPatternMonths extends OmissionPattern implements MultiTenant<OmissionPatternMonths> {
+public class OmissionPatternMonth extends OmissionPattern implements MultiTenant<OmissionPatternMonth> {
 
   @CategoryId(value="Global.Month", defaultInternal=true)
   @Defaults(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
