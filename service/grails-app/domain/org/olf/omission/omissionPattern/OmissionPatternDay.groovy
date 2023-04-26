@@ -6,16 +6,15 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class OmissionPatternWeeksInEveryMonth extends OmissionPattern implements MultiTenant<OmissionPatternWeeksInEveryMonth> {
+public class OmissionPatternDay extends OmissionPattern implements MultiTenant<OmissionPatternDay> {
 
-  Integer week
+  Integer day
 
   static mapping = {
-    week column: 'opwiem_week'
-
+    day column: 'opd_day'
   }
 
   static constraints = {
-    week nullable: false
+    day nullable: false
   }
 }

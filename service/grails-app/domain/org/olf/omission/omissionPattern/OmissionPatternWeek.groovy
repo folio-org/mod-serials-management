@@ -2,7 +2,7 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
-public class OmissionPatternWeeks extends OmissionPattern implements MultiTenant<OmissionPatternWeeks> {
+public class OmissionPatternWeek extends OmissionPattern implements MultiTenant<OmissionPatternWeek> {
 
   Integer weekFrom
   Integer weekTo

@@ -579,7 +579,8 @@ databaseChangeLog = {
       column(name: "or_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "or_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "or_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "or_pattern_type_fk", type: "VARCHAR(36)")
+      column(name: "or_time_unit_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "or_pattern_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
@@ -598,6 +599,18 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-005") {
     addForeignKeyConstraint(
+      baseColumnNames: "or_time_unit_fk",
+      baseTableName: "omission_rule",
+      constraintName: "omission_rule_time_unit_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-006") {
+    addForeignKeyConstraint(
       baseColumnNames: "or_pattern_type_fk",
       baseTableName: "omission_rule",
       constraintName: "omission_rule_pattern_type_fk",
@@ -608,7 +621,7 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-006") {
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-007") {
     createTable(tableName: "omission_pattern") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "op_version", type: "BIGINT") { constraints(nullable: "false") }
@@ -616,7 +629,7 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-007") {
+  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-008") {
     addUniqueConstraint(columnNames: "or_id", constraintName: "or_id_unique", tableName: "omission_rule")
     addForeignKeyConstraint(
       baseColumnNames: "op_owner_fk",
@@ -629,48 +642,8 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-008") {
-    createTable(tableName: "omission_pattern_days_in_month") {
-      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opdim_day", type: "INT")
-      column(name: "opdim_month_fk", type: "VARCHAR(36)")    
-    }
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1237-009") {
-    addForeignKeyConstraint(
-      baseColumnNames: "opdim_month_fk",
-      baseTableName: "omission_pattern_days_in_month",
-      constraintName: "omission_pattern_days_in_month_month_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rdv_id",
-      referencedTableName: "refdata_value"
-    )
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1545-001") {
-    createTable(tableName: "omission_pattern_nth_issue") {
-      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opni_issue", type: "INT")
-      column(name: "opni_month_fk", type: "VARCHAR(36)")    
-    }
-  }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20230403-1545-002") {
-    addForeignKeyConstraint(
-      baseColumnNames: "opni_month_fk",
-      baseTableName: "omission_pattern_nth_issue",
-      constraintName: "omission_pattern_nth_issue_month_fk",
-      deferrable: "false",
-      initiallyDeferred: "false",
-      referencedColumnNames: "rdv_id",
-      referencedTableName: "refdata_value"
-    )
-  }
-
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-001") {
-    createTable(tableName: "omission_pattern_months") {
+    createTable(tableName: "omission_pattern_month") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "opm_month_from_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "opm_month_to_fk", type: "VARCHAR(36)") 
@@ -681,8 +654,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-002") {
     addForeignKeyConstraint(
       baseColumnNames: "opm_month_to_fk",
-      baseTableName: "omission_pattern_months",
-      constraintName: "omission_pattern_months_month_to_fk",
+      baseTableName: "omission_pattern_month",
+      constraintName: "omission_pattern_month_month_to_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -693,8 +666,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-003") {
     addForeignKeyConstraint(
       baseColumnNames: "opm_month_from_fk",
-      baseTableName: "omission_pattern_months",
-      constraintName: "omission_pattern_months_month_from_fk",
+      baseTableName: "omission_pattern_month",
+      constraintName: "omission_pattern_month_month_from_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -703,7 +676,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-004") {
-    createTable(tableName: "omission_pattern_weeks") {
+    createTable(tableName: "omission_pattern_week") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "opw_week_from", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "opw_week_to", type: "VARCHAR(36)") 
@@ -711,19 +684,26 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230404-1136-005") {
-    createTable(tableName: "omission_pattern_weekdays_in_month") {
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-29") {
+    createTable(tableName: "omission_pattern_day") {
       column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdim_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opd_day", type: "INTEGER") { constraints(nullable: "false") }
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-001") {
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-30") {
+    createTable(tableName: "omission_pattern_day_month") {
+      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opdm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opdm_day", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+  
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-001") {
     addForeignKeyConstraint(
-      baseColumnNames: "opwdim_month_fk",
-      baseTableName: "omission_pattern_weekdays_in_month",
-      constraintName: "omission_pattern_weekdays_in_month_month_fk",
+      baseColumnNames: "opdm_month_fk",
+      baseTableName: "omission_pattern_day_month",
+      constraintName: "omission_pattern_day_month_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -731,11 +711,19 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-002") {
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-31") {
+    createTable(tableName: "omission_pattern_day_week") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opdw_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "opdw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") } 
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-002") {
     addForeignKeyConstraint(
-      baseColumnNames: "opwdim_weekday_fk",
-      baseTableName: "omission_pattern_weekdays_in_month",
-      constraintName: "omission_pattern_weekdays_in_month_weekday_fk",
+      baseColumnNames: "opdw_weekday_fk",
+      baseTableName: "omission_pattern_day_week",
+      constraintName: "omission_pattern_day_week_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -743,19 +731,20 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-003") {
-    createTable(tableName: "omission_pattern_weekdays_in_week") {
-      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdiw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwdiw_week", type: "INT") { constraints(nullable: "false") }
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-32") {
+    createTable(tableName: "omission_pattern_day_week_month") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opdwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "opdwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opdwm_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-004") {
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-003") {
     addForeignKeyConstraint(
-      baseColumnNames: "opwdiw_weekday_fk",
-      baseTableName: "omission_pattern_weekdays_in_week",
-      constraintName: "omission_pattern_weekdays_in_week_weekday_fk",
+      baseColumnNames: "opdwm_weekday_fk",
+      baseTableName: "omission_pattern_day_week_month",
+      constraintName: "omission_pattern_day_week_month_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -763,11 +752,111 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230405-1444-005") {
-    createTable(tableName: "omission_pattern_weeks_in_every_month") {
-      column(name: "op_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "opwiem_week", type: "INT") { constraints(nullable: "false") }
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-004") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opdwm_month_fk",
+      baseTableName: "omission_pattern_day_week_month",
+      constraintName: "omission_pattern_day_week_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-33") {
+    createTable(tableName: "omission_pattern_day_weekday") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opdwd_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-005") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opdwd_weekday_fk",
+      baseTableName: "omission_pattern_day_weekday",
+      constraintName: "omission_pattern_day_weekday_weekday_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-34") {
+    createTable(tableName: "omission_pattern_issue") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opi_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-35") {
+    createTable(tableName: "omission_pattern_issue_month") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opim_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-006") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opim_month_fk",
+      baseTableName: "omission_pattern_issue_month",
+      constraintName: "omission_pattern_issue_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-36") {
+    createTable(tableName: "omission_pattern_issue_week") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opiw_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "opiw_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-37") {
+    createTable(tableName: "omission_pattern_issue_week_month") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opiwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "opiwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "opiwm_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-007") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opiwm_month_fk",
+      baseTableName: "omission_pattern_issue_week_month",
+      constraintName: "omission_pattern_issue_week_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1682434856888-38") {
+    createTable(tableName: "omission_pattern_week_month") {
+      column(name: "op_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "opwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "opwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230425-1623-008") {
+    addForeignKeyConstraint(
+      baseColumnNames: "opwm_month_fk",
+      baseTableName: "omission_pattern_week_month",
+      constraintName: "omission_pattern_week_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
   }
 
   changeSet(author: "jack-golding (generated)", id: "1681463077388-9") {

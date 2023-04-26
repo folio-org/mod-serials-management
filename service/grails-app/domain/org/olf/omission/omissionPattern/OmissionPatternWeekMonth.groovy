@@ -6,20 +6,21 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class OmissionPatternDaysInMonth extends OmissionPattern implements MultiTenant<OmissionPatternDaysInMonth> {
-  Integer day
+public class OmissionPatternWeekMonth extends OmissionPattern implements MultiTenant<OmissionPatternWeekMonth> {
+
+  Integer week
 
   @CategoryId(value="Global.Month", defaultInternal=true)
   @Defaults(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
   RefdataValue month
 
   static mapping = {
-      day column: 'opdim_day'
-    month column: 'opdim_month_fk'
+     week column: 'opwm_week'
+    month column: 'opwm_month_fk'
   }
 
   static constraints = {
-      day nullable: false
+     week nullable: false
     month nullable: false
   }
 }

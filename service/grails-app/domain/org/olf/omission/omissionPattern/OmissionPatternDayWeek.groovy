@@ -6,7 +6,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class OmissionPatternWeekdaysInWeek extends OmissionPattern implements MultiTenant<OmissionPatternWeekdaysInWeek> {
+public class OmissionPatternDayWeek extends OmissionPattern implements MultiTenant<OmissionPatternDayWeek> {
 
   Integer week
 
@@ -15,12 +15,12 @@ public class OmissionPatternWeekdaysInWeek extends OmissionPattern implements Mu
   RefdataValue weekday
 
   static mapping = {
-    weekday column: 'opwdiw_weekday_fk'
-       week column: 'opwdiw_week'
+      week column : 'opdw_week'
+    weekday column: 'opdw_weekday_fk'
   }
 
   static constraints = {
-    weekday nullable: false
        week nullable: false
+    weekday nullable: false
   }
 }
