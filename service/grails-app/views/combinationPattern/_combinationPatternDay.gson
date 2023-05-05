@@ -1,0 +1,12 @@
+import groovy.transform.*
+import org.olf.combination.combinationPattern.CombinationPatternDay
+import groovy.transform.Field
+
+def should_expand = [
+]
+
+// Important that 'CombinationPatternDay' is named 'pattern' due to 'CombinationRule' template
+
+@Field CombinationPatternDay pattern
+
+json g.render(pattern, [excludes: ['owner'], expand: should_expand])

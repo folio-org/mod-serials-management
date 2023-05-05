@@ -16,8 +16,12 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
 
   Integer issuesToCombine
 
+  @CategoryId(value="CombinationRule.TimeUnits", defaultInternal=true)
+  @Defaults(['Day', 'Week', 'Month', 'Issue'])
+  RefdataValue timeUnit 
+
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
-  @Defaults(['Day in a month', 'Weekday in a week', 'Weekday in week of a month', 'Week', 'Week in a month', 'Month', 'Nth issue'])
+  @Defaults(['Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', 'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
   RefdataValue patternType
 
   @BindUsing({ CombinationRule obj, SimpleMapDataBindingSource source ->
@@ -37,6 +41,7 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
        	  	     id column: 'cr_id', generator: 'uuid2', length: 36
      	      	owner column: 'cr_owner_fk'
             version column: 'cr_version'
+           timeUnit column: 'cr_time_unit_fk'
     issuesToCombine column: 'cr_issues_to_combine'
         patternType column: 'cr_pattern_type_fk'
 		       pattern cascade: 'all-delete-orphan'
@@ -46,6 +51,7 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
               owner nullable: false
     issuesToCombine nullable: false
         patternType nullable: false
+           timeUnit nullable: false
             pattern nullable: false, validator: CombinationRuleHelpers.rulePatternValidator
   }
 }

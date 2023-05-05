@@ -871,6 +871,7 @@ databaseChangeLog = {
     createTable(tableName: "combination_rule") {
       column(name: "cr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cr_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "cr_time_unit_fk", type: "VARCHAR(36)") {constraints(nullable: "false") }
       column(name: "cr_issues_to_combine", type: "INTEGER") { constraints(nullable: "false") }
       column(name: "cr_pattern_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -885,14 +886,6 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "jack-golding (generated)", id: "1681463077388-11") {
-    createTable(tableName: "combination_pattern_day_inamonth") {
-      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpdiam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpdiam_day", type: "INTEGER") { constraints(nullable: "false") }
-    }
-  }
-
   changeSet(author: "jack-golding (generated)", id: "1681463077388-12") {
     createTable(tableName: "combination_pattern_month") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -900,42 +893,10 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "jack-golding (generated)", id: "1681463077388-13") {
-    createTable(tableName: "combination_pattern_nth_issue") {
-      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpni_issue", type: "INTEGER") { constraints(nullable: "false") }
-    }
-  }
-
   changeSet(author: "jack-golding (generated)", id: "1681463077388-14") {
     createTable(tableName: "combination_pattern_week") {
       column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cpw_week", type: "INTEGER") { constraints(nullable: "false") }
-    }
-  }
-
-  changeSet(author: "jack-golding (generated)", id: "1681463077388-15") {
-    createTable(tableName: "combination_pattern_week_inamonth") {
-      column(name: "cp_id", type: "VARCHAR(255)") { constraints(nullable: "false") }
-      column(name: "cpwioam_week", type: "INTEGER") { constraints(nullable: "false") }
-      column(name: "cpwioam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-        }
-  }
-
-  changeSet(author: "jack-golding (generated)", id: "1681463077388-16") {
-    createTable(tableName: "combination_pattern_weekday_in_week_ofamonth") {
-      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpwdiwoam_week", type: "INTEGER") { constraints(nullable: "false") }
-      column(name: "cpwdiwoam_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpwdiwoam_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-    }
-  }
-
-  changeSet(author: "jack-golding (generated)", id: "1681463077388-17") {
-    createTable(tableName: "combination_pattern_weekday_inaweek") {
-      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cpwdiaw_week", type: "INTEGER") { constraints(nullable: "false") }
-      column(name: "cpwdiaw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
@@ -991,9 +952,9 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-005") {
     addForeignKeyConstraint(
-      baseColumnNames: "cpdiam_month_fk",
-      baseTableName: "combination_pattern_day_inamonth",
-      constraintName: "combination_pattern_day_inamonth_month_fk",
+      baseColumnNames: "cr_time_unit_fk",
+      baseTableName: "combination_rule",
+      constraintName: "combination_rule_time_unit_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -1013,11 +974,26 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-007") {
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-4") {
+    createTable(tableName: "combination_pattern_day") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpd_day", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-5") {
+    createTable(tableName: "combination_pattern_day_month") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdm_day", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-001") {
     addForeignKeyConstraint(
-      baseColumnNames: "cpwioam_month_fk",
-      baseTableName: "combination_pattern_week_inamonth",
-      constraintName: "combination_pattern_week_inamonth_month_fk",
+      baseColumnNames: "cpdm_month_fk",
+      baseTableName: "combination_pattern_day_month",
+      constraintName: "combination_pattern_day_month_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -1025,11 +1001,19 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-008") {
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-6") {
+    createTable(tableName: "combination_pattern_day_week") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdw_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpdw_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-002") {
     addForeignKeyConstraint(
-      baseColumnNames: "cpwdiwoam_weekday_fk",
-      baseTableName: "combination_pattern_weekday_in_week_ofamonth",
-      constraintName: "combination_pattern_weekday_in_week_ofamonth_weekday_fk",
+      baseColumnNames: "cpdw_weekday_fk",
+      baseTableName: "combination_pattern_day_week",
+      constraintName: "combination_pattern_day_week_weekday_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -1037,11 +1021,20 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-009") {
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-7") {
+    createTable(tableName: "combination_pattern_day_week_month") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpdwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdwm_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-003") {
     addForeignKeyConstraint(
-      baseColumnNames: "cpwdiwoam_month_fk",
-      baseTableName: "combination_pattern_weekday_in_week_ofamonth",
-      constraintName: "combination_pattern_weekday_in_week_ofamonth_month_fk",
+      baseColumnNames: "cpdwm_month_fk",
+      baseTableName: "combination_pattern_day_week_month",
+      constraintName: "combination_pattern_day_week_month_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
@@ -1049,11 +1042,106 @@ databaseChangeLog = {
     )
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230414-1110-010") {
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-004") {
     addForeignKeyConstraint(
-      baseColumnNames: "cpwdiaw_weekday_fk",
-      baseTableName: "combination_pattern_weekday_inaweek",
-      constraintName: "combination_pattern_weekday_inaweek_weekday_fk",
+      baseColumnNames: "cpdwm_weekday_fk",
+      baseTableName: "combination_pattern_day_week_month",
+      constraintName: "combination_pattern_day_week_month_weekday_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-8") {
+    createTable(tableName: "combination_pattern_day_weekday") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpdwd_weekday_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-005") {
+    addForeignKeyConstraint(
+      baseColumnNames: "cpdwd_weekday_fk",
+      baseTableName: "combination_pattern_day_weekday",
+      constraintName: "combination_pattern_day_weekday_weekday_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-9") {
+    createTable(tableName: "combination_pattern_issue") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpi_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-10") {
+    createTable(tableName: "combination_pattern_issue_month") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpim_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpim_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-006") {
+    addForeignKeyConstraint(
+      baseColumnNames: "cpim_month_fk",
+      baseTableName: "combination_pattern_issue_month",
+      constraintName: "combination_pattern_issue_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-11") {
+    createTable(tableName: "combination_pattern_issue_week") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpiw_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpiw_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-12") {
+    createTable(tableName: "combination_pattern_issue_week_month") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false")            }
+      column(name: "cpiwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpiwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpiwm_issue", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-007") {
+    addForeignKeyConstraint(
+      baseColumnNames: "cpiwm_month_fk",
+      baseTableName: "combination_pattern_issue_week_month",
+      constraintName: "combination_pattern_issue_week_month_month_fk",
+      deferrable: "false",
+      initiallyDeferred: "false",
+      referencedColumnNames: "rdv_id",
+      referencedTableName: "refdata_value"
+    )
+  }
+
+  changeSet(author: "jack-golding (generated)", id: "1683205908546-13") {
+    createTable(tableName: "combination_pattern_week_month") {
+      column(name: "cp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cpwm_week", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "cpwm_month_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230504-1445-008") {
+    addForeignKeyConstraint(
+      baseColumnNames: "cpwm_month_fk",
+      baseTableName: "combination_pattern_week_month",
+      constraintName: "combination_pattern_week_month_month_fk",
       deferrable: "false",
       initiallyDeferred: "false",
       referencedColumnNames: "rdv_id",
