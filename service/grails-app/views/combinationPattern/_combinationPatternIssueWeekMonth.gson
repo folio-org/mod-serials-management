@@ -6,8 +6,8 @@ def should_expand = [
   'month'
 ]
 
-// Important that 'OmissionPatternIssueWeekMonth' is named 'pattern' due to 'OmissionRule' template
+// Important that 'CombinationPatternIssueWeekMonth' is named 'pattern' due to 'CombinationRule' template
 
-@Field OmissionPatternIssueWeekMonth pattern
+@Field CombinationPatternIssueWeekMonth pattern
 
 json g.render(pattern, [excludes: ['owner'], expand: should_expand])
