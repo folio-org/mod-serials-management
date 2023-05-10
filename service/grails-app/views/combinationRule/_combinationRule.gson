@@ -6,6 +6,7 @@ import java.util.regex.Pattern
 
 def should_expand = [
   'patternType',
+  'timeUnit'
 ]
 
 @Field CombinationRule combinationRule

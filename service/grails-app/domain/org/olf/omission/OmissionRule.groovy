@@ -14,8 +14,12 @@ public class OmissionRule implements MultiTenant<OmissionRule> {
   String id
   Omission owner
 
+  @CategoryId(value="OmissionRule.TimeUnits", defaultInternal=true)
+  @Defaults(['Day', 'Week', 'Month', 'Issue'])
+  RefdataValue timeUnit 
+
   @CategoryId(value="OmissionRule.PatternType", defaultInternal=true)
-  @Defaults(['Days in month', 'Weekdays in week', 'Weekdays in month', 'Weeks', 'Weeks in every month', 'Months', 'Nth issue'])
+  @Defaults(['Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', 'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
   RefdataValue patternType
 
   @BindUsing({ OmissionRule obj, SimpleMapDataBindingSource source ->
@@ -35,12 +39,14 @@ public class OmissionRule implements MultiTenant<OmissionRule> {
        	  	 id column: 'or_id', generator: 'uuid2', length: 36
      	  	owner column: 'or_owner_fk'
         version column: 'or_version'
+       timeUnit column: 'or_time_unit_fk'
     patternType column: 'or_pattern_type_fk'
 		   pattern cascade: 'all-delete-orphan'
   }
 
   static constraints = {
           owner nullable: false
+       timeUnit nullable: false
     patternType nullable: false
         pattern nullable: false, validator: OmissionRuleHelpers.rulePatternValidator
   }
