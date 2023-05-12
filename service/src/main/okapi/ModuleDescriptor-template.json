@@ -98,6 +98,16 @@
           "methods": ["DELETE"],
           "pathPattern": "/serials-management/rulesets/{id}",
           "permissionsRequired": [ "serials-management.rulesets.manage" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/predictedPieces/generate",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/predictedPieces/create",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
         }
       ]
     },

@@ -1,5 +1,7 @@
 package org.olf
 
+import org.olf.PieceGenerationService
+
 import grails.rest.*
 import grails.converters.*
 import org.grails.web.json.JSONObject
@@ -13,12 +15,18 @@ import java.util.regex.Pattern
 @Slf4j
 @CurrentTenant
 class PredictedPiecesController {
+  PieceGenerationService pieceGenerationService
 
   // PredictedPiecesController(){
   //   super()
   // }
 
-  def generatePredictedPiecesJson()
+  def generatePredictedPiecesJson() {
+    def test = pieceGenerationService.createPiecesJson()
+    render test as JSON
+  }
 
-  def generatePredictedPieces()
+  def generatePredictedPieces() {
+
+  }
  }
