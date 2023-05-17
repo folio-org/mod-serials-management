@@ -22,7 +22,8 @@ class PredictedPiecesController {
   // }
 
   def generatePredictedPiecesJson() {
-    def test = pieceGenerationService.createPiecesJson()
+    def data = request.JSON
+    def test = pieceGenerationService.createPiecesJson(data)
     render test as JSON
   }
 
