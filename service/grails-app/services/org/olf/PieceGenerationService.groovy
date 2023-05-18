@@ -13,9 +13,46 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class PieceGenerationService {
   Integer count = 0
-  ArrayList<LocalDate> dates = [];
+  ArrayList<String> dates = [];
 
   private static final Pattern RGX_PATTERN_TYPE = Pattern.compile("_([a-z])")
+
+  // Comparison for recurrence pattern type month_date
+  // Currently only works for daily recurrence, adds date for each iteration
+  private void dayComparison(Map ruleset, LocalDate date, Integer index) {
+    // toString for concise output testing
+    dates.add(date.toString())
+    // dates.add(date)
+  }
+
+  // Comparison for recurrence pattern type month_date
+  // Checks to see if pattern.day equals dates day of month
+  private void monthDateComparison(Map ruleset, LocalDate date, Integer index) {
+    if (ruleset?.recurrence?.rules[index]?.pattern?.day == date.getDayOfMonth()){
+      // toString for concise output testing
+      // dates.add(date.toString())
+      dates.add(date)
+    }
+  }
+
+  // Comparison for recurrence pattern type month_weekday
+  // Checks to see if pattern.weekday and month equals dates weekday and week of month
+  private void monthWeekdayComparison(Map ruleset, LocalDate date, Integer index) {
+    if (ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
+        ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString()){
+      // toString for concise output testing
+      // dates.add(date.toString())
+      dates.add(date)
+    }
+  }
+
+  // Comparison for recurrence pattern type week
+  // Checks to see if pattern.weekday equals dates weekday
+  private void weekComparison(Map ruleset, LocalDate date, Integer index) {
+    if (ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString()){
+      dates.add(date)
+    }
+  }
 
   // Comparison for recurrence pattern type year_date
   // Checks to see if pattern.day and pattern.month are equal to dates day and month
@@ -79,7 +116,7 @@ public class PieceGenerationService {
       count++;
     }
     def result = [
-      total: count,
+      total: dates?.size(),
       dates: dates
       ]
     return result
