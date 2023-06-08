@@ -24,14 +24,6 @@ public class PieceGenerationService {
       year: 365,
     ]
 
-    // day - null
-    // month_ date: day - ordinal: month
-    // month_weekday: weekday, week - ordinal: month
-    // week: weekday - ordrinal: week
-    // year_date: day, month - ordinal: year
-    // year_month_weekday: week, weekday, month - ordinal: year
-    // year_weekday: week, weekday - ordinal: year
-
     // Calculate minimum whole number of years
     // Time unit * period / 365 - rounded up to next whole number
     Integer minNumberOfYears = Math.ceil(timeUnitValues.get(ruleset?.recurrence?.timeUnit?.value)*Integer.parseInt(ruleset?.recurrence?.period)/365)
