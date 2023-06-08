@@ -6,79 +6,16 @@ import java.util.regex.Pattern
 
 import java.time.LocalDate
 import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalField;
 
-
+import org.olf.recurrence.recurrencePattern.*
 
 import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class PieceGenerationService {
-  Integer count = 0
   ArrayList<String> dates = [];
-
   private static final Pattern RGX_PATTERN_TYPE = Pattern.compile("_([a-z])")
 
-  // Comparison for recurrence pattern type month_date
-  // Currently only works for daily recurrence, adds date for each iteration
-  private void dayComparison(Map ruleset, LocalDate date, Integer index) {
-    // toString for concise output testing
-    dates.add(date.toString())
-    // dates.add(date)
-  }
-
-  // Comparison for recurrence pattern type month_date
-  // Checks to see if pattern.day equals dates day of month
-  private void monthDateComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.day == date.getDayOfMonth()){
-      // toString for concise output testing
-      // dates.add(date.toString())
-      dates.add(date)
-    }
-  }
-
-  // Comparison for recurrence pattern type month_weekday
-  // Checks to see if pattern.weekday and month equals dates weekday and week of month
-  private void monthWeekdayComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
-        ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString()){
-      // toString for concise output testing
-      // dates.add(date.toString())
-      dates.add(date)
-    }
-  }
-
-  // Comparison for recurrence pattern type week
-  // Checks to see if pattern.weekday equals dates weekday
-  private void weekComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString()){
-      dates.add(date)
-    }
-  }
-
-  // Comparison for recurrence pattern type year_date
-  // Checks to see if pattern.day and pattern.month are equal to dates day and month
-  private void yearDateComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.day == date.getDayOfMonth() 
-        && ruleset?.recurrence?.rules[index]?.pattern?.month?.toUpperCase() == date.getMonth().toString()){
-      dates.add(date)
-    }
-  }
-
-  private void yearMonthWeekdayComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.month?.toUpperCase() == date.getMonth().toString() &&
-        ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
-        ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString()){
-      dates.add(date)
-    }
-  }
-
-  // Comparison for recurrence pattern year_weekday
-  // Comapares pattern.week and weekday against week of year and day of week
-  private void yearWeekdayComparison(Map ruleset, LocalDate date, Integer index) {
-    if (ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) 
-        && ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase() == date.getDayOfWeek().toString()){
-      dates.add(date)
-    }
-  }
   public createPiecesJson (Map ruleset) {
     Map<String, Integer> timeUnitValues = [
       day: 1,
@@ -101,24 +38,40 @@ public class PieceGenerationService {
 
     LocalDate startDate = LocalDate.parse(ruleset?.startDate)
     LocalDate endDate = startDate.plusYears(minNumberOfYears)
-    
+    final String formattedPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
+    final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedPatternType.capitalize()}")
 
-    String formattedPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
+    Integer currentTimeUnitPeriod = 1
+    LocalDate currentTimeUnit = startDate
 
-    println(formattedPatternType)
-    
+    Map<String, ChronoField> getTimeUnit = [
+      day: ChronoField.DAY_OF_YEAR,
+      week: ChronoField.ALIGNED_WEEK_OF_YEAR,
+      month: ChronoField.MONTH_OF_YEAR,
+      year: ChronoField.YEAR,
+    ]
 
-    // Year date testing run
     for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-      for( Integer i = 0; i<ruleset?.recurrence?.rules?.size(); i++ ){
-        "${formattedPatternType}Comparison"(ruleset, date, i)
+      if(currentTimeUnit.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value)) != date.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value))){
+        currentTimeUnit = currentTimeUnit."plus${ruleset?.recurrence?.timeUnit?.value.capitalize()}s"(1)
+        currentTimeUnitPeriod ++
       }
-      count++;
+
+      if(currentTimeUnitPeriod > Integer.parseInt(ruleset?.recurrence?.period)){
+        currentTimeUnitPeriod = 1
+      }
+      for( Integer i = 0; i<ruleset?.recurrence?.rules?.size(); i++ ){
+        if(currentTimeUnitPeriod == ruleset?.recurrence?.rules[i]?.ordinal){
+        rc.compareDate(ruleset, date, i) && dates.add(date.toString())
+        }
+      }
     }
+
     def result = [
       total: dates?.size(),
       dates: dates
       ]
+      
     return result
   }
 }

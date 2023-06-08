@@ -2,6 +2,8 @@ package org.olf.recurrence.recurrencePattern
 
 import grails.gorm.MultiTenant
 
+import java.time.LocalDate
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -25,5 +27,12 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
           }
          }
     month nullable: false
+  }
+
+  // Comparison for recurrence pattern type year_date
+  // Checks to see if pattern.day and pattern.month are equal to dates day and month
+  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
+    return (ruleset?.recurrence?.rules[index]?.pattern?.day == date.getDayOfMonth() &&
+            ruleset?.recurrence?.rules[index]?.pattern?.month?.toUpperCase() == date.getMonth().toString())
   }
 }
