@@ -20,11 +20,10 @@ class PredictedPiecesController {
   // PredictedPiecesController(){
   //   super()
   // }
-
   def generatePredictedPiecesJson() {
-    def data = request.JSON
-    def test = pieceGenerationService.createPiecesJson(data)
-    render test as JSON
+    final data = request.JSON
+    final result = pieceGenerationService.createPiecesJson(data)
+    render result as JSON
   }
 
   def generatePredictedPieces() {

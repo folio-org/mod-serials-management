@@ -13,10 +13,10 @@ import org.olf.recurrence.recurrencePattern.*
 import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class PieceGenerationService {
-  ArrayList<String> dates = [];
   private static final Pattern RGX_PATTERN_TYPE = Pattern.compile("_([a-z])")
 
   public createPiecesJson (Map ruleset) {
+    ArrayList<String> dates = []
     Map<String, Integer> timeUnitValues = [
       day: 1,
       week: 7,
