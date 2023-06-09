@@ -2,6 +2,9 @@ package org.olf.recurrence.recurrencePattern
 
 import grails.gorm.MultiTenant
 
+import java.time.LocalDate
+import java.time.temporal.ChronoField;
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -32,5 +35,11 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
          }
     weekday nullable: false
       month nullable: false
+  }
+
+  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
+    return (ruleset?.recurrence?.rules[index]?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString() &&
+            Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
+            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }
