@@ -38,8 +38,8 @@ public class RecurrencePatternYearMonthWeekday extends RecurrencePattern impleme
   }
 
   public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (ruleset?.recurrence?.rules[index]?.pattern?.month?.toUpperCase() == date.getMonth().toString() &&
-            ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
-            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString())
+    return (ruleset?.recurrence?.rules[index]?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString() &&
+            Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
+            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }

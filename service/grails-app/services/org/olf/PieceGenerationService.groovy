@@ -53,7 +53,7 @@ public class PieceGenerationService {
         currentTimeUnitPeriod = 1
       }
       for( Integer i = 0; i<ruleset?.recurrence?.rules?.size(); i++ ){
-        if(currentTimeUnitPeriod == ruleset?.recurrence?.rules[i]?.ordinal){
+        if(currentTimeUnitPeriod == Integer.parseInt(ruleset?.recurrence?.rules[i]?.ordinal)){
         rc.compareDate(ruleset, date, i) && dates.add(date.toString())
         }
       }

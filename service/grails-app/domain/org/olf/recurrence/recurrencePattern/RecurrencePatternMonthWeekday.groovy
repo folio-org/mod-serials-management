@@ -34,7 +34,7 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
   // Comparison for recurrence pattern type month_weekday
   // Checks to see if pattern.weekday and month equals dates weekday and week of month
   public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (ruleset?.recurrence?.rules[index]?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
-            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.toUpperCase()== date.getDayOfWeek().toString())
+    return (Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
+            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }
