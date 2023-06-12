@@ -33,7 +33,7 @@ public class PieceGenerationService {
     final String formattedPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
     final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedPatternType.capitalize()}")
 
-    Integer currentTimeUnitPeriod = 1
+    Integer currentTimeUnitPeriod = (ruleset?.recurrence?.timeUnit?.value == 'year' && Integer.parseInt(ruleset?.recurrence?.period) > 1)  ? 0 : 1
     LocalDate currentTimeUnit = startDate
 
     Map<String, ChronoField> getTimeUnit = [
@@ -45,15 +45,19 @@ public class PieceGenerationService {
 
     for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
       if(currentTimeUnit.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value)) != date.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value))){
+        println(currentTimeUnit)
         currentTimeUnit = currentTimeUnit."plus${ruleset?.recurrence?.timeUnit?.value.capitalize()}s"(1)
+        println(currentTimeUnit)
         currentTimeUnitPeriod ++
       }
 
       if(currentTimeUnitPeriod > Integer.parseInt(ruleset?.recurrence?.period)){
-        currentTimeUnitPeriod = 1
+        println(currentTimeUnitPeriod)
+        currentTimeUnitPeriod = (ruleset?.recurrence?.timeUnit?.value == 'year' && Integer.parseInt(ruleset?.recurrence?.period) > 1)  ? 0 : 1
       }
       for( Integer i = 0; i<ruleset?.recurrence?.rules?.size(); i++ ){
         if(currentTimeUnitPeriod == Integer.parseInt(ruleset?.recurrence?.rules[i]?.ordinal)){
+        
         rc.compareDate(ruleset, date, i) && dates.add(date.toString())
         }
       }
