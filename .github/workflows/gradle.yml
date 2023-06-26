@@ -36,7 +36,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew --refresh-dependencies clean
+          ./gradlew --refresh-dependencies clean build
 
       - name: Stop containers
         run: |
@@ -70,6 +70,7 @@ jobs:
           echo "Also https://www.prestonlamb.com/blog/creating-a-docker-image-with-github-actions"
           echo "Run number is $GITHUB_RUN_NUMBER"
           echo "Parsed APP_VERSION to ${APP_VERSION}"
+          ls ./service/build/lib/*
           if [[ "${APP_VERSION}" =~ .*SNAPSHOT.* ]]; then
             echo Publish as snapshot 
             docker build . --file Dockerfile --tag knowledgeintegration/mod-serials-management:${APP_VERSION}
