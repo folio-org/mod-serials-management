@@ -37,7 +37,6 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew --refresh-dependencies clean
-          ls ./build/test-results/integrationTest/*
 
       - name: Stop containers
         run: |
