@@ -35,4 +35,8 @@ dataSource:
 server:
   host: localhost
   port: 8076
+logging:
+  config: classpath:logback-development.xml
+hibernate:
+  enable_lazy_load_no_trans: true
  
