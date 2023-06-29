@@ -37,7 +37,7 @@ public class PieceGenerationService {
     final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedPatternType.capitalize()}")
 
     // May need fixing, establish counter for keeping track of time unit for use with ordinal
-    Integer currentTimeUnitPeriod = (ruleset?.recurrence?.timeUnit?.value == 'year' && Integer.parseInt(ruleset?.recurrence?.period) > 1)  ? 0 : 1
+    Integer currentTimeUnitPeriod = 1
     LocalDate currentTimeUnit = startDate
 
     Map<String, ChronoField> getTimeUnit = [
@@ -62,7 +62,7 @@ public class PieceGenerationService {
       if(currentTimeUnitPeriod > Integer.parseInt(ruleset?.recurrence?.period)){
 
         // If the currrentTimeUnitPeriod has passed the max number of time unit (period) change back to default
-        currentTimeUnitPeriod = (ruleset?.recurrence?.timeUnit?.value == 'year' && Integer.parseInt(ruleset?.recurrence?.period) > 1)  ? 0 : 1
+        currentTimeUnitPeriod = 1
       }
       for( Integer i = 0; i<ruleset?.recurrence?.rules?.size(); i++ ){
 
