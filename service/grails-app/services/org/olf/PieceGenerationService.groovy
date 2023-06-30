@@ -9,6 +9,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalField;
 
 import org.olf.recurrence.recurrencePattern.*
+import org.olf.omission.omissionPattern.*
 
 import com.k_int.web.toolkit.refdata.RefdataValue
 
@@ -33,8 +34,8 @@ public class PieceGenerationService {
     LocalDate endDate = startDate.plusYears(minNumberOfYears)
 
     // Convert pattern type i.e year_date to YearDate and grab related recurrence pattern class i.e RecurrencePatternYearDate
-    final String formattedPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
-    final Class<? extends RecurrencePattern> rc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedPatternType.capitalize()}")
+    final String formattedRecurrencePatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
+    final Class<? extends RecurrencePattern> rpc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedRecurrencePatternType.capitalize()}")
 
     // May need fixing, establish counter for keeping track of time unit for use with ordinal
     Integer currentTimeUnitPeriod = 1
@@ -68,7 +69,17 @@ public class PieceGenerationService {
 
         // Iterating through recurrence rules, if the ordinal matches current time unit period then it is a valid date
         if(currentTimeUnitPeriod == Integer.parseInt(ruleset?.recurrence?.rules[i]?.ordinal)){
-        rc.compareDate(ruleset, date, i) && dates.add(date.toString())
+        rpc.compareDate(ruleset, date, i) && dates.add([date: date])
+        }
+      }
+    }
+
+    if(!!ruleset?.omission) {
+      for (Integer i = 0; i<ruleset?.omission?.rules?.size(); i++) {
+        String formattedOmissionPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.omission?.rules[i]?.patternType).replaceAll{ match -> match.group(1).toUpperCase() }
+        Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
+        for (Integer j = 0; j<dates.size(); j++) {
+          opc.compareDate(ruleset?.omission?.rules[i], dates[j]?.date, j, dates) && (dates[j].omitted = true)
         }
       }
     }

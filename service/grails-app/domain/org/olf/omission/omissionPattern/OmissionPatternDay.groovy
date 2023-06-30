@@ -1,10 +1,8 @@
 package org.olf.omission.omissionPattern
 
-import grails.gorm.MultiTenant
+import java.time.LocalDate
 
-import com.k_int.web.toolkit.refdata.CategoryId
-import com.k_int.web.toolkit.refdata.Defaults
-import com.k_int.web.toolkit.refdata.RefdataValue
+import grails.gorm.MultiTenant
 
 public class OmissionPatternDay extends OmissionPattern implements MultiTenant<OmissionPatternDay> {
 
@@ -16,5 +14,9 @@ public class OmissionPatternDay extends OmissionPattern implements MultiTenant<O
 
   static constraints = {
     day nullable: false
+  }
+
+  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
+    return (Integer?.parseInt(rule?.pattern?.day) == date.getDayOfMonth())
   }
 }
