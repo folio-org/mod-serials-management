@@ -34,6 +34,8 @@ public class OmissionPatternMonth extends OmissionPattern implements MultiTenant
       isRange nullable: false
   }
 
+  // If fields are a range, compare to see if numerical value of month falls within these
+  // If not, compare month to month of year
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     if(rule?.pattern?.isRange){
       return date?.get(ChronoField.MONTH_OF_YEAR) >= Month.valueOf(rule.pattern.monthFrom.value.toUpperCase()).getValue() &&

@@ -23,6 +23,8 @@ public class OmissionPatternWeek extends OmissionPattern implements MultiTenant<
      isRange nullable: false
   }
 
+  // If fields are a range, compare to see if numerical value of week falls within these
+  // If not, compare week to week of year
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     if(rule?.pattern?.isRange){
       return date?.get(ChronoField.ALIGNED_WEEK_OF_YEAR) >= Integer.parseInt(rule.pattern.weekFrom) &&

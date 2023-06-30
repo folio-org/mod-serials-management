@@ -16,6 +16,7 @@ public class OmissionPatternDay extends OmissionPattern implements MultiTenant<O
     day nullable: false
   }
 
+  // Comparing day field to dates "day of month"
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (Integer?.parseInt(rule?.pattern?.day) == date.getDayOfMonth())
   }

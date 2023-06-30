@@ -27,6 +27,7 @@ public class OmissionPatternDayMonth extends OmissionPattern implements MultiTen
 
   }
 
+  // Comparing day field to day of month and month field to month
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (Integer.parseInt(rule?.pattern?.day) == date.getDayOfMonth() &&
             rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString())

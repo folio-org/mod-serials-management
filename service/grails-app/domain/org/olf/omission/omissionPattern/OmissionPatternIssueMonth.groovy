@@ -27,6 +27,7 @@ public class OmissionPatternIssueMonth extends OmissionPattern implements MultiT
     month nullable: false
   }
 
+  // Initially group all issues that fall within a specific month and specific year then compare the index with issue field value
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     ArrayList<String> monthGroup = dates.findAll(x -> x.date.getMonth().toString() == date.getMonth().toString() && x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR))
     return monthGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date == date &&

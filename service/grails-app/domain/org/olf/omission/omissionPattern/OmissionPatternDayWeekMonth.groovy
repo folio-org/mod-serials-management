@@ -34,6 +34,7 @@ public class OmissionPatternDayWeekMonth extends OmissionPattern implements Mult
 
   }
 
+  //Comparing month to month, week to week of month and weekday to day of week
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString() &&
             Integer.parseInt(rule?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&

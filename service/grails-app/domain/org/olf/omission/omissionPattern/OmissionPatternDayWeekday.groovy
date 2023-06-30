@@ -22,6 +22,7 @@ public class OmissionPatternDayWeekday extends OmissionPattern implements MultiT
     weekday nullable: false
   }
 
+  // Comparing weekday to day of week
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }

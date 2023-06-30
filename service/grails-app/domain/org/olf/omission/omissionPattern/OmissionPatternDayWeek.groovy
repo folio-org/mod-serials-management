@@ -27,6 +27,7 @@ public class OmissionPatternDayWeek extends OmissionPattern implements MultiTena
     weekday nullable: false
   }
 
+  // Comparing week field to week of year and weekday to day of week
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (Integer.parseInt(rule?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) &&
             rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())

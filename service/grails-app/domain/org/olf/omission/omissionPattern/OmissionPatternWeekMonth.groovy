@@ -27,6 +27,7 @@ public class OmissionPatternWeekMonth extends OmissionPattern implements MultiTe
     month nullable: false
   }
 
+  // Compare week to week of month and month to month of year
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     return (rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString() &&
             Integer.parseInt(rule?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH))

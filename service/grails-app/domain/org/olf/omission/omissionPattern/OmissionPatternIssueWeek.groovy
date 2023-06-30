@@ -25,6 +25,7 @@ public class OmissionPatternIssueWeek extends OmissionPattern implements MultiTe
      week nullable: false
   }
 
+  // Initially group all issues that fall within a specific week of year and specific year then compare the index with issue field value
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     ArrayList<String> weekGroup = dates.findAll(x -> x.date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) && x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR))
     return weekGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date == date &&

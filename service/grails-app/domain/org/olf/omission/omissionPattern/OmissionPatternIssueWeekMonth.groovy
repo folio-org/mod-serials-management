@@ -31,6 +31,7 @@ public class OmissionPatternIssueWeekMonth extends OmissionPattern implements Mu
     month nullable: false
   }
 
+  // Initially group all issues that fall within a specific week of month, month and specific year then compare the index with issue field value
   public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
     ArrayList<String> weekMonthGroup = dates.findAll(x -> 
       x.date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) && 
