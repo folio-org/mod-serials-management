@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import java.time.LocalDate
+import java.time.temporal.ChronoField
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -23,4 +26,10 @@ public class OmissionPatternWeekMonth extends OmissionPattern implements MultiTe
      week nullable: false
     month nullable: false
   }
+
+  // Compare week to week of month and month to month of year
+  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
+    return (rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString() &&
+            Integer.parseInt(rule?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH))
+    }
 }
