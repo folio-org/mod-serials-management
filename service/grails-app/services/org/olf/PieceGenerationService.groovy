@@ -113,7 +113,9 @@ public class PieceGenerationService {
         }
         combinationDates = rulesetDates
       }
+      combinationDates.removeIf(x -> x?.combined == true)
       dates = combinationDates
+      
       // COMBINATION HANDLING DRAFT
 
       // //For each combination rule, compare it against all dates within the previously generated recurrence dates
