@@ -1,4 +1,4 @@
-package org.olf.internalPieces
+package org.olf.internalPiece
 
 import grails.gorm.MultiTenant
 

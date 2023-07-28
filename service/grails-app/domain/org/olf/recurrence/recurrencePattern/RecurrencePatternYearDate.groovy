@@ -1,5 +1,7 @@
 package org.olf.recurrence.recurrencePattern
 
+import org.olf.recurrence.RecurrenceRule
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -31,8 +33,8 @@ public class RecurrencePatternYearDate extends RecurrencePattern implements Mult
 
   // Comparison for recurrence pattern type year_date
   // Checks to see if pattern.day and pattern.month are equal to dates day and month
-  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.day) == date.getDayOfMonth() &&
-            ruleset?.recurrence?.rules[index]?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString())
+  public static boolean compareDate(RecurrenceRule rule, LocalDate date){
+    return (rule?.pattern?.day == date.getDayOfMonth() &&
+            rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString())
   }
 }

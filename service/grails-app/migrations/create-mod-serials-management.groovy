@@ -1160,6 +1160,7 @@ databaseChangeLog = {
     createTable(tableName: "internal_recurrence_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "irp_date", type: "timestamp") { constraints(nullable: "false") }
+      column(name: "irp_recurrence_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
       // column(name: "irp_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
@@ -1168,12 +1169,14 @@ databaseChangeLog = {
     createTable(tableName: "internal_omission_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "iop_date", type: "timestamp") { constraints(nullable: "false") }
+      column(name: "iop_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-004"){
     createTable(tableName: "internal_combination_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "icp_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 

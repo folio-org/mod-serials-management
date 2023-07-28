@@ -1,5 +1,7 @@
 package org.olf.recurrence.recurrencePattern
 
+import org.olf.recurrence.RecurrenceRule
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -33,8 +35,8 @@ public class RecurrencePatternMonthWeekday extends RecurrencePattern implements 
 
   // Comparison for recurrence pattern type month_weekday
   // Checks to see if pattern.weekday and month equals dates weekday and week of month
-  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
-            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
+  public static boolean compareDate(RecurrenceRule rule, LocalDate date){
+    return (rule?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) &&
+            rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }
