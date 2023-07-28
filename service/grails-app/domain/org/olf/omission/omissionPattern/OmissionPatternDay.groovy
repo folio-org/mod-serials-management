@@ -1,5 +1,8 @@
 package org.olf.omission.omissionPattern
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.InternalPiece
+
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
@@ -17,7 +20,7 @@ public class OmissionPatternDay extends OmissionPattern implements MultiTenant<O
   }
 
   // Comparing day field to dates "day of month"
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return (Integer?.parseInt(rule?.pattern?.day) == date.getDayOfMonth())
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    return (rule?.pattern?.day == date.getDayOfMonth())
   }
 }

@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.InternalPiece
+
 import java.time.LocalDate
 
 import com.k_int.web.toolkit.refdata.CategoryId
@@ -23,7 +26,7 @@ public class OmissionPatternDayWeekday extends OmissionPattern implements MultiT
   }
 
   // Comparing weekday to day of week
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
     return (rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }

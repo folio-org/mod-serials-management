@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.InternalPiece
+
 import java.time.Month
 import java.time.LocalDate
 import java.time.temporal.ChronoField
@@ -36,7 +39,7 @@ public class OmissionPatternMonth extends OmissionPattern implements MultiTenant
 
   // If fields are a range, compare to see if numerical value of month falls within these
   // If not, compare month to month of year
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
     if(rule?.pattern?.isRange){
       return date?.get(ChronoField.MONTH_OF_YEAR) >= Month.valueOf(rule.pattern.monthFrom.value.toUpperCase()).getValue() &&
              date?.get(ChronoField.MONTH_OF_YEAR) <= Month.valueOf(rule.pattern.monthTo.value.toUpperCase()).getValue()

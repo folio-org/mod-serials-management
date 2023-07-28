@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.*
+
 import java.time.LocalDate
 import java.time.temporal.ChronoField
 
@@ -26,9 +29,13 @@ public class OmissionPatternIssueWeek extends OmissionPattern implements MultiTe
   }
 
   // Initially group all issues that fall within a specific week of year and specific year then compare the index with issue field value
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    ArrayList<String> weekGroup = dates.findAll(x -> x.date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) && x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR))
-    return weekGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date == date &&
-           weekGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == Integer.parseInt(rule?.pattern?.week)
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    ArrayList<InternalPiece> weekGroup = internalPieces.findAll{x -> 
+      (x instanceof InternalRecurrencePiece || x instanceof InternalOmissionPiece) && 
+      x.date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) && 
+      x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    }
+    return weekGroup.get(rule?.pattern?.issue - 1)?.date == date &&
+           weekGroup.get(rule?.pattern?.issue - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == rule?.pattern?.week
   }
 }

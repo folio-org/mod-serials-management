@@ -1,5 +1,7 @@
 package org.olf.internalPiece
 
+import java.time.LocalDate
+
 import grails.gorm.MultiTenant
 
 public abstract class InternalPiece implements MultiTenant<InternalPiece> {
@@ -11,5 +13,28 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
 
 
     tablePerHierarchy false
+  }
+
+  // Cannot handle ommited combination, please god no
+  public static Integer findIndexFromDate(ArrayList<InternalPiece> internalPieces, LocalDate date){
+    Integer indexCounter = 0
+    internalPieces.each { InternalPiece piece -> 
+      if(piece instanceof InternalRecurrencePiece || piece instanceof InternalOmissionPiece){
+        if(piece.date == date){
+          return indexCounter
+        }else{
+          indexCounter++
+        }
+      }else if(piece instanceof InternalCombinationPiece){
+        piece.recurrencePieces.each { InternalRecurrencePiece combinedPiece ->
+          if(combinedPiece.date == date){
+            return indexCounter
+          }else{
+            indexCounter++
+          }
+        }
+      }
+    }
+    return -1
   }
 }

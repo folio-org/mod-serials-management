@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.*
+
 import java.time.LocalDate
 import java.time.temporal.ChronoField
 
@@ -32,14 +35,15 @@ public class OmissionPatternIssueWeekMonth extends OmissionPattern implements Mu
   }
 
   // Initially group all issues that fall within a specific week of month, month and specific year then compare the index with issue field value
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    ArrayList<String> weekMonthGroup = dates.findAll(x -> 
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    ArrayList<InternalPiece> weekMonthGroup = internalPieces.findAll{x -> 
+      (x instanceof InternalRecurrencePiece || x instanceof InternalOmissionPiece) && 
       x.date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) && 
       x.date.getMonth().toString() == date.getMonth().toString() && 
       x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
-    )
-    return weekMonthGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date == date &&
-           weekMonthGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == Integer.parseInt(rule?.pattern?.week) &&
-           weekMonthGroup.get(Integer.parseInt(rule?.pattern?.issue) - 1)?.date?.getMonth().toString() == rule?.pattern?.month?.value?.toUpperCase()
+    }
+    return weekMonthGroup.get(rule?.pattern?.issue - 1)?.date == date &&
+           weekMonthGroup.get(rule?.pattern?.issue - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == rule?.pattern?.week &&
+           weekMonthGroup.get(rule?.pattern?.issue - 1)?.date?.getMonth().toString() == rule?.pattern?.month?.value?.toUpperCase()
   }
 }

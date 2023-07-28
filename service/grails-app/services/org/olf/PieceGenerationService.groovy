@@ -88,15 +88,15 @@ public class PieceGenerationService {
     // TODO Remove and replace with iterator
     if (!!ruleset?.omission) {
       //For each omission rule, compare it against all dates within the previously generated recurrence dates
-      for (Integer i = 0; i < ruleset?.omission?.rules?.size(); i++) {
+      ruleset?.omission?.rules.each { rule ->
         // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
-        String formattedOmissionPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.omission?.rules[i]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+        String formattedOmissionPatternType = RGX_PATTERN_TYPE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
         Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
 
         //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
-        for (Integer j = 0; j < dates.size(); j++) {
-          if(opc.compareDate(ruleset?.omission?.rules[i], dates[j]?.date, j, dates)){
-            dates[j].omitted = true
+        dates.each { date -> 
+          if(opc.compareDate(rule, date.date, dates)){
+            date.omitted = true
           }
         }
       }

@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.InternalPiece
+
 import java.time.LocalDate
 
 import com.k_int.web.toolkit.refdata.CategoryId
@@ -21,7 +24,8 @@ public class OmissionPatternIssue extends OmissionPattern implements MultiTenant
   }
 
   // Comparing the issue value to the index value of the dates array (+1 to since arrays initialise at 0)
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return index + 1 == Integer.parseInt(rule?.pattern?.issue)
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    Integer index = InternalPiece.findIndexFromDate(internalPieces, date)
+    return index + 1 == rule?.pattern?.issue
   }
 }
