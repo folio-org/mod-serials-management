@@ -1181,8 +1181,10 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-001"){
     createTable(tableName: "omission_origin") {
+      column(name: "oo_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "oo_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "oo_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "oo_version", type: "BIGINT") { constraints(nullable: "false") }
     }
   }
 

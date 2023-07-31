@@ -78,7 +78,8 @@ public class PieceGenerationService {
         // Iterating through recurrence rules, if the ordinal matches current time unit period then it is a valid date
         if (currentTimeUnitPeriod == rule?.ordinal && rpc.compareDate(rule, date)) {
           dates.add([date: date])
-          // FIXME Remove date stuff above
+          // FIXME Remove date stuff above and DO NOT SAVE
+          // internalPieces << new InternalRecurrencePiece([date: date, recurrenceRule: rule]).save()
           internalPieces << new InternalRecurrencePiece([date: date, recurrenceRule: rule])
         }       
       }
@@ -114,15 +115,17 @@ public class PieceGenerationService {
           if(opc.compareDate(rule, currentPiece.date, internalPieces)) {
             if(currentPiece instanceof InternalRecurrencePiece){
               iterator.remove()
-              iterator.add(new InternalOmissionPiece([
-                date: currentPiece.date, omissionOrigins: [[omissionRule: rule]]
-              ]))
+              InternalOmissionPiece omissionPiece = new InternalOmissionPiece([date: currentPiece.date])
+              omissionPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
+              iterator.add(omissionPiece)
             }else if(currentPiece instanceof InternalOmissionPiece){
               currentPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
             }
             // Grab new internal omission piece
             iterator.previous()
             currentPiece = iterator.next()
+            // FIXME Do not save
+            // currentPiece.save(flush: true, failOnError: true)
           }
         }
       }

@@ -26,9 +26,12 @@ class PredictedPiecesController {
   // }
 
   // This takes in a JSON shape and outputs predicted pieces without saving domain objects
+  @Transactional
   def generatePredictedPiecesTransient() {
     final data = request.JSON
     // Do not save this -- Is casting this all in one go ok?
+    // FIXME DO NOT SAVE
+    // SerialRuleset ruleset = new SerialRuleset(data).save(flush: true, failOnError: true)
     SerialRuleset ruleset = new SerialRuleset(data)
     // TODO Should we validate this?
     final result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))

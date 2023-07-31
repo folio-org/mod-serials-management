@@ -12,6 +12,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class OmissionOrigin implements MultiTenant<OmissionOrigin> {
 
+  String id
+
   OmissionRule omissionRule
 
   static belongsTo = [
@@ -20,8 +22,10 @@ public class OmissionOrigin implements MultiTenant<OmissionOrigin> {
 
 
   static mapping = {
+    id column: 'oo_id', generator: 'uuid2', length: 36
     omissionRule column: 'oo_omission_rule_fk'
     owner column: 'oo_owner_fk'
+    version column: 'oo_version'
   }
 
   static constraints = {
