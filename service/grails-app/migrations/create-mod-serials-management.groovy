@@ -1169,7 +1169,6 @@ databaseChangeLog = {
     createTable(tableName: "internal_omission_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "iop_date", type: "timestamp") { constraints(nullable: "false") }
-      column(name: "iop_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1177,6 +1176,13 @@ databaseChangeLog = {
     createTable(tableName: "internal_combination_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "icp_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-001"){
+    createTable(tableName: "omission_origin") {
+      column(name: "oo_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "oo_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 

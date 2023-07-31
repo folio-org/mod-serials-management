@@ -84,9 +84,9 @@ public class PieceGenerationService {
       }
     }
 
-    println("Log debug ${internalPieces}")
-    // TODO Remove and replace with iterator
+    println("Log debug After recurrence:${internalPieces}")
     if (!!ruleset?.omission) {
+      // TODO Remove and replace with iterator
       //For each omission rule, compare it against all dates within the previously generated recurrence dates
       ruleset?.omission?.rules.each { rule ->
         // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
@@ -100,7 +100,34 @@ public class PieceGenerationService {
           }
         }
       }
+      // Internalpieces iteratorfor each piece check each rule passing in list of pieces and date from piece to see if it matches
+      // If it does remove element
+      ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+      while(iterator.hasNext()){
+        InternalPiece currentPiece = iterator.next()
+        ruleset?.omission?.rules.each { rule ->
+          // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
+          String formattedOmissionPatternType = RGX_PATTERN_TYPE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+          Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
+
+          //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
+          if(opc.compareDate(rule, currentPiece.date, internalPieces)) {
+            if(currentPiece instanceof InternalRecurrencePiece){
+              iterator.remove()
+              iterator.add(new InternalOmissionPiece([
+                date: currentPiece.date, omissionOrigins: [[omissionRule: rule]]
+              ]))
+            }else if(currentPiece instanceof InternalOmissionPiece){
+              currentPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
+            }
+            // Grab new internal omission piece
+            iterator.previous()
+            currentPiece = iterator.next()
+          }
+        }
+      }
     }
+    println("Log debug After omission: ${internalPieces}")
 
     if (!!ruleset?.combination) {
 
