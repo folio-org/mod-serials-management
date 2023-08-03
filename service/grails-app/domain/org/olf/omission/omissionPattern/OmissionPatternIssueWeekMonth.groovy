@@ -36,11 +36,14 @@ public class OmissionPatternIssueWeekMonth extends OmissionPattern implements Mu
 
   // Initially group all issues that fall within a specific week of month, month and specific year then compare the index with issue field value
   public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
-    ArrayList<InternalPiece> weekMonthGroup = internalPieces.findAll{x -> 
-      (x instanceof InternalRecurrencePiece || x instanceof InternalOmissionPiece) && 
-      x.date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) && 
-      x.date.getMonth().toString() == date.getMonth().toString() && 
-      x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    ArrayList<InternalPiece> weekMonthGroup = InternalPiece.conditionalGroupRecurrencePieces(internalPieces){ip ->
+
+      return ip.date.getMonth().toString() == rule.pattern.month.value.toUpperCase() &&
+      ip.date.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == rule.pattern.week && 
+      ip.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    }
+    if(weekMonthGroup.size() < rule?.pattern?.issue){
+      return false
     }
     return weekMonthGroup.get(rule?.pattern?.issue - 1)?.date == date &&
            weekMonthGroup.get(rule?.pattern?.issue - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_MONTH) == rule?.pattern?.week &&

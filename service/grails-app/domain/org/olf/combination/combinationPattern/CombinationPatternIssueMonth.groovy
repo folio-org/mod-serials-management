@@ -32,7 +32,7 @@ public class CombinationPatternIssueMonth extends CombinationPattern implements 
   }
 
   public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
-    ArrayList<InternalRecurrencePiece> monthGroup = InternalPiece.conditionalGroupRecurrencePieces(internalPieces){ip ->
+    ArrayList<InternalPiece> monthGroup = InternalPiece.conditionalGroupRecurrencePieces(internalPieces){ip ->
       return ip.date.getMonth().toString() == rule.pattern.month.value.toUpperCase() && 
       ip.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
     }

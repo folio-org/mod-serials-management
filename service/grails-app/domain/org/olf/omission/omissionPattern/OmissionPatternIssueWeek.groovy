@@ -30,10 +30,12 @@ public class OmissionPatternIssueWeek extends OmissionPattern implements MultiTe
 
   // Initially group all issues that fall within a specific week of year and specific year then compare the index with issue field value
   public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
-    ArrayList<InternalPiece> weekGroup = internalPieces.findAll{x -> 
-      (x instanceof InternalRecurrencePiece || x instanceof InternalOmissionPiece) && 
-      x.date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) && 
-      x.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    ArrayList<InternalPiece> weekGroup = InternalPiece.conditionalGroupRecurrencePieces(internalPieces){ip ->
+      return ip.date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == rule.pattern.week && 
+      ip.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    }
+    if(weekGroup.size() < rule?.pattern?.issue){
+      return false
     }
     return weekGroup.get(rule?.pattern?.issue - 1)?.date == date &&
            weekGroup.get(rule?.pattern?.issue - 1)?.date?.get(ChronoField.ALIGNED_WEEK_OF_YEAR) == rule?.pattern?.week

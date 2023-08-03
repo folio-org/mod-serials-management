@@ -38,14 +38,14 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
     return -1
   }
 
-  public static ArrayList<InternalRecurrencePiece> conditionalGroupRecurrencePieces(ArrayList<InternalPiece> internalPieces, Closure condition){
-    ArrayList<InternalRecurrencePiece> group = []
+  public static ArrayList<InternalPiece> conditionalGroupRecurrencePieces(ArrayList<InternalPiece> internalPieces, Closure condition){
+    ArrayList<InternalPiece> group = []
     internalPieces.each { ip ->
       if(ip instanceof InternalCombinationPiece){
         ip.recurrencePieces.findAll(condition).each { rp -> 
           group << rp
         }
-      }else if((ip instanceof InternalRecurrencePiece) && condition.call(ip)){
+      }else if((ip instanceof InternalRecurrencePiece || ip instanceof InternalOmissionPiece) && condition.call(ip)){
         group << ip
       }
     }

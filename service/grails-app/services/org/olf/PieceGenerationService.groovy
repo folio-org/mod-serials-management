@@ -95,7 +95,7 @@ public class PieceGenerationService {
 
         //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
         dates.each { date -> 
-          if(opc.compareDate(rule, date.date, dates)){
+          if(opc.compareDate(rule, date.date, internalPieces)){
             date.omitted = true
           }
         }
