@@ -14,6 +14,7 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   String id
   Combination owner
 
+  //TODO Move to pattern
   Integer issuesToCombine
 
   @CategoryId(value="CombinationRule.TimeUnits", defaultInternal=true)
