@@ -40,7 +40,6 @@ public class CombinationPatternIssueMonth extends CombinationPattern implements 
       return false
     }
 
-    InternalPiece startIssue = monthGroup.sort{a,b -> a.date <=> b.date}[rule?.pattern?.issue - 1]
     Integer startIndex = InternalPiece.findIndexFromDate(internalPieces, monthGroup.sort{a,b -> a.date <=> b.date}[rule?.pattern?.issue - 1].date)
     Integer index = InternalPiece.findIndexFromDate(internalPieces, date)
     Integer endIndex = startIndex + rule?.issuesToCombine - 1
