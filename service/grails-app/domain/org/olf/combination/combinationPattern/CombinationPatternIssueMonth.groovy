@@ -1,5 +1,12 @@
 package org.olf.combination.combinationPattern
 
+import org.olf.combination.CombinationRule
+import org.olf.internalPiece.InternalPiece
+import org.olf.internalPiece.InternalRecurrencePiece
+
+import java.time.LocalDate
+import java.time.temporal.ChronoField
+
 import grails.gorm.MultiTenant
 
 import com.k_int.web.toolkit.refdata.CategoryId
@@ -22,5 +29,21 @@ public class CombinationPatternIssueMonth extends CombinationPattern implements 
   static constraints = {
     issue nullable: false
     month nullable: false
+  }
+
+  public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    ArrayList<InternalRecurrencePiece> monthGroup = InternalPiece.conditionalGroupRecurrencePieces(internalPieces){ip ->
+      return ip.date.getMonth().toString() == rule.pattern.month.value.toUpperCase() && 
+      ip.date.get(ChronoField.YEAR) == date.get(ChronoField.YEAR)
+    }
+    if(monthGroup.size() < rule?.pattern?.issue){
+      return false
+    }
+
+    InternalPiece startIssue = monthGroup.sort{a,b -> a.date <=> b.date}[rule?.pattern?.issue - 1]
+    Integer startIndex = InternalPiece.findIndexFromDate(internalPieces, monthGroup.sort{a,b -> a.date <=> b.date}[rule?.pattern?.issue - 1].date)
+    Integer index = InternalPiece.findIndexFromDate(internalPieces, date)
+    Integer endIndex = startIndex + rule?.issuesToCombine - 1
+    return index >= startIndex  && index <= endIndex
   }
 }

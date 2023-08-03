@@ -1,5 +1,8 @@
 package org.olf.combination.combinationPattern
 
+import org.olf.combination.CombinationRule
+import org.olf.internalPiece.InternalPiece
+
 import grails.gorm.MultiTenant
 
 import java.time.Month
@@ -10,6 +13,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
+// TODO DECIDE IF WE'RE DOING THIS
 public class CombinationPatternMonth extends CombinationPattern implements MultiTenant<CombinationPatternMonth> {
 
   @CategoryId(value="Global.Month", defaultInternal=true)
@@ -24,9 +28,7 @@ public class CombinationPatternMonth extends CombinationPattern implements Multi
     month nullable: false
   }
 
-  // If fields are a range, compare to see if numerical value of month falls within these
-  // If not, compare month to month of year
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
+  public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
       return date?.get(ChronoField.MONTH_OF_YEAR) == Month.valueOf(rule.pattern.month.value.toUpperCase()).getValue() 
   }
 }

@@ -21,7 +21,7 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   RefdataValue timeUnit 
 
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
-  @Defaults(['Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', 'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
+  @Defaults([/*'Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', */'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
   RefdataValue patternType
 
   @BindUsing({ CombinationRule obj, SimpleMapDataBindingSource source ->

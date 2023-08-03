@@ -1,5 +1,8 @@
 package org.olf.combination.combinationPattern
 
+import org.olf.combination.CombinationRule
+import org.olf.internalPiece.InternalPiece
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -21,7 +24,9 @@ public class CombinationPatternIssue extends CombinationPattern implements Multi
   }
 
   // Comparing the issue value to the index value of the dates array (+1 to since arrays initialise at 0)
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return index + 1 == Integer.parseInt(rule?.pattern?.issue)
+  public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    Integer index = InternalPiece.findIndexFromDate(internalPieces, date)
+    Integer endIndex = rule?.pattern?.issue + rule?.issuesToCombine - 1
+    return index + 1 >= rule?.pattern?.issue && index + 1 <= endIndex
   }
 }

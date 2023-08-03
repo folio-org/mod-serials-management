@@ -1175,7 +1175,6 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-004"){
     createTable(tableName: "internal_combination_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "icp_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1185,6 +1184,15 @@ databaseChangeLog = {
       column(name: "oo_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "oo_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "oo_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-002"){
+    createTable(tableName: "cominbation_origin") {
+      column(name: "co_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_version", type: "BIGINT") { constraints(nullable: "false") }
     }
   }
 

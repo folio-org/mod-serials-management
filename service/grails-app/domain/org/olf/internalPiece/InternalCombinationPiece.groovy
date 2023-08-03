@@ -4,8 +4,6 @@ import grails.gorm.MultiTenant
 
 import java.time.LocalDate
 
-import org.olf.combination.CombinationRule
-
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -14,14 +12,16 @@ public class InternalCombinationPiece extends InternalPiece implements MultiTena
 
   Set<InternalRecurrencePiece> recurrencePieces
 
-  CombinationRule combinationRule
+  Set<CombinationOrigin> combinationOrigins
 
   static mapping = {
     recurrencePieces cascade: 'all-delete-orphan'
-    combinationRule column: 'icp_combination_rule_fk'
   }
 
   static constraints = {
-    combinationRule nullable: true
+  }
+
+  public String toString() {
+    "ICP: [RP: ${recurrencePieces.collect{it.toString()}}, origins: ${combinationOrigins}]"
   }
 }

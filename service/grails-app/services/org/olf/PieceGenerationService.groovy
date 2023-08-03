@@ -85,7 +85,6 @@ public class PieceGenerationService {
       }
     }
 
-    println("Log debug After recurrence:${internalPieces}")
     if (!!ruleset?.omission) {
       // TODO Remove and replace with iterator
       //For each omission rule, compare it against all dates within the previously generated recurrence dates
@@ -130,7 +129,6 @@ public class PieceGenerationService {
         }
       }
     }
-    println("Log debug After omission: ${internalPieces}")
 
     if (!!ruleset?.combination) {
 
@@ -147,7 +145,7 @@ public class PieceGenerationService {
 
         //Once combination pattern has been grabbed, compare dates using the comain models compareDate method
         for (Integer j = 0; j < combinationDates.size(); j++) {
-          if(!dates[j]?.combined && cpc.compareDate(ruleset?.combination?.rules[i], dates[j]?.date, j, dates) && dates[j].date.get(ChronoField.YEAR) != currentYear){
+          if(!dates[j]?.combined && cpc.compareDate(ruleset?.combination?.rules[i], dates[j]?.date, internalPieces) && dates[j].date.get(ChronoField.YEAR) != currentYear){
             rulesetDates.add(combinationDates.subList(j, j + ruleset?.combination?.rules[i].issuesToCombine))
             for(Integer k = j+1; k < (j + (ruleset?.combination?.rules[i].issuesToCombine)); k++){
               combinationDates[k].combined = true;
@@ -161,25 +159,24 @@ public class PieceGenerationService {
       }
       combinationDates.removeIf(x -> x?.combined == true)
       dates = combinationDates
+
+      // For each piece, find all of the combination rule sets it belongs to and put in temp set
+      // Then run through combination rules, and add all internal combination pieces that have that combination rule to a set, must be unique
+      // 3 Cases, case 1, there are zero internal combination pieces, in this case, we remove the recurrence, create an inernal combination piece and the combination
+      // case 2, there is one combination piece that matches, we remove the current recurrence piece and whilst in memeroy, add it to the single combination pieces array of combination pieces, and change the combination pieces combinations origins the set of 
+      // Case 3, there are multiple combination pieces, set up a set as a union of all origins and current origin, somehow, remove all of the combination pieces SOMEHOW AND INSERT A NEW COMBINATION PIECE THAT COMBINES THEM, will need to make union of recurrence pieces
       
-    //   COMBINATION HANDLING DRAFT
+      // ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+      // while(iterator.hasNext()){
+      //   InternalPiece currentPiece = iterator.next()
+      //   ruleset?.combination?.rules.each { rule ->
+      //     // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
+      //     String formattedCombinationPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.combination?.rules[i]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+      //     Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
+      //   }
 
-    //   //For each combination rule, compare it against all dates within the previously generated recurrence dates
-    //   for (Integer i = 0; i < ruleset?.combination?.rules?.size(); i++) {
-    //     // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
-    //     String formattedCombinationPatternType = RGX_PATTERN_TYPE.matcher(ruleset?.combination?.rules[i]?.patternType).replaceAll { match -> match.group(1).toUpperCase() }
-    //     Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-
-    //     //Once combination pattern has been grabbed, compare dates using the comain models compareDate method
-    //     for (Integer j = 0; j < dates.size(); j++) {
-    //       if(!dates[j]?.combined && !dates[j]?.combinedIssues && cpc.compareDate(ruleset?.combination?.rules[i], dates[j]?.date, j, dates)){
-    //         dates[j].combinedIssues = dates.subList(j+1, j + Integer.parseInt(ruleset?.combination?.rules[i].issuesToCombine))
-    //         for(Integer k = j+1; k < (j + (Integer.parseInt(ruleset?.combination?.rules[i].issuesToCombine))); k++){
-    //           dates[k].combined = true;
-    //         }
-    //       }
-    //     }
-    //   }
+        
+      // }
     }
 
     def result = [

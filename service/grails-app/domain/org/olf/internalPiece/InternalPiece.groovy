@@ -18,7 +18,7 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   // Cannot handle ommited combination, please god no
   public static Integer findIndexFromDate(ArrayList<InternalPiece> internalPieces, LocalDate date){
     Integer indexCounter = 0
-    internalPieces.each { InternalPiece piece -> 
+    for(InternalPiece piece in internalPieces){
       if(piece instanceof InternalRecurrencePiece || piece instanceof InternalOmissionPiece){
         if(piece.date == date){
           return indexCounter
@@ -26,7 +26,7 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
           indexCounter++
         }
       }else if(piece instanceof InternalCombinationPiece){
-        piece.recurrencePieces.each { InternalRecurrencePiece combinedPiece ->
+        for(InternalRecurrencePiece combinedPiece in piece.recurrencePieces){
           if(combinedPiece.date == date){
             return indexCounter
           }else{
@@ -36,5 +36,19 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
       }
     }
     return -1
+  }
+
+  public static ArrayList<InternalRecurrencePiece> conditionalGroupRecurrencePieces(ArrayList<InternalPiece> internalPieces, Closure condition){
+    ArrayList<InternalRecurrencePiece> group = []
+    internalPieces.each { ip ->
+      if(ip instanceof InternalCombinationPiece){
+        ip.recurrencePieces.findAll(condition).each { rp -> 
+          group << rp
+        }
+      }else if((ip instanceof InternalRecurrencePiece) && condition.call(ip)){
+        group << ip
+      }
+    }
+    return group
   }
 }

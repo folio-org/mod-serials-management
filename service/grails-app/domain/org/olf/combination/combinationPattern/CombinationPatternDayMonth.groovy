@@ -1,5 +1,8 @@
 package org.olf.combination.combinationPattern
 
+import org.olf.combination.CombinationRule
+import org.olf.internalPiece.InternalPiece
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -8,6 +11,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
+// TODO DECIDE IF WE'RE DOING THIS
 public class CombinationPatternDayMonth extends CombinationPattern implements MultiTenant<CombinationPatternDayMonth> {
 
   Integer day
@@ -28,8 +32,8 @@ public class CombinationPatternDayMonth extends CombinationPattern implements Mu
   }
 
   // Comparing day field to day of month and month field to month
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return (Integer.parseInt(rule?.pattern?.day) == date.getDayOfMonth() &&
+  public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    return (rule?.pattern?.day == date.getDayOfMonth() &&
             rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString())
   }
 }

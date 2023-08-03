@@ -1,5 +1,8 @@
 package org.olf.combination.combinationPattern
 
+import org.olf.combination.CombinationRule
+import org.olf.internalPiece.InternalPiece
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -9,6 +12,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
+// TODO DECIDE IF WE'RE DOING THIS
 public class CombinationPatternDayWeek extends CombinationPattern implements MultiTenant<CombinationPatternDayWeek> {
 
   Integer week
@@ -28,8 +32,8 @@ public class CombinationPatternDayWeek extends CombinationPattern implements Mul
   }
 
   // Comparing week field to week of year and weekday to day of week
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return (Integer.parseInt(rule?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) &&
+  public static boolean compareDate(CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    return (rule?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) &&
             rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }
