@@ -199,14 +199,7 @@ public class PieceGenerationService {
       }
     }
 
-    println("LOGDEBUG: InternalPieces after combinations(${internalPieces})")
-
-    def result = [
-      total: internalPieces?.size(),
-      internalPieces: internalPieces
-      ]
-
-    return result
+    return internalPieces
   }
 
 }

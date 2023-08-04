@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.internalPiece.InternalCombinationPiece
+import groovy.transform.Field
+
+def should_expand = [
+  'recurrencePieces',
+  'combinationOrigins'
+]
+
+@Field InternalCombinationPiece internalCombinationPiece
+json g.render(internalCombinationPiece, [excludes: ['owner'], expand: should_expand])

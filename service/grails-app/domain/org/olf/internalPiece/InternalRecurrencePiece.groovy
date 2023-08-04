@@ -24,8 +24,4 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
   static constraint = {
     recurrenceRule nullable: true
   }
-
-  public String toString() {
-    "IRP: [date: ${date.toString()}, rule: ${recurrenceRule}]"
-  }
 }

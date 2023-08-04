@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.internalPiece.InternalRecurrencePiece
+import groovy.transform.Field
+
+def should_expand = [
+  'recurrenceRule',
+]
+
+@Field InternalRecurrencePiece internalRecurrencePiece
+json g.render(internalRecurrencePiece, [excludes: ['owner'], expand: should_expand])

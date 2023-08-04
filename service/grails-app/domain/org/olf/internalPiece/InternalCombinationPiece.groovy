@@ -20,8 +20,4 @@ public class InternalCombinationPiece extends InternalPiece implements MultiTena
 
   static constraints = {
   }
-
-  public String toString() {
-    "ICP: [RP: ${recurrencePieces.collect{it.toString()}}, origins: ${combinationOrigins}]"
-  }
 }

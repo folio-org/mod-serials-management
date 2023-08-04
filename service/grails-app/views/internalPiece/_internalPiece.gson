@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.internalPiece.InternalPiece
+import groovy.transform.Field
+
+@Field InternalPiece internalPiece
+json g.render(internalPiece)

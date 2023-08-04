@@ -22,8 +22,4 @@ public class InternalOmissionPiece extends InternalPiece implements MultiTenant<
   static constraints = {
     date nullable: false
   }
-
-  public String toString() {
-    "IOP: [date: ${date.toString()}, origins: ${omissionOrigins}]"
-  }
 }

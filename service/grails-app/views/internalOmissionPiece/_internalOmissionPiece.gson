@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.internalPiece.InternalOmissionPiece
+import groovy.transform.Field
+
+def should_expand = [
+  'omissionOrigins'
+]
+
+@Field InternalOmissionPiece internalOmissionPiece
+json g.render(internalOmissionPiece, [expand: should_expand])

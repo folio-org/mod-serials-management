@@ -3,6 +3,7 @@ package org.olf
 import org.olf.PieceGenerationService
 
 import org.olf.SerialRuleset
+import org.olf.internalPiece.InternalPiece
 
 import java.time.LocalDate
 
@@ -34,8 +35,8 @@ class PredictedPiecesController {
     // SerialRuleset ruleset = new SerialRuleset(data).save(flush: true, failOnError: true)
     SerialRuleset ruleset = new SerialRuleset(data)
     // TODO Should we validate this?
-    final result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
-    render result as JSON
+    ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    respond result
   }
 
   def generatePredictedPieces() {
