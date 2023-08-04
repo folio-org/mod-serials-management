@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.internalPiece.CombinationOrigin
+import groovy.transform.Field
+
+def should_expand = [
+  'combinationRule'
+]
+
+@Field CombinationOrigin combinationOrigin
+json g.render(combinationOrigin, [excludes: ['owner'], expand: should_expand])

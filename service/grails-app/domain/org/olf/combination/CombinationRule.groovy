@@ -14,14 +14,16 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   String id
   Combination owner
 
+  //TODO Move to pattern
   Integer issuesToCombine
 
+  // FIXME Disabled day week and month timeunits for future reference
   @CategoryId(value="CombinationRule.TimeUnits", defaultInternal=true)
-  @Defaults(['Day', 'Week', 'Month', 'Issue'])
+  @Defaults([/*'Day', 'Week', 'Month',*/ 'Issue'])
   RefdataValue timeUnit 
 
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
-  @Defaults(['Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', 'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
+  @Defaults([/*'Day', 'Day Month', 'Day Week', 'Day Weekday', 'Day Week Month', 'Week', 'Week Month', 'Month', */'Issue', 'Issue Week', 'Issue Week Month', 'Issue Month'])
   RefdataValue patternType
 
   @BindUsing({ CombinationRule obj, SimpleMapDataBindingSource source ->

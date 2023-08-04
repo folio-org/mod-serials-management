@@ -1,5 +1,7 @@
 package org.olf.recurrence.recurrencePattern
 
+import org.olf.recurrence.RecurrenceRule
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -24,7 +26,7 @@ public class RecurrencePatternWeek extends RecurrencePattern implements MultiTen
 
   // Comparison for recurrence pattern type week
   // Checks to see if pattern.weekday equals dates weekday
-  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
+  public static boolean compareDate(RecurrenceRule rule, LocalDate date){
+    return (rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }

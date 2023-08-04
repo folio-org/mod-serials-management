@@ -1148,4 +1148,63 @@ databaseChangeLog = {
       referencedTableName: "refdata_value"
     )
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-001"){
+    createTable(tableName: "internal_piece") {
+      column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ip_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-002"){
+    createTable(tableName: "internal_recurrence_piece") {
+      column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "irp_date", type: "timestamp") { constraints(nullable: "false") }
+      column(name: "irp_recurrence_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      // column(name: "irp_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-003"){
+    createTable(tableName: "internal_omission_piece") {
+      column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "iop_date", type: "timestamp") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-004"){
+    createTable(tableName: "internal_combination_piece") {
+      column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-001"){
+    createTable(tableName: "omission_origin") {
+      column(name: "oo_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "oo_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "oo_omission_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "oo_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-002"){
+    createTable(tableName: "cominbation_origin") {
+      column(name: "co_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "co_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  // changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-005"){
+  //   addForeignKeyConstraint(
+  //     baseColumnNames: "irp_owner",
+  //     baseTableName: "internal_recurrence_pattern",
+  //     constraintName: "interal_recurrence_pattern_owner_FK",
+  //     deferrable: "false",
+  //     initiallyDeferred: "false",
+  //     referencedColumnNames: "ip_id",
+  //     referencedTableName: "internal_piece"
+  //   )
+  // }
 }

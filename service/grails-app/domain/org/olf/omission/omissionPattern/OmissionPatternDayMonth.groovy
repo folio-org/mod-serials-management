@@ -2,6 +2,9 @@ package org.olf.omission.omissionPattern
 
 import grails.gorm.MultiTenant
 
+import org.olf.omission.OmissionRule
+import org.olf.internalPiece.InternalPiece
+
 import java.time.LocalDate
 
 import com.k_int.web.toolkit.refdata.CategoryId
@@ -28,8 +31,8 @@ public class OmissionPatternDayMonth extends OmissionPattern implements MultiTen
   }
 
   // Comparing day field to day of month and month field to month
-  public static boolean compareDate(Map rule, LocalDate date, Integer index, ArrayList<String> dates){
-    return (Integer.parseInt(rule?.pattern?.day) == date.getDayOfMonth() &&
+  public static boolean compareDate(OmissionRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces){
+    return (rule?.pattern?.day == date.getDayOfMonth() &&
             rule?.pattern?.month?.value?.toUpperCase() == date.getMonth().toString())
   }
 }

@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.internalPiece.OmissionOrigin
+import groovy.transform.Field
+
+def should_expand = [
+  'omissionRule'
+]
+
+@Field OmissionOrigin omissionOrigin
+json g.render(omissionOrigin, [excludes: ['owner'], expand: should_expand])

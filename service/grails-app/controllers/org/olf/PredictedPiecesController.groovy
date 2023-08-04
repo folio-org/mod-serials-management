@@ -2,6 +2,11 @@ package org.olf
 
 import org.olf.PieceGenerationService
 
+import org.olf.SerialRuleset
+import org.olf.internalPiece.InternalPiece
+
+import java.time.LocalDate
+
 import grails.rest.*
 import grails.converters.*
 import org.grails.web.json.JSONObject
@@ -20,10 +25,18 @@ class PredictedPiecesController {
   // PredictedPiecesController(){
   //   super()
   // }
-  def generatePredictedPiecesJson() {
+
+  // This takes in a JSON shape and outputs predicted pieces without saving domain objects
+  @Transactional
+  def generatePredictedPiecesTransient() {
     final data = request.JSON
-    final result = pieceGenerationService.createPiecesJson(data)
-    render result as JSON
+    // Do not save this -- Is casting this all in one go ok?
+    // FIXME DO NOT SAVE
+    // SerialRuleset ruleset = new SerialRuleset(data).save(flush: true, failOnError: true)
+    SerialRuleset ruleset = new SerialRuleset(data)
+    // TODO Should we validate this?
+    ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    respond result
   }
 
   def generatePredictedPieces() {

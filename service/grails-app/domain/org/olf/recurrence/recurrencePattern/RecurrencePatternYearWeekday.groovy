@@ -1,5 +1,7 @@
 package org.olf.recurrence.recurrencePattern
 
+import org.olf.recurrence.RecurrenceRule
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -32,8 +34,8 @@ public class RecurrencePatternYearWeekday extends RecurrencePattern implements M
 
   // Comparison for recurrence pattern year_weekday
   // Comapares pattern.week and weekday against week of year and day of week
-  public static boolean compareDate(Map ruleset, LocalDate date, Integer index){
-    return (Integer.parseInt(ruleset?.recurrence?.rules[index]?.pattern?.week) == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) &&
-            ruleset?.recurrence?.rules[index]?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
+  public static boolean compareDate(RecurrenceRule rule, LocalDate date){
+    return (rule?.pattern?.week == date.get(ChronoField.ALIGNED_WEEK_OF_YEAR) &&
+            rule?.pattern?.weekday?.value?.toUpperCase() == date.getDayOfWeek().toString())
   }
 }
