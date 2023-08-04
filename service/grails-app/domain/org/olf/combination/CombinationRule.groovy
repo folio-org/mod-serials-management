@@ -17,8 +17,9 @@ public class CombinationRule implements MultiTenant<CombinationRule> {
   //TODO Move to pattern
   Integer issuesToCombine
 
+  // FIXME Disabled day week and month timeunits for future reference
   @CategoryId(value="CombinationRule.TimeUnits", defaultInternal=true)
-  @Defaults(['Day', 'Week', 'Month', 'Issue'])
+  @Defaults([/*'Day', 'Week', 'Month',*/ 'Issue'])
   RefdataValue timeUnit 
 
   @CategoryId(value="CombinationRule.PatternType", defaultInternal=true)
