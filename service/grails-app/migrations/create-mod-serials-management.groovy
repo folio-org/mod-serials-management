@@ -1196,15 +1196,9 @@ databaseChangeLog = {
     }
   }
 
-  // changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-005"){
-  //   addForeignKeyConstraint(
-  //     baseColumnNames: "irp_owner",
-  //     baseTableName: "internal_recurrence_pattern",
-  //     constraintName: "interal_recurrence_pattern_owner_FK",
-  //     deferrable: "false",
-  //     initiallyDeferred: "false",
-  //     referencedColumnNames: "ip_id",
-  //     referencedTableName: "internal_piece"
-  //   )
-  // }
+  changeSet(author: "Jack-Golding (manual)", id: "20230816-1138-001") {
+    addColumn(tableName: "serial_ruleset") {
+      column(name: "sr_ruleset_number", type: "VARCHAR(36)")
+    }
+  }
 }

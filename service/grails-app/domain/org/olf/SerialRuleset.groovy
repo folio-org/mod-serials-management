@@ -22,6 +22,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   Date lastUpdated
   Date dateCreated
 
+  String rulesetNumber
   String description
 
   @CategoryId(defaultInternal=true)
@@ -50,6 +51,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
         dateCreated column: 'sr_date_created'
               owner column: 'sr_owner_fk'
             version column: 'sr_version'
+      rulesetNumber column: 'sr_ruleset_number'
         description column: 'sr_description'
       rulesetStatus column: 'sr_ruleset_status_fk'
 
@@ -62,6 +64,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
       lastUpdated nullable: true
       dateCreated nullable: true
             owner nullable: false
+    rulesetNumber nullable: true
     rulesetStatus nullable: false
       description nullable: true
        recurrence nullable: true
