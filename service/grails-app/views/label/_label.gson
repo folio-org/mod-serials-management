@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.label.Label
+import groovy.transform.Field
+
+def should_expand = [
+  'rules'
+]
+
+@Field Label label
+json g.render(label, [excludes: ['owner'], expand: should_expand])

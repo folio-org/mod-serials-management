@@ -15,6 +15,8 @@ import org.olf.combination.*
 import org.olf.recurrence.recurrencePattern.*
 import org.olf.omission.omissionPattern.*
 import org.olf.combination.combinationPattern.*
+import org.olf.label.labelStyle.*
+import org.olf.label.labelFormat.*
 
 import org.olf.internalPiece.*
 
@@ -198,6 +200,20 @@ public class PieceGenerationService {
         }
       }
     }
+
+    // if (!!ruleset?.combination) {
+    //   ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+    //   while(iterator.hasNext()){
+    //     ruleset?.label?.rules.each { rule ->
+    //       // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
+    //       String formattedLabelPatternType = RGX_PATTERN_TYPE.matcher(rule?.labellingFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    //       Class<? extends LabelPattern> lpc = Class.forName("org.olf.label.labelPattern.LabelPattern${formattedLabelPatternType.capitalize()}")
+    //         // Assumption made that there are no omission pieces
+
+    //         println(lpc)
+    //     }
+    //   }   
+    // }
 
     return internalPieces
   }
