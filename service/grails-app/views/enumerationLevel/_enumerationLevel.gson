@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.label.enumerationLevel.EnumerationLevel
+import groovy.transform.Field
+
+def should_expand = [
+  'format',
+  'sequence',
+]
+
+@Field EnumerationLevel enumerationLevel
+json g.render(enumerationLevel, [excludes: ['owner'], expand: should_expand])
