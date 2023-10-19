@@ -1,5 +1,6 @@
 package org.olf.internalPiece
 
+import org.olf.internalPiece.internalPieceLabel.InternalPieceLabel
 import org.olf.recurrence.RecurrenceRule
 
 import grails.gorm.MultiTenant
@@ -14,11 +15,14 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
 
   LocalDate date
 
+  ArrayList<InternalPieceLabel> labels
+
   RecurrenceRule recurrenceRule
 
   static mapping = {
     date column: 'irp_date'
     recurrenceRule column: 'irp_recurrence_rule_fk'
+    labels cascade: 'all-delete-orphan'
   }
 
   static constraint = {
