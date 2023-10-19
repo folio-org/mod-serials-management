@@ -1,6 +1,11 @@
 package org.olf.label.labelStyle
 
+import org.olf.label.LabelRule
 import org.olf.label.labelFormat.LabelFormat
+
+import java.util.regex.Pattern
+
+import java.time.LocalDate
 
 import grails.gorm.MultiTenant
 import grails.databinding.BindUsing
@@ -34,5 +39,12 @@ public class LabelStyleChronology extends LabelStyle implements MultiTenant<Labe
   static constraints = {
       labelFormat nullable: false
       format nullable: false, validator: LabelStyleHelpers.styleFormatValidator
+  }
+
+  public static Map handleStyle(LabelRule rule, LocalDate date) {
+    final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
+    String formattedLabelFormat = RGX_PATTERN_TYPE.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    Class<? extends LabelFormat> lfc = Class.forName("org.olf.label.labelFormat.LabelFormat${formattedLabelFormat.capitalize()}")
+    return lfc.handleFormat(rule, date)
   }
 }

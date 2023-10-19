@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.internalPiece.internalPieceLabel.InternalPieceLabel
+import groovy.transform.Field
+
+@Field InternalPieceLabel internalPieceLabel
+json g.render(internalPieceLabel)

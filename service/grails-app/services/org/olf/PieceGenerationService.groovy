@@ -19,6 +19,7 @@ import org.olf.label.labelStyle.*
 import org.olf.label.labelFormat.*
 
 import org.olf.internalPiece.*
+import org.olf.internalPiece.internalPieceLabel.*
 
 import com.k_int.web.toolkit.refdata.RefdataValue
 
@@ -201,19 +202,29 @@ public class PieceGenerationService {
       }
     }
 
-    // if (!!ruleset?.combination) {
-    //   ListIterator<InternalPiece> iterator = internalPieces.listIterator()
-    //   while(iterator.hasNext()){
-    //     ruleset?.label?.rules.each { rule ->
-    //       // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
-    //       String formattedLabelPatternType = RGX_PATTERN_TYPE.matcher(rule?.labellingFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
-    //       Class<? extends LabelPattern> lpc = Class.forName("org.olf.label.labelPattern.LabelPattern${formattedLabelPatternType.capitalize()}")
-    //         // Assumption made that there are no omission pieces
+    // TODO Handling of combination pieces
+    // FIXME Correctly implement enumeration handling - currently large errors being thrown 
 
-    //         println(lpc)
-    //     }
-    //   }   
-    // }
+    if (!!ruleset?.label) {
+      ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+      while(iterator.hasNext()){
+        InternalPiece currentPiece = iterator.next()
+        ruleset?.label?.rules.each { rule ->
+          if(currentPiece instanceof InternalRecurrencePiece){
+            String formattedLabelStyleType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
+            Class<? extends LabelStyle> lsc = Class.forName("org.olf.label.labelStyle.LabelStyle${formattedLabelStyleType.capitalize()}")
+            Map labelObject = lsc.handleStyle(rule, currentPiece.date)
+            currentPiece.addToLabels(new InternalPieceChronologyLabel([
+              weekday: labelObject?.weekday,
+              monthDay: labelObject?.monthDay, 
+              month: labelObject?.month, 
+              year: labelObject?.year,
+              labelRule: rule
+            ]))
+          }
+        }
+      }   
+    }
 
     return internalPieces
   }

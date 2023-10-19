@@ -39,6 +39,8 @@ class EnumerationLevel implements MultiTenant<EnumerationLevel> {
 
   }
   
+  // FIXME Remove nullable constraint from migrations
+
   static constraints = {
     owner(nullable:false, blank:false);
     units nullable: false

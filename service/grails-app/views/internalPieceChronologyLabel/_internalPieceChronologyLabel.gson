@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.internalPiece.internalPieceLabel.InternalPieceChronologyLabel
+import groovy.transform.Field
+
+def should_expand = [
+  'labelRule'
+]
+
+@Field InternalPieceChronologyLabel internalPieceChronologyLabel
+json g.render(internalPieceChronologyLabel, [excludes: ['owner'], expand: should_expand])
