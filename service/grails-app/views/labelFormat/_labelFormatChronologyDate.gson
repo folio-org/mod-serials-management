@@ -1,0 +1,16 @@
+import groovy.transform.*
+import org.olf.label.labelFormat.LabelFormatChronologyDate
+import groovy.transform.Field
+
+// Important that 'LabelFormatChronologyDate' is named 'format' due to 'LabelStyleChronology' template
+
+def should_expand = [
+  'weekdayFormat',
+  'monthDayFormat',
+  'monthFormat',
+  'yearFormat',
+]
+
+@Field LabelFormatChronologyDate format
+
+json g.render(format, [excludes: ['owner'], expand: should_expand])

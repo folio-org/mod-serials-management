@@ -1201,4 +1201,87 @@ databaseChangeLog = {
       column(name: "sr_ruleset_number", type: "VARCHAR(36)")
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-001"){
+    createTable(tableName: "label") {
+      column(name: "l_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "l_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "l_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-002"){
+    createTable(tableName: "label_rule") {
+      column(name: "lr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lr_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "lr_label_style_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-003"){
+    createTable(tableName: "label_style") {
+      column(name: "ls_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ls_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ls_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-004"){
+    createTable(tableName: "label_style_chronology") {
+      column(name: "ls_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lsc_label_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-005"){
+    createTable(tableName: "label_style_enumeration") {
+      column(name: "ls_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-006"){
+    createTable(tableName: "label_format") {
+      column(name: "lf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lf_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-007"){
+    createTable(tableName: "label_format_chronology_date") {
+      column(name: "lf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcd_weekday_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcd_month_day_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcd_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcd_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-008"){
+    createTable(tableName: "label_format_chronology_month") {
+      column(name: "lf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcm_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcm_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-009"){
+    createTable(tableName: "label_format_chronology_year") {
+      column(name: "lf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "lfcy_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230901-1230-010"){
+    createTable(tableName: "enumeration_level") {
+      column(name: "el_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "el_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "el_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "el_units", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "el_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "el_sequence_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "el_internal_note", type: "TEXT") { constraints(nullable: "false") }
+    }
+  }
 }

@@ -2,6 +2,7 @@ package org.olf.label.labelFormat
 
 import grails.gorm.MultiTenant
 
+
 import org.olf.label.LabelRule
 
 import java.time.LocalDate

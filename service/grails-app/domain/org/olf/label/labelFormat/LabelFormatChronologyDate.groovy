@@ -44,7 +44,7 @@ public class LabelFormatChronologyDate extends LabelFormat implements MultiTenan
        monthFormat nullable: false
         yearFormat nullable: false
   }
-
+  
 	private static String getDayOfMonthSuffix(final int n) {
     if (n >= 11 && n <= 13) {
         return "th";

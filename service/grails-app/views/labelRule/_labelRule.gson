@@ -1,0 +1,17 @@
+import groovy.transform.*
+import org.olf.label.LabelRule
+import org.olf.label.labelStyle.LabelStyle
+import groovy.transform.Field
+import java.util.regex.Pattern
+
+def should_expand = [
+  'labelStyle',
+]
+
+@Field LabelRule labelRule
+
+String styleClassString = Pattern.compile("_([a-z])").matcher(labelRule.labelStyle.value).replaceAll{match -> match.group(1).toUpperCase()}
+
+json g.render(labelRule, [excludes: ['owner', 'style'], expand: should_expand]) {
+  'style' g.render(template: "/labelStyle/labelStyle${styleClassString.capitalize()}", model: ['style' : labelRule.style])
+}

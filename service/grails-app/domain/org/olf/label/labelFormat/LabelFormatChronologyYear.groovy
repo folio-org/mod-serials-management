@@ -7,7 +7,6 @@ import org.olf.label.LabelRule
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue

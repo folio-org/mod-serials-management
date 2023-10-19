@@ -6,6 +6,7 @@ def should_expand = [
   'recurrence',
   'omission',
   'combination',
+  'label',
   'rulesetStatus'
 ]
 

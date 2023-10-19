@@ -15,6 +15,8 @@ import org.olf.combination.*
 import org.olf.recurrence.recurrencePattern.*
 import org.olf.omission.omissionPattern.*
 import org.olf.combination.combinationPattern.*
+import org.olf.label.labelStyle.*
+import org.olf.label.labelFormat.*
 
 import org.olf.internalPiece.*
 import org.olf.internalPiece.internalPieceLabel.*
