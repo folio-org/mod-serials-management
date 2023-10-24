@@ -17,6 +17,7 @@ import org.olf.omission.omissionPattern.*
 import org.olf.combination.combinationPattern.*
 import org.olf.label.labelStyle.*
 import org.olf.label.labelFormat.*
+import org.olf.label.*
 
 import org.olf.internalPiece.*
 import org.olf.internalPiece.internalPieceLabel.*
@@ -204,29 +205,44 @@ public class PieceGenerationService {
 
     // TODO Handling of combination pieces
     // FIXME Correctly implement enumeration handling - currently large errors being thrown 
-
     if (!!ruleset?.label) {
       ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+      Integer index = 0
       while(iterator.hasNext()){
         InternalPiece currentPiece = iterator.next()
         ruleset?.label?.rules.each { rule ->
           if(currentPiece instanceof InternalRecurrencePiece){
             String formattedLabelStyleType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
             Class<? extends LabelStyle> lsc = Class.forName("org.olf.label.labelStyle.LabelStyle${formattedLabelStyleType.capitalize()}")
-            Map labelObject = lsc.handleStyle(rule, currentPiece.date)
-            currentPiece.addToLabels(new InternalPieceChronologyLabel([
-              weekday: labelObject?.weekday,
-              monthDay: labelObject?.monthDay, 
-              month: labelObject?.month, 
-              year: labelObject?.year,
-              labelRule: rule
-            ]))
+            if(formattedLabelStyleType == 'chronology'){
+              Map labelObject = lsc.handleStyle(rule, currentPiece.date, index)
+              currentPiece.addToLabels(new InternalPieceChronologyLabel([
+                weekday: labelObject?.weekday,
+                monthDay: labelObject?.monthDay, 
+                month: labelObject?.month, 
+                year: labelObject?.year,
+                labelRule: rule
+              ]))
+            }
+            else if(formattedLabelStyleType == 'enumeration'){
+              InternalPieceEnumerationLabel enumerationLabel = new InternalPieceEnumerationLabel()
+              ArrayList<Map> labelObject = lsc.handleStyle(rule, currentPiece.date, index)
+              ListIterator<Map> enumerationIterator = labelObject.listIterator()
+              while(enumerationIterator.hasNext()){
+                Map enumerationLevel = enumerationIterator.next()
+                enumerationLabel.addToLevels(new EnumerationLabelLevel([
+                  value: enumerationLevel?.value,
+                  level: enumerationLevel?.level,
+                ]))
+              }
+              currentPiece.addToLabels(enumerationLabel)
+            }
           }
         }
+        index ++
       }   
     }
 
     return internalPieces
   }
-
 }
