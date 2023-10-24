@@ -41,7 +41,7 @@ public class LabelStyleChronology extends LabelStyle implements MultiTenant<Labe
       format nullable: false, validator: LabelStyleHelpers.styleFormatValidator
   }
 
-  public static Map handleStyle(LabelRule rule, LocalDate date) {
+  public static Map handleStyle(LabelRule rule, LocalDate date, int index) {
     final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
     String formattedLabelFormat = RGX_PATTERN_TYPE.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends LabelFormat> lfc = Class.forName("org.olf.label.labelFormat.LabelFormat${formattedLabelFormat.capitalize()}")

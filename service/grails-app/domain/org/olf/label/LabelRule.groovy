@@ -17,7 +17,7 @@ public class LabelRule implements MultiTenant<LabelRule> {
   // TODO Add back enumeration to defaults
 
   @CategoryId(value="LabelRule.LabelStyles", defaultInternal=true)
-  @Defaults(['Chronology'])
+  @Defaults(['Chronology', 'Enumeration'])
   RefdataValue labelStyle 
 
   @BindUsing({ LabelRule obj, SimpleMapDataBindingSource source ->
