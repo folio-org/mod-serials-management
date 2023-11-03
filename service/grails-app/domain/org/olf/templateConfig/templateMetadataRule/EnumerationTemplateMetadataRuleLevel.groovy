@@ -1,4 +1,4 @@
-package org.olf.label.enumerationLevel
+package org.olf.templateConfig.templateMetadataRule
 
 import org.olf.label.labelStyle.LabelStyleEnumeration
 
@@ -8,7 +8,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-class EnumerationLevel implements MultiTenant<EnumerationLevel> {
+class EnumerationTemplateMetadataRuleLevel implements MultiTenant<EnumerationTemplateMetadataRuleLevel> {
 
   String id
   Integer units

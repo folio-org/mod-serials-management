@@ -1,9 +1,6 @@
-package org.olf.label.labelFormat
+package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
-
-
-import org.olf.label.LabelRule
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -12,7 +9,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class LabelFormatChronologyMonth extends LabelFormat implements MultiTenant<LabelFormatChronologyMonth> {
+public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements MultiTenant<ChronologyMonthTMRF> {
   
   @CategoryId(value="Global.MonthFormat", defaultInternal=true)
   @Defaults(['Full', 'Slice', 'Number'])

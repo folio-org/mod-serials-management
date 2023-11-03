@@ -1,12 +1,10 @@
-package org.olf.label.labelStyle
-
-import org.olf.label.LabelRule
+package org.olf.templateConfig.templateMetadataRule
 
 import grails.gorm.MultiTenant
 
-public abstract class LabelStyle implements MultiTenant<LabelStyle> {
+public abstract class TemplateMetadataRuleType implements MultiTenant<TemplateMetadataRuleType> {
   String id
-  LabelRule owner
+  TemplateMetadataRule owner
 
   static mapping = {
          id column: 'ls_id', generator: 'uuid2', length: 36

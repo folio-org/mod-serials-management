@@ -26,6 +26,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class PieceGenerationService {
 
+  PieceLabellingService pieceLabellingService
+
   private static final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
 
   // This takes in a SerialRuleset and generates pieces without saving any domain objects

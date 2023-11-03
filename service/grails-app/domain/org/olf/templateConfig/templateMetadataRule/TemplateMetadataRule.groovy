@@ -1,6 +1,4 @@
-package org.olf.label
-
-import org.olf.label.labelStyle.*
+package org.olf.templateConfig.templateMetadataRule
 
 import grails.gorm.MultiTenant
 import grails.databinding.BindUsing
@@ -10,40 +8,40 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class LabelRule implements MultiTenant<LabelRule> {
+// Rename TemplateMetaDATArULES
+public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   String id
-  Label owner
+  TemplateConfig owner
 
-  // TODO Add back enumeration to defaults
-
-  @CategoryId(value="LabelRule.LabelStyles", defaultInternal=true)
+  @CategoryId(value="TemplateMetadataRule.TemplateMetadataRuleTypes", defaultInternal=true)
   @Defaults(['Chronology', 'Enumeration'])
-  RefdataValue labelStyle 
+  RefdataValue templateMetadataRuleType 
 
+  // TODO FIX THIS
   @BindUsing({ LabelRule obj, SimpleMapDataBindingSource source ->
 		LabelRuleHelpers.doRuleStyleBinding(obj, source)
   })
-  LabelStyle style
+  TemplateMetadataRuleType ruleType
 
 	static belongsTo = [
-    owner : Label
+    owner : TemplateConfig
   ]
 
 	static hasOne = [
-   	style: LabelStyle
+   	ruleType: TemplateMetadataRuleType
   ]
 
 	static mapping = {
        	 	     id column: 'lr_id', generator: 'uuid2', length: 36
      	   	  owner column: 'lr_owner_fk'
           version column: 'lr_version'
-       labelStyle column: 'lr_label_style_fk'
-	  	     style cascade: 'all-delete-orphan'
+       templateMetadataRuleType column: 'lr_label_style_fk'
+	  	     ruleType cascade: 'all-delete-orphan'
   }
 
   static constraints = {
             owner nullable: false
-       labelStyle nullable: false
-            style nullable: false, validator: LabelRuleHelpers.ruleStyleValidator
+       templateMetadataRuleType nullable: false
+            ruleType nullable: false, validator: LabelRuleHelpers.ruleStyleValidator
   }
 }

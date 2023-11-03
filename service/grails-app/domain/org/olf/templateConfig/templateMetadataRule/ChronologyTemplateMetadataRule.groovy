@@ -1,6 +1,5 @@
-package org.olf.label.labelStyle
+package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.label.LabelRule
 import org.olf.label.labelFormat.LabelFormat
 
 import java.util.regex.Pattern
@@ -15,12 +14,13 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class LabelStyleChronology extends LabelStyle implements MultiTenant<LabelStyleChronology> {
+public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<ChronologyTemplateMetadataRule> {
 
   @CategoryId(value="LabelStyleChronology.LabelFormat", defaultInternal=true)
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue labelFormat
 
+  // TODO Fix this
   @BindUsing({ LabelStyle obj, SimpleMapDataBindingSource source ->
 		LabelStyleHelpers.doStyleFormatBinding(obj, source)
   })

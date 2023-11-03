@@ -1,4 +1,4 @@
-package org.olf.label.labelFormat
+package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
@@ -11,7 +11,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class LabelFormatChronologyDate extends LabelFormat implements MultiTenant<LabelFormatChronologyDate> {
+public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements MultiTenant<ChronologyDateTMRF> {
 
   @CategoryId(value="Global.WeekdayFormat", defaultInternal=true)
   @Defaults(['Slice Lower', 'Slice Upper', 'Full Lower', 'Full Upper'])

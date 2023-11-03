@@ -1,6 +1,4 @@
-package org.olf.label.labelStyle
-
-import org.olf.label.enumerationLevel.EnumerationLevel
+package org.olf.templateConfig.templateMetadataRule
 
 import org.olf.label.LabelRule
 
@@ -12,15 +10,15 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class LabelStyleEnumeration extends LabelStyle implements MultiTenant<LabelStyleEnumeration> {
-  ArrayList<EnumerationLevel> levels
+public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<EnumerationTemplateMetadataRule> {
+  ArrayList<EnumerationTemplateMetadataRuleLevel> ruleLevels
 
   static mapping = {
-    levels cascade: 'all-delete-orphan'
+    ruleLevels cascade: 'all-delete-orphan'
   }
   
   static constraints = {
-    levels nullable: false
+    ruleLevels nullable: false
   }
 
   private static String getOrdinalSuffix(final int n) {

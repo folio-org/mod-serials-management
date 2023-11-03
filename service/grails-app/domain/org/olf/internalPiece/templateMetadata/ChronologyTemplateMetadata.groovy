@@ -1,6 +1,6 @@
-package org.olf.internalPiece.internalPieceLabel
+package org.olf.internalPiece.templateMetadata
 
-import org.olf.label.LabelRule
+import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
 
 import grails.gorm.MultiTenant
 
@@ -8,21 +8,21 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class InternalPieceChronologyLabel extends InternalPieceLabel implements MultiTenant<InternalPieceChronologyLabel> {
+public class ChronologyTemplateMetadata extends TemplateMetadata implements MultiTenant<ChronologyTemplateMetadata> {
 
   String weekday
   String monthDay
   String month
   String year
 
-  LabelRule labelRule
+  TemplateMetadataRule templateMetadataRule
 
   static mapping = {
     weekday column: 'ipcl_weekday'
     monthDay column: 'ipcl_month_day'
     month column: 'ipcl_month'
     year column: 'ipcl_year'
-    labelRule column: 'ipcl_label_rule_fk'
+    templateMetadataRule column: 'ipcl_label_rule_fk'
   }
 
   static constraint = {
@@ -30,6 +30,6 @@ public class InternalPieceChronologyLabel extends InternalPieceLabel implements 
     monthDay nullable: true
     month nullable: true
     year nullable: true
-    labelRule nullable: true  
+    templateMetadataRule nullable: true  
   }
 }
