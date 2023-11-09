@@ -16,6 +16,7 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   }
 
   // Cannot handle ommited combination, please god no
+  // This is used to generate a list with omissions as real pieces
   public static Integer findIndexFromDate(ArrayList<InternalPiece> internalPieces, LocalDate date){
     Integer indexCounter = 0
     for(InternalPiece piece in internalPieces){
@@ -26,7 +27,7 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
           indexCounter++
         }
       }else if(piece instanceof InternalCombinationPiece){
-        for(InternalRecurrencePiece combinedPiece in piece.recurrencePieces){
+        for(InternalRecurrencePiece combinedPiece in piece.recurrencePieces.sort{ a,b -> a.date <=> b.date }){
           if(combinedPiece.date == date){
             return indexCounter
           }else{

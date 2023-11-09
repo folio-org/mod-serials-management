@@ -18,13 +18,13 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
 
   @CategoryId(value="LabelStyleChronology.LabelFormat", defaultInternal=true)
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
-  RefdataValue labelFormat
+  RefdataValue templateMetadataRuleFormat
 
   // TODO Fix this
   @BindUsing({ LabelStyle obj, SimpleMapDataBindingSource source ->
 		LabelStyleHelpers.doStyleFormatBinding(obj, source)
   })
-  LabelFormat format
+  LabelFormat ruleFormat
 
   static hasOne = [
    	format: LabelFormat
@@ -41,7 +41,7 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
       format nullable: false, validator: LabelStyleHelpers.styleFormatValidator
   }
 
-  public static Map handleStyle(LabelRule rule, LocalDate date, int index) {
+  public static ChronologyTemplateMetadata handleStyle(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
     final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
     String formattedLabelFormat = RGX_PATTERN_TYPE.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends LabelFormat> lfc = Class.forName("org.olf.label.labelFormat.LabelFormat${formattedLabelFormat.capitalize()}")

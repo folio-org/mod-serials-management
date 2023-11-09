@@ -56,39 +56,41 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
         default: return "th";
     }
 	}
-   
-  public static Map handleFormat(LabelRule rule, LocalDate date) {
-    Map<String, String> getYearFormat = [
+
+    static Map<String, String> yearFormatTransform = [
     	slice: 'yy',
      	full: 'yyyy',
    	]
 
-    Map<String, String> getMonthFormat = [
+    static Map<String, String> monthFormatTransform = [
     	slice: 'MMM',
      	full: 'MMMM',
       number: 'MM'
 		]
 
-		Map<String, String> getWeekdayFormat = [
+		static Map<String, String> weekdayFormatTransform = [
     	slice_lower: 'EE',
 			slice_upper: 'EE',
      	full_upper: 'EEEE',
       full_lower: 'EEEE',
 		]
-
-		String weekday = date.format(DateTimeFormatter.ofPattern(getWeekdayFormat.get(rule?.style?.format?.weekdayFormat?.value)))
-		if(rule?.style?.format?.weekdayFormat?.value.endsWith('upper')){
+   
+  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
+    ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
+    // TODO Dont handle if not a chronology rule
+		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value)))
+		if(tmrf?.weekdayFormat?.value.endsWith('upper')){
 			weekday = weekday.toUpperCase()
 		}
 
 		String monthDay = date.format(DateTimeFormatter.ofPattern('d'))
-		if(rule?.style?.format?.monthDayFormat?.value == 'ordinal'){
+		if(tmrf?.monthDayFormat?.value == 'ordinal'){
 			monthDay = monthDay + getDayOfMonthSuffix(Integer.parseInt(monthDay))
 		}
 
-    String month = date.format(DateTimeFormatter.ofPattern(getMonthFormat.get(rule?.style?.format?.monthFormat?.value)));
-  	String year = date.format(DateTimeFormatter.ofPattern(getYearFormat.get(rule?.style?.format?.yearFormat?.value)));
+    String month = date.format(DateTimeFormatter.ofPattern(monthFormatTransform.get(tmrf?.monthFormat?.value)));
+  	String year = date.format(DateTimeFormatter.ofPattern(yearFormatTransform.get(tmrf?.yearFormat?.value)));
 
-  	return [weekday: weekday, monthDay: monthDay, month: month, year: year]
+  	return new ChronologyTemplateMetadata([weekday: weekday, monthDay: monthDay, month: month, year: year, templateMetadataRule: rule])
   }  
 }

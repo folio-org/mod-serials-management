@@ -1,4 +1,4 @@
-package org.olf.templateConfig.
+package org.olf.templateConfig
 
 import org.olf.label.labelStyle.LabelStyle
 

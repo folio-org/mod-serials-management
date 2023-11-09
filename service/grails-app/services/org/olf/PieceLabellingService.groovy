@@ -4,6 +4,48 @@ public class PieceLabellingService {
 
   private static final Pattern RGX_METADATA_TYPE = Pattern.compile('_([a-z])')
 
+  // This probably doesnt belong here, potentially in different service
+  public Integer getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
+    if(piece instanceof InternalRecurrencePiece){
+      return internalPieces.findIndexOf{ip ->
+        (ip instanceof InternalRecurrencePiece) && (ip.date == piece.date)
+      }
+    }else if(piece instanceof InternalCombinationPiece){
+      // We're assuming that no 2 combination pieces can share recurrence pieces
+      LocalDate comparisonDate = piece.recurrencePieces.getAt(0).date
+      return internalPieces.findIndexOf{ip ->
+        (ip instanceof InternalCombinationPiece) && (ip.recurrencePieces.findIndexOf{rp ->
+          comparisonDate == rp.date
+        } != -1)
+      }
+    }else{
+      throw new RuntimeException("Cannot get naive index of internal omission piece")
+    }
+  }
+
+  public ArrayList<Integer> getContainedIndexesFromPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
+    if(piece instanceof InternalOmissionPiece){
+      throw new RuntimeException("Cannot get contained indicies of omission piece")
+    }
+    ArrayList<Integer> containedIndicies = [0]
+    Integer currentIndex = 0
+    internalPieces.each{ip ->
+      if(piece instanceof InternalRecurrencePiece && ip instanceof InternalRecurrencePiece && piece.date == ip.date){
+        containedIndicies = [currentIndex]
+      }else if(piece instanceof InternalCombinationPiece && (ip instanceof InternalCombinationPiece) && (ip.recurrencePieces.findIndexOf{rp -> piece.recurrencePieces.getAt(0).date == rp.date} != -1)){
+        containedIndices = new IntRange(false, currentIndex, currentIndex+ip.reccurrencePieces.size())
+      }else if(ip instanceof InternnalCombinationPiece){
+        currentIndex = currentIndex+ip.recurrencePieces.size() 
+      }else{
+        currentIndex++
+      }
+    }
+  }
+
+  public generateStandardMetadata(){
+
+  }
+
   public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(ArrayList<TemplateMetadataRule> templateMetadataRules) {
 
     ArrayList<ChronologyTemplateMetadata> chronologyTemplateMetadataArray = []
@@ -49,12 +91,13 @@ public class PieceLabellingService {
     ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
     while(iterator.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
-      String templateMetadataType = RGX_METADATA_TYPE.matcher(currentMetadataRule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      Class<? extends LabelStyle> lsc = Class.forName("org.olf.label.labelStyle.LabelStyle${formattedLabelStyleType.capitalize()}")
+      String templateMetadataType = RGX_METADATA_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+      Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${formattedLabelStyleType.capitalize()}TemplateMetadataRule")
+      if(templateMetadataType == 'chronology'){
+        // TODO GRAB date and index from standard template metadata
+        ChronologyTemplateMetadata templateMetadata = tmrtc.handleStyle(rule, currentPiece.date, index)
 
+      }
     }
-
-
   }
-
 }
