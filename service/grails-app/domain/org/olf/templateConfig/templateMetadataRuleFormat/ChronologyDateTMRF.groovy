@@ -33,17 +33,17 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
 
 
   static mapping = {
-     weekdayFormat column: 'lfcd_weekday_format_fk'
+    weekdayFormat column: 'lfcd_weekday_format_fk'
     monthDayFormat column: 'lfcd_month_day_format_fk'
-       monthFormat column: 'lfcd_month_format_fk'
-        yearFormat column: 'lfcd_year_format_fk'
+    monthFormat column: 'lfcd_month_format_fk'
+    yearFormat column: 'lfcd_year_format_fk'
   }
 
   static constraints = {
-     weekdayFormat nullable: false
+    weekdayFormat nullable: false
     monthDayFormat nullable: false
-       monthFormat nullable: false
-        yearFormat nullable: false
+    monthFormat nullable: false
+    yearFormat nullable: false
   }
   
 	private static String getDayOfMonthSuffix(final int n) {

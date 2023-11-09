@@ -1,0 +1,13 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRule
+import groovy.transform.Field
+
+// Important that 'EnumerationTemplateMetadataRule' is named 'ruleType' due to 'templateMetadataRule' template
+
+def should_expand = [
+  'ruleLevels'
+]
+
+@Field EnumerationTemplateMetadataRule ruleType
+
+json g.render(ruleType, [excludes: ['owner'], expand: should_expand])

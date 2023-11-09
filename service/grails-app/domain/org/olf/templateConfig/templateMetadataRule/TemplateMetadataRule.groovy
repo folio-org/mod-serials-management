@@ -19,7 +19,6 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   @Defaults(['Chronology', 'Enumeration'])
   RefdataValue templateMetadataRuleType 
 
-  // TODO FIX THIS
   @BindUsing({ TemplateMetadataRule obj, SimpleMapDataBindingSource source ->
 		TemplateMetadataRuleHelpers.doRuleTypeBinding(obj, source)
   })
@@ -34,16 +33,16 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   ]
 
 	static mapping = {
-      id column: 'lr_id', generator: 'uuid2', length: 36
-     	owner column: 'lr_owner_fk'
-      version column: 'lr_version'
-      templateMetadataRuleType column: 'lr_label_style_fk'
-	  	ruleType cascade: 'all-delete-orphan'
+    id column: 'lr_id', generator: 'uuid2', length: 36
+    owner column: 'lr_owner_fk'
+    version column: 'lr_version'
+    templateMetadataRuleType column: 'lr_label_style_fk'
+	  ruleType cascade: 'all-delete-orphan'
   }
 
   static constraints = {
-      owner nullable: false
-      templateMetadataRuleType nullable: false
-      ruleType nullable: false, validator: TemplateMetadataRuleHelpers.ruleTypeValidator
+    owner nullable: false
+    templateMetadataRuleType nullable: false
+    ruleType nullable: false, validator: TemplateMetadataRuleHelpers.ruleTypeValidator
   }
 }

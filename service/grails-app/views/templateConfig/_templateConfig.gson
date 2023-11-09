@@ -1,0 +1,10 @@
+import groovy.transform.*
+import org.olf.templateConfig.TemplateConfig
+import groovy.transform.Field
+
+def should_expand = [
+  'rules'
+]
+
+@Field TemplateConfig templateConfig
+json g.render(templateConfig, [excludes: ['owner'], expand: should_expand])

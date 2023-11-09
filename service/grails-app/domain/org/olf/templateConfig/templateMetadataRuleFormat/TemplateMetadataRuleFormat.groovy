@@ -9,8 +9,8 @@ public abstract class TemplateMetadataRuleFormat implements MultiTenant<Template
   TemplateMetadataRuleType owner
 
   static mapping = {
-         id column: 'lf_id', generator: 'uuid2', length: 36
-      owner column: 'lf_owner_fk'
+    id column: 'lf_id', generator: 'uuid2', length: 36
+    owner column: 'lf_owner_fk'
     version column: 'lf_version'
 
     tablePerHierarchy false

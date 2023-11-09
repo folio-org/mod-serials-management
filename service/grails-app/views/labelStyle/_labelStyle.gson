@@ -1,6 +1,0 @@
-import groovy.transform.*
-import org.olf.label.labelStyle.LabelStyle
-import groovy.transform.Field
-
-@Field LabelStyle labelStyle
-json g.render(labelStyle, [excludes: ['owner']])

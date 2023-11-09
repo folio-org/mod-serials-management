@@ -1,0 +1,16 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.ChronologyDateTMRF
+import groovy.transform.Field
+
+// Important that 'ChronologyDateTMRF' is named 'ruleFormat' due to 'ChronologyTemplateMetadataRule' template
+
+def should_expand = [
+  'weekdayFormat',
+  'monthDayFormat',
+  'monthFormat',
+  'yearFormat',
+]
+
+@Field ChronologyDateTMRF ruleFormat
+
+json g.render(ruleFormat, [excludes: ['owner'], expand: should_expand])

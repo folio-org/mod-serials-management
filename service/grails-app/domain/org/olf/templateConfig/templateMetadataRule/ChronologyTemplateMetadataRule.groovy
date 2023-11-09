@@ -21,31 +21,30 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue templateMetadataRuleFormat
 
-  // TODO Fix this
   @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->
 		TemplateMetadataRuleTypeHelpers.doRuleFormatBinding(obj, source)
   })
   TemplateMetadataRuleFormat ruleFormat
 
   static hasOne = [
-   	format: TemplateMetadataRuleFormat
+   	ruleFormat: TemplateMetadataRuleFormat
   ]
 
 
   static mapping = {
-    labelFormat column: 'lsc_label_format_fk'
-    format cascade: 'all-delete-orphan'
+    templateMetadataRuleFormat column: 'lsc_label_format_fk'
+    ruleFormat cascade: 'all-delete-orphan'
   }
 
   static constraints = {
-    labelFormat nullable: false
-    format nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
+    templateMetadataRuleFormat nullable: false
+    ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
   }
 
-  public static ChronologyTemplateMetadata handleStyle(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
+  public static ChronologyTemplateMetadata handleStyle(TemplateMetadataRule rule, LocalDate date, int index) {
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
-    String formattedRuleFormat = RGX_RULE_FORMAT.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
-    Class<? extends TemplateMetadataRuleFormat> lfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${formattedRuleFormat.capitalize()}TMRF")
+    String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    Class<? extends TemplateMetadataRuleFormat> lfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")
     return lfc.handleFormat(rule, date)
   }
 }

@@ -19,23 +19,24 @@ public class ChronologyYearTMRF extends TemplateMetadataRuleFormat implements Mu
   RefdataValue yearFormat
 
   static mapping = {
-        yearFormat column: 'lfcy_year_format_fk'
+    yearFormat column: 'lfcy_year_format_fk'
   }
 
   static constraints = {
-        yearFormat nullable: false
+    yearFormat nullable: false
   }
 
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
+		ChronologyMonthTMRF tmrf = rule?.ruleType?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',
    	]
 
-	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(rule?.style?.format?.yearFormat?.value));
+	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value));
 
   	String year = date.format(yearFormatter);
 
-  	return [year: year]
+  	return new ChronologyTemplateMetadata([year: year, templateMetadataRule: rule])
   }
 }

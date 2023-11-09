@@ -24,14 +24,14 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
   ]
 
   static mapping = {
-          id column: 'l_id', generator: 'uuid2', length: 36
-       owner column: 'l_owner_fk'
-     version column: 'l_version'
-      rules cascade: 'all-delete-orphan'
+    id column: 'l_id', generator: 'uuid2', length: 36
+    owner column: 'l_owner_fk'
+    version column: 'l_version'
+    rules cascade: 'all-delete-orphan'
   }
 
-    static constraints = {
-         owner nullable: false
-         rules nullable: false
-    }
+  static constraints = {
+    owner nullable: false
+    rules nullable: false
+  }
 }

@@ -27,14 +27,13 @@ class EnumerationTemplateMetadataRuleLevel implements MultiTenant<EnumerationTem
   ]
 
   static mapping = {
-              id column: 'el_id', generator: 'uuid2', length: 36
-           owner column: 'el_owner_fk'
-         version column: 'el_version'
-           units column: 'el_units'
-          format column: 'el_format_fk'
-        sequence column: 'el_sequence_fk'
+    id column: 'el_id', generator: 'uuid2', length: 36
+    owner column: 'el_owner_fk'
+    version column: 'el_version'
+    units column: 'el_units'
+    format column: 'el_format_fk'
+    sequence column: 'el_sequence_fk'
     internalNote column: 'el_internal_note'
-
   }
   
   // FIXME Remove nullable constraint from migrations

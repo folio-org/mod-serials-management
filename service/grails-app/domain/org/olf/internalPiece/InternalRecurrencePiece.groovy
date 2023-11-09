@@ -23,7 +23,7 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
   static mapping = {
     date column: 'irp_date'
     recurrenceRule column: 'irp_recurrence_rule_fk'
-    labels cascade: 'all-delete-orphan'
+    templateMetadata cascade: 'all-delete-orphan'
   }
 
   static constraint = {

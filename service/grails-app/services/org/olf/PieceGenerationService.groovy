@@ -28,7 +28,8 @@ public class PieceGenerationService {
 
   PieceLabellingService pieceLabellingService
 
-  private static final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
+  // Used to change refdata values from underscored to camel case i.e "test_test" to "testTest"
+  private static final Pattern RGX_REFDATA_VALUE = Pattern.compile('_([a-z])')
 
   // This takes in a SerialRuleset and generates pieces without saving any domain objects
   public createPiecesTransient (SerialRuleset ruleset, LocalDate startDate) {
@@ -48,7 +49,7 @@ public class PieceGenerationService {
     LocalDate endDate = startDate.plusYears(minNumberOfYears)
 
     // Convert pattern type i.e year_date to YearDate and grab related recurrence pattern class i.e RecurrencePatternYearDate
-    final String formattedRecurrencePatternType = RGX_PATTERN_TYPE.matcher(ruleset?.recurrence?.rules[0]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    final String formattedRecurrencePatternType = RGX_REFDATA_VALUE.matcher(ruleset?.recurrence?.rules[0]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
     final Class<? extends RecurrencePattern> rpc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedRecurrencePatternType.capitalize()}")
 
     // May need fixing, establish counter for keeping track of time unit for use with ordinal
@@ -98,7 +99,7 @@ public class PieceGenerationService {
         InternalPiece currentPiece = iterator.next()
         ruleset?.omission?.rules.each { rule ->
           // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
-          String formattedOmissionPatternType = RGX_PATTERN_TYPE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+          String formattedOmissionPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
           Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
 
           //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
@@ -128,7 +129,7 @@ public class PieceGenerationService {
         Set<CombinationRule> combinationOriginRules = []
         ruleset?.combination?.rules.each { rule ->
           // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
-          String formattedCombinationPatternType = RGX_PATTERN_TYPE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+          String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
           Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
           if(cpc.compareDate(rule, currentPiece.date, internalPieces)) {
             // Assumption made that there are no omission pieces
@@ -207,26 +208,20 @@ public class PieceGenerationService {
 
     // TODO Handling of combination pieces
     // FIXME Correctly implement enumeration handling - currently large errors being thrown 
-    if (!!ruleset?.label) {
+    if (!!ruleset?.templateConfig) {
       ListIterator<InternalPiece> iterator = internalPieces.listIterator()
       Integer index = 0
       while(iterator.hasNext()){
         InternalPiece currentPiece = iterator.next()
-        ruleset?.label?.rules.each { rule ->
+        ruleset?.templateConfig?.rules.each { rule ->
           if(currentPiece instanceof InternalRecurrencePiece){
-            String formattedRuleFormatType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
-            Class<? extends TemplateMetadataRuleFormat> lsc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${formattedLabelStyleType.capitalize()}TMRF")
-            if(formattedLabelStyleType == 'chronology'){
-              Map labelObject = lsc.handleStyle(rule, currentPiece.date, index)
-              currentPiece.addToTemplateMetadata(new ChronologyTemplateMetadata([
-                weekday: labelObject?.weekday,
-                monthDay: labelObject?.monthDay, 
-                month: labelObject?.month, 
-                year: labelObject?.year,
-                labelRule: rule
-              ]))
+            String formattedRuleFormatType = RGX_REFDATA_VALUE.matcher(rule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+            Class<? extends TemplateMetadataRuleFormat> lsc = Class.forName("org.olf.templateConfig.templateMetadataRule.${formattedRuleFormatType.capitalize()}TemplateMetadataRule")
+            if(formattedRuleFormatType == 'chronology'){
+              ChronologyTemplateMetadata metadataObject = lsc.handleStyle(rule, currentPiece.date, index)
+              currentPiece.addToTemplateMetadata(metadataObject)
             }
-            else if(formattedLabelStyleType == 'enumeration'){
+            else if(formattedRuleFormatType == 'enumeration'){
               EnumerationTemplateMetadata enumerationLabel = new EnumerationTemplateMetadata()
               ArrayList<Map> labelObject = lsc.handleStyle(rule, currentPiece.date, index)
               ListIterator<Map> enumerationIterator = labelObject.listIterator()

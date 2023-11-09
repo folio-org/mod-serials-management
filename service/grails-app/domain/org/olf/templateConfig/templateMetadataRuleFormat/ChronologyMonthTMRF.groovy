@@ -23,16 +23,17 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
   RefdataValue yearFormat
 
   static mapping = {
-       monthFormat column: 'lfcm_month_format_fk'
-        yearFormat column: 'lfcm_year_format_fk'
+    monthFormat column: 'lfcm_month_format_fk'
+    yearFormat column: 'lfcm_year_format_fk'
   }
 
   static constraints = {
-       monthFormat nullable: false
-        yearFormat nullable: false
+    monthFormat nullable: false
+    yearFormat nullable: false
   }
 
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
+    ChronologyMonthTMRF tmrf = rule?.ruleType?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',
@@ -44,12 +45,12 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
       number: 'MM'
    	]
     
- 	  DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(getMonthFormat.get(rule?.style?.format?.monthFormat?.value));
-	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(rule?.style?.format?.yearFormat?.value));
+ 	  DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(getMonthFormat.get(tmrf?.monthFormat?.value));
+	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value));
 
     String month = date.format(monthFormatter);
   	String year = date.format(yearFormatter);
 
-  	return [month: month, year: year]
+  	return new ChronologyTemplateMetadata([month: month, year: year, templateMetadataRule: rule])
   }  
 }
