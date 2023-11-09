@@ -1,6 +1,6 @@
-package org.olf.templateConfig
+package org.olf.templateConfig.templateMetadataRuleFormat
 
-import org.olf.label.labelStyle.LabelStyle
+import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRuleType
 
 import grails.gorm.MultiTenant
 

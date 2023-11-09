@@ -1,8 +1,20 @@
 package org.olf
 
+import java.time.LocalDate
+import java.util.regex.Pattern
+
+// TODO Tidy up imports, some may not be needed
+
+import org.olf.internalPiece.*
+import org.olf.internalPiece.templateMetadata.*
+
+import org.olf.templateConfig.*
+import org.olf.templateConfig.templateMetadataRule.*
+import org.olf.templateConfig.templateMetadataRuleFormat.*
+
 public class PieceLabellingService {
 
-  private static final Pattern RGX_METADATA_TYPE = Pattern.compile('_([a-z])')
+  private static final Pattern RGX_METADATA_RULE_TYPE = Pattern.compile('_([a-z])')
 
   // This probably doesnt belong here, potentially in different service
   public Integer getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
@@ -34,7 +46,7 @@ public class PieceLabellingService {
         containedIndicies = [currentIndex]
       }else if(piece instanceof InternalCombinationPiece && (ip instanceof InternalCombinationPiece) && (ip.recurrencePieces.findIndexOf{rp -> piece.recurrencePieces.getAt(0).date == rp.date} != -1)){
         containedIndices = new IntRange(false, currentIndex, currentIndex+ip.reccurrencePieces.size())
-      }else if(ip instanceof InternnalCombinationPiece){
+      }else if(ip instanceof InternalCombinationPiece){
         currentIndex = currentIndex+ip.recurrencePieces.size() 
       }else{
         currentIndex++
@@ -91,8 +103,8 @@ public class PieceLabellingService {
     ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
     while(iterator.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
-      String templateMetadataType = RGX_METADATA_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${formattedLabelStyleType.capitalize()}TemplateMetadataRule")
+      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+      Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
       if(templateMetadataType == 'chronology'){
         // TODO GRAB date and index from standard template metadata
         ChronologyTemplateMetadata templateMetadata = tmrtc.handleStyle(rule, currentPiece.date, index)

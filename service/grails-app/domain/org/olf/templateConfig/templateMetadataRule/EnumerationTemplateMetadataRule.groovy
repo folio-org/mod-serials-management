@@ -1,7 +1,5 @@
 package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.label.LabelRule
-
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
@@ -47,7 +45,7 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
     return roman 
   }  
 
-  public static ArrayList<Map> handleStyle (LabelRule rule, LocalDate date, int index){
+  public static ArrayList<Map> handleStyle (TemplateMetadataRule rule, LocalDate date, int index){
     ArrayList<Map> result = []
     Integer divisor = 1
     for(int i=rule?.style?.levels?.size()-1; i>=0; i--){

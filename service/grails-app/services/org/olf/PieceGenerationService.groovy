@@ -15,12 +15,12 @@ import org.olf.combination.*
 import org.olf.recurrence.recurrencePattern.*
 import org.olf.omission.omissionPattern.*
 import org.olf.combination.combinationPattern.*
-import org.olf.label.labelStyle.*
-import org.olf.label.labelFormat.*
-import org.olf.label.*
+import org.olf.templateConfig.templateMetadataRule.*
+import org.olf.templateConfig.templateMetadataRuleFormat.*
+import org.olf.templateConfig.*
 
 import org.olf.internalPiece.*
-import org.olf.internalPiece.internalPieceLabel.*
+import org.olf.internalPiece.templateMetadata.*
 
 import com.k_int.web.toolkit.refdata.RefdataValue
 
@@ -214,11 +214,11 @@ public class PieceGenerationService {
         InternalPiece currentPiece = iterator.next()
         ruleset?.label?.rules.each { rule ->
           if(currentPiece instanceof InternalRecurrencePiece){
-            String formattedLabelStyleType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
-            Class<? extends LabelStyle> lsc = Class.forName("org.olf.label.labelStyle.LabelStyle${formattedLabelStyleType.capitalize()}")
+            String formattedRuleFormatType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
+            Class<? extends TemplateMetadataRuleFormat> lsc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${formattedLabelStyleType.capitalize()}TMRF")
             if(formattedLabelStyleType == 'chronology'){
               Map labelObject = lsc.handleStyle(rule, currentPiece.date, index)
-              currentPiece.addToLabels(new InternalPieceChronologyLabel([
+              currentPiece.addToTemplateMetadata(new ChronologyTemplateMetadata([
                 weekday: labelObject?.weekday,
                 monthDay: labelObject?.monthDay, 
                 month: labelObject?.month, 
@@ -227,17 +227,17 @@ public class PieceGenerationService {
               ]))
             }
             else if(formattedLabelStyleType == 'enumeration'){
-              InternalPieceEnumerationLabel enumerationLabel = new InternalPieceEnumerationLabel()
+              EnumerationTemplateMetadata enumerationLabel = new EnumerationTemplateMetadata()
               ArrayList<Map> labelObject = lsc.handleStyle(rule, currentPiece.date, index)
               ListIterator<Map> enumerationIterator = labelObject.listIterator()
               while(enumerationIterator.hasNext()){
                 Map enumerationLevel = enumerationIterator.next()
-                enumerationLabel.addToLevels(new EnumerationLabelLevel([
+                enumerationLabel.addToLevels(new EnumerationTemplateMetadataLevel([
                   value: enumerationLevel?.value,
                   level: enumerationLevel?.level,
                 ]))
               }
-              currentPiece.addToLabels(enumerationLabel)
+              currentPiece.addToTemplateMetadata(enumerationLabel)
             }
           }
         }

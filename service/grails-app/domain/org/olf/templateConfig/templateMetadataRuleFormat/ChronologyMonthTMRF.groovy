@@ -1,5 +1,8 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
+import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -29,7 +32,7 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
         yearFormat nullable: false
   }
 
-  public static Map handleFormat(LabelRule rule, LocalDate date) {
+  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',

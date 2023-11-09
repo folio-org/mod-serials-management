@@ -2,7 +2,8 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
-import org.olf.label.LabelRule
+import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

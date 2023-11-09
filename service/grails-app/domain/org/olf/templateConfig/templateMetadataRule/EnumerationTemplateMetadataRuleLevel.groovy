@@ -1,7 +1,5 @@
 package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.label.labelStyle.LabelStyleEnumeration
-
 import grails.gorm.MultiTenant
 
 import com.k_int.web.toolkit.refdata.CategoryId
@@ -13,11 +11,11 @@ class EnumerationTemplateMetadataRuleLevel implements MultiTenant<EnumerationTem
   String id
   Integer units
 
-  @CategoryId(value="EnumerationLevel.Format", defaultInternal=true)
+  @CategoryId(value="EnumerationTemplateMetadataRuleLevel.Format", defaultInternal=true)
   @Defaults(['Ordinal', 'Number', 'Roman'])
   RefdataValue format
 
-  @CategoryId(value="EnumerationLevel.Sequence", defaultInternal=true)
+  @CategoryId(value="EnumerationTemplateMetadataRuleLevel.Sequence", defaultInternal=true)
   @Defaults(['Reset', 'Continuous'])
   RefdataValue sequence
 
@@ -25,7 +23,7 @@ class EnumerationTemplateMetadataRuleLevel implements MultiTenant<EnumerationTem
 
 
   static belongsTo = [
-    owner: LabelStyleEnumeration
+    owner: EnumerationTemplateMetadataRule
   ]
 
   static mapping = {

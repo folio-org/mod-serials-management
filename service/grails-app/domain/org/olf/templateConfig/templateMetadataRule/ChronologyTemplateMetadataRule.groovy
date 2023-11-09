@@ -1,6 +1,7 @@
 package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.label.labelFormat.LabelFormat
+import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
+import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
 
 import java.util.regex.Pattern
 
@@ -16,35 +17,35 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<ChronologyTemplateMetadataRule> {
 
-  @CategoryId(value="LabelStyleChronology.LabelFormat", defaultInternal=true)
+  @CategoryId(value="ChronologyTemplateMetadataRule.LabelFormat", defaultInternal=true)
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue templateMetadataRuleFormat
 
   // TODO Fix this
-  @BindUsing({ LabelStyle obj, SimpleMapDataBindingSource source ->
-		LabelStyleHelpers.doStyleFormatBinding(obj, source)
+  @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->
+		TemplateMetadataRuleTypeHelpers.doRuleFormatBinding(obj, source)
   })
-  LabelFormat ruleFormat
+  TemplateMetadataRuleFormat ruleFormat
 
   static hasOne = [
-   	format: LabelFormat
+   	format: TemplateMetadataRuleFormat
   ]
 
 
   static mapping = {
-      labelFormat column: 'lsc_label_format_fk'
-      	  format cascade: 'all-delete-orphan'
+    labelFormat column: 'lsc_label_format_fk'
+    format cascade: 'all-delete-orphan'
   }
 
   static constraints = {
-      labelFormat nullable: false
-      format nullable: false, validator: LabelStyleHelpers.styleFormatValidator
+    labelFormat nullable: false
+    format nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
   }
 
   public static ChronologyTemplateMetadata handleStyle(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
-    final Pattern RGX_PATTERN_TYPE = Pattern.compile('_([a-z])')
-    String formattedLabelFormat = RGX_PATTERN_TYPE.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
-    Class<? extends LabelFormat> lfc = Class.forName("org.olf.label.labelFormat.LabelFormat${formattedLabelFormat.capitalize()}")
+    final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
+    String formattedRuleFormat = RGX_RULE_FORMAT.matcher(rule?.style?.labelFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    Class<? extends TemplateMetadataRuleFormat> lfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${formattedRuleFormat.capitalize()}TMRF")
     return lfc.handleFormat(rule, date)
   }
 }

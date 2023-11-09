@@ -1,7 +1,7 @@
 package org.olf.internalPiece
 
-import org.olf.internalPiece.internalPieceLabel.InternalPieceLabel
 import org.olf.recurrence.RecurrenceRule
+import org.olf.internalPiece.templateMetadata.TemplateMetadata
 
 import grails.gorm.MultiTenant
 
@@ -16,7 +16,7 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
   LocalDate date
 
   // TODO Work out how best to store this
-  // ArrayList<TemplateMetadata> templateMetadata
+  ArrayList<TemplateMetadata> templateMetadata
 
   RecurrenceRule recurrenceRule
 

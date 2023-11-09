@@ -1,5 +1,7 @@
 package org.olf.templateConfig.templateMetadataRule
 
+import org.olf.templateConfig.TemplateConfig
+
 import grails.gorm.MultiTenant
 import grails.databinding.BindUsing
 import grails.databinding.SimpleMapDataBindingSource
@@ -18,8 +20,8 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   RefdataValue templateMetadataRuleType 
 
   // TODO FIX THIS
-  @BindUsing({ LabelRule obj, SimpleMapDataBindingSource source ->
-		LabelRuleHelpers.doRuleStyleBinding(obj, source)
+  @BindUsing({ TemplateMetadataRule obj, SimpleMapDataBindingSource source ->
+		TemplateMetadataRuleHelpers.doRuleTypeBinding(obj, source)
   })
   TemplateMetadataRuleType ruleType
 
@@ -32,16 +34,16 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   ]
 
 	static mapping = {
-       	 	     id column: 'lr_id', generator: 'uuid2', length: 36
-     	   	  owner column: 'lr_owner_fk'
-          version column: 'lr_version'
-       templateMetadataRuleType column: 'lr_label_style_fk'
-	  	     ruleType cascade: 'all-delete-orphan'
+      id column: 'lr_id', generator: 'uuid2', length: 36
+     	owner column: 'lr_owner_fk'
+      version column: 'lr_version'
+      templateMetadataRuleType column: 'lr_label_style_fk'
+	  	ruleType cascade: 'all-delete-orphan'
   }
 
   static constraints = {
-            owner nullable: false
-       templateMetadataRuleType nullable: false
-            ruleType nullable: false, validator: LabelRuleHelpers.ruleStyleValidator
+      owner nullable: false
+      templateMetadataRuleType nullable: false
+      ruleType nullable: false, validator: TemplateMetadataRuleHelpers.ruleTypeValidator
   }
 }
