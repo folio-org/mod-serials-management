@@ -17,7 +17,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<ChronologyTemplateMetadataRule> {
 
-  @CategoryId(value="ChronologyTemplateMetadataRule.LabelFormat", defaultInternal=true)
+  @CategoryId(value="ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat", defaultInternal=true)
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue templateMetadataRuleFormat
 

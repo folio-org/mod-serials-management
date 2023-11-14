@@ -7,6 +7,9 @@ import grails.gorm.MultiTenant
 public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   String id
 
+  String templateString
+  String label
+
   static mapping = {
     id column: 'ip_id', generator: 'uuid2', length: 36
     version column: 'ip_version'

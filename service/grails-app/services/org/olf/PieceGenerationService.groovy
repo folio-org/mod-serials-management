@@ -240,6 +240,7 @@ public class PieceGenerationService {
       }   
     }
 
+    pieceLabellingService.setLabelsForInternalPieces(internalPieces)
     return internalPieces
   }
 }

@@ -12,7 +12,50 @@ import org.olf.templateConfig.*
 import org.olf.templateConfig.templateMetadataRule.*
 import org.olf.templateConfig.templateMetadataRuleFormat.*
 
+import com.github.jknack.handlebars.EscapingStrategy
+import com.github.jknack.handlebars.Handlebars
+import com.github.jknack.handlebars.helper.StringHelpers
+import uk.co.cacoethes.handlebars.HandlebarsTemplateEngine
+
+import groovy.text.Template
+
 public class PieceLabellingService {
+    private static final HandlebarsTemplateEngine hte = new HandlebarsTemplateEngine(handlebars: new Handlebars().with(new EscapingStrategy() {
+      public String escape(final CharSequence value) {
+        return value.toString() // No escaping. Return as is.
+      }
+    })
+    .registerHelpers(StringHelpers)
+    .registerHelpers(StringTemplateHelpers))
+
+
+  // This needs to take in an individual piece and ooutput a String label
+  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
+    Template template = hte.createTemplate(piece.templateString);
+
+    StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
+    ArrayList<ChronologyTemplateMetadata> chronologyTMArray = generateChronologyMetadata(standardTM, templateConfig.rules)
+    ArrayList<EnumerationTemplateMetadata> enumerationTMArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
+
+    LabelTemplateBinding ltb = new LabelTemplateBinding({
+      chronology: chronologyTMArray,
+      enumeration: enumerationTMArray,
+      standardTM: standardTM
+    })
+
+    // return template.make(binding).with { 
+    //   StringWriter sw = new StringWriter()
+    //   writeTo(sw)
+    //   sw.toString()
+    // }
+  }
+
+  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces TemplateConfig templateConfig) {
+    for each piece in internalPieces {
+      piece.label = generateTemplatedLabelForPiece(piece, internalPieces, templateConfifg)
+      piece
+    }
+  }
 
   private static final Pattern RGX_METADATA_RULE_TYPE = Pattern.compile('_([a-z])')
 
@@ -54,62 +97,58 @@ public class PieceLabellingService {
     }
   }
 
-  public generateStandardMetadata(){
+  public Integer getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
+    Integer indexCounter = 0
+    internalPieces.each{p ->
+      if(p instanceof InternalRecurrencePiece && piece instanceof InternalRecurrencePiece && piece.date == p.date){
+        return indexCounter
+      }else if(p instanceof InternalRecurrencePiece){
+        indexCounter ++
+      }else if(p instanceof InternalCombinationPiece && piece instanceof InternalCombinationPiece && p.recurrencePieces.getAt(0).date == piece.recurrencePieces.getAt(0).date){
+        return indexCounter
+      }else{
+        indexCounter += p.recurrencePieces.size()
+      }
+    }
+  }
+
+  public StandardTemplateMetadata generateStandardMetadata(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
+    LocalDate date = piece.date
+    Integer index = getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
+    Integer naiveIndex = getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
+    Integer containedIndices = getContainedIndexesFromPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
+
+    return new StandardTemplateMetadata([date: date, index: index, naiveIndex: naiveIndex, containedIndices: containedIndices])
 
   }
 
-  public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(ArrayList<TemplateMetadataRule> templateMetadataRules) {
-
+  public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<ChronologyTemplateMetadata> chronologyTemplateMetadataArray = []
-
-    // if (!!ruleset?.label) {
-    //   ListIterator<InternalPiece> iterator = internalPieces.listIterator()
-    //   Integer index = 0
-    //   while(iterator.hasNext()){
-    //     InternalPiece currentPiece = iterator.next()
-    //     ruleset?.label?.rules.each { rule ->
-    //       if(currentPiece instanceof InternalRecurrencePiece){
-    //         String formattedLabelStyleType = RGX_PATTERN_TYPE.matcher(rule?.labelStyle?.value).replaceAll { match -> match.group(1).toUpperCase() }
-    //         Class<? extends LabelStyle> lsc = Class.forName("org.olf.label.labelStyle.LabelStyle${formattedLabelStyleType.capitalize()}")
-    //         if(formattedLabelStyleType == 'chronology'){
-    //           Map labelObject = lsc.handleStyle(rule, currentPiece.date, index)
-    //           currentPiece.addToLabels(new InternalPieceChronologyLabel([
-    //             weekday: labelObject?.weekday,
-    //             monthDay: labelObject?.monthDay, 
-    //             month: labelObject?.month, 
-    //             year: labelObject?.year,
-    //             labelRule: rule
-    //           ]))
-    //         }
-    //         else if(formattedLabelStyleType == 'enumeration'){
-    //           InternalPieceEnumerationLabel enumerationLabel = new InternalPieceEnumerationLabel()
-    //           ArrayList<Map> labelObject = lsc.handleStyle(rule, currentPiece.date, index)
-    //           ListIterator<Map> enumerationIterator = labelObject.listIterator()
-    //           while(enumerationIterator.hasNext()){
-    //             Map enumerationLevel = enumerationIterator.next()
-    //             enumerationLabel.addToLevels(new EnumerationLabelLevel([
-    //               value: enumerationLevel?.value,
-    //               level: enumerationLevel?.level,
-    //             ]))
-    //           }
-    //           currentPiece.addToLabels(enumerationLabel)
-    //         }
-    //       }
-    //     }
-    //     index ++
-    //   }   
-    // }
-
     ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
     while(iterator.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
       if(templateMetadataType == 'chronology'){
-        // TODO GRAB date and index from standard template metadata
-        ChronologyTemplateMetadata templateMetadata = tmrtc.handleStyle(rule, currentPiece.date, index)
-
+        Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+        ChronologyTemplateMetadata chronologyTemplateMetadata = tmrtc.handleStyle(rule, standardTM.date, standardTM.index)
+        chronologyTemplateMetadataArray << chronologyTemplateMetadata
       }
     }
+    return chronologyTemplateMetadataArray
+  }
+
+  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
+    ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
+    while(iterator.hasNext()){
+      TemplateMetadataRule currentMetadataRule = iterator.next()
+      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+      if(templateMetadataType == 'enumeration'){
+        Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleStyle(rule, standardTM.date, standardTM.index)
+        enumerationTemplateMetadataArray << enumerationTemplateMetadata
+      }
+    }
+    return enumerationTemplateMetadataArray
   }
 }

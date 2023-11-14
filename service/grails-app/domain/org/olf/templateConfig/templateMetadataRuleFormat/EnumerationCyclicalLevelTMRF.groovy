@@ -1,4 +1,4 @@
-package org.olf.templateConfig.templateMetadataRule
+package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
@@ -6,16 +6,16 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-class EnumerationTemplateMetadataRuleLevel implements MultiTenant<EnumerationTemplateMetadataRuleLevel> {
+class EnumerationCyclicalLevelTMRF implements MultiTenant<EnumerationCyclicalLevelTMRF> {
 
   String id
   Integer units
 
-  @CategoryId(value="EnumerationTemplateMetadataRuleLevel.Format", defaultInternal=true)
+  @CategoryId(value="EnumerationCyclicalLevelTMRF.Format", defaultInternal=true)
   @Defaults(['Ordinal', 'Number', 'Roman'])
   RefdataValue format
 
-  @CategoryId(value="EnumerationTemplateMetadataRuleLevel.Sequence", defaultInternal=true)
+  @CategoryId(value="EnumerationCyclicalLevelTMRF.Sequence", defaultInternal=true)
   @Defaults(['Reset', 'Continuous'])
   RefdataValue sequence
 
