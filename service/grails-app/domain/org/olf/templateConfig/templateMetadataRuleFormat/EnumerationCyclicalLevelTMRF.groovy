@@ -11,39 +11,33 @@ class EnumerationCyclicalLevelTMRF implements MultiTenant<EnumerationCyclicalLev
   String id
   Integer units
 
-  @CategoryId(value="EnumerationCyclicalLevelTMRF.Format", defaultInternal=true)
-  @Defaults(['Ordinal', 'Number', 'Roman'])
-  RefdataValue format
-
-  @CategoryId(value="EnumerationCyclicalLevelTMRF.Sequence", defaultInternal=true)
-  @Defaults(['Reset', 'Continuous'])
-  RefdataValue sequence
+  RefdataValue refdata
 
   String internalNote
 
 
   static belongsTo = [
-    owner: EnumerationTemplateMetadataRule
+    owner: EnumerationCyclicalTMRF
   ]
 
-  static mapping = {
-    id column: 'el_id', generator: 'uuid2', length: 36
-    owner column: 'el_owner_fk'
-    version column: 'el_version'
-    units column: 'el_units'
-    format column: 'el_format_fk'
-    sequence column: 'el_sequence_fk'
-    internalNote column: 'el_internal_note'
-  }
+  // static mapping = {
+  //   id column: 'el_id', generator: 'uuid2', length: 36
+  //   owner column: 'el_owner_fk'
+  //   version column: 'el_version'
+  //   units column: 'el_units'
+  //   format column: 'el_format_fk'
+  //   sequence column: 'el_sequence_fk'
+  //   internalNote column: 'el_internal_note'
+  // }
   
-  // FIXME Remove nullable constraint from migrations
+  // // FIXME Remove nullable constraint from migrations
 
-  static constraints = {
-    owner(nullable:false, blank:false);
-    units nullable: false
-    format nullable: false
-    sequence nullable: false
-    internalNote nullable: true
-  }   
+  // static constraints = {
+  //   owner(nullable:false, blank:false);
+  //   units nullable: false
+  //   format nullable: false
+  //   sequence nullable: false
+  //   internalNote nullable: true
+  // }   
 }
 

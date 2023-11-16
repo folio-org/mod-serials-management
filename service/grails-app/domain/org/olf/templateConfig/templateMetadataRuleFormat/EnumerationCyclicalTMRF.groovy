@@ -1,5 +1,6 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
+import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
 
 import java.time.LocalDate
@@ -10,15 +11,15 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<EnumerationTemplateMetadataRule> {
-  ArrayList<EnumerationTemplateMetadataRuleLevel> ruleLevels
+public class EnumerationCyclicalTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationCyclicalTMRF> {
+  ArrayList<EnumerationCyclicalLevelTMRF> levels
 
   static mapping = {
-    ruleLevels cascade: 'all-delete-orphan'
+    levels cascade: 'all-delete-orphan'
   }
   
   static constraints = {
-    ruleLevels nullable: false
+    levels nullable: false
   }
 
   private static String getOrdinalSuffix(final int n) {

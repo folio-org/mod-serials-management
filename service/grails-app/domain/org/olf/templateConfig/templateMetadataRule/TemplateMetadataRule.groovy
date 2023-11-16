@@ -10,7 +10,6 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-// Rename TemplateMetaDATArULES
 public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   String id
   TemplateConfig owner

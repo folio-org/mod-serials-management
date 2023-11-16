@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRuleLevel
+import groovy.transform.Field
+
+def should_expand = [
+  'format',
+  'sequence',
+]
+
+@Field EnumerationTemplateMetadataRuleLevel enumerationTemplateMetadataRuleLevel
+json g.render(enumerationTemplateMetadataRuleLevel, [excludes: ['owner'], expand: should_expand])

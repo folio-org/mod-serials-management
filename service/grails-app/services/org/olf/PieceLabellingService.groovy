@@ -5,6 +5,8 @@ import java.util.regex.Pattern
 
 // TODO Tidy up imports, some may not be needed
 
+import org.olf.templating.*
+
 import org.olf.internalPiece.*
 import org.olf.internalPiece.templateMetadata.*
 
@@ -20,28 +22,30 @@ import uk.co.cacoethes.handlebars.HandlebarsTemplateEngine
 import groovy.text.Template
 
 public class PieceLabellingService {
-    private static final HandlebarsTemplateEngine hte = new HandlebarsTemplateEngine(handlebars: new Handlebars().with(new EscapingStrategy() {
-      public String escape(final CharSequence value) {
-        return value.toString() // No escaping. Return as is.
-      }
-    })
-    .registerHelpers(StringHelpers)
-    .registerHelpers(StringTemplateHelpers))
+  private static final Pattern RGX_METADATA_RULE_TYPE = Pattern.compile('_([a-z])')
+
+  private static final HandlebarsTemplateEngine hte = new HandlebarsTemplateEngine(handlebars: new Handlebars().with(new EscapingStrategy() {
+    public String escape(final CharSequence value) {
+      return value.toString() // No escaping. Return as is.
+    }
+  })
+  .registerHelpers(StringHelpers)
+  .registerHelpers(StringTemplateHelpers))
 
 
   // This needs to take in an individual piece and ooutput a String label
   public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
-    Template template = hte.createTemplate(piece.templateString);
+    // Template template = hte.createTemplate(piece.templateString);
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     ArrayList<ChronologyTemplateMetadata> chronologyTMArray = generateChronologyMetadata(standardTM, templateConfig.rules)
     ArrayList<EnumerationTemplateMetadata> enumerationTMArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
 
-    LabelTemplateBinding ltb = new LabelTemplateBinding({
+    StringTemplateBindings ltb = new StringTemplateBindings([
       chronology: chronologyTMArray,
       enumeration: enumerationTMArray,
       standardTM: standardTM
-    })
+    ])
 
     // return template.make(binding).with { 
     //   StringWriter sw = new StringWriter()
@@ -50,14 +54,14 @@ public class PieceLabellingService {
     // }
   }
 
-  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces TemplateConfig templateConfig) {
-    for each piece in internalPieces {
-      piece.label = generateTemplatedLabelForPiece(piece, internalPieces, templateConfifg)
-      piece
+  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) {
+    ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
+    while(iterator.hasNext()){
+      InternalPiece currentPiece = iterator.next()
+      currentPiece.label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
+      currentPiece
     }
   }
-
-  private static final Pattern RGX_METADATA_RULE_TYPE = Pattern.compile('_([a-z])')
 
   // This probably doesnt belong here, potentially in different service
   public Integer getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
@@ -99,7 +103,9 @@ public class PieceLabellingService {
 
   public Integer getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     Integer indexCounter = 0
-    internalPieces.each{p ->
+    ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+    while(iterator.hasNext()){
+      InternalPiece p = iterator.next()
       if(p instanceof InternalRecurrencePiece && piece instanceof InternalRecurrencePiece && piece.date == p.date){
         return indexCounter
       }else if(p instanceof InternalRecurrencePiece){
@@ -114,9 +120,9 @@ public class PieceLabellingService {
 
   public StandardTemplateMetadata generateStandardMetadata(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     LocalDate date = piece.date
-    Integer index = getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
-    Integer naiveIndex = getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
-    Integer containedIndices = getContainedIndexesFromPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces)
+    Integer index = getIndex(piece, internalPieces)
+    Integer naiveIndex = getNaiveIndexOfPiece(piece, internalPieces)
+    ArrayList<Integer> containedIndices = getContainedIndexesFromPiece(piece, internalPieces)
 
     return new StandardTemplateMetadata([date: date, index: index, naiveIndex: naiveIndex, containedIndices: containedIndices])
 
@@ -129,8 +135,8 @@ public class PieceLabellingService {
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'chronology'){
-        Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        ChronologyTemplateMetadata chronologyTemplateMetadata = tmrtc.handleStyle(rule, standardTM.date, standardTM.index)
+        Class<? extends TemplateMetadataRuleType> tmrtc = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+        ChronologyTemplateMetadata chronologyTemplateMetadata = tmrtc.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         chronologyTemplateMetadataArray << chronologyTemplateMetadata
       }
     }
@@ -144,8 +150,8 @@ public class PieceLabellingService {
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
-        Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfifg.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleStyle(rule, standardTM.date, standardTM.index)
+        Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         enumerationTemplateMetadataArray << enumerationTemplateMetadata
       }
     }
