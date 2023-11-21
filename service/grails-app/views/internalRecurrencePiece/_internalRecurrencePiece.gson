@@ -4,7 +4,6 @@ import groovy.transform.Field
 
 def should_expand = [
   'recurrenceRule',
-  'labels'
 ]
 
 @Field InternalRecurrencePiece internalRecurrencePiece

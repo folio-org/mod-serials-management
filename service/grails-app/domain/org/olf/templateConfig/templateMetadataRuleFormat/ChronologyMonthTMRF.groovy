@@ -23,8 +23,8 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
   RefdataValue yearFormat
 
   static mapping = {
-    monthFormat column: 'lfcm_month_format_fk'
-    yearFormat column: 'lfcm_year_format_fk'
+    monthFormat column: 'cmtmrf_month_format_fk'
+    yearFormat column: 'cmtmrf_year_format_fk'
   }
 
   static constraints = {
@@ -32,7 +32,7 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
     yearFormat nullable: false
   }
 
-  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
+  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
     ChronologyMonthTMRF tmrf = rule?.ruleType?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',

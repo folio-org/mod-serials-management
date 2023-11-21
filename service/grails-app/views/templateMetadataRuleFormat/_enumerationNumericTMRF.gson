@@ -1,11 +1,12 @@
 import groovy.transform.*
-import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRuleLevel
+import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationNumericTMRF
 import groovy.transform.Field
 
+// Important that 'EnumerationNumericTMRF' is named 'ruleFormat' due to 'ChronologyTemplateMetadataRule' template
+
 def should_expand = [
-  'format',
-  'sequence',
+  'levels',
 ]
 
-@Field EnumerationTemplateMetadataRuleLevel enumerationTemplateMetadataRuleLevel
-json g.render(enumerationTemplateMetadataRuleLevel, [excludes: ['owner'], expand: should_expand])
+@Field EnumerationNumericTMRF ruleFormat
+json g.render(ruleFormat, [excludes: ['owner'], expand: should_expand])

@@ -8,13 +8,14 @@ import java.util.regex.Pattern
 
 def should_expand = [
   'ruleFormat',
+  'templateMetadataRuleFormat'
 ]
 
 @Field ChronologyTemplateMetadataRule ruleType
 
-String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(style.labelFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
+String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(ruleType.templateMetadataRuleFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
 
-json g.render(style, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
-  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString.capitalize()}TMRF", model: ['ruleFormat' : ruleType.ruleFormat])
+json g.render(ruleType, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
+  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString}TMRF", model: ['ruleFormat' : ruleType.ruleFormat])
 }
 

@@ -13,5 +13,5 @@ def should_expand = [
 String ruleTypeClassString = Pattern.compile("_([a-z])").matcher(templateMetadataRule.templateMetadataRuleType.value).replaceAll{match -> match.group(1).toUpperCase()}
 
 json g.render(templateMetadataRule, [excludes: ['owner', 'ruleType'], expand: should_expand]) {
-  'ruleType' g.render(template: "/templateMetadataRule/${ruleTypeClassString.capitalize()}TemplateMetadataRule", model: ['ruleType' : templateMetadataRule.ruleType])
+  'ruleType' g.render(template: "/templateMetadataRule/${ruleTypeClassString}TemplateMetadataRule", model: ['ruleType' : templateMetadataRule.ruleType])
 }

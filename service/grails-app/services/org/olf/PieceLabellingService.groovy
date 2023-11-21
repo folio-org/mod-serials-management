@@ -34,7 +34,7 @@ public class PieceLabellingService {
 
 
   // This needs to take in an individual piece and ooutput a String label
-  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
+  public Map generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
     // Template template = hte.createTemplate(piece.templateString);
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
@@ -59,7 +59,6 @@ public class PieceLabellingService {
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
       currentPiece.label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
-      currentPiece
     }
   }
 
@@ -152,6 +151,7 @@ public class PieceLabellingService {
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
         EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+
         enumerationTemplateMetadataArray << enumerationTemplateMetadata
       }
     }

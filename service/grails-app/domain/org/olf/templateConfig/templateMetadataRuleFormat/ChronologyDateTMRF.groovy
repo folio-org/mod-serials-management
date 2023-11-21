@@ -33,10 +33,10 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
 
 
   static mapping = {
-    weekdayFormat column: 'lfcd_weekday_format_fk'
-    monthDayFormat column: 'lfcd_month_day_format_fk'
-    monthFormat column: 'lfcd_month_format_fk'
-    yearFormat column: 'lfcd_year_format_fk'
+    weekdayFormat column: 'cdtmrf_weekday_format_fk'
+    monthDayFormat column: 'cdtmrf_month_day_format_fk'
+    monthFormat column: 'cdtmrf_month_format_fk'
+    yearFormat column: 'cdtmrf_year_format_fk'
   }
 
   static constraints = {
@@ -76,7 +76,7 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
       full_lower: 'EEEE',
 		]
    
-  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date) {
+  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
     ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
     // TODO Dont handle if not a chronology rule
 		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value)))

@@ -14,7 +14,7 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   String id
   TemplateConfig owner
 
-  @CategoryId(value="TemplateMetadataRule.TemplateMetadataRuleTypes", defaultInternal=true)
+  @CategoryId(value="TemplateMetadataRule.TemplateMetadataRuleType", defaultInternal=true)
   @Defaults(['Chronology', 'Enumeration'])
   RefdataValue templateMetadataRuleType 
 
@@ -32,10 +32,10 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   ]
 
 	static mapping = {
-    id column: 'lr_id', generator: 'uuid2', length: 36
-    owner column: 'lr_owner_fk'
-    version column: 'lr_version'
-    templateMetadataRuleType column: 'lr_label_style_fk'
+    id column: 'tmr_id', generator: 'uuid2', length: 36
+    owner column: 'tmr_owner_fk'
+    version column: 'tmr_version'
+    templateMetadataRuleType column: 'tmr_template_metadata_rule_type_fk'
 	  ruleType cascade: 'all-delete-orphan'
   }
 

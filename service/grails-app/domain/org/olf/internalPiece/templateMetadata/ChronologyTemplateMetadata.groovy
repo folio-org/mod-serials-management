@@ -17,14 +17,6 @@ public class ChronologyTemplateMetadata extends TemplateMetadata implements Mult
 
   TemplateMetadataRule templateMetadataRule
 
-  static mapping = {
-    weekday column: 'ipcl_weekday'
-    monthDay column: 'ipcl_month_day'
-    month column: 'ipcl_month'
-    year column: 'ipcl_year'
-    templateMetadataRule column: 'ipcl_label_rule_fk'
-  }
-
   static constraint = {
     weekday nullable: true
     monthDay nullable: true

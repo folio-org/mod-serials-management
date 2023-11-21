@@ -27,17 +27,15 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
   ]
 
   static mapping = {
-    id column: 'el_id', generator: 'uuid2', length: 36
-    owner column: 'el_owner_fk'
-    version column: 'el_version'
-    units column: 'el_units'
-    format column: 'el_format_fk'
-    sequence column: 'el_sequence_fk'
-    internalNote column: 'el_internal_note'
+    id column: 'enltmrf_id', generator: 'uuid2', length: 36
+    owner column: 'enltmrf_owner_fk'
+    version column: 'enltmrf_version'
+    units column: 'enltmrf_units'
+    format column: 'enltmrf_format_fk'
+    sequence column: 'enltmrf_sequence_fk'
+    internalNote column: 'enltmrf_internal_note'
   }
   
-  // FIXME Remove nullable constraint from migrations
-
   static constraints = {
     owner(nullable:false, blank:false);
     units nullable: false

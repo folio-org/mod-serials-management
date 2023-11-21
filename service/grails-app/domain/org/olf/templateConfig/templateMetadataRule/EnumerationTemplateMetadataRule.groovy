@@ -30,7 +30,7 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
   ]
 
   static mapping = {
-    templateMetadataRuleFormat column: 'lsc_label_format_fk'
+    templateMetadataRuleFormat column: 'etmr_template_metadata_rule_format_fk'
     ruleFormat cascade: 'all-delete-orphan'
   }
 
@@ -43,6 +43,6 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
     String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends TemplateMetadataRuleFormat> rfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")
-    return rfc.handleFormat(rule, date)
+    return rfc.handleFormat(rule, date, index)
   }
 }

@@ -11,12 +11,6 @@ public class EnumerationTemplateMetadataLevel implements MultiTenant<Enumeration
   String value
   Integer level
 
-
-  static mapping = {
-    value column: 'ell_value'
-    level column: 'ell_level'
-  }
-
   static constraints = {
     value nullable : false
     level nullable: false

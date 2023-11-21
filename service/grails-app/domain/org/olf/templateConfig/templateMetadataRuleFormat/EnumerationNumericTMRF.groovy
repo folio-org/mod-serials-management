@@ -2,6 +2,7 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 
 import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
+import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadataLevel
 
 import java.time.LocalDate
 
@@ -48,37 +49,39 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     return roman 
   }  
 
-  public static ArrayList<Map> handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
-    ArrayList<Map> result = []
+  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
+    EnumerationNumericTMRF entmrf = rule?.ruleType?.ruleFormat
+    ArrayList<EnumerationTemplateMetadataLevel> result = []
     Integer divisor = 1
-    for(int i=rule?.style?.levels?.size()-1; i>=0; i--){
+    for(int i=entmrf?.levels?.size()-1; i>=0; i--){
       Integer value = 0
       for(int j=0; j<=index; j++){
         if(j % divisor == 0){
           value++
         }
       }
-      if(rule?.style?.levels[i]?.sequence?.value == 'reset'){
-        if(value%rule?.style?.levels[i]?.units == 0){
-          value = rule?.style?.levels[i]?.units
+      if(entmrf?.levels[i]?.sequence?.value == 'reset'){
+        if(value%entmrf?.levels[i]?.units == 0){
+          value = entmrf?.levels[i]?.units
         }else{
-          value = value%rule?.style?.levels[i]?.units
+          value = value%entmrf?.levels[i]?.units
         }
       }
 
       String stringValue = value
-      if(rule?.style?.levels[i]?.format?.value == 'ordinal'){
+      if(entmrf?.levels[i]?.format?.value == 'ordinal'){
         stringValue = value + getOrdinalSuffix(value)
       }
 
-      if(rule?.style?.levels[i]?.format?.value == 'roman'){
+      if(entmrf?.levels[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
 
       result.add([value: stringValue, level: i+1])
 
-      divisor = rule?.style?.levels[i]?.units*divisor
+      divisor = entmrf?.levels[i]?.units*divisor
     }
-    return result.reverse()
+    println(result?.reverse())
+    return new EnumerationTemplateMetadata([levels: result.reverse()])
   }
 }

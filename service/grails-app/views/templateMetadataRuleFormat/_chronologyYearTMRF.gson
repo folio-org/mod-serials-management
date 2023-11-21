@@ -10,4 +10,4 @@ def should_expand = [
 
 @Field ChronologyYearTMRF ruleFormat
 
-json g.render(format, [excludes: ['owner'], expand: should_expand])
+json g.render(ruleFormat, [excludes: ['owner'], expand: should_expand])
