@@ -30,35 +30,37 @@ public class PieceLabellingService {
     }
   })
   .registerHelpers(StringHelpers)
-  .registerHelpers(StringTemplateHelpers))
+  .registerHelpers(LabelTemplateHelpers))
 
 
   // This needs to take in an individual piece and ooutput a String label
-  public Map generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
-    // Template template = hte.createTemplate(piece.templateString);
+  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
+    // Template template = hte.createTemplate(templateConfig.templateString);
+    Template template = hte.createTemplate("EA {{chronologyArray.0.year}}")
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
-    ArrayList<ChronologyTemplateMetadata> chronologyTMArray = generateChronologyMetadata(standardTM, templateConfig.rules)
-    ArrayList<EnumerationTemplateMetadata> enumerationTMArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
+    ArrayList<ChronologyTemplateMetadata> chronologyArray = generateChronologyMetadata(standardTM, templateConfig.rules)
+    ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
 
-    StringTemplateBindings ltb = new StringTemplateBindings([
-      chronology: chronologyTMArray,
-      enumeration: enumerationTMArray,
-      standardTM: standardTM
-    ])
+    LabelTemplateBindings ltb = new LabelTemplateBindings().setChronologyArray(chronologyArray)
+    // println("WHAT IS LTB: ${ltb}")
 
-    // return template.make(binding).with { 
-    //   StringWriter sw = new StringWriter()
-    //   writeTo(sw)
-    //   sw.toString()
-    // }
+    return template.make(ltb).with { 
+      StringWriter sw = new StringWriter()
+      writeTo(sw)
+      sw.toString()
+    }
   }
 
   public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) {
     ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
-      currentPiece.label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
+      if(currentPiece instanceof InternalRecurrencePiece || currentPiece instanceof InternalCombinationPiece){
+        String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
+        println(label)
+        currentPiece.label = label
+      }
     }
   }
 

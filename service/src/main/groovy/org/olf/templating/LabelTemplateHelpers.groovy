@@ -9,7 +9,7 @@ import groovy.util.logging.Slf4j
 
 @CompileStatic
 @Slf4j
-public class StringTemplateHelpers {
+public class LabelTemplateHelpers {
   
   public static final CharSequence insertAfter (final Object context, final Object param1, final Object param2, final Options options) {
     

@@ -12,6 +12,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 public class TemplateConfig implements MultiTenant<TemplateConfig> {
   String id
   SerialRuleset owner
+  // TODO Add to migrations
+  String templateString
   // TODO Mayeb seprate into two seperate lists for enumeration and chronology
   ArrayList<TemplateMetadataRule> rules
 
