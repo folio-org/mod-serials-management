@@ -77,11 +77,10 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
         stringValue = intToRoman(value)
       }
 
-      result.add([value: stringValue, level: i+1])
+      result.add([value: stringValue])
 
       divisor = entmrf?.levels[i]?.units*divisor
     }
-    println(result?.reverse())
     return new EnumerationTemplateMetadata([levels: result.reverse()])
   }
 }

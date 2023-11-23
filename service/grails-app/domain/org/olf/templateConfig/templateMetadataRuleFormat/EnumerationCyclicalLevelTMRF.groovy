@@ -11,7 +11,8 @@ class EnumerationCyclicalLevelTMRF implements MultiTenant<EnumerationCyclicalLev
   String id
   Integer units
 
-  RefdataValue refdata
+  // TODO shoudld be dynamically assigned refdata
+  String selectedValue
 
   String internalNote
 

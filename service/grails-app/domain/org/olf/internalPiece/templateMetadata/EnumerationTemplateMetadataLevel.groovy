@@ -9,10 +9,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 public class EnumerationTemplateMetadataLevel implements MultiTenant<EnumerationTemplateMetadataLevel> {
 
   String value
-  Integer level
 
   static constraints = {
     value nullable : false
-    level nullable: false
   }
 }

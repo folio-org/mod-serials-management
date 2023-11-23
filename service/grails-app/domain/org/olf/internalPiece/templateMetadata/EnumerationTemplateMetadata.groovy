@@ -9,6 +9,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 // TODO EnumerationTemplateMetadata
 public class EnumerationTemplateMetadata extends TemplateMetadata implements MultiTenant<EnumerationTemplateMetadata> {
 
+  String value
   ArrayList<EnumerationTemplateMetadataLevel> levels
 
   static mapping = {

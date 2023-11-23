@@ -151,6 +151,7 @@ public class PieceLabellingService {
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
         EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+        println(enumerationTemplateMetadata?.value)
 
         enumerationTemplateMetadataArray << enumerationTemplateMetadata
       }
