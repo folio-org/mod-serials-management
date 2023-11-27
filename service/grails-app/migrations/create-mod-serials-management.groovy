@@ -1207,6 +1207,7 @@ databaseChangeLog = {
       column(name: "tc_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tc_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tc_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "tc_template_string", type: "TEXT") { constraints(nullable: "false") }
     }
   }
 
@@ -1283,6 +1284,17 @@ databaseChangeLog = {
       column(name: "enltmrf_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_sequence_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-011"){
+    createTable(tableName: "enumeration_cyclical_level_tmrf") {
+      column(name: "ecltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ecltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ecltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ecltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ecltmrf_value", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "ecltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
     }
   }
 }

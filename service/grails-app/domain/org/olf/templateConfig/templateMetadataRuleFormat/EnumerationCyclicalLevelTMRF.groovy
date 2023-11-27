@@ -12,7 +12,8 @@ class EnumerationCyclicalLevelTMRF implements MultiTenant<EnumerationCyclicalLev
   Integer units
 
   // TODO shoudld be dynamically assigned refdata
-  String selectedValue
+  // FIXME Should also have a more district name than just 'Value'
+  String value
 
   String internalNote
 
@@ -21,24 +22,20 @@ class EnumerationCyclicalLevelTMRF implements MultiTenant<EnumerationCyclicalLev
     owner: EnumerationCyclicalTMRF
   ]
 
-  // static mapping = {
-  //   id column: 'el_id', generator: 'uuid2', length: 36
-  //   owner column: 'el_owner_fk'
-  //   version column: 'el_version'
-  //   units column: 'el_units'
-  //   format column: 'el_format_fk'
-  //   sequence column: 'el_sequence_fk'
-  //   internalNote column: 'el_internal_note'
-  // }
+  static mapping = {
+    id column: 'ecltmrf_id', generator: 'uuid2', length: 36
+    owner column: 'ecltmrf_owner_fk'
+    version column: 'ecltmrf_version'
+    units column: 'ecltmrf_units'
+    value column: 'ecltmrf_value'
+    internalNote column: 'ecltmrf_internal_note'
+  }
   
-  // // FIXME Remove nullable constraint from migrations
-
-  // static constraints = {
-  //   owner(nullable:false, blank:false);
-  //   units nullable: false
-  //   format nullable: false
-  //   sequence nullable: false
-  //   internalNote nullable: true
-  // }   
+  static constraints = {
+    owner(nullable:false, blank:false);
+    units nullable: false
+    value nullable: false
+    internalNote nullable: true
+  }   
 }
 

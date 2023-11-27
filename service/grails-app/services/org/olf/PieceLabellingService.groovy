@@ -35,15 +35,16 @@ public class PieceLabellingService {
 
   // This needs to take in an individual piece and ooutput a String label
   public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
-    // Template template = hte.createTemplate(templateConfig.templateString);
-    Template template = hte.createTemplate("EA {{chronologyArray.0.year}}")
+    Template template = hte.createTemplate(templateConfig.templateString);
+    // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     ArrayList<ChronologyTemplateMetadata> chronologyArray = generateChronologyMetadata(standardTM, templateConfig.rules)
     ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
 
-    LabelTemplateBindings ltb = new LabelTemplateBindings().setChronologyArray(chronologyArray)
-    // println("WHAT IS LTB: ${ltb}")
+    LabelTemplateBindings ltb = new LabelTemplateBindings()
+    ltb.setupChronologyArray(chronologyArray)
+    ltb.setupEnumerationArray(enumerationArray)
 
     return template.make(ltb).with { 
       StringWriter sw = new StringWriter()
@@ -58,8 +59,8 @@ public class PieceLabellingService {
       InternalPiece currentPiece = iterator.next()
       if(currentPiece instanceof InternalRecurrencePiece || currentPiece instanceof InternalCombinationPiece){
         String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
-        println(label)
         currentPiece.label = label
+        currentPiece.templateString = templateConfig?.templateString
       }
     }
   }
@@ -153,7 +154,6 @@ public class PieceLabellingService {
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
         EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
-        println(enumerationTemplateMetadata?.value)
 
         enumerationTemplateMetadataArray << enumerationTemplateMetadata
       }

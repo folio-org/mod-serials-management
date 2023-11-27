@@ -12,7 +12,6 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 public class TemplateConfig implements MultiTenant<TemplateConfig> {
   String id
   SerialRuleset owner
-  // TODO Add to migrations
   String templateString
   // TODO Mayeb seprate into two seperate lists for enumeration and chronology
   ArrayList<TemplateMetadataRule> rules
@@ -29,11 +28,13 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
     id column: 'tc_id', generator: 'uuid2', length: 36
     owner column: 'tc_owner_fk'
     version column: 'tc_version'
+    templateString column: 'tc_template_string'
     rules cascade: 'all-delete-orphan'
   }
 
   static constraints = {
     owner nullable: false
     rules nullable: false
+    templateString nullable: false
   }
 }
