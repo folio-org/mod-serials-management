@@ -1,8 +1,0 @@
-import groovy.transform.*
-import org.olf.internalPiece.internalPieceLabel.EnumerationLabelLevel
-import groovy.transform.Field
-
-def should_expand = []
-
-@Field EnumerationLabelLevel enumerationLabelLevel
-json g.render(enumerationLabelLevel, [excludes: ['owner'], expand: should_expand])

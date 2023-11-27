@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
+import groovy.transform.Field
+
+@Field TemplateMetadataRuleFormat templateMetadataRuleFormat
+json g.render(templateMetadataRuleFormat, [excludes: ['owner']])

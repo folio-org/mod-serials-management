@@ -1,0 +1,12 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationCyclicalTMRF
+import groovy.transform.Field
+
+// Important that 'EnumerationCyclicalTMRF' is named 'ruleFormat' due to 'ChronologyTemplateMetadataRule' template
+
+def should_expand = [
+  'levels',
+]
+
+@Field EnumerationCyclicalTMRF ruleFormat
+json g.render(ruleFormat, [excludes: ['owner'], expand: should_expand])
