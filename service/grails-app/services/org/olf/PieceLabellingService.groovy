@@ -96,7 +96,7 @@ public class PieceLabellingService {
       if(piece instanceof InternalRecurrencePiece && ip instanceof InternalRecurrencePiece && piece.date == ip.date){
         containedIndicies = [currentIndex]
       }else if(piece instanceof InternalCombinationPiece && (ip instanceof InternalCombinationPiece) && (ip.recurrencePieces.findIndexOf{rp -> piece.recurrencePieces.getAt(0).date == rp.date} != -1)){
-        containedIndices = new IntRange(false, currentIndex, currentIndex+ip.reccurrencePieces.size())
+        containedIndicies = new IntRange(false, currentIndex, currentIndex+ip.recurrencePieces.size())
       }else if(ip instanceof InternalCombinationPiece){
         currentIndex = currentIndex+ip.recurrencePieces.size() 
       }else{
@@ -117,7 +117,7 @@ public class PieceLabellingService {
         indexCounter ++
       }else if(p instanceof InternalCombinationPiece && piece instanceof InternalCombinationPiece && p.recurrencePieces.getAt(0).date == piece.recurrencePieces.getAt(0).date){
         return indexCounter
-      }else{
+      }else if(p instanceof InternalCombinationPiece){
         indexCounter += p.recurrencePieces.size()
       }
     }
@@ -131,7 +131,7 @@ public class PieceLabellingService {
     }else if(piece instanceof InternalCombinationPiece){
       date = piece.recurrencePieces.getAt(0).date
     }
-    
+
     Integer index = getIndex(piece, internalPieces)
     Integer naiveIndex = getNaiveIndexOfPiece(piece, internalPieces)
     ArrayList<Integer> containedIndices = getContainedIndexesFromPiece(piece, internalPieces)
