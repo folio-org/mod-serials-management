@@ -26,16 +26,16 @@ public class EnumerationCyclicalTMRF extends TemplateMetadataRuleFormat implemen
     EnumerationCyclicalTMRF ectmrf = rule?.ruleType?.ruleFormat
     while (true) {
       for (int i = 0; i < ectmrf?.levels?.size(); i++) {
+        index -= ectmrf?.levels[i]?.units;
         if (index <= 0) {
           return ectmrf?.levels[i]?.value;
-        }
-        index -= ectmrf?.levels[i]?.units;
-      }    
+        }    
+      }
     }
   }
 
   public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
-    String result = findResultIndex(rule, index)
+    String result = findResultIndex(rule, index + 1)
     return new EnumerationTemplateMetadata([value: result])
   }
 }
