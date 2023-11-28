@@ -1297,4 +1297,11 @@ databaseChangeLog = {
       column(name: "ecltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231128-1315-001") {
+    addColumn(tableName: "internal_piece") {
+      column(name: "ip_template_string", type: "TEXT") { constraints(nullable: "true") }
+      column(name: "ip_label", type: "TEXT") { constraints(nullable: "true") }
+    }
+  }
 }

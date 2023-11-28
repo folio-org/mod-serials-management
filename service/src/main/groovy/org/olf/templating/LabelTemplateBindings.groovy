@@ -24,4 +24,8 @@ public class LabelTemplateBindings extends HashMap<String, Object> {
 
     this.put("enumerationArray", enumerationArray)
   }
+
+  public void setupStandardTM(StandardTemplateMetadata standardTM){
+    this.put("standardTM", standardTM)
+  }
 }

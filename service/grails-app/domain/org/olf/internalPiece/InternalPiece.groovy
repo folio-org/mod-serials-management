@@ -13,9 +13,16 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   static mapping = {
     id column: 'ip_id', generator: 'uuid2', length: 36
     version column: 'ip_version'
-
+    templateString column: 'ip_template_string'
+    label column: 'ip_label'
 
     tablePerHierarchy false
+  }
+
+  static constraints = {
+    templateString nullable: true
+    label nullable: true
+
   }
 
   // Cannot handle ommited combination, please god no

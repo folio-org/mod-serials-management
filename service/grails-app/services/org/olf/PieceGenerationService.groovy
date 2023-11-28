@@ -205,42 +205,11 @@ public class PieceGenerationService {
         }
       }
     }
+    
+    if (!!ruleset?.templateConfig) {
+      pieceLabellingService.setLabelsForInternalPieces(internalPieces, ruleset?.templateConfig)
+    }
 
-    // TODO Handling of combination pieces
-    // FIXME Correctly implement enumeration handling - currently large errors being thrown 
-    // if (!!ruleset?.templateConfig) {
-    //   ListIterator<InternalPiece> iterator = internalPieces.listIterator()
-    //   Integer index = 0
-    //   while(iterator.hasNext()){
-    //     InternalPiece currentPiece = iterator.next()
-    //     ruleset?.templateConfig?.rules.each { rule ->
-    //       if(currentPiece instanceof InternalRecurrencePiece){
-    //         String formattedRuleFormatType = RGX_REFDATA_VALUE.matcher(rule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-    //         Class<? extends TemplateMetadataRuleFormat> lsc = Class.forName("org.olf.templateConfig.templateMetadataRule.${formattedRuleFormatType.capitalize()}TemplateMetadataRule")
-    //         if(formattedRuleFormatType == 'chronology'){
-    //           ChronologyTemplateMetadata metadataObject = lsc.handleStyle(rule, currentPiece.date, index)
-    //           currentPiece.addToTemplateMetadata(metadataObject)
-    //         }
-    //         else if(formattedRuleFormatType == 'enumeration'){
-    //           EnumerationTemplateMetadata enumerationLabel = new EnumerationTemplateMetadata()
-    //           ArrayList<Map> labelObject = lsc.handleStyle(rule, currentPiece.date, index)
-    //           ListIterator<Map> enumerationIterator = labelObject.listIterator()
-    //           while(enumerationIterator.hasNext()){
-    //             Map enumerationLevel = enumerationIterator.next()
-    //             enumerationLabel.addToLevels(new EnumerationTemplateMetadataLevel([
-    //               value: enumerationLevel?.value,
-    //               level: enumerationLevel?.level,
-    //             ]))
-    //           }
-    //           currentPiece.addToTemplateMetadata(enumerationLabel)
-    //         }
-    //       }
-    //     }
-    //     index ++
-    //   }   
-    // }
-
-    pieceLabellingService.setLabelsForInternalPieces(internalPieces, ruleset?.templateConfig)
     return internalPieces
   }
 }

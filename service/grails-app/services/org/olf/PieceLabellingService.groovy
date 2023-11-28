@@ -45,6 +45,7 @@ public class PieceLabellingService {
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
     ltb.setupEnumerationArray(enumerationArray)
+    ltb.setupStandardTM(standardTM)
 
     return template.make(ltb).with { 
       StringWriter sw = new StringWriter()
@@ -66,6 +67,7 @@ public class PieceLabellingService {
   }
 
   // This probably doesnt belong here, potentially in different service
+  // Grab naive index of piece, treating combination pieces a single piece, using the first date in array of recurrence pieces
   public Integer getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     if(piece instanceof InternalRecurrencePiece){
       return internalPieces.findIndexOf{ip ->
@@ -94,15 +96,17 @@ public class PieceLabellingService {
       if(piece instanceof InternalRecurrencePiece && ip instanceof InternalRecurrencePiece && piece.date == ip.date){
         containedIndicies = [currentIndex]
       }else if(piece instanceof InternalCombinationPiece && (ip instanceof InternalCombinationPiece) && (ip.recurrencePieces.findIndexOf{rp -> piece.recurrencePieces.getAt(0).date == rp.date} != -1)){
-        containedIndices = new IntRange(false, currentIndex, currentIndex+ip.reccurrencePieces.size())
+        containedIndicies = new IntRange(false, currentIndex, currentIndex+ip.recurrencePieces.size())
       }else if(ip instanceof InternalCombinationPiece){
         currentIndex = currentIndex+ip.recurrencePieces.size() 
       }else{
         currentIndex++
       }
     }
+    return containedIndicies
   }
 
+  // Grab index of piece, treating combination pieces as individual pieces contained within
   public Integer getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     Integer indexCounter = 0
     ListIterator<InternalPiece> iterator = internalPieces.listIterator()
@@ -114,14 +118,21 @@ public class PieceLabellingService {
         indexCounter ++
       }else if(p instanceof InternalCombinationPiece && piece instanceof InternalCombinationPiece && p.recurrencePieces.getAt(0).date == piece.recurrencePieces.getAt(0).date){
         return indexCounter
-      }else{
+      }else if(p instanceof InternalCombinationPiece){
         indexCounter += p.recurrencePieces.size()
       }
     }
   }
 
   public StandardTemplateMetadata generateStandardMetadata(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
-    LocalDate date = piece.date
+    LocalDate date
+
+    if(piece instanceof InternalRecurrencePiece){
+      date = piece.date
+    }else if(piece instanceof InternalCombinationPiece){
+      date = piece.recurrencePieces.getAt(0).date
+    }
+
     Integer index = getIndex(piece, internalPieces)
     Integer naiveIndex = getNaiveIndexOfPiece(piece, internalPieces)
     ArrayList<Integer> containedIndices = getContainedIndexesFromPiece(piece, internalPieces)
@@ -132,8 +143,8 @@ public class PieceLabellingService {
 
   public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<ChronologyTemplateMetadata> chronologyTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
-    while(iterator.hasNext()){
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'chronology'){
@@ -147,8 +158,8 @@ public class PieceLabellingService {
 
   public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
-    while(iterator.hasNext()){
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
