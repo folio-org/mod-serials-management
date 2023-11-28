@@ -45,7 +45,7 @@ public class PieceLabellingService {
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
     ltb.setupEnumerationArray(enumerationArray)
-    ltb.setupStandardMetadata(standardTM)
+    ltb.setupStandardTM(standardTM)
 
     return template.make(ltb).with { 
       StringWriter sw = new StringWriter()
