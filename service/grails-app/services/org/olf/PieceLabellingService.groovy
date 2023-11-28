@@ -103,6 +103,7 @@ public class PieceLabellingService {
         currentIndex++
       }
     }
+    return containedIndicies
   }
 
   // Grab index of piece, treating combination pieces as individual pieces contained within
@@ -142,8 +143,8 @@ public class PieceLabellingService {
 
   public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<ChronologyTemplateMetadata> chronologyTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
-    while(iterator.hasNext()){
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'chronology'){
@@ -157,8 +158,8 @@ public class PieceLabellingService {
 
   public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules.listIterator()
-    while(iterator.hasNext()){
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
