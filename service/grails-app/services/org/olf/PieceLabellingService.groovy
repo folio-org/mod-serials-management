@@ -45,6 +45,7 @@ public class PieceLabellingService {
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
     ltb.setupEnumerationArray(enumerationArray)
+    ltb.setupStandardMetadata(standardTM)
 
     return template.make(ltb).with { 
       StringWriter sw = new StringWriter()
@@ -66,6 +67,7 @@ public class PieceLabellingService {
   }
 
   // This probably doesnt belong here, potentially in different service
+  // Grab naive index of piece, treating combination pieces a single piece, using the first date in array of recurrence pieces
   public Integer getNaiveIndexOfPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     if(piece instanceof InternalRecurrencePiece){
       return internalPieces.findIndexOf{ip ->
@@ -103,6 +105,7 @@ public class PieceLabellingService {
     }
   }
 
+  // Grab index of piece, treating combination pieces as individual pieces contained within
   public Integer getIndex(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
     Integer indexCounter = 0
     ListIterator<InternalPiece> iterator = internalPieces.listIterator()
@@ -121,7 +124,14 @@ public class PieceLabellingService {
   }
 
   public StandardTemplateMetadata generateStandardMetadata(InternalPiece piece, ArrayList<InternalPiece> internalPieces){
-    LocalDate date = piece.date
+    LocalDate date
+
+    if(piece instanceof InternalRecurrencePiece){
+      date = piece.date
+    }else if(piece instanceof InternalCombinationPiece){
+      date = piece.recurrencePieces.getAt(0).date
+    }
+    
     Integer index = getIndex(piece, internalPieces)
     Integer naiveIndex = getNaiveIndexOfPiece(piece, internalPieces)
     ArrayList<Integer> containedIndices = getContainedIndexesFromPiece(piece, internalPieces)
