@@ -64,7 +64,6 @@ public class PieceGenerationService {
     ]
 
     // TODO Potential refactor, mapping ordinal blocks outside of for loop?
-    // TODO Implement views for domain models
     // TODO Potential new patterns, range of issues with time unit
 
     // Iterate through days from start date to end date
