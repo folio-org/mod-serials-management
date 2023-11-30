@@ -11,8 +11,8 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class EnumerationCyclicalTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationCyclicalTMRF> {  
-  ArrayList<EnumerationCyclicalLevelTMRF> levels
+public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {  
+  ArrayList<EnumerationTextualLevelTMRF> levels
 
   static mapping = {
     levels cascade: 'all-delete-orphan'
@@ -23,12 +23,12 @@ public class EnumerationCyclicalTMRF extends TemplateMetadataRuleFormat implemen
   }
 
   private static String findResultIndex(TemplateMetadataRule rule, int index){
-    EnumerationCyclicalTMRF ectmrf = rule?.ruleType?.ruleFormat
+    EnumerationTextualTMRF ettmrf = rule?.ruleType?.ruleFormat
     while (true) {
-      for (int i = 0; i < ectmrf?.levels?.size(); i++) {
-        index -= ectmrf?.levels[i]?.units;
+      for (int i = 0; i < ettmrf?.levels?.size(); i++) {
+        index -= ettmrf?.levels[i]?.units;
         if (index <= 0) {
-          return ectmrf?.levels[i]?.value;
+          return ettmrf?.levels[i]?.value;
         }    
       }
     }

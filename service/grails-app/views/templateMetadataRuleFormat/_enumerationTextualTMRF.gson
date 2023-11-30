@@ -1,0 +1,12 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationTextualTMRF
+import groovy.transform.Field
+
+// Important that 'EnumerationTextualTMRF' is named 'ruleFormat' due to 'EnumerationTemplateMetadataRule' template
+
+def should_expand = [
+  'levels',
+]
+
+@Field EnumerationTextualTMRF ruleFormat
+json g.render(ruleFormat, [excludes: ['owner'], expand: should_expand])
