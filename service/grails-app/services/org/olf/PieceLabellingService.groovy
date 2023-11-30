@@ -3,8 +3,6 @@ package org.olf
 import java.time.LocalDate
 import java.util.regex.Pattern
 
-// TODO Tidy up imports, some may not be needed
-
 import org.olf.templating.*
 
 import org.olf.internalPiece.*
