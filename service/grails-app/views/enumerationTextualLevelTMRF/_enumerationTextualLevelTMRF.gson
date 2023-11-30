@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationTextualLevelTMRF
+import groovy.transform.Field
+
+def should_expand = [
+  'format',
+  'sequence',
+]
+
+@Field EnumerationTextualLevelTMRF enumerationTextualLevelTMRF
+json g.render(enumerationTextualLevelTMRF, [excludes: ['owner'], expand: should_expand])

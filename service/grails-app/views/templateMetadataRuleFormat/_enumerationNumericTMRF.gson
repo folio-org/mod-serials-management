@@ -2,7 +2,7 @@ import groovy.transform.*
 import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationNumericTMRF
 import groovy.transform.Field
 
-// Important that 'EnumerationNumericTMRF' is named 'ruleFormat' due to 'ChronologyTemplateMetadataRule' template
+// Important that 'EnumerationNumericTMRF' is named 'ruleFormat' due to 'EnumerationTemplateMetadataRule' template
 
 def should_expand = [
   'levels',

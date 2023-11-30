@@ -1288,13 +1288,13 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-011"){
-    createTable(tableName: "enumeration_cyclical_level_tmrf") {
-      column(name: "ecltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ecltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ecltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "ecltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "ecltmrf_value", type: "VARCHAR(255)") { constraints(nullable: "false") }
-      column(name: "ecltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
+    createTable(tableName: "enumeration_textual_level_tmrf") {
+      column(name: "etltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "etltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "etltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "etltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "etltmrf_value", type: "VARCHAR(255)") { constraints(nullable: "false") }
+      column(name: "etltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
     }
   }
 
