@@ -14,15 +14,15 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
   SerialRuleset owner
   String templateString
   // TODO Mayeb seprate into two seperate lists for enumeration and chronology
-  ArrayList<TemplateMetadataRule> rules
+  List rules
+
+  static hasMany = [
+    rules: TemplateMetadataRule
+  ]
 
   static belongsTo = [
     owner: SerialRuleset
  	]
-
-  static hasMany = [
-    rules : TemplateMetadataRule
-  ]
 
   static mapping = {
     id column: 'tc_id', generator: 'uuid2', length: 36

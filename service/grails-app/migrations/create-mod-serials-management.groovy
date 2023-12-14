@@ -1215,6 +1215,7 @@ databaseChangeLog = {
     createTable(tableName: "template_metadata_rule") {
       column(name: "tmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "rules_idx", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "tmr_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "tmr_template_metadata_rule_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
@@ -1230,14 +1231,14 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-004"){
     createTable(tableName: "chronology_template_metadata_rule") {
-      column(name: "ctmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "tmrt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "ctmr_template_metadata_rule_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-005"){
     createTable(tableName: "enumeration_template_metadata_rule") {
-      column(name: "etmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "tmrt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etmr_template_metadata_rule_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
@@ -1251,8 +1252,8 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-007"){
-    createTable(tableName: "chronology_date_tmrf") {
-      column(name: "cdtmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_datetmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_weekday_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_month_day_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1261,23 +1262,23 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-008"){
-    createTable(tableName: "chronology_month_tmrf") {
-      column(name: "cmtmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_monthtmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cmtmrf_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cmtmrf_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-009"){
-    createTable(tableName: "chronology_year_tmrf") {
-      column(name: "cytmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_yeartmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cytmrf_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-010"){
-    createTable(tableName: "enumeration_numeric_level_tmrf") {
-      column(name: "enltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "enumeration_numeric_leveltmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "enltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
@@ -1288,8 +1289,8 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-011"){
-    createTable(tableName: "enumeration_textual_level_tmrf") {
-      column(name: "etltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "enumeration_textual_leveltmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "etltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
@@ -1302,6 +1303,29 @@ databaseChangeLog = {
     addColumn(tableName: "internal_piece") {
       column(name: "ip_template_string", type: "TEXT") { constraints(nullable: "true") }
       column(name: "ip_label", type: "TEXT") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231128-1315-002") {
+		preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
+			not {
+				indexExists(tableName: 'template_metadata_rule', columnNames: 'rules_idx')
+			}
+		}
+		createIndex(indexName: "tmr_rules_idx", tableName: "template_metadata_rule") {
+			column(name: "rules_idx")
+		}
+	}
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231207-1230-001"){
+    createTable(tableName: "enumeration_numerictmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231207-1230-002"){
+    createTable(tableName: "enumeration_textualtmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 }
