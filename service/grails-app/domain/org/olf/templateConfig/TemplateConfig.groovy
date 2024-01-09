@@ -14,7 +14,7 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
   SerialRuleset owner
   String templateString
   // TODO Mayeb seprate into two seperate lists for enumeration and chronology
-  List rules
+  List<TemplateMetadataRule> rules = []
 
   static hasMany = [
     rules: TemplateMetadataRule
