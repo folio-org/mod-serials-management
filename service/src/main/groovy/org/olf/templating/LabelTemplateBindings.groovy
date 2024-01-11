@@ -8,7 +8,7 @@ import groovy.transform.CompileStatic
 
 public class LabelTemplateBindings extends HashMap<String, Object> {
   public void setupChronologyArray(ArrayList<ChronologyTemplateMetadata> chronologyArray){
-    chronologyArray.eachWithIndex  {element, index ->
+    chronologyArray.eachWithIndex{  element, index ->
       // Bloody make sure you toString() GStrings
       this.put("chronology${index+1}".toString(), element)
     }
@@ -17,21 +17,17 @@ public class LabelTemplateBindings extends HashMap<String, Object> {
   }
 
   public void setupEnumerationArray(ArrayList<EnumerationTemplateMetadata> enumerationArray){
-    enumerationArray.eachWithIndex  {element, index ->
-      // Bloody make sure you toString() GStrings
+    enumerationArray.eachWithIndex{ element, index ->
       if(!!element?.value){
         this.put("enumeration${index+1}".toString(), element?.value)
       }else{
-        element?.levels?.eachWithIndex  {level, levelIndex ->
-          this.put("enumeration${index+1}level${levelIndex+1}".toString(), level?.value)
+        Map<String, Object> levelsMap = new HashMap<String, Object>()
+        element?.levels?.eachWithIndex{ level, levelIndex ->
+          levelsMap.put("level${levelIndex+1}".toString(), level?.value)
         }
-        // this.put("enumeration${index+1}".toString(), element)
-        // element?.levels?.eachWithIndex  {level, levelIndex ->
-        //   this.put("level${levelIndex+1}".toString(), level?.value)
-        // }
+        this.put("enumeration${index+1}".toString(), levelsMap)
       }
     }
-
     this.put("enumerationArray", enumerationArray)
   }
 
