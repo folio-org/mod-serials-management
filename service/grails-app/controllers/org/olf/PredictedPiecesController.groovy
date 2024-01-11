@@ -12,7 +12,6 @@ import grails.converters.*
 import org.json.JSONObject
 import grails.gorm.transactions.Transactional
 import grails.gorm.multitenancy.CurrentTenant
-import grails.web.Controller
 import groovy.util.logging.Slf4j
 
 import java.util.regex.Pattern
