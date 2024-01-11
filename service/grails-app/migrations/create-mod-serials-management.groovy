@@ -1215,7 +1215,6 @@ databaseChangeLog = {
     createTable(tableName: "template_metadata_rule") {
       column(name: "tmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "rules_idx", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "tmr_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "tmr_template_metadata_rule_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
@@ -1305,17 +1304,6 @@ databaseChangeLog = {
       column(name: "ip_label", type: "TEXT") { constraints(nullable: "true") }
     }
   }
-
-  changeSet(author: "Jack-Golding (manual)", id: "20231128-1315-002") {
-		preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
-			not {
-				indexExists(tableName: 'template_metadata_rule', columnNames: 'rules_idx')
-			}
-		}
-		createIndex(indexName: "tmr_rules_idx", tableName: "template_metadata_rule") {
-			column(name: "rules_idx")
-		}
-	}
 
   changeSet(author: "Jack-Golding (manual)", id: "20231207-1230-001"){
     createTable(tableName: "enumeration_numerictmrf") {

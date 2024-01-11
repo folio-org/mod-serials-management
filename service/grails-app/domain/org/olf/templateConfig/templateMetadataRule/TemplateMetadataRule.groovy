@@ -40,7 +40,7 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   }
 
   static constraints = {
-    owner nullable: false, bindable: false
+    owner nullable: false
     templateMetadataRuleType nullable: false
     ruleType nullable: false, validator: TemplateMetadataRuleHelpers.ruleTypeValidator
   }

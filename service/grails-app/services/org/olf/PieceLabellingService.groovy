@@ -38,11 +38,11 @@ public class PieceLabellingService {
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     ArrayList<ChronologyTemplateMetadata> chronologyArray = generateChronologyMetadata(standardTM, templateConfig.rules)
-    // ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
+    ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
 
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
-    // ltb.setupEnumerationArray(enumerationArray)
+    ltb.setupEnumerationArray(enumerationArray)
     ltb.setupStandardTM(standardTM)
 
     return template.make(ltb).with { 
@@ -154,19 +154,19 @@ public class PieceLabellingService {
     return chronologyTemplateMetadataArray
   }
 
-  // public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
-  //   ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
-  //   ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
-  //   while(iterator?.hasNext()){
-  //     TemplateMetadataRule currentMetadataRule = iterator.next()
-  //     String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-  //     if(templateMetadataType == 'enumeration'){
-  //       Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-  //       EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
+    ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
+    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    while(iterator?.hasNext()){
+      TemplateMetadataRule currentMetadataRule = iterator.next()
+      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+      if(templateMetadataType == 'enumeration'){
+        Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
 
-  //       enumerationTemplateMetadataArray << enumerationTemplateMetadata
-  //     }
-  //   }
-  //   return enumerationTemplateMetadataArray
-  // }
+        enumerationTemplateMetadataArray << enumerationTemplateMetadata
+      }
+    }
+    return enumerationTemplateMetadataArray
+  }
 }

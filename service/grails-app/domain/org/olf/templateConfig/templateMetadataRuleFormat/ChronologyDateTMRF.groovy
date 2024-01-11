@@ -77,9 +77,18 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
 		]
    
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
+    Set<Locale> allLanguages = new HashSet<Locale>();
+    String[] languages = Locale.getISOLanguages();
+    for (int i = 0; i < languages.length; i++){
+      Locale loc = new Locale(languages[i]);
+      allLanguages.add(loc);
+    }
+  
+    // println(languages.size())
+    // println(allLanguages.size())
     ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
     // TODO Dont handle if not a chronology rule
-		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value)))
+		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value), Locale.GERMAN))
 		if(tmrf?.weekdayFormat?.value.endsWith('upper')){
 			weekday = weekday.toUpperCase()
 		}
