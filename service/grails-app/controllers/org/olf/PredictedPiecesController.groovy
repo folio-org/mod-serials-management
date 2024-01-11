@@ -9,10 +9,9 @@ import java.time.LocalDate
 
 import grails.rest.*
 import grails.converters.*
-import org.grails.web.json.JSONObject
+import org.json.JSONObject
 import grails.gorm.transactions.Transactional
 import grails.gorm.multitenancy.CurrentTenant
-import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
 
 import java.util.regex.Pattern
@@ -25,15 +24,14 @@ class PredictedPiecesController {
   // PredictedPiecesController(){
   //   super()
   // }
-
+  
   // This takes in a JSON shape and outputs predicted pieces without saving domain objects
-  @Transactional
+ @Transactional
   def generatePredictedPiecesTransient() {
-    final data = request.JSON
-    // Do not save this -- Is casting this all in one go ok?
-    // FIXME DO NOT SAVE
-    // SerialRuleset ruleset = new SerialRuleset(data).save(flush: true, failOnError: true)
-    SerialRuleset ruleset = new SerialRuleset(data)
+    JSONObject data = request.JSON
+    // SerialRuleset ruleset = new SerialRuleset(data.toMap()).save(flush: true, failOnError: true)
+    SerialRuleset ruleset = new SerialRuleset(data.toMap())
+
     // TODO Should we validate this?
     ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     respond result
