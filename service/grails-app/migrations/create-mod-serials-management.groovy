@@ -1277,7 +1277,7 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-010"){
     createTable(tableName: "enumeration_numeric_leveltmrf") {
-      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "enltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "enltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
@@ -1289,7 +1289,7 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-011"){
     createTable(tableName: "enumeration_textual_leveltmrf") {
-      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "etltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "etltmrf_units", type: "BIGINT") { constraints(nullable: "false") }

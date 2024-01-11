@@ -10,19 +10,15 @@ import java.time.LocalDate
 import grails.rest.*
 import grails.converters.*
 import org.json.JSONObject
-import org.json.JSONArray
 import grails.gorm.transactions.Transactional
 import grails.gorm.multitenancy.CurrentTenant
 import grails.web.Controller
-import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
-import groovy.json.JsonSlurper
 
 import java.util.regex.Pattern
 
 @Slf4j
 @CurrentTenant
-@Controller
 class PredictedPiecesController {
   PieceGenerationService pieceGenerationService
 
