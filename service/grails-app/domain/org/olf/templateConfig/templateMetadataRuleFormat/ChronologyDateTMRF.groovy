@@ -84,6 +84,14 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
 			weekday = weekday.toUpperCase()
 		}
 
+    // FIXME IMPLEMENT THIS PROPERLY
+    Set<Locale> allLanguages = new HashSet<Locale>();
+    String[] languages = Locale.getISOLanguages();
+    for (int i = 0; i < languages.length; i++){
+      Locale loc = new Locale(languages[i]);
+      allLanguages.add(loc);
+    }
+
 		String monthDay = date.format(DateTimeFormatter.ofPattern('d'))
 		if(tmrf?.monthDayFormat?.value == 'ordinal'){
 			monthDay = monthDay + getDayOfMonthSuffix(Integer.parseInt(monthDay))

@@ -2,6 +2,7 @@ package org.olf
 
 import org.olf.PieceGenerationService
 
+import org.olf.Serial
 import org.olf.SerialRuleset
 import org.olf.internalPiece.InternalPiece
 
@@ -38,6 +39,12 @@ class PredictedPiecesController {
   }
 
   def generatePredictedPieces() {
+    JSONObject data = request.JSON
+    Serial serial = Serial.get(data?.serial?.id)
+    SerialRuleset ruleset = SerialRuleset.get(data?.ruleset?.id)
+    ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+
+    respond result
 
   }
  }
