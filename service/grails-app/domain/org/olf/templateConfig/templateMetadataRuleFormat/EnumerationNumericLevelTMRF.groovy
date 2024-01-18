@@ -21,7 +21,6 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
 
   String internalNote
 
-
   static belongsTo = [
     owner: EnumerationNumericTMRF
   ]
