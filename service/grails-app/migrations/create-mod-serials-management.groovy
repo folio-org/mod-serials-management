@@ -1153,6 +1153,7 @@ databaseChangeLog = {
     createTable(tableName: "internal_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "ip_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ip_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1315,5 +1316,18 @@ databaseChangeLog = {
     createTable(tableName: "enumeration_textualtmrf") {
       column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231220-1230-001"){
+    createTable(tableName: "predicted_piece_set") {
+      column(name: "pps_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "pps_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "pps_date_created", type: "timestamp")
+      column(name: "pps_last_updated", type: "timestamp")
+      column(name: "pps_start_date", type: "timestamp") { constraints(nullable: "false") }
+      column(name: "pps_note", type: "TEXT") { constraints(nullable: "true") }
+      column(name: "ruleset_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "serial_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }  
   }
 }

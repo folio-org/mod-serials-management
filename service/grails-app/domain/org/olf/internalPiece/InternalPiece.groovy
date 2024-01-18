@@ -1,5 +1,7 @@
 package org.olf.internalPiece
 
+import org.olf.PredictedPieceSet
+
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
@@ -10,9 +12,13 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   String templateString
   String label
 
+ 	static belongsTo = [ owner: PredictedPieceSet ]
+
+
   static mapping = {
     id column: 'ip_id', generator: 'uuid2', length: 36
     version column: 'ip_version'
+    owner column: 'ip_owner'
     templateString column: 'ip_template_string'
     label column: 'ip_label'
 
@@ -22,7 +28,7 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   static constraints = {
     templateString nullable: true
     label nullable: true
-
+    owner nullable: true
   }
 
   // Cannot handle ommited combination, please god no

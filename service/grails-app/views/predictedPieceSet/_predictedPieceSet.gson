@@ -1,0 +1,13 @@
+import groovy.transform.*
+import org.olf.Serial
+import groovy.transform.Field
+
+def should_expand = [
+  'serial',
+  'ruleset',
+  'pieces',
+]
+
+@Field PredictedPieceSet predictedPieceSet
+
+json g.render(predictedPieceSet, [expand: should_expand])

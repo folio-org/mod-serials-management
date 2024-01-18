@@ -1,5 +1,7 @@
 package org.olf.internalPiece
 
+import org.olf.PredictedPieceSet
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -13,7 +15,8 @@ public class InternalOmissionPiece extends InternalPiece implements MultiTenant<
   LocalDate date
 
   Set<OmissionOrigin> omissionOrigins
-
+  
+ 	static belongsTo = [ owner: PredictedPieceSet ]
 
   static mapping = {
     date column: 'iop_date'

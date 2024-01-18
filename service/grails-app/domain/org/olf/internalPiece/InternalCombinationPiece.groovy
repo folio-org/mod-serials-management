@@ -1,5 +1,7 @@
 package org.olf.internalPiece
 
+import org.olf.PredictedPieceSet
+
 import grails.gorm.MultiTenant
 
 import java.time.LocalDate
@@ -13,6 +15,8 @@ public class InternalCombinationPiece extends InternalPiece implements MultiTena
   Set<InternalRecurrencePiece> recurrencePieces
 
   Set<CombinationOrigin> combinationOrigins
+
+ 	static belongsTo = [ owner: PredictedPieceSet ]
 
   static mapping = {
     recurrencePieces cascade: 'all-delete-orphan'
