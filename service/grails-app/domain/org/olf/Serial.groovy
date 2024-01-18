@@ -39,7 +39,7 @@ class Serial implements MultiTenant<Serial> {
     recurrence: 'owner'
   ]
 
-	static belongsTo = [ predictedPieceSet: PredictedPieceSet ]
+	// static belongsTo = [ predictedPieceSet: PredictedPieceSet ]
 
 
   static mapping = {

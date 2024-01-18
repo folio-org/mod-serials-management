@@ -17,8 +17,11 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   String id
   Date lastUpdated
   Date dateCreated
-  
+
   LocalDate startDate
+
+  Serial serial
+  SerialRuleset ruleset
 
   String note
 
@@ -26,15 +29,10 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     pieces: InternalPiece
   ]
 
-  static hasOne = [
-    serial: Serial,
-    ruleset: SerialRuleset
-  ]
-
   static mappedBy = [
     pieces: 'owner',
-    serial: 'predictedPieceSet',
-    ruleset: 'predictedPieceSet',
+    // serial: 'predictedPieceSet',
+    // ruleset: 'predictedPieceSet',
   ]
 
   static mapping = {
@@ -56,7 +54,7 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     note nullable: true
     startDate nullable: false
     pieces nullable: false
-    serial nullable: false
+    serial nullable: true
     ruleset nullable: false
   }   
 }

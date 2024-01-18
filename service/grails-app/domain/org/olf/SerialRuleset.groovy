@@ -46,7 +46,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
 
   static belongsTo = [
     owner: Serial,
-    predictedPieceSet: PredictedPieceSet
+    // predictedPieceSet: PredictedPieceSet
   ]
 
   static mapping = {
