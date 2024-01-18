@@ -13,7 +13,7 @@ import java.time.LocalDate
 
 import grails.rest.*
 import grails.converters.*
-import org.json.JSONObject
+import org.grails.web.json.JSONObject
 import grails.gorm.transactions.Transactional
 import grails.gorm.multitenancy.CurrentTenant
 import groovy.util.logging.Slf4j
@@ -32,10 +32,15 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   @Transactional
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
-    // SerialRuleset ruleset = new SerialRuleset(data.toMap()).save(flush: true, failOnError: true)
-    SerialRuleset ruleset = new SerialRuleset(data.toMap())
 
-    // TODO Should we validate this?
+    SerialRuleset ruleset
+
+    if(data?.ruleset?.id){
+      ruleset = SerialRuleset.get(data?.ruleset?.id)
+    }else{
+      ruleset = new SerialRuleset(data)
+    }
+
     ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     respond result
   }
