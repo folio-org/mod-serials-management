@@ -12,7 +12,11 @@ import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {  
-  ArrayList<EnumerationTextualLevelTMRF> levels
+  Set<EnumerationTextualLevelTMRF> levels
+
+  static hasMany = [
+    levels: EnumerationTextualLevelTMRF,
+  ]
 
   static mapping = {
     levels cascade: 'all-delete-orphan'
