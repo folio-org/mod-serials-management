@@ -21,7 +21,6 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   LocalDate startDate
 
   Serial serial
-  SerialRuleset ruleset
 
   String note
 
@@ -45,7 +44,6 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
 
     pieces cascade: 'all-delete-orphan'
     serial cascade: 'all-delete-orphan'
-    ruleset cascade: 'all-delete-orphan'
   }
   
   static constraints = {
@@ -54,7 +52,6 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     note nullable: true
     startDate nullable: false
     pieces nullable: false
-    serial nullable: true
-    ruleset nullable: false
+    serial nullable: false
   }   
 }

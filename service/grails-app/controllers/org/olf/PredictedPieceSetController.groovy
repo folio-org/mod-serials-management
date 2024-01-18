@@ -48,7 +48,6 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     PredictedPieceSet pps = new PredictedPieceSet([
       serial: serial,
-      ruleset: ruleset,
       pieces: ips,
       note: data?.note,
       startDate: data?.startDate
