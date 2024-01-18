@@ -100,14 +100,24 @@
           "permissionsRequired": [ "serials-management.rulesets.manage" ]
         },
         {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/predictedPieces",
+          "permissionsRequired": [ "serials-management.predictedPieces.view" ]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/predictedPieces/{id}",
+          "permissionsRequired": [ "serials-management.predictedPieces.view" ]
+        },
+        {
           "methods": ["POST"],
           "pathPattern": "/serials-management/predictedPieces/generate",
-          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+          "permissionsRequired": [ "serials-management.predictedPieces.edit" ]
         },
         {
           "methods": ["POST"],
           "pathPattern": "/serials-management/predictedPieces/create",
-          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+          "permissionsRequired": [ "serials-management.predictedPieces.edit" ]
         }
       ]
     },
@@ -318,6 +328,53 @@
       "subPermissions": [
         "serials-management.rulesets.edit",
         "serials-management.rulesets.delete"
+      ]
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.collection.get",
+      "displayName": "Predicted pieces collection get",
+      "description": "Get a collection of predicted pieces records"
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.item.get",
+      "displayName": "Predicted pieces item get",
+      "description": "Get a predicted pieces record"
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.view",
+      "subPermissions": [
+        "serials-management.predictedPieces.collection.get",
+        "serials-management.predictedPieces.item.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.item.post",
+      "displayName": "Predicted pieces item post",
+      "description": "Post a predicted pieces record"
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.item.put",
+      "displayName": "Predicted pieces item put",
+      "description": "Put a predicted pieces record"
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.item.delete",
+      "displayName": "Predicted pieces item delete",
+      "description": "Delete a predicted pieces record"
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.edit",
+      "subPermissions": [
+        "serials-management.predictedPieces.view",
+        "serials-management.predictedPieces.item.post",
+        "serials-management.predictedPieces.item.put"
+      ]
+    },
+    {
+      "permissionName": "serials-management.predictedPieces.manage",
+      "subPermissions": [
+        "serials-management.predictedPieces.edit",
+        "serials-management.predictedPieces.delete"
       ]
     }
   ],
