@@ -30,8 +30,6 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
 
   static mappedBy = [
     pieces: 'owner',
-    // serial: 'predictedPieceSet',
-    // ruleset: 'predictedPieceSet',
   ]
 
   static mapping = {

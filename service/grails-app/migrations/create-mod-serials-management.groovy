@@ -1217,6 +1217,7 @@ databaseChangeLog = {
       column(name: "tmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "tmr_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "tmr_template_metadata_rule_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
@@ -1281,6 +1282,7 @@ databaseChangeLog = {
       column(name: "enltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "enltmrf_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "enltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "enltmrf_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_sequence_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1293,6 +1295,7 @@ databaseChangeLog = {
       column(name: "etltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "etltmrf_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "etltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "etltmrf_value", type: "VARCHAR(255)") { constraints(nullable: "false") }
       column(name: "etltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }

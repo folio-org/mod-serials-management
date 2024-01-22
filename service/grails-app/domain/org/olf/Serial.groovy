@@ -39,9 +39,6 @@ class Serial implements MultiTenant<Serial> {
     recurrence: 'owner'
   ]
 
-	// static belongsTo = [ predictedPieceSet: PredictedPieceSet ]
-
-
   static mapping = {
     id column: 's_id', generator: 'uuid2', length: 36
     lastUpdated column: 's_last_updated'
