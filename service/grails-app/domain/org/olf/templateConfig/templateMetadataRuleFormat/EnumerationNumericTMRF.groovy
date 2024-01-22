@@ -20,7 +20,7 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   ]
 
   static mapping = {
-    levels cascade: 'all-delete-orphan'
+    levels cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
   }
   
   static constraints = {

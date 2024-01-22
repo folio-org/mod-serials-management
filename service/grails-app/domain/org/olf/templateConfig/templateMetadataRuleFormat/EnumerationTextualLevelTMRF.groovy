@@ -9,6 +9,9 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevelTMRF> {
 
   String id
+
+  Integer index
+
   Integer units
 
   // TODO shoudld be dynamically assigned refdata
@@ -26,6 +29,7 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
     id column: 'etltmrf_id', generator: 'uuid2', length: 36
     owner column: 'etltmrf_owner_fk'
     version column: 'etltmrf_version'
+    index column: 'etltmrf_index'
     units column: 'etltmrf_units'
     value column: 'etltmrf_value'
     internalNote column: 'etltmrf_internal_note'
@@ -33,6 +37,7 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
   
   static constraints = {
     owner(nullable:false, blank:false);
+    index nullable: false
     units nullable: false
     value nullable: false
     internalNote nullable: true

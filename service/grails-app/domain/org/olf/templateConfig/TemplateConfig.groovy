@@ -28,7 +28,7 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
     owner column: 'tc_owner_fk'
     version column: 'tc_version'
     templateString column: 'tc_template_string'
-    rules cascade: 'all-delete-orphan'
+    rules cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
   }
 
   static constraints = {
