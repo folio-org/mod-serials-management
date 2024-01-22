@@ -33,7 +33,7 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
 
   static constraints = {
     owner nullable: false
-    rules nullable: false
+    rules nullable: true
     templateString nullable: false
   }
 }
