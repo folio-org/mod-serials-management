@@ -1162,7 +1162,6 @@ databaseChangeLog = {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "irp_date", type: "timestamp") { constraints(nullable: "false") }
       column(name: "irp_recurrence_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
-      // column(name: "irp_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1189,7 +1188,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-002"){
-    createTable(tableName: "cominbation_origin") {
+    createTable(tableName: "combination_origin") {
       column(name: "co_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "co_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "co_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1337,6 +1336,14 @@ databaseChangeLog = {
     addColumn(tableName: "serial_order_line") {
       column(name: "sol_title", type: "TEXT")
       column(name: "sol_title_id", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-111"){
+    createTable(tableName: "internal_combination_piece_internal_recurrence_piece") {
+      column(name: "internal_combination_piece_recurrence_pieces_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "internal_recurrence_piece_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "internal_combination_piece_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 }
