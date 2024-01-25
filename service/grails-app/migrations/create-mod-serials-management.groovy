@@ -1329,7 +1329,7 @@ databaseChangeLog = {
       column(name: "pps_last_updated", type: "timestamp")
       column(name: "pps_start_date", type: "timestamp") { constraints(nullable: "false") }
       column(name: "pps_note", type: "TEXT") { constraints(nullable: "true") }
-      column(name: "serial_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ruleset_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }  
   }
 
