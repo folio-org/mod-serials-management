@@ -1332,4 +1332,11 @@ databaseChangeLog = {
       column(name: "serial_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }  
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230123-1138-001") {
+    addColumn(tableName: "serial_order_line") {
+      column(name: "sol_title", type: "TEXT")
+      column(name: "sol_title_id", type: "VARCHAR(36)")
+    }
+  }
 }

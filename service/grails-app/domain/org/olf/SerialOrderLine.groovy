@@ -12,14 +12,21 @@ import com.k_int.okapi.remote_resources.RemoteOkapiLink
 
 class SerialOrderLine extends RemoteOkapiLink implements MultiTenant<SerialOrderLine> {
 
+  String title
+  String titleId
+
   static belongsTo = [ owner: Serial ]
 
   static mapping = {
     owner column: 'sol_owner'
+    title column: 'sol_title'
+    titleId column: 'sol_title_id'
   }
 
   static constraints = {
     owner(nullable:false, blank:false)
+    title nullable: true
+    titleId nullable: true
   }
 
   @Override
