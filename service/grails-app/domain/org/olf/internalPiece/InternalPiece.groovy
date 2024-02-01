@@ -12,6 +12,8 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   String templateString
   String label
 
+  String receivingId
+
  	static belongsTo = [ owner: PredictedPieceSet ]
 
 
@@ -21,12 +23,14 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
     owner column: 'ip_owner'
     templateString column: 'ip_template_string'
     label column: 'ip_label'
+    receivingId column: 'ip_receiving_id'
 
     tablePerHierarchy false
   }
 
   static constraints = {
     templateString nullable: true
+    receivingId nullable: true
     label nullable: true
     owner nullable: true
   }
