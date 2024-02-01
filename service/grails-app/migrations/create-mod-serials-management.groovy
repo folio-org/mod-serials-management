@@ -1346,4 +1346,10 @@ databaseChangeLog = {
       column(name: "internal_combination_piece_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230201-1008-001") {
+    addColumn(tableName: "internal_piece") {
+      column(name: "ip_receiving_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
 }
