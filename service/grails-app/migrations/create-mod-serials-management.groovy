@@ -1352,4 +1352,13 @@ databaseChangeLog = {
       column(name: "ip_receiving_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230209-1230-01"){
+    createTable(tableName: "internal_piece_receiving_id") {
+      column(name: "ipri_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ipri_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ipri_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ipri_receiving_id", type:"INTEGER") { constraints(nullable: "false") }
+    }
+  }
 }
