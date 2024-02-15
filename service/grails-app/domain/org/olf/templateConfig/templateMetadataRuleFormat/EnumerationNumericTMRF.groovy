@@ -56,9 +56,10 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
     EnumerationNumericTMRF entmrf = rule?.ruleType?.ruleFormat
     ArrayList<EnumerationTemplateMetadataLevel> result = []
+    
     Integer divisor = 1
     for(int i=entmrf?.levels?.size()-1; i>=0; i--){
-      Integer value = 0
+      Integer value = entmrf?.levels[i]?.startingValue ? entmrf?.levels[i]?.startingValue -1 : 0
       for(int j=0; j<=index; j++){
         if(j % divisor == 0){
           value++
