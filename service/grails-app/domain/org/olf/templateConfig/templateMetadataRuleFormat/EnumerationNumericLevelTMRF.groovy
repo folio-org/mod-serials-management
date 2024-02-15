@@ -11,8 +11,8 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
   String id
 
   Integer index
-  
   Integer units
+  Integer startingValue
 
   @CategoryId(value="EnumerationNumericLevelTMRF.Format", defaultInternal=true)
   @Defaults(['Ordinal', 'Number', 'Roman'])
@@ -23,6 +23,8 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
   RefdataValue sequence
 
   String internalNote
+
+  static transients = ['startingValue']
 
   static belongsTo = [
     owner: EnumerationNumericTMRF
@@ -43,9 +45,11 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
     owner(nullable:false, blank:false);
     index nullable: false
     units nullable: false
+    startingValue bindable: true
     format nullable: false
     sequence nullable: false
     internalNote nullable: true
-  }   
+  }
+
 }
 

@@ -32,15 +32,17 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     JSONObject data = request.JSON
 
     SerialRuleset ruleset = new SerialRuleset(data)
-  
+
     ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     respond result
   }
 
   def generatePredictedPieces() {
     JSONObject data = request.JSON
-    SerialRuleset ruleset = SerialRuleset.get(data?.ruleset?.id)
-    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    SerialRuleset transientRuleset = new SerialRuleset(data)
+    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(transientRuleset, LocalDate.parse(data.startDate))
+
+    SerialRuleset ruleset = SerialRuleset.get(data?.id)
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
