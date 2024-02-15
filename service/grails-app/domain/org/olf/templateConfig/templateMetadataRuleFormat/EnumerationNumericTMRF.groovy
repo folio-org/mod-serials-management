@@ -54,37 +54,37 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   }  
 
   public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
-    EnumerationNumericTMRF entmrf = rule?.ruleType?.ruleFormat
+    ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     ArrayList<EnumerationTemplateMetadataLevel> result = []
     
     Integer divisor = 1
-    for(int i=entmrf?.levels?.size()-1; i>=0; i--){
-      Integer value = entmrf?.levels[i]?.startingValue ? entmrf?.levels[i]?.startingValue -1 : 0
+    for(int i=enltmrfArray?.size()-1; i>=0; i--){
+      Integer value = enltmrfArray[i]?.startingValue ? enltmrfArray[i]?.startingValue - 1 : 0
       for(int j=0; j<=index; j++){
         if(j % divisor == 0){
           value++
         }
       }
-      if(entmrf?.levels[i]?.sequence?.value == 'reset'){
-        if(value%entmrf?.levels[i]?.units == 0){
-          value = entmrf?.levels[i]?.units
+      if(enltmrfArray[i]?.sequence?.value == 'reset'){
+        if(value%enltmrfArray[i]?.units == 0){
+          value = enltmrfArray[i]?.units
         }else{
-          value = value%entmrf?.levels[i]?.units
+          value = value%enltmrfArray[i]?.units
         }
       }
 
       String stringValue = value
-      if(entmrf?.levels[i]?.format?.value == 'ordinal'){
+      if(enltmrfArray[i]?.format?.value == 'ordinal'){
         stringValue = value + getOrdinalSuffix(value)
       }
 
-      if(entmrf?.levels[i]?.format?.value == 'roman'){
+      if(enltmrfArray[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
 
       result.add([value: stringValue])
 
-      divisor = entmrf?.levels[i]?.units*divisor
+      divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationTemplateMetadata([levels: result.reverse()])
   }

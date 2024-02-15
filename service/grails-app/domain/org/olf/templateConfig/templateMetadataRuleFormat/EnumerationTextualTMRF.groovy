@@ -27,12 +27,12 @@ public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implement
   }
 
   private static String findResultIndex(TemplateMetadataRule rule, int index){
-    EnumerationTextualTMRF ettmrf = rule?.ruleType?.ruleFormat
+    ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     while (true) {
-      for (int i = 0; i < ettmrf?.levels?.size(); i++) {
-        index -= ettmrf?.levels[i]?.units;
+      for (int i = 0; i < etltmrfArray?.size(); i++) {
+        index -= etltmrfArray[i]?.units;
         if (index <= 0) {
-          return ettmrf?.levels[i]?.value;
+          return etltmrfArray[i]?.value;
         }    
       }
     }
