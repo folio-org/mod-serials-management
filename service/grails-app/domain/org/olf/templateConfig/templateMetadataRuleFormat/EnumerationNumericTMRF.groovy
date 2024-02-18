@@ -56,22 +56,28 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     ArrayList<EnumerationTemplateMetadataLevel> result = []
-    
+    Integer adjustedIndex = 0
     Integer divisor = 1
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
-      Integer value = enltmrfArray[i]?.startingValue ? enltmrfArray[i]?.startingValue - 1 : 0
-      for(int j=0; j<=index; j++){
+
+      if(enltmrfArray[i]?.startingValue !== null){
+        adjustedIndex = adjustedIndex + ((enltmrfArray[i]?.startingValue - 1)*divisor)
+      }
+
+      Integer value = 0
+      for(int j=0; j<=index+adjustedIndex; j++){
         if(j % divisor == 0){
           value++
         }
       }
+
       if(enltmrfArray[i]?.sequence?.value == 'reset'){
-        if(value%enltmrfArray[i]?.units == 0){
-          value = enltmrfArray[i]?.units
-        }else{
-          value = value%enltmrfArray[i]?.units
+          if(value%enltmrfArray[i]?.units == 0){
+            value = enltmrfArray[i]?.units
+          }else{
+            value = value%enltmrfArray[i]?.units
+          }
         }
-      }
 
       String stringValue = value
       if(enltmrfArray[i]?.format?.value == 'ordinal'){
@@ -81,9 +87,8 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       if(enltmrfArray[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
-
+    
       result.add([value: stringValue])
-
       divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationTemplateMetadata([levels: result.reverse()])
