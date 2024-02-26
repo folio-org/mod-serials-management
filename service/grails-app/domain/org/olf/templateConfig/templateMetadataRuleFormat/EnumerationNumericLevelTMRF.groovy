@@ -45,7 +45,6 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
     owner(nullable:false, blank:false);
     index nullable: false
     units nullable: false
-    startingValue bindable: true
     format nullable: false
     sequence nullable: false
     internalNote nullable: true
