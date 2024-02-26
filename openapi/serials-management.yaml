@@ -1,0 +1,890 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Folio Serials Management
+  description: API for the Folio library services platform mod-serials-management app
+servers:
+  - url: https://folio-snapshot-okapi.dev.folio.org
+  - url: https://folio-snapshot-2-okapi.dev.folio.org
+security:
+  - accessToken: []
+  - okapiToken: []
+paths:
+  /serials-management/refdata:
+    get:
+      operationId: getRefData
+      summary: Returns list of reference data values for specified domain
+      parameters:
+        - $ref: '#/components/parameters/filters'
+        - $ref: '#/components/parameters/match'
+        - $ref: '#/components/parameters/term'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/stats'
+        - $ref: '#/components/parameters/perPage'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/RefDataResults'
+                  - $ref: '#/components/schemas/RefDataResultsArray'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/serials:
+    get:
+      summary: Get a set of serial records
+      operationId: getSerials
+      parameters:
+        - $ref: '#/components/parameters/filters'
+        - $ref: '#/components/parameters/match'
+        - $ref: '#/components/parameters/term'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/stats'
+        - $ref: '#/components/parameters/perPage'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/serialResults'
+                  - $ref: '#/components/schemas/serialResultsArray'
+        '400':
+          description: Bad request error
+        '500':
+          description: Internal server error
+    post:
+      summary: Create serial record
+      operationId: postSerial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serial'
+        description: requestBody description
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serial'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+        '500':
+          description: Internal server error
+  /serials-management/serials/{uuid}:
+    get:
+      summary: Get a specified serial record
+      operationId: getSerial
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the serial record to be fetched
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serial'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+        '500':
+          description: Internal server error
+    put:
+      summary: Update serial record
+      operationId: putSerial
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the serial record to be put
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serial'
+        description: requestBody description
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serial'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/rulesets:
+    post:
+      summary: Create ruleset record
+      operationId: postRuleset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+        description: Ruleset JSON
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '500':
+          description: Internal server error
+  /serials-management/predictedPieces:
+    get:
+      summary: Get a set of predicted piece sets
+      operationId: getPredictedPieceSets
+      parameters:
+        - $ref: '#/components/parameters/filters'
+        - $ref: '#/components/parameters/match'
+        - $ref: '#/components/parameters/term'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/stats'
+        - $ref: '#/components/parameters/perPage'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PredictedPieceSetResults'
+                  - $ref: '#/components/schemas/PredictedPieceSetResultsArray'
+        '400':
+          description: Bad request error
+        '500':
+          description: Internal server error
+  /serials-management/predictedPieces/{uuid}:
+    get:
+      summary: Get a specified predicted piece set
+      operationId: getPredictedPieceSet
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the predicted piece set to be fetched
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictedPieceSet'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/predictedPieces/generate:
+    post:
+      summary: Preview predicted pieces
+      operationId: previewPieces
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictedPieceSet'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/predictedPieces/create:
+    post:
+      summary: Create predicted pieces
+      operationId: createPieces
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictedPieceSet'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    okapiToken:
+      type: apiKey
+      in: header
+      name: x-okapi-token
+    accessToken:
+      type: apiKey
+      in: cookie
+      name: folioAccessToken
+  parameters:
+    filters:
+      in: query
+      name: filters
+      required: false
+      schema:
+        type: string
+    match:
+      in: query
+      name: match
+      required: false
+      schema:
+        type: string
+    term:
+      in: query
+      name: term
+      required: false
+      schema:
+        type: string
+    sort:
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: string
+    stats:
+      in: query
+      name: stats
+      required: false
+      schema:
+        type: boolean
+    perPage:
+      in: query
+      name: perPage
+      required: false
+      schema:
+        type: integer
+    offset:
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+  schemas:
+    RefData:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+        value:
+          type: string
+    RefDataCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        internal:
+          type: boolean
+        desc:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefData'
+    RefDataResults:
+      type: array
+      items:
+        $ref: '#/components/schemas/RefDataCategory'
+    RefDataResultsArray:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RefDataCategory'
+        meta:
+          type: object
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        totalRecords:
+          type: integer
+    HttpError:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: integer
+        path:
+          type: string
+    SerialOrderLine:
+      type: object
+      properties:
+        owner:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        title:
+          type: string
+        titleId:
+          type: string
+          format: uuid
+    TimeUnit:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - day
+            - week
+            - month
+            - year
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+    RecurrencePatternDay:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+    RecurrencePatternMonthDate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        day:
+          type: integer
+          maximum: 31
+          minimum: 1
+    RecurrencePatternMonthWeekday:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        week:
+          type: integer
+          minimum: 1
+          maximum: 4
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    RecurrencePatternWeek:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    RecurrencePatternYearDate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        day:
+          type: integer
+          minimum: 1
+          maximum: 31
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    RecurrencePatternYearMonthWeekday:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        week:
+          type: integer
+          minimum: 1
+          maximum: 4
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    RecurrencePatternYearWeekday:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        week:
+          type: integer
+          minimum: 1
+          maximum: 4
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    RecurrencePatternType:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - day
+            - week
+            - month_date
+            - month_weekday
+            - year_date
+            - year_weekday
+            - year_month_weekday
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+    RecurrenceRule:
+      type: object
+      properties:
+        ordinal:
+          type: integer
+        pattern:
+          oneOf:
+            - $ref: '#/components/schemas/RecurrencePatternDay'
+            - $ref: '#/components/schemas/RecurrencePatternMonthDate'
+            - $ref: '#/components/schemas/RecurrencePatternMonthWeekday'
+            - $ref: '#/components/schemas/RecurrencePatternWeek'
+            - $ref: '#/components/schemas/RecurrencePatternYearDate'
+            - $ref: '#/components/schemas/RecurrencePatternYearMonthWeekday'
+            - $ref: '#/components/schemas/RecurrencePatternYearWeekday'
+        patternType:
+          $ref: '#/components/schemas/RecurrencePatternType'
+        timeUnit:
+          $ref: '#/components/schemas/TimeUnit'
+    OmissionPatternType:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - day
+            - day_month
+            - day_week
+            - day_weekday
+            - day_week_month
+            - week
+            - week_month
+            - month
+            - issue
+            - issue_week
+            - issue_week_month
+            - issue_month
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+    OmissionRule:
+      type: object
+      properties:
+        ordinal:
+          type: integer
+        pattern:
+          type: string
+          format: uuid
+        patternType:
+          $ref: '#/components/schemas/OmissionPatternType'
+        timeUnit:
+          $ref: '#/components/schemas/TimeUnit'
+    Omission:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/OmissionRule'
+    CombinationPatternType:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - issue
+            - issue_week
+            - issue_week_month
+            - issue_month
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+    CombinationRule:
+      type: object
+      properties:
+        ordinal:
+          type: integer
+        pattern:
+          type: string
+          format: uuid
+        patternType:
+          $ref: '#/components/schemas/CombinationPatternType'
+        timeUnit:
+          $ref: '#/components/schemas/TimeUnit'
+    Combination:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/CombinationRule'
+    Recurrence:
+      type: object
+      required:
+        - timeUnit
+      properties:
+        timeUnit:
+          $ref: '#/components/schemas/TimeUnit'
+        period:
+          type: integer
+        issues:
+          type: integer
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurrenceRule'
+        omission:
+          $ref: '#/components/schemas/Omission'
+        combination:
+          $ref: '#/components/schemas/Combination'
+        templateConfig:
+          $ref: '#/components/schemas/TemplateConfiguration'
+        owner:
+          $ref: '#/components/schemas/Serial'
+        rulesetNumber:
+          type: string
+    Serial:
+      type: object
+      required:
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        serialStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        orderLine:
+          type: object
+          $ref: '#/components/schemas/SerialOrderLine'
+        serialRulesets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/serialRuleset'
+        notes:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/SerialNote'
+        dateCreated:
+          type: string
+          format: datetime
+        lastUpdated:
+          type: string
+          format: datetime
+    SerialRuleset:
+      type: object
+      required:
+        - rulesetStatus
+        - templateConfig
+        - recurrence
+        - owner
+      properties:
+        id:
+          type: string
+          format: uuid
+        rulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        description:
+          type: string
+        recurrence:
+          $ref: '#/components/schemas/Recurrence'
+        omission:
+          $ref: '#/components/schemas/Omission'
+        combination:
+          $ref: '#/components/schemas/Combination'
+        templateConfig:
+          $ref: '#/components/schemas/Omission'
+        owner:
+          $ref: '#/components/schemas/Serial'
+    TemplateConfiguration:
+      type: object
+      required:
+        - owner
+        - rules
+        - templateString
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          $ref: '#/components/schemas/SerialRuleset'
+        templateString:
+          type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateMetadataRule'
+    TemplateMetadataRule:
+      type: object
+      required:
+        - owner
+        - index
+        - ruleType
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          $ref: '#/components/schemas/TemplateConfiguration'
+        index:
+          type: integer
+        ruleType:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    serialRuleset:
+      type: object
+      required:
+        - rulesetStatus
+        - templateConfig
+        - recurrence
+        - owner
+      properties:
+        id:
+          type: string
+          format: uuid
+        rulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        description:
+          type: string
+        recurrence:
+          $ref: '#/components/schemas/Recurrence'
+        omission:
+          $ref: '#/components/schemas/Omission'
+        combination:
+          $ref: '#/components/schemas/Combination'
+        templateConfig:
+          $ref: '#/components/schemas/Omission'
+        owner:
+          $ref: '#/components/schemas/Serial'
+    SerialNote:
+      type: object
+      required:
+        - text
+      properties:
+        id:
+          type: string
+          format: uuid
+        note:
+          type: string
+        owner:
+          $ref: '#/components/schemas/Serial'
+    serialResults:
+      type: array
+      items:
+        $ref: '#/components/schemas/Serial'
+    serialResultsArray:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serial'
+        meta:
+          type: object
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        totalRecords:
+          type: integer
+    InternalPiece:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        templateString:
+          type: string
+        label:
+          type: string
+        receivingId:
+          type: string
+          format: uuid
+    PredictedPieceSet:
+      type: object
+      required:
+        - startDate
+        - pieces
+        - ruleSet
+      properties:
+        dateCreated:
+          type: string
+          format: datetime
+        id:
+          type: string
+          format: uuid
+        lastUpdated:
+          type: string
+          format: datetime
+        pieces:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/InternalPiece'
+        ruleset:
+          type: object
+          $ref: '#/components/schemas/SerialRuleset'
+        startDate:
+          type: string
+          format: date
+        note:
+          type: string
+    PredictedPieceSetResults:
+      type: array
+      items:
+        $ref: '#/components/schemas/PredictedPieceSet'
+    PredictedPieceSetResultsArray:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PredictedPieceSet'
+        meta:
+          type: object
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        totalRecords:
+          type: integer
