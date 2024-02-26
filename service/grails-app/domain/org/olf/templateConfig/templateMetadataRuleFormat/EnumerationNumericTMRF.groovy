@@ -13,10 +13,14 @@ import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationNumericTMRF> {
-  ArrayList<EnumerationNumericLevelTMRF> levels
+  Set<EnumerationNumericLevelTMRF> levels
+  
+  static hasMany = [
+    levels: EnumerationNumericLevelTMRF,
+  ]
 
   static mapping = {
-    levels cascade: 'all-delete-orphan'
+    levels cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
   }
   
   static constraints = {
@@ -50,36 +54,42 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   }  
 
   public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
-    EnumerationNumericTMRF entmrf = rule?.ruleType?.ruleFormat
+    ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     ArrayList<EnumerationTemplateMetadataLevel> result = []
+    Integer adjustedIndex = 0
     Integer divisor = 1
-    for(int i=entmrf?.levels?.size()-1; i>=0; i--){
+    for(int i=enltmrfArray?.size()-1; i>=0; i--){
+
+      if(enltmrfArray[i]?.startingValue !== null){
+        adjustedIndex = adjustedIndex + ((enltmrfArray[i]?.startingValue - 1)*divisor)
+      }
+
       Integer value = 0
-      for(int j=0; j<=index; j++){
+      for(int j=0; j<=index+adjustedIndex; j++){
         if(j % divisor == 0){
           value++
         }
       }
-      if(entmrf?.levels[i]?.sequence?.value == 'reset'){
-        if(value%entmrf?.levels[i]?.units == 0){
-          value = entmrf?.levels[i]?.units
-        }else{
-          value = value%entmrf?.levels[i]?.units
+
+      if(enltmrfArray[i]?.sequence?.value == 'reset'){
+          if(value%enltmrfArray[i]?.units == 0){
+            value = enltmrfArray[i]?.units
+          }else{
+            value = value%enltmrfArray[i]?.units
+          }
         }
-      }
 
       String stringValue = value
-      if(entmrf?.levels[i]?.format?.value == 'ordinal'){
+      if(enltmrfArray[i]?.format?.value == 'ordinal'){
         stringValue = value + getOrdinalSuffix(value)
       }
 
-      if(entmrf?.levels[i]?.format?.value == 'roman'){
+      if(enltmrfArray[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
-
+    
       result.add([value: stringValue])
-
-      divisor = entmrf?.levels[i]?.units*divisor
+      divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationTemplateMetadata([levels: result.reverse()])
   }

@@ -17,7 +17,14 @@ class UrlMappings {
 
     "/serials-management/rulesets" (resources: 'serialRuleset')
 
-    "/serials-management/predictedPieces/generate" (controller: 'predictedPieces', action: 'generatePredictedPiecesTransient')
-    "/serials-management/predictedPieces/create" (controller: 'predictedPieces', action: 'generatePredictedPieces')
+    "/serials-management/predictedPieces" (resources: 'predictedPieceSet') {
+      collection {
+        "/generate" (controller: 'predictedPieceSet', action: 'generatePredictedPiecesTransient')
+        "/create" (controller: 'predictedPieceSet', action: 'generatePredictedPieces')
+      }
+    }
+
+
+    
   }
 }

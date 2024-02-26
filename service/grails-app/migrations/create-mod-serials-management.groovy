@@ -1153,6 +1153,7 @@ databaseChangeLog = {
     createTable(tableName: "internal_piece") {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "ip_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ip_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1161,7 +1162,6 @@ databaseChangeLog = {
       column(name: "ip_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "irp_date", type: "timestamp") { constraints(nullable: "false") }
       column(name: "irp_recurrence_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
-      // column(name: "irp_owner", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
@@ -1188,7 +1188,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230731-1506-002"){
-    createTable(tableName: "cominbation_origin") {
+    createTable(tableName: "combination_origin") {
       column(name: "co_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "co_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "co_combination_rule_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1216,6 +1216,7 @@ databaseChangeLog = {
       column(name: "tmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "tmr_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "tmr_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "tmr_template_metadata_rule_type_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
@@ -1230,14 +1231,14 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-004"){
     createTable(tableName: "chronology_template_metadata_rule") {
-      column(name: "ctmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "tmrt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "ctmr_template_metadata_rule_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-005"){
     createTable(tableName: "enumeration_template_metadata_rule") {
-      column(name: "etmr_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "tmrt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etmr_template_metadata_rule_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
@@ -1251,8 +1252,8 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-007"){
-    createTable(tableName: "chronology_date_tmrf") {
-      column(name: "cdtmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_datetmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_weekday_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_month_day_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cdtmrf_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1261,25 +1262,26 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-008"){
-    createTable(tableName: "chronology_month_tmrf") {
-      column(name: "cmtmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_monthtmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cmtmrf_month_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cmtmrf_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-009"){
-    createTable(tableName: "chronology_year_tmrf") {
-      column(name: "cytmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    createTable(tableName: "chronology_yeartmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "cytmrf_year_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-010"){
-    createTable(tableName: "enumeration_numeric_level_tmrf") {
+    createTable(tableName: "enumeration_numeric_leveltmrf") {
       column(name: "enltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "enltmrf_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "enltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "enltmrf_format_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "enltmrf_sequence_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -1288,10 +1290,11 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20231001-1230-011"){
-    createTable(tableName: "enumeration_textual_level_tmrf") {
+    createTable(tableName: "enumeration_textual_leveltmrf") {
       column(name: "etltmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
       column(name: "etltmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "etltmrf_index", type:"INTEGER") { constraints(nullable: "false") }
       column(name: "etltmrf_units", type: "BIGINT") { constraints(nullable: "false") }
       column(name: "etltmrf_value", type: "VARCHAR(255)") { constraints(nullable: "false") }
       column(name: "etltmrf_internal_note", type: "TEXT") { constraints(nullable: "true") }
@@ -1302,6 +1305,51 @@ databaseChangeLog = {
     addColumn(tableName: "internal_piece") {
       column(name: "ip_template_string", type: "TEXT") { constraints(nullable: "true") }
       column(name: "ip_label", type: "TEXT") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231207-1230-001"){
+    createTable(tableName: "enumeration_numerictmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231207-1230-002"){
+    createTable(tableName: "enumeration_textualtmrf") {
+      column(name: "tmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20231220-1230-001"){
+    createTable(tableName: "predicted_piece_set") {
+      column(name: "pps_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "pps_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "pps_date_created", type: "timestamp")
+      column(name: "pps_last_updated", type: "timestamp")
+      column(name: "pps_start_date", type: "timestamp") { constraints(nullable: "false") }
+      column(name: "pps_note", type: "TEXT") { constraints(nullable: "true") }
+      column(name: "ruleset_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }  
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230123-1138-001") {
+    addColumn(tableName: "serial_order_line") {
+      column(name: "sol_title", type: "TEXT")
+      column(name: "sol_title_id", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230728-1227-111"){
+    createTable(tableName: "internal_combination_piece_internal_recurrence_piece") {
+      column(name: "internal_combination_piece_recurrence_pieces_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "internal_recurrence_piece_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "internal_combination_piece_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230201-1008-001") {
+    addColumn(tableName: "internal_piece") {
+      column(name: "ip_receiving_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 }

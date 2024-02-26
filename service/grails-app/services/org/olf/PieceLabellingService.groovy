@@ -139,9 +139,9 @@ public class PieceLabellingService {
 
   }
 
-  public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
+  public ArrayList<ChronologyTemplateMetadata> generateChronologyMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<ChronologyTemplateMetadata> chronologyTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
@@ -154,9 +154,9 @@ public class PieceLabellingService {
     return chronologyTemplateMetadataArray
   }
 
-  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, ArrayList<TemplateMetadataRule> templateMetadataRules) {
+  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules) {
     ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
-    ListIterator<TemplateMetadataRule> iterator = templateMetadataRules?.listIterator()
+    Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }

@@ -9,7 +9,10 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevelTMRF> {
 
   String id
+
+  Integer index
   Integer units
+  Integer startingValue
 
   @CategoryId(value="EnumerationNumericLevelTMRF.Format", defaultInternal=true)
   @Defaults(['Ordinal', 'Number', 'Roman'])
@@ -21,6 +24,7 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
 
   String internalNote
 
+  static transients = ['startingValue']
 
   static belongsTo = [
     owner: EnumerationNumericTMRF
@@ -30,6 +34,7 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
     id column: 'enltmrf_id', generator: 'uuid2', length: 36
     owner column: 'enltmrf_owner_fk'
     version column: 'enltmrf_version'
+    index column: 'enltmrf_index'
     units column: 'enltmrf_units'
     format column: 'enltmrf_format_fk'
     sequence column: 'enltmrf_sequence_fk'
@@ -38,10 +43,13 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
   
   static constraints = {
     owner(nullable:false, blank:false);
+    index nullable: false
     units nullable: false
+    startingValue bindable: true
     format nullable: false
     sequence nullable: false
     internalNote nullable: true
-  }   
+  }
+
 }
 

@@ -12,7 +12,10 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
   String id
+  
   TemplateConfig owner
+
+  Integer index
 
   @CategoryId(value="TemplateMetadataRule.TemplateMetadataRuleType", defaultInternal=true)
   @Defaults(['Chronology', 'Enumeration'])
@@ -35,12 +38,14 @@ public class TemplateMetadataRule implements MultiTenant<TemplateMetadataRule> {
     id column: 'tmr_id', generator: 'uuid2', length: 36
     owner column: 'tmr_owner_fk'
     version column: 'tmr_version'
+    index column: 'tmr_index'
     templateMetadataRuleType column: 'tmr_template_metadata_rule_type_fk'
 	  ruleType cascade: 'all-delete-orphan'
   }
 
   static constraints = {
     owner nullable: false
+    index nullable: false
     templateMetadataRuleType nullable: false
     ruleType nullable: false, validator: TemplateMetadataRuleHelpers.ruleTypeValidator
   }
