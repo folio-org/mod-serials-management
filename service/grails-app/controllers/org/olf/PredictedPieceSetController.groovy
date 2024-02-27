@@ -37,7 +37,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
         if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
           for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue){
+            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
               ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
             }
           }
@@ -57,7 +57,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
         if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
           for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue){
+            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
               ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
             }
           }
