@@ -110,6 +110,11 @@
           "permissionsRequired": [ "serials-management.predictedPieces.view" ]
         },
         {
+          "methods": ["PUT"],
+          "pathPattern": "/serials-management/predictedPieces/{id}",
+          "permissionsRequired": [ "serials-management.predictedPieces.edit" ]
+        },
+        {
           "methods": ["POST"],
           "pathPattern": "/serials-management/predictedPieces/generate",
           "permissionsRequired": [ "serials-management.predictedPieces.edit" ]
