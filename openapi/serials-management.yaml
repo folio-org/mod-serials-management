@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: Folio Serials Management
@@ -13,7 +13,7 @@ paths:
   /serials-management/refdata:
     get:
       operationId: getRefData
-      summary: Returns list of reference data values for specified domain
+      summary: Get a set of reference data categories and values
       parameters:
         - $ref: '#/components/parameters/filters'
         - $ref: '#/components/parameters/match'
@@ -57,6 +57,133 @@ paths:
           description: Bad request error
         '403':
           description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/refdata/{uuid}:
+    get:
+      summary: Get a specified reference data category
+      operationId: getRefDataCategory
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the reference data category to be fetched
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefDataCategory'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    put:
+      summary: Update reference data category
+      operationId: putRefDataCategory
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the reference data category to be put
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefDataCategory'
+        description: requestBody description
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefDataCategory'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a specified reference data category
+      operationId: deleteRefDataCategory
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the reference data category to be deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/refdata/{domain}/{property}:
+    get:
+      summary: Get a specified reference data property
+      operationId: getReferenceDataPropertybyDomainandField
+      parameters:
+        - name: domain
+          in: path
+          description: The DomainClass of the reference data category to which the property belongs
+          required: true
+          schema:
+            type: string
+        - name: property
+          in: path
+          description: The FieldName of the reference data property to be fetched
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefData'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
   /serials-management/serials:
@@ -248,6 +375,63 @@ paths:
           description: Bad request error
         '403':
           description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}:
+    get:
+      summary: Get a specified ruleset
+      operationId: getRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset record to be fetched
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a specified ruleset
+      operationId: deleteRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
   /serials-management/predictedPieces:
@@ -455,6 +639,15 @@ components:
           type: integer
         totalRecords:
           type: integer
+    HttpError:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: integer
+        path:
+          type: string
     SerialOrderLine:
       type: object
       properties:
@@ -888,15 +1081,6 @@ components:
           type: integer
         totalRecords:
           type: integer
-    HttpError:
-      type: object
-      properties:
-        message:
-          type: string
-        error:
-          type: integer
-        path:
-          type: string
     SerialRulesetResults:
       type: array
       items:
