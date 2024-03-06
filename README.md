@@ -1,9 +1,16 @@
 # mod-serials-management
 
-Copyright (C) 2022 The Open Library Foundation
+Copyright (C) 2024 The Open Library Foundation
 
 This software is distributed under the terms of the Apache License,
 Version 2.0. See the file "[LICENSE](LICENSE)" for more information.
+
+# Notes on third party libraries used in this software
+* This module uses [logback-groovy-config](https://github.com/virtualdogbert/logback-groovy-config) under an Eclipse Public License (EPL) v1.0.
+  * Developed by [Tucker Pelletier](https://github.com/virtualdogbert)
+  * Code: https://github.com/virtualdogbert/logback-groovy-config
+  * Documentation: https://virtualdogbert.github.io/logback-groovy-config/
+  * License: https://github.com/virtualdogbert/logback-groovy-config/blob/main/EPL.txt
 
 # Introduction
 
