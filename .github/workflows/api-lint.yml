@@ -22,24 +22,24 @@ name: api-lint
 
 env:
   API_TYPES: 'OAS'
-  API_DIRECTORIES: 'openapi'
+  API_DIRECTORIES: 'openapi/**'
   API_EXCLUDES: ''
   API_WARNINGS: false
 
 on:
   push:
     paths:
-      - 'ramls/**'
+      - 'openapi/**'
   pull_request:
     paths:
-      - 'ramls/**'
+      - 'openapi/**'
 
 jobs:
   api-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Prepare folio-tools
