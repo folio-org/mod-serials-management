@@ -22,7 +22,7 @@ name: api-lint
 
 env:
   API_TYPES: 'OAS'
-  API_DIRECTORIES: 'openapi/**'
+  API_DIRECTORIES: 'openapi'
   API_EXCLUDES: ''
   API_WARNINGS: false
 
