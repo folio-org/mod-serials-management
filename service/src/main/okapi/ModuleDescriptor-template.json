@@ -7,26 +7,6 @@
       "version": "${info.app.minorVersion}",
       "handlers" : [
         {
-          "methods": [ "GET" ],
-          "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serials-management.settings.get" ]
-        },
-        {
-          "methods": [ "POST" ],
-          "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serials-management.settings.post" ]
-        },
-        {
-          "methods": [ "PUT" ],
-          "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serials-management.settings.put" ]
-        },
-        {
-          "methods": [ "DELETE" ],
-          "pathPattern": "/serials-management/settings*",
-          "permissionsRequired": [ "serials-management.settings.delete" ]
-        },
-        {
           "methods": ["GET"],
           "pathPattern": "/serials-management/refdata",
           "permissionsRequired": [ "serials-management.refdata.collection.get" ]
