@@ -16,15 +16,13 @@ class SerialRulesetService {
     """.toString(), [serialId: serialId, active: 'active'])[0]
   }
 
-  SerialRuleset createRuleset(Map rulesetParams) {
-    SerialRuleset ruleset = new SerialRuleset(rulesetParams).save(flush:true, failOnError: true);
-    return ruleset;
-  }
+  SerialRuleset updateRulesetStatus(String rulesetId, String rulesetStatus) {
+    final RefdataValue updatedStatus = SerialRuleset.lookupRulesetStatus(rulesetStatus)
+    SerialRuleset ruleset = SerialRuleset.findById(rulesetId)
 
-  public void deprecateRuleset(rulesetId) {
-    final RefdataValue deprecatedStatus = SerialRuleset.lookupRulesetStatus('deprecated')
-    SerialRuleset activeRuleset = SerialRuleset.findById(activeRulesetId)
-    bindData(activeRuleset, [rulesetStatus: deprecatedStatus])
-    updateResource activeRuleset
+    ruleset.rulesetStatus = updatedStatus
+    ruleset.save(flush: true, failOnError: true)
+
+    return ruleset
   }
 }

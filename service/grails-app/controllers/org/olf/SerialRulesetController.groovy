@@ -24,14 +24,45 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
     super(SerialRuleset)
   }
 
+  def draftRuleset() {
+    String serialRulesetId = params.get("serialRulesetId")
+    SerialRuleset ruleset = serialRulesetService.updateRulesetStatus(serialRulesetId, 'draft')
+
+    respond ruleset
+  }
+
+  def deprecateRuleset() {
+    String serialRulesetId = params.get("serialRulesetId")
+    SerialRuleset ruleset = serialRulesetService.updateRulesetStatus(serialRulesetId, 'deprecated')
+
+    respond ruleset
+  }
+
+  def activateRuleset() {
+    String serialRulesetId = params.get("serialRulesetId") 
+    SerialRuleset ruleset = SerialRuleset.findById(serialRulesetId)
+
+    String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
+    if(activeRulesetId){
+      serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
+    }
+
+    SerialRuleset result = serialRulesetService.updateRulesetStatus(serialRulesetId, 'active')
+    respond result
+  }
+
+
+
   def save() {
     def data = getObjectToBind()
-    if(data?.rulesetStatus?.value == 'active'){
-      String activeRulesetId = serialRulesetService.findActive(data?.owner?.id)
+    SerialRuleset ruleset = new SerialRuleset(data)
+    if(ruleset?.rulesetStatus?.value == 'active'){
+      String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
       if(activeRulesetId){
-        serialRulesetService.deprecateRuleset(activeRulesetId)
+        serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
       }
     }
-    respond serialRulesetService.createRuleset(data)
+    ruleset.save(flush: true, failOnError: true)
+    respond ruleset
   }
 }

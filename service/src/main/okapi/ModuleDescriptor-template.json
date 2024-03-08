@@ -90,14 +90,26 @@
           "methods": ["POST"],
           "pathPattern": "/serials-management/rulesets",
           "permissionsRequired": [ "serials-management.rulesets.edit" ]
-        },{
-          "methods": ["PUT"],
-          "pathPattern": "/serials-management/rulesets/{id}",
-          "permissionsRequired": [ "serials-management.rulesets.edit" ]
-        },{
+        },
+        {
           "methods": ["DELETE"],
           "pathPattern": "/serials-management/rulesets/{id}",
           "permissionsRequired": [ "serials-management.rulesets.manage" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/rulesets/{id}/active",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/rulesets/{id}/deprecated",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/serials-management/rulesets/{id}/draft",
+          "permissionsRequired": [ "serials-management.rulesets.edit" ]
         },
         {
           "methods": ["GET"],
