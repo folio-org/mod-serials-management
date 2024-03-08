@@ -434,6 +434,96 @@ paths:
                 $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
+  /serials-management/rulesets/{uuid}/activate:
+    post:
+      summary: Activate a ruleset
+      operationId: activateRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be activated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}/deprecate:
+    post:
+      summary: Deprecate a ruleset
+      operationId: depricateRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be deprecated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}/draft:
+    post:
+      summary: Make a ruleset a draft
+      operationId: draftRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be made a draft
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
   /serials-management/predictedPieces:
     get:
       summary: Get a set of predicted piece sets
@@ -1173,4 +1263,3 @@ components:
           type: integer
         totalRecords:
           type: integer
-
