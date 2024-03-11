@@ -10,6 +10,8 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
+import org.springframework.validation.Errors
+
 import groovy.sql.Sql
 
 
@@ -58,6 +60,11 @@ class Serial implements MultiTenant<Serial> {
     dateCreated nullable: true
     serialStatus nullable: true
     description nullable: true
-    serialRulesets nullable: true
+    serialRulesets nullable: true, validator: { Collection<SerialRuleset> s_rulesets, _obj, Errors errors ->
+      int activeCount = ((s_rulesets?.findAll({ SerialRuleset ruleset -> ruleset.rulesetStatus.value == 'active' })?.size()) ?: 0)
+      if (activeCount > 1) {
+        errors.rejectValue('serialRulesets', 'only.one.active.ruleset', [activeCount] as Object[], 'Incorrect ruleset statuses')
+      }
+    }
   }   
 }

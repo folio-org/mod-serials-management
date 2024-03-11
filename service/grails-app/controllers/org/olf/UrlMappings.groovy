@@ -11,11 +11,14 @@ class UrlMappings {
       }
     }
 
-    "/serials-management/settings/appSettings" (resources: 'setting');
-
     "/serials-management/serials" (resources: 'serial')
 
-    "/serials-management/rulesets" (resources: 'serialRuleset')
+    "/serials-management/rulesets" (resources: 'serialRuleset'){
+      
+      '/active' (controller: 'serialRuleset', action: 'activateRuleset', method: 'POST')
+      '/deprecated' (controller: 'serialRuleset', action: 'deprecateRuleset', method: 'POST')
+      '/draft' (controller: 'serialRuleset', action: 'draftRuleset', method: 'POST')
+    }
 
     "/serials-management/predictedPieces" (resources: 'predictedPieceSet') {
       collection {
