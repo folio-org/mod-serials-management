@@ -105,7 +105,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RefDataCategory'
-        description: requestBody description
         required: true
       responses:
         '200':
@@ -282,7 +281,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Serial'
-        description: requestBody description
         required: true
       responses:
         '200':
@@ -434,6 +432,96 @@ paths:
                 $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
+  /serials-management/rulesets/{uuid}/active:
+    post:
+      summary: Activate a ruleset
+      operationId: activateRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be activated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}/deprecated:
+    post:
+      summary: Deprecate a ruleset
+      operationId: depricateRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be deprecated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}/draft:
+    post:
+      summary: Make a ruleset a draft
+      operationId: draftRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset to be made a draft
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
   /serials-management/predictedPieces:
     get:
       summary: Get a set of predicted piece sets
@@ -484,6 +572,39 @@ paths:
           description: Bad request error
         '403':
           description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    put:
+      summary: Update predicted piece set
+      operationId: putPredictedPieceSet
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the predicted piece set to be put
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictedPieceSet'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictedPieceSet'
+        '400':
+          description: Bad request error
         '404':
           description: Not found error
           content:
@@ -1173,4 +1294,3 @@ components:
           type: integer
         totalRecords:
           type: integer
-
