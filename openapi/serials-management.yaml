@@ -105,7 +105,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RefDataCategory'
-        description: requestBody description
         required: true
       responses:
         '200':
@@ -282,7 +281,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Serial'
-        description: requestBody description
         required: true
       responses:
         '200':
@@ -574,6 +572,39 @@ paths:
           description: Bad request error
         '403':
           description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    put:
+      summary: Update predicted piece set
+      operationId: putPredictedPieceSet
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the predicted piece set to be put
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictedPieceSet'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictedPieceSet'
+        '400':
+          description: Bad request error
         '404':
           description: Not found error
           content:
