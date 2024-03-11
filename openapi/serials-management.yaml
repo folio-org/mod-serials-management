@@ -434,7 +434,7 @@ paths:
                 $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
-  /serials-management/rulesets/{uuid}/activate:
+  /serials-management/rulesets/{uuid}/active:
     post:
       summary: Activate a ruleset
       operationId: activateRuleset
@@ -464,7 +464,7 @@ paths:
           description: Forbidden
         '500':
           description: Internal server error
-  /serials-management/rulesets/{uuid}/deprecate:
+  /serials-management/rulesets/{uuid}/deprecated:
     post:
       summary: Deprecate a ruleset
       operationId: depricateRuleset
