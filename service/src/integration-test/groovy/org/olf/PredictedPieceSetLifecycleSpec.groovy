@@ -243,7 +243,7 @@ class PredictedPieceLifecycleSpec extends BaseSpec {
     when: "We ask the system to generate predicted pieces"
       List respList = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
-        recurrence: ruleset_data.recurrence.year_date,
+        recurrence: ruleset_data.recurrence.yearDate,
         templateConfig: ruleset_data.templateConfig,
         owner:[
           id: serialId
