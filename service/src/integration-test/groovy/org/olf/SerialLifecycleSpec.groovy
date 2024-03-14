@@ -35,6 +35,10 @@ class SerialLifecycleSpec extends BaseSpec {
   @Shared
   String serialId
 
+  @Shared
+  Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data.json"))
+
+
   void "List Current Serials"() {
 
     when:"We ask the system to list known Serials"
@@ -67,33 +71,17 @@ class SerialLifecycleSpec extends BaseSpec {
     when: "Post to create new ruleset with daily recurrence"
       log.debug("Create new rulset");
 
-      Map respMap = doPost("/serials-management/rulesets", {
-        rulesetStatus {
-          value "active"
-        }
-        recurrence {
-          timeUnit {
-            value "month"
-          }
-          period "1"
-          issues "1"
-          rules([
-            {
-              ordinal "1"
-              pattern {
-                day "1"
-              }
-              patternType "month_date"
-            }
-          ])
-        }
-      templateConfig {
-        templateString "Test Template"
-      }
-      owner {
-        id "${serialId}"
-      }
-    })
+      def respMap = doPost("/serials-management/rulesets", [
+        rulesetStatus: ruleset_data.rulesetStatus.active,
+        recurrence: ruleset_data.recurrence.day,
+        templateConfig:[
+          templateString: "123"
+        ],
+        owner:[
+          id: serialId
+        ],
+        patternType: "day"
+      ]);
     
     then: "Response is good and we have a new ID"
       respMap.id != null

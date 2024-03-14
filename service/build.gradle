@@ -40,6 +40,7 @@ apply plugin: "eclipse"
 apply plugin: 'eclipse-wtp'
 apply plugin: "idea"
 //apply plugin:"war"
+apply plugin: 'jacoco'
 apply plugin: "org.grails.grails-web"
 apply plugin: "org.grails.plugins.views-json"
 apply plugin: 'com.bmuschko.docker-remote-api'
@@ -378,5 +379,43 @@ eclipse {
 				entries << lib
 			}
 		}
+	}
+
+	jacoco {
+		toolVersion = "0.8.8"
+	}
+
+	test {
+    jacoco {
+        // append = false
+        destinationFile = file("$buildDir/jacoco/integrationTest.exec")
+        // classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+	}
+
+	// Use ./gradlew clean build jacocoTestReport
+	jacocoTestReport {
+		// See https://github.com/grails/grails-core/issues/11318
+		// executionData test, integrationTest
+		executionData(files tasks.withType(Test)*.jacoco*.destinationFile.findAll { it.exists() })
+		// executionData = files tasks.withType(Test)*.jacoco*.destinationFile.findAll { it.exists() } tasks.withType(IntegrationTest)*.jacoco*.destinationFile.findAll { it.exists() }
+
+		println("execution data : ${executionData}");
+		reports {
+			xml.enabled true
+			html.enabled true
+			csv.enabled true
+		}
+		afterEvaluate {
+			classDirectories.setFrom(files(classDirectories.files.collect {
+					fileTree(dir: it,
+									exclude: ['**/Application**',
+														'**/BootStrap**',
+														'**/**gson**',
+														'**/**closure**',
+														'**/UrlMappings**'])
+			}))
+		}
+		dependsOn test, integrationTest
 	}
 }
