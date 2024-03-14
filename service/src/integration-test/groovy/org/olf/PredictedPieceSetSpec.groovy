@@ -1,26 +1,10 @@
 package org.olf
 
-import static groovyx.net.http.ContentTypes.*
-import static groovyx.net.http.HttpBuilder.configure
-import static org.springframework.http.HttpStatus.*
-
-import com.k_int.okapi.OkapiHeaders
-import com.k_int.okapi.OkapiTenantResolver
-import geb.spock.GebSpec
-import grails.gorm.multitenancy.Tenants
 import grails.testing.mixin.integration.Integration
 import groovy.json.JsonSlurper
-import groovyx.net.http.ChainedHttpConfig
-import groovyx.net.http.FromServer
-import groovyx.net.http.HttpBuilder
-import groovyx.net.http.HttpVerb
-import java.time.LocalDate
 import spock.lang.Stepwise
-import spock.lang.Unroll
 import spock.lang.Shared
 
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile
 import org.springframework.beans.factory.annotation.Value;
 
 import groovy.util.logging.Slf4j
@@ -28,7 +12,7 @@ import groovy.util.logging.Slf4j
 @Slf4j
 @Integration
 @Stepwise
-class PredictedPieceLifecycleSpec extends BaseSpec {
+class PredictedPieceSpec extends BaseSpec {
   @Value('${local.server.port}')
   Integer serverPort
 
@@ -254,6 +238,32 @@ class PredictedPieceLifecycleSpec extends BaseSpec {
 
     then: "Ensure that the first issue in week '1' of month '1' has been combined with the second"
       respList.size() == 1
+  }
+
+  void "Crete predicted pieces"() {
+    when: "We ask the system to create a ruleset"
+      Map respMap = doPost("/serials-management/rulesets", [
+        rulesetStatus: ruleset_data.rulesetStatus.active,
+        recurrence: ruleset_data.recurrence.yearDate,
+        templateConfig: ruleset_data.templateConfig,
+        owner:[
+          id: serialId
+        ],
+        patternType: "year_date",
+        startDate: startDate
+      ])
+
+    then: "Ensure that response is ok and we have a new ruleset"
+      respMap.id != null
+
+    when: "We ask the system to create a predicted piece set based off the previous ruleset"
+      respMap = doPost("/serials-management/predictedPieces/create", [
+        id: respMap.id,
+        startDate: startDate
+      ])
+
+    then: "Ensure that response is ok and we have a new predicted piece set"
+      respMap.id != null
   }
 }
 

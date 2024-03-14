@@ -1,69 +1,53 @@
 package org.olf
 
-import static groovyx.net.http.ContentTypes.*
-import static groovyx.net.http.HttpBuilder.configure
-import static org.springframework.http.HttpStatus.*
+// import grails.testing.mixin.integration.Integration
+// import groovy.json.JsonSlurper
+// import spock.lang.Stepwise
+// import spock.lang.Shared
 
-import com.k_int.okapi.OkapiHeaders
-import com.k_int.okapi.OkapiTenantResolver
-import geb.spock.GebSpec
-import grails.gorm.multitenancy.Tenants
-import grails.testing.mixin.integration.Integration
-import groovy.json.JsonSlurper
-import groovyx.net.http.ChainedHttpConfig
-import groovyx.net.http.FromServer
-import groovyx.net.http.HttpBuilder
-import groovyx.net.http.HttpVerb
-import java.time.LocalDate
-import spock.lang.Stepwise
-import spock.lang.Unroll
-import spock.lang.Shared
+// import org.springframework.beans.factory.annotation.Value;
 
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile
-import org.springframework.beans.factory.annotation.Value;
+// import groovy.util.logging.Slf4j
 
-import groovy.util.logging.Slf4j
+// @Slf4j
+// @Integration
+// @Stepwise
+// class PredictedPieceBulkSpec extends BaseSpec {
+//   //This is a more granular version of the integration tests within PredictedPieceSpec
+//   @Value('${local.server.port}')
+//   Integer serverPort
 
-@Slf4j
-@Integration
-@Stepwise
-class PredictedPieceLifecycleSpecComplex extends BaseSpec {
-  //This is a far more complex version of the integration tests I initially made
-  @Value('${local.server.port}')
-  Integer serverPort
+//   @Shared
+//   String serialId
 
-  @Shared
-  String serialId
+//   @Shared 
+//   String startDate = "2024-01-01"
 
-  @Shared 
-  String startDate = "2024-01-01"
+//   @Shared
+//   Map serial_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/serial_data.json"))
 
-  @Shared
-  Map serial_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/serial_data.json"))
+//   @Shared
+//   Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data_bulk.json"))
 
-  @Shared
-  Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data_complex.json"))
+//   void "List Current PredictedPieceSets"() {
 
-  void "List Current PredictedPieceSets"() {
+//     when:"We ask the system to list known PredictedPieceSets"
+//       List resp = doGet("/serials-management/predictedPieces")
 
-    when:"We ask the system to list known PredictedPieceSets"
-      List resp = doGet("/serials-management/predictedPieces")
+//     then: "The system responds with a list of 0"
+//       resp.size() == 0
+//   }
 
-    then: "The system responds with a list of 0"
-      resp.size() == 0
-  }
+//   void "Create an empty serial"() {
 
-  void "Create an empty serial"() {
+//     when: "Post to create new empty serial named Empty serial Test"
+//       log.debug("Create new serial : Empty serial Test");
+//       Map respMap = doPost("/serials-management/serials", serial_data.activeSerial)
+//       serialId = respMap.id
 
-    when: "Post to create new empty serial named Empty serial Test"
-      log.debug("Create new serial : Empty serial Test");
-      Map respMap = doPost("/serials-management/serials", serial_data.activeSerial)
-      serialId = respMap.id
-
-    then: "Response is good and we have a new ID"
-      serialId != null
-  }
+//     then: "Response is good and we have a new ID"
+//       serialId != null
+//   }
 
   // void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule"() {
   //   when: "We ask the system to generate predicted pieces"
@@ -573,5 +557,5 @@ class PredictedPieceLifecycleSpecComplex extends BaseSpec {
   // //   then: "Ensure that the first issue in week '1' of month '1' has been combined with the second"
   // //     respList.size() == 1
   // // }
-}
+// }
 

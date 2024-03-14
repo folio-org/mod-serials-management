@@ -30,20 +30,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   // This takes in a JSON shape and outputs predicted pieces without saving domain objects
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
-
     SerialRuleset ruleset = new SerialRuleset(data)
-
-    if(ruleset?.templateConfig?.rules?.size()){
-      for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
-        if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
-          for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
-              ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
-            }
-          }
-        }
-      }
-    }
 
     ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     respond result
@@ -52,18 +39,6 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
-
-    if(ruleset?.templateConfig?.rules?.size()){
-      for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
-        if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
-          for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
-              ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
-            }
-          }
-        }
-      }
-    }
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
 

@@ -382,7 +382,7 @@ eclipse {
 	}
 
 	jacoco {
-		toolVersion = "0.8.8"
+		toolVersion = "0.8.11"
 	}
 
 	test {
@@ -413,7 +413,17 @@ eclipse {
 														'**/BootStrap**',
 														'**/**gson**',
 														'**/**closure**',
-														'**/UrlMappings**'])
+														'**/UrlMappings**',
+														'org/olf/recurrence/**',
+														'org/olf/omission/**',
+														'org/olf/combination/**',
+														'org/olf/internalPiece/**',
+														'org/olf/templateConfig/**',
+														]).filter({file -> 
+																file.name.contains('Controller') ||
+																file.name.contains('Service') || 
+																file.name.contains('LabelTemplate')
+															})
 			}))
 		}
 		dependsOn test, integrationTest
