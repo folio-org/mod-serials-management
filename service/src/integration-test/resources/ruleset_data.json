@@ -441,6 +441,7 @@
                 "sequence": {
                   "value": "continuous"
                 },
+                "startingValue": 2,
                 "index": 0
               },
               {

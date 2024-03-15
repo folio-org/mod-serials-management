@@ -173,6 +173,8 @@ public class PieceGenerationService {
               }
               break;
             // We dont think default case will be hit, but here for safety
+            // As of version 1.0.0 the default case cannot be hit and therefore cannot be tested
+            // Its being kept here as a for potential future combinations work
             default:
               Set<InternalRecurrencePiece> superCombinedPieces = [currentPiece]
               parentCombinationPieces.each { pcp ->
