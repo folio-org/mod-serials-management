@@ -1,0 +1,496 @@
+{
+  "rulesetStatus": {
+    "active": {
+      "value": "active"
+    },
+    "deprecated": {
+      "value": "deprecated"
+    },
+    "draft": {
+      "value": "draft"
+    }
+  },
+  "recurrence": {
+    "day": {
+      "timeUnit": {
+        "value": "day"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "ordinal": "1",
+          "pattern": {},
+          "patternType": "day"
+        }
+      ]
+    },
+    "week": {
+      "timeUnit": {
+        "value": "week"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "weekday": {
+              "value": "monday"
+            }
+          },
+          "ordinal": "1",
+          "patternType": "week"
+        }
+      ]
+    },
+    "monthDate": {
+      "timeUnit": {
+        "value": "month"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "day": "1"
+          },
+          "ordinal": "1",
+          "patternType": "month_date"
+        }
+      ]
+    },
+    "monthWeekday": {
+      "timeUnit": {
+        "value": "month"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "weekday": {
+              "value": "monday"
+            },
+            "week": "1"
+          },
+          "ordinal": "1",
+          "patternType": "month_weekday"
+        }
+      ]
+    },
+    "yearDate": {
+      "timeUnit": {
+        "value": "year"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "day": "1",
+            "month": {
+              "value": "january"
+            }
+          },
+          "ordinal": "1",
+          "patternType": "year_date"
+        }
+      ]
+    },
+    "yearWeekday": {
+      "timeUnit": {
+        "value": "year"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "weekday": {
+              "value": "monday"
+            },
+            "week": "1"
+          },
+          "ordinal": "1",
+          "patternType": "year_weekday"
+        }
+      ]
+    },
+    "yearMonthWeekday": {
+      "timeUnit": {
+        "value": "year"
+      },
+      "period": "1",
+      "issues": "1",
+      "rules": [
+        {
+          "pattern": {
+            "weekday": {
+              "value": "monday"
+            },
+            "week": "1",
+            "month": {
+              "value": "january"
+            }
+          },
+          "ordinal": "1",
+          "patternType": "year_month_weekday"
+        }
+      ]
+    }
+  },
+  "omission": {
+    "rules": [
+      {
+        "timeUnit": {
+          "value": "day"
+        },
+        "patternType": "day_month",
+        "pattern": {
+          "day": "1",
+          "month": {
+            "value": "january"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "day"
+        },
+        "patternType": "day_week",
+        "pattern": {
+          "weekday": {
+            "value": "tuesday"
+          },
+          "week": "1"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "day"
+        },
+        "patternType": "day_week_month",
+        "pattern": {
+          "weekday": {
+            "value": "wednesday"
+          },
+          "week": "1",
+          "month": {
+            "value": "january"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "day"
+        },
+        "patternType": "day",
+        "pattern": {
+          "day": "1"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "day"
+        },
+        "patternType": "day_weekday",
+        "pattern": {
+          "weekday": {
+            "value": "tuesday"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "week"
+        },
+        "patternType": "week",
+        "pattern": {
+          "isRange": false,
+          "weekFrom": "5"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "week"
+        },
+        "patternType": "week",
+        "pattern": {
+          "weekFrom": "6",
+          "isRange": true,
+          "weekTo": "7"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "week"
+        },
+        "patternType": "week_month",
+        "pattern": {
+          "week": "1",
+          "month": {
+            "value": "march"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "month"
+        },
+        "patternType": "month",
+        "pattern": {
+          "monthFrom": {
+            "value": "april"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "month"
+        },
+        "patternType": "month",
+        "pattern": {
+          "monthFrom": {
+            "value": "may"
+          },
+          "isRange": true,
+          "monthTo": {
+            "value": "june"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue",
+        "pattern": {
+          "issue": "300"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue_week",
+        "pattern": {
+          "issue": "1",
+          "week": "50"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue_week_month",
+        "pattern": {
+          "issue": "1",
+          "week": "1",
+          "month": {
+            "value": "november"
+          }
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue_month",
+        "pattern": {
+          "issue": "1",
+          "month": {
+            "value": "october"
+          }
+        }
+      }
+    ]
+  },
+  "combination": {
+    "rules": [
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue",
+        "pattern": {
+          "issue": "1"
+        },
+        "issuesToCombine": "2"
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue",
+        "issuesToCombine": "2",
+        "pattern": {
+          "issue": "11"
+        }
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue_week_month",
+        "pattern": {
+          "issue": "1",
+          "week": "4",
+          "month": {
+            "value": "may"
+          }
+        },
+        "issuesToCombine": "2"
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue_month",
+        "pattern": {
+          "issue": "1",
+          "month": {
+            "value": "october"
+          }
+        },
+        "issuesToCombine": "2"
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue",
+        "pattern": {
+          "issue": "2"
+        },
+        "issuesToCombine": "2"
+      },
+      {
+        "timeUnit": {
+          "value": "issue"
+        },
+        "patternType": "issue",
+        "pattern": {
+          "issue": "10"
+        },
+        "issuesToCombine": "2"
+      }
+    ]
+  },
+  "templateConfig": {
+    "templateString": "123",
+    "rules": [
+      {
+        "templateMetadataRuleType": "chronology",
+        "ruleType": {
+          "templateMetadataRuleFormat": "chronology_date",
+          "ruleFormat": {
+            "weekdayFormat": {
+              "value": "slice_upper"
+            },
+            "monthDayFormat": {
+              "value": "ordinal"
+            },
+            "monthFormat": {
+              "value": "full"
+            },
+            "yearFormat": {
+              "value": "full"
+            }
+          }
+        },
+        "index": 0
+      },
+      {
+        "templateMetadataRuleType": "chronology",
+        "ruleType": {
+          "templateMetadataRuleFormat": "chronology_month",
+          "ruleFormat": {
+            "monthFormat": {
+              "value": "number"
+            },
+            "yearFormat": {
+              "value": "slice"
+            }
+          }
+        },
+        "index": 1
+      },
+      {
+        "templateMetadataRuleType": "chronology",
+        "ruleType": {
+          "templateMetadataRuleFormat": "chronology_year",
+          "ruleFormat": {
+            "yearFormat": {
+              "value": "full"
+            }
+          }
+        },
+        "index": 2
+      },
+      {
+        "templateMetadataRuleType": "enumeration",
+        "ruleType": {
+          "templateMetadataRuleFormat": "enumeration_numeric",
+          "ruleFormat": {
+            "levels": [
+              {
+                "units": "2",
+                "format": {
+                  "value": "number"
+                },
+                "sequence": {
+                  "value": "continuous"
+                },
+                "startingValue": 2,
+                "index": 0
+              },
+              {
+                "units": "2",
+                "format": {
+                  "value": "ordinal"
+                },
+                "sequence": {
+                  "value": "reset"
+                },
+                "index": 1
+              },
+              {
+                "units": "2",
+                "format": {
+                  "value": "roman"
+                },
+                "sequence": {
+                  "value": "reset"
+                },
+                "index": 2
+              }
+            ]
+          }
+        },
+        "index": 3
+      },
+      {
+        "templateMetadataRuleType": "enumeration",
+        "ruleType": {
+          "templateMetadataRuleFormat": "enumeration_textual",
+          "ruleFormat": {
+            "levels": [
+              {
+                "units": "2",
+                "value": "Friday",
+                "index": 0
+              },
+              {
+                "units": "2",
+                "value": "Monday",
+                "index": 1
+              }
+            ],
+            "refdataCategory": "Global.Weekday"
+          }
+        },
+        "index": 4
+      }
+    ]
+  }
+}
