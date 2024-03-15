@@ -1,0 +1,5 @@
+{ 
+  "activeSerial":{ "serialStatus": { "value": "active" }, "description": "Active serial"},
+  "deprecatedSerial":{ "serialStatus": { "value": "active" }, "description": "Active serial"},
+  "draftSerial":{ "serialStatus": { "value": "active" }, "description": "Active serial"}
+}

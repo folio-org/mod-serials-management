@@ -27,8 +27,7 @@ public class PieceLabellingService {
       return value.toString() // No escaping. Return as is.
     }
   })
-  .registerHelpers(StringHelpers)
-  .registerHelpers(LabelTemplateHelpers))
+  .registerHelpers(StringHelpers))
 
 
   // This needs to take in an individual piece and ooutput a String label

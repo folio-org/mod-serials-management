@@ -61,7 +61,7 @@ public class OmissionRuleHelpers {
 	}
 	
 	
-	public static Closure rulePatternValidator = { OmissionPattern value, OmissionRule instance, Errors err ->
+	public final static Closure rulePatternValidator = { OmissionPattern value, OmissionRule instance, Errors err ->
 		validateRulePattern( value, instance, err )
 	}
 	

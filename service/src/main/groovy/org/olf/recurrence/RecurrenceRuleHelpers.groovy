@@ -61,7 +61,7 @@ public class RecurrenceRuleHelpers {
 	}
 	
 	
-	public static Closure rulePatternValidator = { RecurrencePattern value, RecurrenceRule instance, Errors err ->
+	public final static Closure rulePatternValidator = { RecurrencePattern value, RecurrenceRule instance, Errors err ->
 		validateRulePattern( value, instance, err )
 	}
 	

@@ -27,25 +27,28 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     super(PredictedPieceSet)
   }
   PieceGenerationService pieceGenerationService
-  // This takes in a JSON shape and outputs predicted pieces without saving domain objects
-  def generatePredictedPiecesTransient() {
-    JSONObject data = request.JSON
 
-    SerialRuleset ruleset = new SerialRuleset(data)
-
+  // Starting values will be refactored soon so this is a placeholder to ensure they are passed through presently
+  private SerialRuleset handleStartingValues(SerialRuleset ruleset, JSONObject data){
     if(ruleset?.templateConfig?.rules?.size()){
-      for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
-        if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
-          for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
-              ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
+        for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
+          if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
+            for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
+              if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
+                ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
+              }
             }
           }
         }
       }
-    }
+    return ruleset  
+  }
+  // This takes in a JSON shape and outputs predicted pieces without saving domain objects
+  def generatePredictedPiecesTransient() {
+    JSONObject data = request.JSON
+    SerialRuleset ruleset = new SerialRuleset(data)
 
-    ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    ArrayList<InternalPiece> result = pieceGenerationService.createPiecesTransient(handleStartingValues(ruleset, data), LocalDate.parse(data.startDate))
     respond result
   }
 
@@ -53,19 +56,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
 
-    if(ruleset?.templateConfig?.rules?.size()){
-      for(int i=0;i<ruleset?.templateConfig?.rules?.size();i++){
-        if(ruleset?.templateConfig?.rules[i]?.ruleType?.templateMetadataRuleFormat?.value == 'enumeration_numeric'){
-          for(int j=0;j<ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels?.size();j++){
-            if(data?.templateConfig?.rules?.getAt(i)?.ruleType?.ruleFormat?.levels?.getAt(j)?.startingValue){
-              ruleset?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue = Integer.parseInt(data?.templateConfig?.rules[i]?.ruleType?.ruleFormat?.levels[j]?.startingValue)
-            }
-          }
-        }
-      }
-    }
-
-    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(handleStartingValues(ruleset, data), LocalDate.parse(data.startDate))
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,

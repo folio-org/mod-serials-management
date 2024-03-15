@@ -17,29 +17,6 @@ class RefdataController extends OkapiTenantAwareController<RefdataCategory> {
     super(RefdataCategory)
   }
   
-   def delete() {
-    def instance = queryForResource(params.id)
-    
-    // Not found.
-    if (instance == null) {
-      RefdataCategory.withTransaction { t ->
-        t.setRollbackOnly()
-      }
-      notFound()
-      return
-    }
-    
-    // Return invalid method if the status is disallowed 
-    if (instance.internal == true) {
-      render status: HttpStatus.METHOD_NOT_ALLOWED.value()
-      return
-    }
-    
-    deleteResource instance
-
-    render status: HttpStatus.NO_CONTENT
-  }
-
   def lookup (String domain, String property) {
     def c = DomainUtils.resolveDomainClass(domain)?.javaClass
     def cat = c ? GrailsDomainRefdataHelpers.getCategoryString(c, property) : null

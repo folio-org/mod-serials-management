@@ -36,7 +36,8 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew --refresh-dependencies clean buildImage
+          ./gradlew --refresh-dependencies clean buildImage jacocoTestReport
+          ls ./build/test-results/integrationTest/*
 
       - name: Stop containers
         run: |
@@ -51,6 +52,9 @@ jobs:
           path: |
             service/build/test-results/**/*.xml
             service/build/spock-reports/*.html
+            service/build/reports/jacoco/test/**/*.html
+            service/build/reports/jacoco/test/**/*.csv
+            service/build/reports/jacoco/test/**/*.xml
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -58,3 +62,4 @@ jobs:
         with:
           files: |
             service/build/test-results/**/*.xml
+
