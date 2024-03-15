@@ -62,7 +62,7 @@ public class CombinationRuleHelpers {
 	}
 	
 	
-	public static Closure rulePatternValidator = { CombinationPattern value, CombinationRule instance, Errors err ->
+	public final static Closure rulePatternValidator = { CombinationPattern value, CombinationRule instance, Errors err ->
 		validateRulePattern( value, instance, err )
 	}
 	

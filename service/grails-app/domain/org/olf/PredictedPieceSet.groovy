@@ -4,10 +4,16 @@ import org.olf.recurrence.Recurrence
 import org.olf.internalPiece.InternalPiece
 
 import java.time.LocalDate
+
+import javax.persistence.Transient
+
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
+import grails.gorm.multitenancy.Tenants
+
 import org.hibernate.Session
 import org.hibernate.internal.SessionImpl
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -51,5 +57,18 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     startDate nullable: false
     pieces nullable: false
     ruleset nullable: false
-  }   
+  }
+
+  @Transient
+  public String getTitle() {
+    Tenants.withCurrent {
+      String title = (SerialOrderLine.executeQuery("""
+        SELECT title FROM SerialOrderLine sol
+        WHERE sol.owner.id = :owner
+        """,
+        [owner: ruleset?.owner?.id]
+      ) ?: [])[0];
+      return title;
+    }
+  }
 }
