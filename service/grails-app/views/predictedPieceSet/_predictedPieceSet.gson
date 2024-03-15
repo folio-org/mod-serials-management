@@ -10,4 +10,8 @@ def should_expand = [
 
 @Field PredictedPieceSet predictedPieceSet
 
-json g.render(predictedPieceSet, [expand: should_expand])
+json g.render(predictedPieceSet, [expand: should_expand]){
+
+  title predictedPieceSet.getTitle()
+
+}
