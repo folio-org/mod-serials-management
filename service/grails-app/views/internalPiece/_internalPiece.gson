@@ -2,5 +2,7 @@ import groovy.transform.*
 import org.olf.internalPiece.InternalPiece
 import groovy.transform.Field
 
+def should_expand = ['receivingPieces']
+
 @Field InternalPiece internalPiece
-json g.render(internalPiece)
+json g.render(internalPiece, [expand: should_expand])
