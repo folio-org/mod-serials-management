@@ -220,7 +220,7 @@ class PredictedPieceSpec extends BaseSpec {
 
     then: "Ensure all combined issues exist"
       List combinedItems = respList.findAll(p -> p?.combinationOrigins)
-      combinedItems.size == 4
+      combinedItems.size() == 4
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year' recurrence rule and all template config rules"() {
