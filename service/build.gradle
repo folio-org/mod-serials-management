@@ -5,8 +5,7 @@
 
 buildscript {
 	repositories {
-		// FIXME COMMENT THIS
-		mavenLocal()
+		//mavenLocal()
 		mavenCentral()
 		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url "https://repo.grails.org/grails/core" }
@@ -61,8 +60,7 @@ bootJar {
 }
 
 repositories {
-	//FIXME COMMENT THIS
-	mavenLocal()
+	//mavenLocal()
 	mavenCentral()
 	maven { url "https://repo.grails.org/grails/core" }
 	maven { url "https://repo.grails.org/grails/plugins" }
@@ -108,7 +106,7 @@ dependencies {
 	implementation("org.grails.plugins:async")
   implementation("org.grails.plugins:events")
   implementation("org.grails.plugins:hibernate5")
-  implementation("org.grails.plugins:spring-security-core:6.1.1") // FIXME NOT IN LINE WITH GRAILS PATCH VERSION
+  implementation("org.grails.plugins:spring-security-core:6.1.1") // NOT IN LINE WITH GRAILS PATCH VERSION
   implementation("org.grails.plugins:views-json")
   implementation("org.grails.plugins:views-json-templates")
   implementation("org.hibernate:hibernate-core:5.6.15.Final")
@@ -128,11 +126,8 @@ dependencies {
   //testImplementation("io.micronaut:micronaut-http-client")
 
 	/*  ---- Manually installed dependencies ---- */
-  // FIXME use released version
-	implementation 'com.k_int.grails:web-toolkit-ce:8.1.5-SNAPSHOT'
-	//implementation 'com.k_int.okapi:grails-okapi:6.0.0-rc.4'
-	// FIXME Use released version
-	implementation('com.k_int.okapi:grails-okapi:6.0.0-SNAPSHOT') {
+	implementation 'com.k_int.grails:web-toolkit-ce:9.0.0'
+	implementation('com.k_int.okapi:grails-okapi:7.0.0') {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
   }
 	
