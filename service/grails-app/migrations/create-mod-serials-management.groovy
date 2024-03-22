@@ -1352,4 +1352,15 @@ databaseChangeLog = {
       column(name: "ip_receiving_id", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20240301-1227-001"){
+    createTable(tableName: "receiving_piece") {
+      column(name: "recp_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "recp_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "recp_date_created", type: "timestamp")
+      column(name: "recp_last_updated", type: "timestamp")
+      column(name: "recp_receiving_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "recp_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
 }

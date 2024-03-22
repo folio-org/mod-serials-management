@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.internalPiece.ReceivingPiece
+import groovy.transform.Field
+
+@Field ReceivingPiece receivingPiece
+json g.render(receivingPiece, ['excludes': ['owner']])

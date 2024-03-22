@@ -16,6 +16,13 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
 
  	static belongsTo = [ owner: PredictedPieceSet ]
 
+  static mappedBy = [
+    receivingPieces: 'owner'
+  ]
+
+  static hasMany = [
+    receivingPieces: ReceivingPiece
+  ]
 
   static mapping = {
     id column: 'ip_id', generator: 'uuid2', length: 36
