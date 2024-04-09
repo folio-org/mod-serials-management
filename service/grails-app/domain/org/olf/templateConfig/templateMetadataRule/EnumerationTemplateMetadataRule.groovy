@@ -42,6 +42,8 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
   public static EnumerationTemplateMetadata handleType(TemplateMetadataRule rule, LocalDate date, int index) {
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
     String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    println(ruleFormatClassString)
+    println(rule?.index)
     Class<? extends TemplateMetadataRuleFormat> rfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")
     return rfc.handleFormat(rule, date, index)
   }

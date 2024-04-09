@@ -207,10 +207,6 @@ public class PieceGenerationService {
       }
     }
     
-    if (!!ruleset?.templateConfig) {
-      pieceLabellingService.setLabelsForInternalPieces(internalPieces, ruleset?.templateConfig)
-    }
-
     return internalPieces
   }
 }

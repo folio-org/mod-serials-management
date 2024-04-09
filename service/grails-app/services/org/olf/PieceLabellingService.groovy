@@ -31,13 +31,15 @@ public class PieceLabellingService {
 
 
   // This needs to take in an individual piece and ooutput a String label
-  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) { 
+  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, Map startingValues) { 
     Template template = hte.createTemplate(templateConfig.templateString);
     // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
 
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
-    ArrayList<ChronologyTemplateMetadata> chronologyArray = generateChronologyMetadata(standardTM, templateConfig.rules)
-    ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, templateConfig.rules)
+    // Having to enforce a sort here
+    Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
+    ArrayList<ChronologyTemplateMetadata> chronologyArray = generateChronologyMetadata(standardTM, sortedRules)
+    ArrayList<EnumerationTemplateMetadata> enumerationArray = generateEnumerationMetadata(standardTM, sortedRules, startingValues)
 
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
@@ -51,12 +53,12 @@ public class PieceLabellingService {
     }
   }
 
-  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig) {
+  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, Map startingValues) {
     ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
       if(currentPiece instanceof InternalRecurrencePiece || currentPiece instanceof InternalCombinationPiece){
-        String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig)
+        String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig, startingValues)
         currentPiece.label = label
         currentPiece.templateString = templateConfig?.templateString
       }
@@ -153,7 +155,7 @@ public class PieceLabellingService {
     return chronologyTemplateMetadataArray
   }
 
-  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules) {
+  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules, Map startingValues) {
     ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
     Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     while(iterator?.hasNext()){
