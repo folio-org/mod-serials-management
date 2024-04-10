@@ -31,7 +31,7 @@ public class PieceLabellingService {
 
 
   // This needs to take in an individual piece and ooutput a String label
-  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, Map startingValues) { 
+  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, List<Map> startingValues) { 
     Template template = hte.createTemplate(templateConfig.templateString);
     // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
 
@@ -53,7 +53,7 @@ public class PieceLabellingService {
     }
   }
 
-  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, Map startingValues) {
+  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, List<Map> startingValues) {
     ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
@@ -155,7 +155,7 @@ public class PieceLabellingService {
     return chronologyTemplateMetadataArray
   }
 
-  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules, Map startingValues) {
+  public ArrayList<EnumerationTemplateMetadata> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules, List<Map> startingValues) {
     ArrayList<EnumerationTemplateMetadata> enumerationTemplateMetadataArray = []
     Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     while(iterator?.hasNext()){
@@ -163,7 +163,8 @@ public class PieceLabellingService {
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+        Map ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)
+        EnumerationTemplateMetadata enumerationTemplateMetadata = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         enumerationTemplateMetadataArray << enumerationTemplateMetadata
       }
