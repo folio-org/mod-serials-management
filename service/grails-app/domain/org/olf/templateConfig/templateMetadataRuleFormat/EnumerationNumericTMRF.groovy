@@ -53,15 +53,14 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     return roman 
   }  
 
-  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
+  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index, Map startingValues){
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     ArrayList<EnumerationTemplateMetadataLevel> result = []
     Integer adjustedIndex = 0
     Integer divisor = 1
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
-
-      if(enltmrfArray[i]?.startingValue !== null){
-        adjustedIndex = adjustedIndex + ((enltmrfArray[i]?.startingValue - 1)*divisor)
+      if(startingValues?.levels?.getAt(i)?.value !== null){
+        adjustedIndex = adjustedIndex + ((startingValues?.levels.getAt(i)?.value as Integer - 1)*divisor)
       }
 
       Integer value = 0
