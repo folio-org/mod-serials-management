@@ -115,6 +115,11 @@
           "methods": ["POST"],
           "pathPattern": "/serials-management/predictedPieces/create",
           "permissionsRequired": [ "serials-management.predictedPieces.edit" ]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/serials-management/locales",
+          "permissionsRequired": [ "serials-management.refdata.collection.get" ]
         }
       ]
     },
