@@ -8,6 +8,8 @@ import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import java.util.Locale
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -77,28 +79,21 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
 		]
    
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
+    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
     ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
     // TODO Dont handle if not a chronology rule
-		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value)))
+		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value), locale))
 		if(tmrf?.weekdayFormat?.value.endsWith('upper')){
 			weekday = weekday.toUpperCase()
 		}
 
-    // FIXME IMPLEMENT THIS PROPERLY
-    Set<Locale> allLanguages = new HashSet<Locale>();
-    String[] languages = Locale.getISOLanguages();
-    for (int i = 0; i < languages.length; i++){
-      Locale loc = new Locale(languages[i]);
-      allLanguages.add(loc);
-    }
-
-		String monthDay = date.format(DateTimeFormatter.ofPattern('d'))
+		String monthDay = date.format(DateTimeFormatter.ofPattern('d', locale))
 		if(tmrf?.monthDayFormat?.value == 'ordinal'){
 			monthDay = monthDay + getDayOfMonthSuffix(Integer.parseInt(monthDay))
 		}
 
-    String month = date.format(DateTimeFormatter.ofPattern(monthFormatTransform.get(tmrf?.monthFormat?.value)));
-  	String year = date.format(DateTimeFormatter.ofPattern(yearFormatTransform.get(tmrf?.yearFormat?.value)));
+    String month = date.format(DateTimeFormatter.ofPattern(monthFormatTransform.get(tmrf?.monthFormat?.value), locale));
+  	String year = date.format(DateTimeFormatter.ofPattern(yearFormatTransform.get(tmrf?.yearFormat?.value), locale));
 
   	return new ChronologyTemplateMetadata([weekday: weekday, monthDay: monthDay, month: month, year: year, templateMetadataRule: rule])
   }  
