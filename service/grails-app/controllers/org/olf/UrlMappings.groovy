@@ -10,6 +10,8 @@ class UrlMappings {
         "/$domain/$property" (controller: 'refdata', action: 'lookup', method: 'GET')
       }
     }
+    
+    "/serials-management/locales" (controller: 'locales', action: 'getLocales', method: 'GET')
 
     "/serials-management/serials" (resources: 'serial')
 
