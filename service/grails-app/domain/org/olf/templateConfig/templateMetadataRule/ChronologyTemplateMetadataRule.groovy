@@ -6,6 +6,7 @@ import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
 import java.util.regex.Pattern
 
 import java.time.LocalDate
+import java.util.Locale
 
 import grails.gorm.MultiTenant
 import grails.databinding.BindUsing
@@ -21,6 +22,8 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
   @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue templateMetadataRuleFormat
 
+  String ruleLocale = 'en'
+
   @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->
 		TemplateMetadataRuleTypeHelpers.doRuleFormatBinding(obj, source)
   })
@@ -33,11 +36,13 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
 
   static mapping = {
     templateMetadataRuleFormat column: 'ctmr_template_metadata_rule_format_fk'
+    ruleLocale column: 'ctmr_rule_locale'
     ruleFormat cascade: 'all-delete-orphan'
   }
 
   static constraints = {
     templateMetadataRuleFormat nullable: false
+    ruleLocale nullable: false
     ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
   }
 

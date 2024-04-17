@@ -27,13 +27,15 @@ public class ChronologyYearTMRF extends TemplateMetadataRuleFormat implements Mu
   }
 
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
+    println(rule)
+    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
 		ChronologyYearTMRF tmrf = rule?.ruleType?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',
    	]
 
-	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value));
+	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value), locale);
 
   	String year = date.format(yearFormatter);
 
