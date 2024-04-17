@@ -38,7 +38,7 @@ public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implement
     }
   }
 
-  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index){
+  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index, Map startingValues){
     String result = findResultIndex(rule, index + 1)
     return new EnumerationTemplateMetadata([value: result])
   }

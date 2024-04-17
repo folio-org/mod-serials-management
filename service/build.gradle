@@ -107,7 +107,10 @@ dependencies {
   implementation("org.grails.plugins:events")
   implementation("org.grails.plugins:hibernate5")
   implementation("org.grails.plugins:spring-security-core:6.1.1") // NOT IN LINE WITH GRAILS PATCH VERSION
-  implementation("org.grails.plugins:views-json")
+  // 5.8.9 affected by https://security.snyk.io/vuln/SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-6457293
+  implementation("org.springframework.security:spring-security-core:5.8.11")
+	
+	implementation("org.grails.plugins:views-json")
   implementation("org.grails.plugins:views-json-templates")
   implementation("org.hibernate:hibernate-core:5.6.15.Final")
 
@@ -127,7 +130,7 @@ dependencies {
 
 	/*  ---- Manually installed dependencies ---- */
 	implementation 'com.k_int.grails:web-toolkit-ce:9.0.0'
-	implementation('com.k_int.okapi:grails-okapi:7.0.0') {
+	implementation('com.k_int.okapi:grails-okapi:7.1.0') {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
   }
 	
@@ -136,16 +139,18 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-undertow" // Replaces spring-boot-starter-tomcat
 	implementation "org.hibernate:hibernate-java8"
 	runtimeOnly "com.zaxxer:HikariCP:5.1.0"                             // Replaces Tomcat JDBC pool
-	runtimeOnly "org.postgresql:postgresql:42.5.3"
+  runtimeOnly "org.postgresql:postgresql:42.7.3"
 	implementation ('org.grails.plugins:database-migration:4.2.1') {
 		exclude group: 'org.liquibase', module: 'liquibase-core'
 	}
 	implementation 'org.liquibase:liquibase-core:4.19.0'
 
 	implementation 'com.opencsv:opencsv:5.7.1'
-	implementation 'commons-io:commons-io:2.6'
-	implementation 'io.github.virtualdogbert:logback-groovy-config:1.14.1' // Grails 5 and up no longer supports groovy files for logback config
-	compileOnly 'ch.qos.logback:logback-classic:1.4.7'
+  implementation 'commons-io:commons-io:2.7'
+	implementation('io.github.virtualdogbert:logback-groovy-config:1.14.1')
+  compileOnly 'ch.qos.logback:logback-classic:1.4.7'
+  // Is on runtime classpath via spring-boot-starter
+  runtimeOnly 'ch.qos.logback:logback-classic:1.2.13'
 
 	/*  ---- Manually installed testing dependencies ---- */
 	/* implementation "org.grails:grails-gorm-testing-support:2.6.1"
@@ -161,8 +166,9 @@ dependencies {
   implementation 'com.github.jknack:handlebars-helpers:4.3.1'
 
 	/* ---- Custom non profile deps ---- */
-	implementation 'org.apache.kafka:kafka-clients:2.3.0'
-	implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.2'
+  implementation 'org.apache.kafka:kafka-clients:3.7.0'
+  implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
+
 	// Better test reports.
 	testImplementation( 'com.athaydes:spock-reports:2.3.2-groovy-3.0' ) {
 		transitive = false // this avoids affecting your version of Groovy/Spock

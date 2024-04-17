@@ -8,6 +8,8 @@ import grails.gorm.MultiTenant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import java.util.Locale
+
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
@@ -33,6 +35,7 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
   }
 
   public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
+    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
     ChronologyMonthTMRF tmrf = rule?.ruleType?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
@@ -45,8 +48,8 @@ public class ChronologyMonthTMRF extends TemplateMetadataRuleFormat implements M
       number: 'MM'
    	]
     
- 	  DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(getMonthFormat.get(tmrf?.monthFormat?.value));
-	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value));
+ 	  DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern(getMonthFormat.get(tmrf?.monthFormat?.value), locale);
+	  DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(getYearFormat.get(tmrf?.yearFormat?.value), locale);
 
     String month = date.format(monthFormatter);
   	String year = date.format(yearFormatter);
