@@ -290,6 +290,18 @@
       ]
     },
     {
+      "permissionName": "serials-management.serials.item.delete",
+      "displayName": "Serial item delete",
+      "description": "Delete a serial record"
+    },
+    {
+      "permissionName": "serials-management.serials.manage",
+      "subPermissions": [
+        "serials-management.serials.edit",
+        "serials-management.serials.item.delete"
+      ]
+    },
+    {
       "permissionName": "serials-management.rulesets.collection.get",
       "displayName": "Ruleset collection get",
       "description": "Get a collection of ruleset records"
@@ -333,7 +345,7 @@
       "permissionName": "serials-management.rulesets.manage",
       "subPermissions": [
         "serials-management.rulesets.edit",
-        "serials-management.rulesets.delete"
+        "serials-management.rulesets.item.delete"
       ]
     },
     {
@@ -380,7 +392,7 @@
       "permissionName": "serials-management.predictedPieceSets.manage",
       "subPermissions": [
         "serials-management.predictedPieceSets.edit",
-        "serials-management.predictedPieceSets.delete"
+        "serials-management.predictedPieceSets.item.delete"
       ]
     },
     {
