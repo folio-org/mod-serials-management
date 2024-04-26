@@ -1,3 +1,6 @@
+## 1.0.3 2024-04-26
+  * MODSER-35 Endpoints should be protected by fine-grained permissions
+
 ## 1.0.2 2024-04-26
   * MODSER-35 Endpoints should be protected by fine-grained permissions
 
