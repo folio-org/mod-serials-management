@@ -1,3 +1,6 @@
+## 1.0.2 2024-04-26
+  * MODSER-35 Endpoints should be protected by fine-grained permissions
+
 ## 1.0.1 2024-04-17
   * MODSER-34 Template does not always get data from labels or levels in the same order
   * MODSER-28 Update outdated/vulnerable dependencies
