@@ -1,12 +1,12 @@
-package org.olf.startingValue
+package org.olf.startingValueMetadata.startingValueMetadataFormat
 
-package org.olf.startingValue.startingValueMetadataFormat.StartingValueMetadataFormat
+import org.olf.startingValueMetadata.StartingValueMetadata
 
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
 
-public abstract class StartingValueMetadataFormat implements MultiTenant<StartingValues> {
+public abstract class StartingValueMetadataFormat implements MultiTenant<StartingValueMetadataFormat> {
   String id
   StartingValueMetadata owner
 

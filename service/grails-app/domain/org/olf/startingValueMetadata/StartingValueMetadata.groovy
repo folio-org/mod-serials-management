@@ -1,12 +1,14 @@
 package org.olf.startingValueMetadata
 
-package org.olf.startingValueMetadata.startingValueMetadataFormat.StartingValueMetadataFormat
+import org.olf.startingValueMetadata.startingValueMetadataFormat.StartingValueMetadataFormat
 
 import org.olf.PredictedPieceSet
 
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
+import grails.databinding.BindUsing
+import grails.databinding.SimpleMapDataBindingSource
 
 public class StartingValueMetadata implements MultiTenant<StartingValueMetadata> {
   String id
@@ -39,6 +41,6 @@ public class StartingValueMetadata implements MultiTenant<StartingValueMetadata>
     owner nullable: false
     index nullable: true
     startingValueMetadataFormat nullable: false
-    format nullable: false, validator: StartingValueMetadataFormatHelpers.ruleTypeValidator
+    format nullable: false, validator: StartingValueMetadataFormatHelpers.formatValidator
   }
 }

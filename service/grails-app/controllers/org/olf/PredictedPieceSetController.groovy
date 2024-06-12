@@ -6,6 +6,7 @@ import org.olf.PieceLabellingService
 import org.olf.Serial
 import org.olf.SerialRuleset
 import org.olf.PredictedPieceSet
+import org.olf.startingValueMetadata.StartingValueMetadata
 import org.olf.internalPiece.InternalPiece
 
 import com.k_int.okapi.OkapiTenantAwareController
@@ -34,7 +35,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = new SerialRuleset(data)
-    ArrayList<StartingValuesMetadata> startingValues = data?.startingValues ?: []
+    ArrayList<StartingValueMetadata> startingValues = data?.startingValues ?: []
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -45,7 +46,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
-    ArrayList<StartingValuesMetadata> startingValues = data?.startingValues ?: []
+    ArrayList<StartingValueMetadata> startingValues = data?.startingValues ?: []
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -54,8 +55,8 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       ruleset: ruleset,
       pieces: ips,
       note: data?.note,
-      startDate: data?.startDate
-      startingValues: startingvalues
+      startDate: data?.startDate,
+      startingValues: startingValues
     ]).save(flush: true, failOnError: true)
 
     respond pps
