@@ -6,22 +6,21 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-// TODO Rename to EnumerationLevelTemplateMetadata
-public class EnumerationTemplateMetadataLevel implements MultiTenant<EnumerationTemplateMetadataLevel> {
+public class EnumerationLevelUCTMT implements MultiTenant<EnumerationLevelUCTMT> {
   String id
   String value
-  Integer Index
+  Integer index
 
   static belongsTo = [
-    owner: EnumerationTemplateMetadata
+    owner: EnumerationUCTMT
   ]
 
   static mapping = {
-    id column: 'eltm_id', generator: 'uuid2', length: 36
-    owner column: 'eltm_owner_fk'
-    version column: 'eltm_version'
-    index column: 'eltm_index'
-    value column: 'eltm_value'
+    id column: 'euctmt_id', generator: 'uuid2', length: 36
+    owner column: 'euctmt_owner_fk'
+    version column: 'euctmt_version'
+    index column: 'euctmt_index'
+    value column: 'euctmt_value'
   }
 
   static constraints = {

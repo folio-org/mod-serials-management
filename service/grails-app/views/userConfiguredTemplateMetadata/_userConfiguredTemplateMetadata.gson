@@ -1,0 +1,17 @@
+import groovy.transform.*
+import org.olf.internalPiece.templateMetadata.UserConfiguredTemplateMetadata
+import org.olf.internalPiece.templateMetadata.UserConfiguredTemplateMetadataType
+import groovy.transform.Field
+import java.util.regex.Pattern
+
+def should_expand = [
+  'userConfiguredTemplateMetadataRuleType',
+]
+
+@Field UserConfiguredTemplateMetadata userConfiguredTemplateMetadata
+
+String metadataTypeClassString = Pattern.compile("_([a-z])").matcher(userConfiguredTemplateMetadata.userConfiguredTemplateMetadataType.value).replaceAll{match -> match.group(1).toUpperCase()}
+
+json g.render(userConfiguredTemplateMetadata, [excludes: ['owner', 'metadataType'], expand: should_expand]) {
+  'metadataType' g.render(template: "/userConfiguredTemplateMetadataType/${metadataTypeClassString}UCTMT", model: ['metadataType' : userConfiguredTemplateMetadata.metadataType])
+}

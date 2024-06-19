@@ -28,6 +28,10 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
 
   SerialRuleset ruleset
 
+  InternalPiece firstPiece
+
+  InternalPiece nextPiece
+
   String note
 
   static hasMany = [

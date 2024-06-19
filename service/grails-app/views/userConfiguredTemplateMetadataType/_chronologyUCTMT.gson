@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
+import groovy.transform.Field
+
+// Important that 'ChronologyUCTMT' is named 'metadataType' due to 'UserConfiguredTemplateMetadata' template
+
+def should_expand = []
+
+@Field ChronologyUCTMT metadataType
+
+json g.render(metadataType, [excludes: ['owner'], expand: should_expand])

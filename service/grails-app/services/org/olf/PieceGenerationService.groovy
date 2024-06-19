@@ -31,6 +31,13 @@ public class PieceGenerationService {
   // Used to change refdata values from underscored to camel case i.e "test_test" to "testTest"
   private static final Pattern RGX_REFDATA_VALUE = Pattern.compile('_([a-z])')
 
+  private static final Map<String, ChronoField> getTimeUnit = [
+      day: ChronoField.DAY_OF_YEAR,
+      week: ChronoField.ALIGNED_WEEK_OF_YEAR,
+      month: ChronoField.MONTH_OF_YEAR,
+      year: ChronoField.YEAR,
+  ]
+
   // This takes in a SerialRuleset and generates pieces without saving any domain objects
   public createPiecesTransient (SerialRuleset ruleset, LocalDate startDate) {
     ArrayList<InternalPiece> internalPieces = []
@@ -56,12 +63,12 @@ public class PieceGenerationService {
     Integer currentTimeUnitPeriod = 1
     LocalDate currentTimeUnit = startDate
 
-    Map<String, ChronoField> getTimeUnit = [
-      day: ChronoField.DAY_OF_YEAR,
-      week: ChronoField.ALIGNED_WEEK_OF_YEAR,
-      month: ChronoField.MONTH_OF_YEAR,
-      year: ChronoField.YEAR,
-    ]
+    // Map<String, ChronoField> getTimeUnit = [
+    //   day: ChronoField.DAY_OF_YEAR,
+    //   week: ChronoField.ALIGNED_WEEK_OF_YEAR,
+    //   month: ChronoField.MONTH_OF_YEAR,
+    //   year: ChronoField.YEAR,
+    // ]
 
     // TODO Potential refactor, mapping ordinal blocks outside of for loop?
     // TODO Potential new patterns, range of issues with time unit
@@ -83,8 +90,6 @@ public class PieceGenerationService {
       ruleset?.recurrence?.rules.each { rule ->
         // Iterating through recurrence rules, if the ordinal matches current time unit period then it is a valid date
         if (currentTimeUnitPeriod == rule?.ordinal && rpc.compareDate(rule, date)) {
-          // FIXME Remove date stuff above and DO NOT SAVE
-          // internalPieces << new InternalRecurrencePiece([date: date, recurrenceRule: rule]).save()
           internalPieces << new InternalRecurrencePiece([date: date, recurrenceRule: rule])
         }       
       }
@@ -114,8 +119,6 @@ public class PieceGenerationService {
             // Grab new internal omission piece
             iterator.previous()
             currentPiece = iterator.next()
-            // FIXME Do not save
-            // currentPiece.save(flush: true, failOnError: true)
           }
         }
       }
@@ -208,5 +211,42 @@ public class PieceGenerationService {
     }
     
     return internalPieces
+  }
+
+  public InternalPiece generateNextPiece (InternalPiece lastPiece, SerialRuleset ruleset) {
+    InternalPiece nextPiece = null
+    LocalDate date = lastPiece.date
+    Integer currentTimeUnitPeriod = 1
+    LocalDate currentTimeUnit = lastPiece.date
+
+    final String formattedRecurrencePatternType = RGX_REFDATA_VALUE.matcher(ruleset?.recurrence?.rules[0]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    final Class<? extends RecurrencePattern> rpc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedRecurrencePatternType.capitalize()}")
+
+    while(!nextPiece) {
+      // If current time unit value does not equal the date within the loop, then the iteration must have changed time unit
+      // I.e if the currentTimeUnit is 2022-03-04 and we're tracking the month field, this will fire once the date changes to the 5th month
+      if (currentTimeUnit.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value)) != date.get(getTimeUnit.get(ruleset?.recurrence?.timeUnit?.value))) {
+        //Increment the specified time unit by one
+        currentTimeUnit = currentTimeUnit."plus${ruleset?.recurrence?.timeUnit?.value.capitalize()}s"(1)
+        currentTimeUnitPeriod ++
+      }
+
+      if (currentTimeUnitPeriod > ruleset?.recurrence?.period) {
+        // If the currrentTimeUnitPeriod has passed the max number of time unit (period) change back to default
+        currentTimeUnitPeriod = 1
+      }
+      ruleset?.recurrence?.rules.each { rule ->
+        // Iterating through recurrence rules, if the ordinal matches current time unit period then it is a valid date
+        if (currentTimeUnitPeriod == rule?.ordinal && rpc.compareDate(rule, date)) {
+          if(date != lastPiece.date){
+          nextPiece = new InternalRecurrencePiece([date: date, recurrenceRule: rule])
+          }
+        }       
+
+      }
+      date = date.plusDays(1)
+    }
+
+    return nextPiece
   }
 }

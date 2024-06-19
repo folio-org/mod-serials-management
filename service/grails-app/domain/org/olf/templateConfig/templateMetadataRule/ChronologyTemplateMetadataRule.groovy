@@ -1,7 +1,7 @@
 package org.olf.templateConfig.templateMetadataRule
 
 import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
-import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
+import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
 
 import java.util.regex.Pattern
 
@@ -46,7 +46,7 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
     ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
   }
 
-  public static ChronologyTemplateMetadata handleType(TemplateMetadataRule rule, LocalDate date, int index) {
+  public static ChronologyUCTMT handleType(TemplateMetadataRule rule, LocalDate date, int index) {
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
     String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends TemplateMetadataRuleFormat> rfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")

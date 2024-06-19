@@ -1,0 +1,11 @@
+import groovy.transform.*
+import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
+import groovy.transform.Field
+
+// Important that 'EnumerationUCTMT' is named 'metadataType' due to 'UserConfiguredTemplateMetadata' template
+
+def should_expand = []
+
+@Field EnumerationUCTMT metadataType
+
+json g.render(metadataType, [excludes: ['owner'], expand: should_expand])

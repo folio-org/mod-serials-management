@@ -1,6 +1,6 @@
 import groovy.transform.*
-import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
+import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
 import groovy.transform.Field
 
-@Field ChronologyTemplateMetadata chronologyTemplateMetadata
-json g.render(chronologyTemplateMetadata, [excludes: ['owner']])
+@Field ChronologyUCTMT ChronologyUCTMT
+json g.render(ChronologyUCTMT, [excludes: ['owner']])

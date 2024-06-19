@@ -6,7 +6,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class ChronologyTemplateMetadata extends TemplateMetadataFormat implements MultiTenant<ChronologyTemplateMetadata> {
+public class ChronologyUCTMT extends UserConfiguredTemplateMetadataType implements MultiTenant<ChronologyUCTMT> {
 
   String weekday
   String monthDay
@@ -21,9 +21,9 @@ public class ChronologyTemplateMetadata extends TemplateMetadataFormat implement
   }
 
   static mapping = {
-    weekday column: 'ctm_weekday'
-    monthDay column: 'ctm_monthDay'
-    month column: 'ctm_month'
-    year column: 'ctm_year'
+    weekday column: 'cuctmt_weekday'
+    monthDay column: 'cuctmt_monthDay'
+    month column: 'cuctmt_month'
+    year column: 'cuctmt_year'
   }
 }

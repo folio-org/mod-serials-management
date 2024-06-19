@@ -12,6 +12,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 public class StandardTemplateMetadata implements MultiTenant<StandardTemplateMetadata> {
   String id
 
+  TemplateMetadata owner
+
   LocalDate date
   // This is the combination adjusted index for this piece
   Integer index
@@ -25,6 +27,9 @@ public class StandardTemplateMetadata implements MultiTenant<StandardTemplateMet
     id column: 'stm_id', generator: 'uuid2', length: 36
     owner column: 'stm_owner_fk'
     version column: 'stm_version'
+    date column: 'stm_date'
+    index column: 'stm_index'
+    naiveIndex column: 'stm_naive_index'
   }
 
   static constraints = {

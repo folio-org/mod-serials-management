@@ -6,17 +6,17 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class EnumerationTemplateMetadata extends TemplateMetadataFormat implements MultiTenant<EnumerationTemplateMetadata> {
+public class EnumerationUCTMT extends UserConfiguredTemplateMetadataType implements MultiTenant<EnumerationUCTMT> {
 
   String value
-  Set<EnumerationTemplateMetadataLevel> levels
+  Set<EnumerationLevelUCTMT> levels
 
   static hasMany = [
-    levels: EnumerationLevelSVMF,
+    levels: EnumerationLevelUCTMT,
   ]
 
   static mapping = {
-    value column: 'etm_value'
+    value column: 'euctmt_value'
     levels cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
   }
   

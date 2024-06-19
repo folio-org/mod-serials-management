@@ -1,7 +1,7 @@
 package org.olf.templateConfig.templateMetadataRule
 
 import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
-import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
+import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
 
 import java.util.regex.Pattern
 
@@ -39,7 +39,7 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
     ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
   }
 
-  public static EnumerationTemplateMetadata handleType(TemplateMetadataRule rule, LocalDate date, int index, Map startingValues) {
+  public static EnumerationUCTMT handleType(TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues) {
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
     String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends TemplateMetadataRuleFormat> rfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")
