@@ -38,6 +38,7 @@ public class UserConfiguredTemplateMetadata implements MultiTenant<UserConfigure
     owner column: 'uctm_owner_fk'
     version column: 'uctm_version'
     index column: 'uctm_index'
+    userConfiguredTemplateMetadataType column: 'uctm_user_configured_template_metadata_type_fk'
   }
 
   static constraints = {

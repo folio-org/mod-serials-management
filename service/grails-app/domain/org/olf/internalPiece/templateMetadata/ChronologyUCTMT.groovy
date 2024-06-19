@@ -22,7 +22,7 @@ public class ChronologyUCTMT extends UserConfiguredTemplateMetadataType implemen
 
   static mapping = {
     weekday column: 'cuctmt_weekday'
-    monthDay column: 'cuctmt_monthDay'
+    monthDay column: 'cuctmt_month_day'
     month column: 'cuctmt_month'
     year column: 'cuctmt_year'
   }
