@@ -5,7 +5,7 @@ import groovy.transform.Field
 import java.util.regex.Pattern
 
 def should_expand = [
-  'userConfiguredTemplateMetadataRuleType',
+  'userConfiguredTemplateMetadataType',
 ]
 
 @Field UserConfiguredTemplateMetadata userConfiguredTemplateMetadata
