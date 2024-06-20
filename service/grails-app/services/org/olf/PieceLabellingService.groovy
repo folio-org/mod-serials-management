@@ -175,7 +175,7 @@ public class PieceLabellingService {
   }
 
 
-  public void setTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
+  public TemplateMetadata generateTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
     ArrayList<InternalPiece> ipsPlusNext = internalPieces
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
@@ -197,6 +197,7 @@ public class PieceLabellingService {
           index: currentMetadataRule?.index
           ]
         )
+        currentUCTM.metadataType = enumerationUCTMT
         uctmArray << currentUCTM
       }else{
         ChronologyUCTMT chronologyUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index)
@@ -207,10 +208,10 @@ public class PieceLabellingService {
           index: currentMetadataRule?.index
           ]
         )
+        currentUCTM.metadataType = chronologyUCTMT
         uctmArray << currentUCTM
       }
     }
-    TemplateMetadata templateMetadata = new TemplateMetadata([standard: standardTM, userConfigured: uctmArray])
-    piece.templateMetadata = templateMetadata
+    return new TemplateMetadata([standard: standardTM, userConfigured: uctmArray])
   }
 }

@@ -16,11 +16,11 @@ public class EnumerationLevelUCTMT implements MultiTenant<EnumerationLevelUCTMT>
   ]
 
   static mapping = {
-    id column: 'euctmt_id', generator: 'uuid2', length: 36
-    owner column: 'euctmt_owner_fk'
-    version column: 'euctmt_version'
-    index column: 'euctmt_index'
-    value column: 'euctmt_value'
+    id column: 'eluctmt_id', generator: 'uuid2', length: 36
+    owner column: 'eluctmt_owner_fk'
+    version column: 'eluctmt_version'
+    index column: 'eluctmt_index'
+    value column: 'eluctmt_value'
   }
 
   static constraints = {

@@ -6,8 +6,8 @@ def should_expand = [
   'serial',
   'ruleset',
   'pieces',
-  'nextPiece',
-  'firstPiece'
+  'firstPieceTemplateMetadata',
+  'nextPieceTemplateMetadata'
 ]
 
 @Field PredictedPieceSet predictedPieceSet

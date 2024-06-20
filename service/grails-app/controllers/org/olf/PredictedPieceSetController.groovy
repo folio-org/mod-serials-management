@@ -6,6 +6,7 @@ import org.olf.PieceLabellingService
 import org.olf.Serial
 import org.olf.SerialRuleset
 import org.olf.PredictedPieceSet
+import org.olf.internalPiece.templateMetadata.TemplateMetadata
 import org.olf.internalPiece.templateMetadata.UserConfiguredTemplateMetadata
 import org.olf.internalPiece.InternalPiece
 
@@ -52,19 +53,20 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
 
     InternalPiece nextPiece = pieceGenerationService.generateNextPiece(ips.get(ips.size()-1), ruleset)
-    pieceLabellingService.setTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata nextPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
 
-    pieceLabellingService.setTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata firstPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
+
+    ips.pop()
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
       pieces: ips,
       note: data?.note,
       startDate: data?.startDate,
-      firstPiece: ips?.get(0),
-      nextPiece: nextPiece
-    ])
-    // .save(flush: true, failOnError: true)
+      firstPieceTemplateMetadata: firstPieceTemplateMetadata,
+      nextPieceTemplateMetadata: nextPieceTemplateMetadata
+    ]).save(flush: true, failOnError: true)
 
     respond pps
 

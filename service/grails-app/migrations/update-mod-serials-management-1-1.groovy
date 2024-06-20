@@ -42,19 +42,36 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20230619-1237-005") {
-    createTable(tableName: "chronologyUCTMT") {
+    createTable(tableName: "chronologyuctmt") {
       column(name: "uctmt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cuctmt_weekday", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cuctmt_month_day", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cuctmt_month", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "cuctmt_year", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "cuctmt_weekday", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "cuctmt_month_day", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "cuctmt_month", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "cuctmt_year", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230619-1237-005") {
-    createTable(tableName: "enumerationUCTMT") {
+  changeSet(author: "Jack-Golding (manual)", id: "20230619-1237-006") {
+    createTable(tableName: "enumerationuctmt") {
       column(name: "uctmt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "euctmt_value", type: "INTEGER") { constraints(nullable: "false") }
+      column(name: "euctmt_value", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230619-1237-007") {
+    createTable(tableName: "enumeration_leveluctmt") {
+      column(name: "eluctmt_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "eluctmt_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "eluctmt_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "eluctmt_value", type: "VARCHAR(36)") { constraints(nullable: "true") }
+      column(name: "eluctmt_index", type: "INTEGER") { constraints(nullable: "false") }
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20230201-1008-008") {
+    addColumn(tableName: "predicted_piece_set") {
+      column(name: "first_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "next_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
 }
