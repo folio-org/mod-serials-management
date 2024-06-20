@@ -213,6 +213,8 @@ public class PieceGenerationService {
     return internalPieces
   }
 
+  // This method is using the same logic contained with the first lines of createPiecesTransient but contained within a while loop
+  // The main difference being it is only looping until the nextPiece following the last piece within the internal pieces array is found (using date.plusDays(1))
   public InternalPiece generateNextPiece (InternalPiece lastPiece, SerialRuleset ruleset) {
     InternalPiece nextPiece = null
     LocalDate date = lastPiece.date

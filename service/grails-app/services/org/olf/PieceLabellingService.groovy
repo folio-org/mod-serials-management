@@ -176,10 +176,16 @@ public class PieceLabellingService {
 
 
   public TemplateMetadata generateTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
+    // FIXME Presently this method appaneds the "nextPiece" to the array of internal pieces to calculate the standard metadata, requireing us to pop it from the array within the predicted piece set controller
+    // Theres almost certainly a better way to handle this, probably by copying the internal pieces array
+
+    // Additionally alot of the variable here can be renamed for easier maintainability
     ArrayList<InternalPiece> ipsPlusNext = internalPieces
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
 
+    // This block here is doing alot of what was copied from the code blocks above except instead of seperating into chronology and enumeration arrays
+    // they are instead being compiled into a single template UserCOnfiguredTemplateMetadata array
     ArrayList<UserConfiguredTemplateMetadata> uctmArray = []
     Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
     Iterator<TemplateMetadataRule> iterator = sortedRules?.iterator()
@@ -190,24 +196,27 @@ public class PieceLabellingService {
       if(templateMetadataType == 'enumeration'){
         EnumerationUCTMT ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
-        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata(
-          [
+
+        // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
+        // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
+        // It sets the metadataType field to null so we have to directly assign it after the fact, this can almost certainly be resolved within the UserConfiguredTemplateMetadataTypeHelpers class 
+        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
           userConfiguredTemplateMetadataType: 'enumeration',
           metadataType: enumerationUCTMT,
           index: currentMetadataRule?.index
-          ]
-        )
+        ])
         currentUCTM.metadataType = enumerationUCTMT
         uctmArray << currentUCTM
-      }else{
+
+      } else {
         ChronologyUCTMT chronologyUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index)
-        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata(
-          [
+        
+        // Same thing happening here as reference above
+        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
           userConfiguredTemplateMetadataType: 'chronology',
           metadataType: chronologyUCTMT,
           index: currentMetadataRule?.index
-          ]
-        )
+        ])
         currentUCTM.metadataType = chronologyUCTMT
         uctmArray << currentUCTM
       }
