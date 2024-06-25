@@ -2,5 +2,10 @@ import groovy.transform.*
 import org.olf.internalPiece.templateMetadata.TemplateMetadata
 import groovy.transform.Field
 
+def should_expand = [
+  'standard',
+  'userConfigured',
+]
+
 @Field TemplateMetadata templateMetadata
-json g.render(templateMetadata, [excludes: ['owner']])
+json g.render(templateMetadata, [excludes: ['owner'], expand: should_expand])

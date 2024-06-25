@@ -15,9 +15,6 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
 
   LocalDate date
 
-  // TODO Work out how best to store this
-  ArrayList<TemplateMetadata> templateMetadata
-
   RecurrenceRule recurrenceRule
 
   static mapping = {

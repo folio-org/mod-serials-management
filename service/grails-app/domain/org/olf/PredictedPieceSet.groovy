@@ -2,6 +2,7 @@ package org.olf
 
 import org.olf.recurrence.Recurrence
 import org.olf.internalPiece.InternalPiece
+import org.olf.internalPiece.templateMetadata.TemplateMetadata
 
 import java.time.LocalDate
 
@@ -27,6 +28,10 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   LocalDate startDate
 
   SerialRuleset ruleset
+
+  TemplateMetadata firstPieceTemplateMetadata
+
+  TemplateMetadata nextPieceTemplateMetadata
 
   String note
 

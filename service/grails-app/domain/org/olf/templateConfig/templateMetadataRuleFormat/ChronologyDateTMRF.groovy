@@ -3,7 +3,7 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 import grails.gorm.MultiTenant
 
 import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
-import org.olf.internalPiece.templateMetadata.ChronologyTemplateMetadata
+import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -31,8 +31,6 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
   @CategoryId(value="Global.YearFormat", defaultInternal=true)
   @Defaults(['Full', 'Slice'])
   RefdataValue yearFormat
-
-
 
   static mapping = {
     weekdayFormat column: 'cdtmrf_weekday_format_fk'
@@ -78,7 +76,7 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
       full_lower: 'EEEE',
 		]
    
-  public static ChronologyTemplateMetadata handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
+  public static ChronologyUCTMT handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
     Locale locale = new Locale(rule?.ruleType?.ruleLocale)
     ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
     // TODO Dont handle if not a chronology rule
@@ -95,6 +93,6 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
     String month = date.format(DateTimeFormatter.ofPattern(monthFormatTransform.get(tmrf?.monthFormat?.value), locale));
   	String year = date.format(DateTimeFormatter.ofPattern(yearFormatTransform.get(tmrf?.yearFormat?.value), locale));
 
-  	return new ChronologyTemplateMetadata([weekday: weekday, monthDay: monthDay, month: month, year: year, templateMetadataRule: rule])
+  	return new ChronologyUCTMT([weekday: weekday, monthDay: monthDay, month: month, year: year, templateMetadataRule: rule])
   }  
 }
