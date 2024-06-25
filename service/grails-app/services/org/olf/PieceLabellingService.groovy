@@ -180,7 +180,7 @@ public class PieceLabellingService {
     // Theres almost certainly a better way to handle this, probably by copying the internal pieces array
 
     // Additionally alot of the variable here can be renamed for easier maintainability
-    ArrayList<InternalPiece> ipsPlusNext = internalPieces
+    ArrayList<InternalPiece> ipsPlusNext = internalPieces.clone()
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
     TemplateMetadata tm = new TemplateMetadata([standard : standardTM, userConfigured: []])

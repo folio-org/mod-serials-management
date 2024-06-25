@@ -4,7 +4,9 @@ import groovy.transform.Field
 
 // Important that 'EnumerationUCTMT' is named 'metadataType' due to 'UserConfiguredTemplateMetadata' template
 
-def should_expand = []
+def should_expand = [
+  'levels'
+]
 
 @Field EnumerationUCTMT metadataType
 

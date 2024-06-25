@@ -57,13 +57,6 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     TemplateMetadata firstPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
 
-    // FIXME As it currently stands, the "nextPiece" gets appended to the list of internal peices for use within the labelling service to figure out index, naive index etc.
-    // We should need to remove the the final element in the array just before save, theres a better way of doing this
-    ips.pop()
-
-    println(firstPieceTemplateMetadata as JSON)
-    println(nextPieceTemplateMetadata as JSON)
-
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
       pieces: ips,

@@ -2,5 +2,5 @@ import groovy.transform.*
 import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
 import groovy.transform.Field
 
-@Field EnumerationUCTMT EnumerationUCTMT
-json g.render(EnumerationUCTMT, [excludes: ['owner']])
+@Field EnumerationUCTMT enumerationUCTMT
+json g.render(enumerationUCTMT, [excludes: ['owner']])
