@@ -176,10 +176,7 @@ public class PieceLabellingService {
 
 
   public TemplateMetadata generateTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
-    // FIXME Presently this method appaneds the "nextPiece" to the array of internal pieces to calculate the standard metadata, requireing us to pop it from the array within the predicted piece set controller
-    // Theres almost certainly a better way to handle this, probably by copying the internal pieces array
-
-    // Additionally alot of the variable here can be renamed for easier maintainability
+    // TODO alot of the variable here can be renamed for easier maintainability
     ArrayList<InternalPiece> ipsPlusNext = internalPieces.clone()
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
