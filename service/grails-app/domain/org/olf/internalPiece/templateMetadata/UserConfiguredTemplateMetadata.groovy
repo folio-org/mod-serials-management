@@ -20,9 +20,9 @@ public class UserConfiguredTemplateMetadata implements MultiTenant<UserConfigure
   @Defaults(['Chronology', 'Enumeration'])
   RefdataValue userConfiguredTemplateMetadataType
 
-  @BindUsing({ UserConfiguredTemplateMetadata obj, SimpleMapDataBindingSource source ->
-		UserConfiguredTemplateMetadataHelpers.doMetadataTypeBinding(obj, source)
-  })
+  // @BindUsing({ UserConfiguredTemplateMetadata obj, SimpleMapDataBindingSource source ->
+	// 	UserConfiguredTemplateMetadataHelpers.doMetadataTypeBinding(obj, source)
+  // })
   UserConfiguredTemplateMetadataType metadataType
 
   static hasOne = [

@@ -22,7 +22,8 @@ public class LabelTemplateBindings extends HashMap<String, Object> {
         this.put("enumeration${index+1}".toString(), element?.value)
       }else{
         Map<String, Object> levelsMap = new HashMap<String, Object>()
-        element?.levels?.sort{ it.index }?.eachWithIndex{ level, levelIndex ->
+        ArrayList<EnumerationLevelUCTMT> sortedElements = element?.levels?.sort{ it.index }
+        sortedElements?.eachWithIndex{ level, levelIndex ->
           levelsMap.put("level${levelIndex+1}".toString(), level?.value)
         }
         this.put("enumeration${index+1}".toString(), levelsMap)

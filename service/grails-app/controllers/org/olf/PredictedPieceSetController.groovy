@@ -36,7 +36,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = new SerialRuleset(data)
-    ArrayList<UserConfiguredTemplateMetadata> startingValues = data?.startingValues ?: []
+    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -47,7 +47,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
-    ArrayList<UserConfiguredTemplateMetadata> startingValues = data?.startingValues ?: []
+    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -60,6 +60,9 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     // FIXME As it currently stands, the "nextPiece" gets appended to the list of internal peices for use within the labelling service to figure out index, naive index etc.
     // We should need to remove the the final element in the array just before save, theres a better way of doing this
     ips.pop()
+
+    println(firstPieceTemplateMetadata as JSON)
+    println(nextPieceTemplateMetadata as JSON)
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,

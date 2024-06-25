@@ -41,7 +41,7 @@ public class PieceLabellingService {
     ArrayList<UserConfiguredTemplateMetadata> sortedStartingValues = startingValues?.sort{ it.index }
 
     ArrayList<ChronologyUCTMT> chronologyArray = generateChronologyMetadata(standardTM, sortedRules)
-    ArrayList<EnumerationUCTMT> enumerationArray = generateEnumerationMetadata(standardTM, sortedRules, sortedStartingValues)?.sort{ it.index }
+    ArrayList<EnumerationUCTMT> enumerationArray = generateEnumerationMetadata(standardTM, sortedRules, sortedStartingValues)
 
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
@@ -183,10 +183,10 @@ public class PieceLabellingService {
     ArrayList<InternalPiece> ipsPlusNext = internalPieces
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
-
+    TemplateMetadata tm = new TemplateMetadata([standard : standardTM, userConfigured: []])
     // This block here is doing alot of what was copied from the code blocks above except instead of seperating into chronology and enumeration arrays
-    // they are instead being compiled into a single template UserCOnfiguredTemplateMetadata array
-    ArrayList<UserConfiguredTemplateMetadata> uctmArray = []
+    // they are instead being compiled into a single template UserConfiguredTemplateMetadata array
+    Set<UserConfiguredTemplateMetadata> uctmArray = []
     Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
     Iterator<TemplateMetadataRule> iterator = sortedRules?.iterator()
     while(iterator?.hasNext()){
@@ -203,10 +203,11 @@ public class PieceLabellingService {
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
           userConfiguredTemplateMetadataType: 'enumeration',
           metadataType: enumerationUCTMT,
-          index: currentMetadataRule?.index
+          index: currentMetadataRule?.index,
+          owner: tm
         ])
         currentUCTM.metadataType = enumerationUCTMT
-        uctmArray << currentUCTM
+        tm.userConfigured << currentUCTM
 
       } else {
         ChronologyUCTMT chronologyUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index)
@@ -215,12 +216,13 @@ public class PieceLabellingService {
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
           userConfiguredTemplateMetadataType: 'chronology',
           metadataType: chronologyUCTMT,
-          index: currentMetadataRule?.index
+          index: currentMetadataRule?.index,
+          owner: tm
         ])
         currentUCTM.metadataType = chronologyUCTMT
-        uctmArray << currentUCTM
+        tm.userConfigured << currentUCTM
       }
     }
-    return new TemplateMetadata([standard: standardTM, userConfigured: uctmArray])
+    return tm
   }
 }

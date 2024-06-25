@@ -25,6 +25,6 @@ public class TemplateMetadata implements MultiTenant<TemplateMetadata> {
 
   static constraints = {
     standard nullable: false
-    userConfigured nullable: true
+    userConfigured nullable: false
   }
 }
