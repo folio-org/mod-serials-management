@@ -32,6 +32,7 @@ class HousekeepingService {
   @Subscriber('okapi:schema_update')
   public void onSchemaUpdate(tn, tid) {
     log.debug("HousekeepingService::onSchemaUpdate(${tn},${tid})")
+    setupData(tn, tid);
   }
 
   /**
@@ -39,6 +40,49 @@ class HousekeepingService {
    * system in the same state. It will be called regularly throughout the lifecycle of a project. It is common to see calls to
    * lookupOrCreate, or "upsert" type functions in here."
    */
+
+  private void setupData(tenantName, tenantId) {
+    log.info("HousekeepingService::setupData(${tenantName},${tenantId})");
+    // Establish a database session in the context of the activated tenant. You can use GORM domain classes inside the closure
+    Tenants.withId(tenantId) {
+      AppSetting.withNewTransaction { status ->
+
+        // Setup EnumerationTemplateMetadataRule refdata values
+        RefdataValue.lookupOrCreate(
+          "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
+          "Textual",
+          "enumeration_textual",
+          true
+        )
+        RefdataValue.lookupOrCreate(
+          "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
+          "Numeric",
+          "enumeration_numeric",
+          true
+        )
+
+        // Setup ChronologyTemplateMetadataRule refdata values
+        RefdataValue.lookupOrCreate(
+          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+          "Date",
+          "chronology_date",
+          true
+        )
+        RefdataValue.lookupOrCreate(
+          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+          "Month",
+          "chronology_month",
+          true
+        )
+        RefdataValue.lookupOrCreate(
+          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+          "Year",
+          "chronology_year",
+          true
+        )
+      }
+    }
+  }
 
   @Subscriber('okapi:tenant_load_sample')
   public void onTenantLoadSample(final String tenantId, 
