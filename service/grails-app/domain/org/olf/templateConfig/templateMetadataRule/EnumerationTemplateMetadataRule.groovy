@@ -17,7 +17,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<EnumerationTemplateMetadataRule> {
   @CategoryId(value="EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat", defaultInternal=true)
-  @Defaults(['Enumeration Numeric', 'Enumeration Textual'])
+  // We setup these defaults within the HouseKeepingService in order to assign non-standard labels
+  // @Defaults(['Enumeration Numeric', 'Enumeration Textual'])
   RefdataValue templateMetadataRuleFormat
 
   @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->

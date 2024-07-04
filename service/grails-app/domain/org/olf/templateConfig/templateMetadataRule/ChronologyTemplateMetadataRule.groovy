@@ -19,7 +19,8 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<ChronologyTemplateMetadataRule> {
 
   @CategoryId(value="ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat", defaultInternal=true)
-  @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
+  // We setup these defaults within the HouseKeepingService in order to assign non-standard labels
+  // @Defaults(['Chronology Date', 'Chronology Month', 'Chronology Year'])
   RefdataValue templateMetadataRuleFormat
 
   String ruleLocale = 'en'
