@@ -1,8 +1,8 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
 import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
-import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
-import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadataLevel
+import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
+import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
 
 import java.time.LocalDate
 
@@ -53,14 +53,15 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     return roman 
   }  
 
-  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index, Map startingValues){
+  public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
-    ArrayList<EnumerationTemplateMetadataLevel> result = []
+    ArrayList<EnumerationLevelUCTMT> svArray = startingValues?.levels?.sort { it?.index }
+    ArrayList<EnumerationLevelUCTMT> result = []
     Integer adjustedIndex = 0
     Integer divisor = 1
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
-      if(startingValues?.levels?.getAt(i)?.value !== null){
-        adjustedIndex = adjustedIndex + ((startingValues?.levels.getAt(i)?.value as Integer - 1)*divisor)
+      if(svArray?.getAt(i)?.value !== null){
+        adjustedIndex = adjustedIndex + ((svArray.getAt(i)?.value as Integer - 1)*divisor)
       }
 
       Integer value = 0
@@ -86,10 +87,9 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       if(enltmrfArray[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
-    
-      result.add([value: stringValue])
+      result.add([value: stringValue, index: i])
       divisor = enltmrfArray[i]?.units*divisor
     }
-    return new EnumerationTemplateMetadata([levels: result.reverse()])
+    return new EnumerationUCTMT([levels: result.reverse()])
   }
 }

@@ -2,6 +2,8 @@ package org.olf.internalPiece
 
 import org.olf.PredictedPieceSet
 
+import org.olf.internalPiece.templateMetadata.TemplateMetadata
+
 import java.time.LocalDate
 
 import grails.gorm.MultiTenant
@@ -13,6 +15,9 @@ public abstract class InternalPiece implements MultiTenant<InternalPiece> {
   String label
 
   String receivingId
+
+  // TODO We may wish to store this on the internal piece at some point
+  // TemplateMetadata templateMetadata
 
  	static belongsTo = [ owner: PredictedPieceSet ]
 

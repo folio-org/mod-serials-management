@@ -1,6 +1,0 @@
-import groovy.transform.*
-import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
-import groovy.transform.Field
-
-@Field EnumerationTemplateMetadata enumerationTemplateMetadata
-json g.render(enumerationTemplateMetadata, [excludes: ['owner']])

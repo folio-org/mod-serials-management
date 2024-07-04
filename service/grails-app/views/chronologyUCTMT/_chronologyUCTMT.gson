@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
+import groovy.transform.Field
+
+@Field ChronologyUCTMT chronologyUCTMT
+json g.render(chronologyUCTMT, [excludes: ['owner']])

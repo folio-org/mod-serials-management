@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
+import groovy.transform.Field
+
+@Field EnumerationLevelUCTMT enumerationLevelUCTMT
+json g.render(enumerationLevelUCTMT, [excludes: ['owner']])

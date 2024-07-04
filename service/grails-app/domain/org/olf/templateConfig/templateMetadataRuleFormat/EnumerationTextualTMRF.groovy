@@ -1,7 +1,7 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
 import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
-import org.olf.internalPiece.templateMetadata.EnumerationTemplateMetadata
+import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
 
 import java.time.LocalDate
 
@@ -38,8 +38,8 @@ public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implement
     }
   }
 
-  public static EnumerationTemplateMetadata handleFormat (TemplateMetadataRule rule, LocalDate date, int index, Map startingValues){
+  public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
     String result = findResultIndex(rule, index + 1)
-    return new EnumerationTemplateMetadata([value: result])
+    return new EnumerationUCTMT([value: result])
   }
 }

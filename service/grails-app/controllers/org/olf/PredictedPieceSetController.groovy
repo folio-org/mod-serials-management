@@ -6,6 +6,8 @@ import org.olf.PieceLabellingService
 import org.olf.Serial
 import org.olf.SerialRuleset
 import org.olf.PredictedPieceSet
+import org.olf.internalPiece.templateMetadata.TemplateMetadata
+import org.olf.internalPiece.templateMetadata.UserConfiguredTemplateMetadata
 import org.olf.internalPiece.InternalPiece
 
 import com.k_int.okapi.OkapiTenantAwareController
@@ -34,7 +36,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = new SerialRuleset(data)
-    List<Map> startingValues = data?.startingValues ?: []
+    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -45,16 +47,23 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
-    List<Map> startingValues = data?.startingValues ?: []
+    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
+
+    InternalPiece nextPiece = pieceGenerationService.generateNextPiece(ips.get(ips.size()-1), ruleset)
+    TemplateMetadata nextPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
+
+    TemplateMetadata firstPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
       pieces: ips,
       note: data?.note,
-      startDate: data?.startDate
+      startDate: data?.startDate,
+      firstPieceTemplateMetadata: firstPieceTemplateMetadata,
+      nextPieceTemplateMetadata: nextPieceTemplateMetadata
     ]).save(flush: true, failOnError: true)
 
     respond pps
