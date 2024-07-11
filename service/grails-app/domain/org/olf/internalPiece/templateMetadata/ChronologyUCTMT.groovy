@@ -13,7 +13,7 @@ public class ChronologyUCTMT extends UserConfiguredTemplateMetadataType implemen
   String month
   String year
 
-  static constraint = {
+  static constraints = {
     weekday nullable: true
     monthDay nullable: true
     month nullable: true
