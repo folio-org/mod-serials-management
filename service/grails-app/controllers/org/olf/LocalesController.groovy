@@ -14,6 +14,8 @@ import java.util.Locale
 class LocalesController {
 
   def getLocales() {
+    final boolean keyLocales = params.keyLocales ? params.boolean('keyLocales') : true
+
     Locale[] locales = Locale.getAvailableLocales();
     ArrayList<Map> localesList = locales.collect { Locale locale ->
       {[ 
@@ -21,6 +23,10 @@ class LocalesController {
         value: locale.toString()
       ]}
     }.sort { it.label }
+
+    if(keyLocales){
+      localesList.removeAll { it.value.contains("_")}
+    }
     
     respond localesList
   }
