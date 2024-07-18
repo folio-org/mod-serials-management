@@ -14,7 +14,6 @@ import java.util.Locale
 class LocalesController {
 
   def getLocales() {
-    println(params.boolean('keyLocales'))
     final boolean keyLocales = params.keyLocales ? params.boolean('keyLocales') : true
 
     Locale[] locales = Locale.getAvailableLocales();
