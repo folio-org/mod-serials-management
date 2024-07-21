@@ -17,6 +17,8 @@ import java.time.LocalDate
 import grails.rest.*
 import grails.converters.*
 import org.grails.web.json.JSONObject
+import org.grails.web.json.JSONArray
+
 import grails.gorm.transactions.Transactional
 import grails.gorm.multitenancy.CurrentTenant
 import groovy.util.logging.Slf4j
@@ -35,8 +37,17 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   // This takes in a JSON shape and outputs predicted pieces without saving domain objects
   def generatePredictedPiecesTransient() {
     JSONObject data = request.JSON
+    JSONArray startingValuesJson = data?.startingValues ?: []
+    
     SerialRuleset ruleset = new SerialRuleset(data)
-    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
+
+    //TODO Not super happy with the implementation of this conditional, however the JSONArray .get() freaks out over null array elements vs empty
+    // This conditional is to check if the starting array contains elements and if they are of the older/newer shape
+    if(!startingValuesJson?.toString()?.contains('userConfiguredTemplateMetadataType') && startingValuesJson.size()){
+    pieceLabellingService.updateStartingValuesShape(startingValuesJson)
+    }
+
+    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(startingValuesJson)
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -47,6 +58,12 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     SerialRuleset ruleset = SerialRuleset.get(data?.id)
+    JSONArray startingValuesJson = data?.startingValues ?: []
+
+    if(!startingValuesJson?.toString()?.contains('userConfiguredTemplateMetadataType') && startingValuesJson.size()){
+    pieceLabellingService.updateStartingValuesShape(startingValuesJson)
+    }
+
     ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
