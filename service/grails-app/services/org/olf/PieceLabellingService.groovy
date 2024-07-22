@@ -3,6 +3,9 @@ package org.olf
 import java.time.LocalDate
 import java.util.regex.Pattern
 
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+
 import org.olf.templating.*
 
 import org.olf.internalPiece.*
@@ -221,5 +224,39 @@ public class PieceLabellingService {
       }
     }
     return tm
+  }
+
+  // This functions serves as a way for the older versions of the starting values shape to be used in a newer backend version
+  public void updateStartingValuesShape(JSONArray startingValues){
+    for(int i=0;i<startingValues?.size();i++){
+    // If the element in the array is null then according to the old shape it is a chronology
+      if(startingValues.isNull(i)){
+        startingValues[i] = new JSONObject([
+          userConfiguredTemplateMetadataType: 'chronology',
+          index: i,
+          metadataType: new JSONObject()
+        ])
+      // If the element contains a "levels" key, it is assumed to be an enumeration numeric starting values
+      // Iterates through the levels contained within the list assigning an index to each
+      }else if(startingValues.get(i)?.levels?.size()){
+        JSONArray updatedLevels = []
+        JSONArray levels = startingValues.get(i)?.levels
+        for(int j=0; j<levels?.size(); j++){
+          updatedLevels << new JSONObject([value: levels[i]?.value, index: j])
+        }
+        startingValues[i] = new JSONObject([
+          userConfiguredTemplateMetadataType: 'enumeration',
+          index: i,
+          metadataType: new JSONObject([levels: updatedLevels])
+        ])
+
+      }else{
+        startingValues[i] = new JSONObject([
+          userConfiguredTemplateMetadataType: 'enumeration',
+          index: i,
+          metadataType: new JSONObject()
+        ])
+      }
+    }
   }
 }
