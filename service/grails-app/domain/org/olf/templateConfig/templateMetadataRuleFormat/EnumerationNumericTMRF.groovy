@@ -90,7 +90,7 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       result.add([
         value: stringValue,
         rawValue: value,
-        valueFormat: enltmrfArray[i]?.format?.value,
+        valueFormat: enltmrfArray[i]?.format,
         index: i
       ])
       divisor = enltmrfArray[i]?.units*divisor
