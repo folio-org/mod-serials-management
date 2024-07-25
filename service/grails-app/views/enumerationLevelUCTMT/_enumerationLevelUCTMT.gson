@@ -2,5 +2,9 @@ import groovy.transform.*
 import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
 import groovy.transform.Field
 
+def should_expand = [
+  'valueFormat'
+]
+
 @Field EnumerationLevelUCTMT enumerationLevelUCTMT
-json g.render(enumerationLevelUCTMT, [excludes: ['owner']])
+json g.render(enumerationLevelUCTMT, [excludes: ['owner'], expand: should_expand])
