@@ -23,7 +23,7 @@ public class InternalRecurrencePiece extends InternalPiece implements MultiTenan
     templateMetadata cascade: 'all-delete-orphan'
   }
 
-  static constraint = {
+  static constraints = {
     recurrenceRule nullable: true
   }
 }
