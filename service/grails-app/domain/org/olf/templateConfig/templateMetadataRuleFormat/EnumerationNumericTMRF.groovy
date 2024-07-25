@@ -87,7 +87,12 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       if(enltmrfArray[i]?.format?.value == 'roman'){
         stringValue = intToRoman(value)
       }
-      result.add([value: stringValue, index: i])
+      result.add([
+        value: stringValue,
+        rawValue: value,
+        valueFormat: enltmrfArray[i]?.format?.value,
+        index: i
+      ])
       divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationUCTMT([levels: result.reverse()])
