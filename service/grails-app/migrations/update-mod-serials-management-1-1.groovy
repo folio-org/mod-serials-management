@@ -74,4 +74,11 @@ databaseChangeLog = {
       column(name: "next_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20240725-1425-001") {
+    addColumn(tableName: "enumeration_leveluctmt") {
+      column(name: "eluctmt_raw_value", type: "INTEGER") { constraints(nullable: "true") }
+      column(name: "eluctmt_value_format_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
+    }
+  }
 }
