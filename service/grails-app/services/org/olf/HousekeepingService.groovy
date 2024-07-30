@@ -39,6 +39,7 @@ class HousekeepingService {
   public void onSchemaUpdate(tn, tid) {
     log.debug("HousekeepingService::onSchemaUpdate(${tn},${tid})")
     setupData(tn, tid);
+    cleanupEnumerationLevelMetadata(tn, tid);
   }
 
   /**
@@ -47,37 +48,44 @@ class HousekeepingService {
    * lookupOrCreate, or "upsert" type functions in here."
    */
 
-  private void cleanupEnumerationLevelMetadata() {
+  private void cleanupEnumerationLevelMetadata(tenantName, tenantId) {
+    log.info("HousekeepingService::cleanupEnumerationLevelMetadata(${tenantName},${tenantId})");
+
     RomanNumeralFormat formatter = new RomanNumeralFormat();
 
     Pattern romanRegex = Pattern.compile("(?=.*I)|(?=.*M)|(?=.*C)|(?=.*D)|(?=.*L)|(?=.*X)|(?=.*V)")
     Pattern oridnalRegex = Pattern.compile("(?=.*st)|(?=.*nd)|(?=.*rd)|(?=.*th)")
+    
+    Tenants.withId(tenantId) {
+      AppSetting.withNewTransaction { status ->
 
-    // Find all EnumerationLevelUCTMT of all format with missing rawValue/valueFormat
-    List<EnumerationLevelUCTMT> incompleteLevels = EnumerationLevelUCTMT.executeQuery('''
-      select eluctmt
-      from EnumerationLevelUCTMT as eluctmt
-      where (eluctmt.rawValue is null)
-      or (eluctmt.valueFormat is null)
-    ''').each { level ->
+        // Find all EnumerationLevelUCTMT of all format with missing rawValue/valueFormat
+        List<EnumerationLevelUCTMT> incompleteLevels = EnumerationLevelUCTMT.executeQuery('''
+          select eluctmt
+          from EnumerationLevelUCTMT as eluctmt
+          where (eluctmt.rawValue is null)
+          or (eluctmt.valueFormat is null)
+        ''').each { level ->
 
-      // For each of the found EnumerationLevelUCTMT, figure out if its value is of a Roman, Ordinal or Number format
-      // Deparse into its raw value and assign valueFormat
-      if(romanRegex.matcher(level?.value).find()){
-        level.rawValue =  formatter.parse(level?.value)
-        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Roman')
+          // For each of the found EnumerationLevelUCTMT, figure out if its value is of a Roman, Ordinal or Number format
+          // Deparse into its raw value and assign valueFormat
+          if(romanRegex.matcher(level?.value).find()){
+            level.rawValue =  formatter.parse(level?.value)
+            level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Roman')
 
-      }else if(oridnalRegex.matcher(level?.value).find()){
-        String parsedValue = level?.value.replaceAll(/(?<=\d)(rd|st|nd|th)\b/, '')
-        level.rawValue = parsedValue as Integer
-        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Ordinal')
+          }else if(oridnalRegex.matcher(level?.value).find()){
+            String parsedValue = level?.value.replaceAll(/(?<=\d)(rd|st|nd|th)\b/, '')
+            level.rawValue = parsedValue as Integer
+            level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Ordinal')
 
-      }else{
-        level.rawValue = level.value as Integer
-        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Number')
+          }else{
+            level.rawValue = level.value as Integer
+            level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Number')
+          }
+      
+          level.save(flush:true, failOnError:true)
+        }
       }
-  
-      level.save(flush:true, failOnError:true)
     }
   }
 
@@ -119,8 +127,6 @@ class HousekeepingService {
           "chronology_year",
           true
         )
-
-        cleanupEnumerationLevelMetadata();
       }
     }
   }
