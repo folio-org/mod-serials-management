@@ -18,6 +18,11 @@ import com.k_int.web.toolkit.settings.AppSetting
 import com.k_int.web.toolkit.refdata.*
 import com.k_int.okapi.OkapiTenantResolver
 
+import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
+import java.util.regex.Pattern
+import com.github.fracpete.romannumerals4j.RomanNumeralFormat;
+
+
 
 /**
  * This service works at the module level, it's often called without a tenant context.
@@ -41,11 +46,47 @@ class HousekeepingService {
    * lookupOrCreate, or "upsert" type functions in here."
    */
 
+  private void cleanupEnumerationLevelMetadata() {
+    RomanNumeralFormat formatter = new RomanNumeralFormat();
+
+    Pattern romanRegex = Pattern.compile("(?=.*I)|(?=.*M)|(?=.*C)|(?=.*D)|(?=.*L)|(?=.*X)|(?=.*V)")
+    Pattern oridnalRegex = Pattern.compile("(?=.*st)|(?=.*nd)|(?=.*rd)|(?=.*th)")
+
+    // Find all EnumerationLevelUCTMT of all format with missing rawValue/valueFormat
+    List<EnumerationLevelUCTMT> levelsMissingRawValue = EnumerationLevelUCTMT.executeQuery('''
+      select eluctmt
+      from EnumerationLevelUCTMT as eluctmt
+      where (eluctmt.rawValue is null)
+      or (eluctmt.valueFormat is null)
+    ''').each { level ->
+
+      // For each of the found EnumerationLevelUCTMT, figure out if its value is of a Roman, Ordinal or Number format
+      // Deparse into its raw value and assign valueFormat
+      if(romanRegex.matcher(level?.value).find()){
+        level.rawValue =  formatter.parse(level?.value)
+        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Roman')
+
+      }else if(oridnalRegex.matcher(level?.value).find()){
+        String parsedValue = level?.value.replaceAll(/(?<=\d)(rd|st|nd|th)\b/, '')
+        level.rawValue = parsedValue as Integer
+        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Ordinal')
+
+      }else{
+        level.rawValue = level.value as Integer
+        level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Number')
+      }
+  
+      level.save(flush:true, failOnError:true)
+    }
+  }
+
   private void setupData(tenantName, tenantId) {
     log.info("HousekeepingService::setupData(${tenantName},${tenantId})");
     // Establish a database session in the context of the activated tenant. You can use GORM domain classes inside the closure
     Tenants.withId(tenantId) {
       AppSetting.withNewTransaction { status ->
+          cleanupEnumerationLevelMetadata();
+
 
         // Setup EnumerationTemplateMetadataRule refdata values
         RefdataValue.lookupOrCreate(
