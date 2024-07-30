@@ -12,7 +12,6 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
 
   Integer index
   Integer units
-  // Integer startingValue
 
   @CategoryId(value="EnumerationNumericLevelTMRF.Format", defaultInternal=true)
   @Defaults(['Ordinal', 'Number', 'Roman'])
@@ -23,8 +22,6 @@ class EnumerationNumericLevelTMRF implements MultiTenant<EnumerationNumericLevel
   RefdataValue sequence
 
   String internalNote
-
-  // static transients = ['startingValue']
 
   static belongsTo = [
     owner: EnumerationNumericTMRF
