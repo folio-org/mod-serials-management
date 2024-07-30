@@ -53,7 +53,7 @@ class HousekeepingService {
     Pattern oridnalRegex = Pattern.compile("(?=.*st)|(?=.*nd)|(?=.*rd)|(?=.*th)")
 
     // Find all EnumerationLevelUCTMT of all format with missing rawValue/valueFormat
-    List<EnumerationLevelUCTMT> levelsMissingRawValue = EnumerationLevelUCTMT.executeQuery('''
+    List<EnumerationLevelUCTMT> incompleteLevels = EnumerationLevelUCTMT.executeQuery('''
       select eluctmt
       from EnumerationLevelUCTMT as eluctmt
       where (eluctmt.rawValue is null)
