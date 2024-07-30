@@ -85,9 +85,6 @@ class HousekeepingService {
     // Establish a database session in the context of the activated tenant. You can use GORM domain classes inside the closure
     Tenants.withId(tenantId) {
       AppSetting.withNewTransaction { status ->
-          cleanupEnumerationLevelMetadata();
-
-
         // Setup EnumerationTemplateMetadataRule refdata values
         RefdataValue.lookupOrCreate(
           "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
@@ -121,6 +118,8 @@ class HousekeepingService {
           "chronology_year",
           true
         )
+
+        cleanupEnumerationLevelMetadata();
       }
     }
   }
