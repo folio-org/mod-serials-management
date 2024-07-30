@@ -1,12 +1,15 @@
 package org.olf
 
 import java.sql.ResultSet
+import java.util.regex.Pattern
 
 import javax.sql.DataSource
 
 import org.grails.datastore.mapping.core.exceptions.ConfigurationException
 import org.grails.orm.hibernate.HibernateDatastore
 import org.grails.plugins.databasemigration.liquibase.GrailsLiquibase
+
+import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
 
 import grails.core.GrailsApplication
 import grails.events.annotation.Subscriber
@@ -18,8 +21,6 @@ import com.k_int.web.toolkit.settings.AppSetting
 import com.k_int.web.toolkit.refdata.*
 import com.k_int.okapi.OkapiTenantResolver
 
-import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
-import java.util.regex.Pattern
 import com.github.fracpete.romannumerals4j.RomanNumeralFormat;
 
 
