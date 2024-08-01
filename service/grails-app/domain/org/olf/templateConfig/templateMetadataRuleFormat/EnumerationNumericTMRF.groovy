@@ -12,6 +12,8 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
+import com.github.fracpete.romannumerals4j.RomanNumeralFormat;
+
 public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationNumericTMRF> {
   Set<EnumerationNumericLevelTMRF> levels
   
@@ -39,26 +41,16 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     }
 	}
 
-  public static String intToRoman(int num){  
-    Integer[] values = [1000,900,500,400,100,90,50,40,10,9,5,4,1];  
-    String[] romanLetters = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"];  
-    String roman = '' 
-    for(int i=0;i<values.length;i++){  
-      while(num >= values[i]){  
-        num = num - values[i];  
-        roman += romanLetters[i];  
-      }  
-    } 
-
-    return roman 
-  }  
-
   public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
+    RomanNumeralFormat rnf = new RomanNumeralFormat();
+
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> svArray = startingValues?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> result = []
+
     Integer adjustedIndex = 0
     Integer divisor = 1
+
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
       if(svArray?.getAt(i)?.value !== null){
         adjustedIndex = adjustedIndex + ((svArray.getAt(i)?.value as Integer - 1)*divisor)
@@ -72,12 +64,12 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       }
 
       if(enltmrfArray[i]?.sequence?.value == 'reset'){
-          if(value%enltmrfArray[i]?.units == 0){
-            value = enltmrfArray[i]?.units
-          }else{
-            value = value%enltmrfArray[i]?.units
-          }
+        if(value%enltmrfArray[i]?.units == 0){
+          value = enltmrfArray[i]?.units
+        }else{
+          value = value%enltmrfArray[i]?.units
         }
+      }
 
       String stringValue = value
       if(enltmrfArray[i]?.format?.value == 'ordinal'){
@@ -85,9 +77,16 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
       }
 
       if(enltmrfArray[i]?.format?.value == 'roman'){
-        stringValue = intToRoman(value)
+        stringValue = rnf.format(value)
       }
-      result.add([value: stringValue, index: i])
+
+      result.add([
+        value: stringValue,
+        rawValue: value,
+        valueFormat: enltmrfArray[i]?.format,
+        index: i
+      ])
+      
       divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationUCTMT([levels: result.reverse()])
