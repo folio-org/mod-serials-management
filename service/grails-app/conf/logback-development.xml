@@ -67,6 +67,10 @@
     <level value="WARN" />
   </logger>
 
+  <logger name="org.hibernate.orm.deprecation">
+    <level value="ERROR" />
+  </logger>
+
   <logger name="mod.directory">
     <level value="INFO" />
   </logger>
