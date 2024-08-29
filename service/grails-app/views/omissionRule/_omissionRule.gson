@@ -5,6 +5,7 @@ import groovy.transform.Field
 import java.util.regex.Pattern
 
 def should_expand = [
+  'timeUnit',
   'patternType',
 ]
 
