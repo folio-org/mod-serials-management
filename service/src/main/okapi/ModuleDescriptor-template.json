@@ -72,6 +72,11 @@
           "permissionsRequired": [ "serials-management.rulesets.item.post" ]
         },
         {
+          "methods": ["PUT"],
+          "pathPattern": "/serials-management/rulesets/{id}",
+          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+        },
+        {
           "methods": ["DELETE"],
           "pathPattern": "/serials-management/rulesets/{id}",
           "permissionsRequired": [ "serials-management.rulesets.item.delete" ]
