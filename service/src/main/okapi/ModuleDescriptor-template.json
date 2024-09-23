@@ -122,6 +122,11 @@
           "permissionsRequired": [ "serials-management.predictedPieceSets.item.post" ]
         },
         {
+          "methods": ["DELETE"],
+          "pathPattern": "/serials-management/predictedPieces/{id}",
+          "permissionsRequired": [ "serials-management.predictedPieceSets.item.delete" ]
+        },
+        {
           "methods": ["GET"],
           "pathPattern": "/serials-management/locales",
           "permissionsRequired": [ "serials-management.locales.collection.get" ]
