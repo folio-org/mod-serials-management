@@ -18,7 +18,7 @@ public class Recurrence implements MultiTenant<Recurrence> {
 
   Integer issues // 7
   Integer period // 3 / Frequency
-
+  
   Set<RecurrenceRule> rules// Validate to have exactly #issues of these
 
   static belongsTo = [

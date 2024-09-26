@@ -21,7 +21,7 @@ class SerialRulesetService {
     SerialRuleset ruleset = SerialRuleset.findById(rulesetId)
 
     ruleset.rulesetStatus = updatedStatus
-    ruleset.save(flush: true, failOnError: true)
+    ruleset.save(failOnError: true)
 
     return ruleset
   }
