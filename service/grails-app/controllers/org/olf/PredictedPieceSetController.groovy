@@ -107,7 +107,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     }
 
     // Finally delete the predicted piece set if we get this far and respond.
-    deleteResource sa
+    deleteResource pps
     render status: NO_CONTENT
   }
 }
