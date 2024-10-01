@@ -12,7 +12,7 @@
           ],
           "pathPattern": "/serials-management/refdata",
           "permissionsRequired": [
-            "serials-management.refdata.collection.get"
+            "serials-management.refdata.category.collection.get"
           ]
         },
         {
@@ -21,7 +21,7 @@
           ],
           "pathPattern": "/serials-management/refdata/{domain}/{property}",
           "permissionsRequired": [
-            "serials-management.refdata.collection.get"
+            "serials-management.refdata.value.collection.get"
           ]
         },
         {
@@ -304,10 +304,22 @@
       ]
     },
     {
-      "permissionName": "serials-management.refdata.collection.get",
-      "displayName": "Ref data collection get",
-      "description": "Get a collection of ref data records",
-      "visible": false
+      "permissionName": "serials-management.refdata.category.collection.get",
+      "displayName": "Ref data category collection get",
+      "description": "Get a collection of ref data category records",
+      "visible": false,
+      "replaces": [
+        "serials-management.refdata.collection.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.refdata.value.collection.get",
+      "displayName": "Ref data value collection get",
+      "description": "Get a collection of ref data value records",
+      "visible": false,
+      "replaces": [
+        "serials-management.refdata.collection.get"
+      ]
     },
     {
       "permissionName": "serials-management.refdata.item.get",
@@ -338,7 +350,8 @@
       "displayName": "Refdata read",
       "description": "Read refdata as items or collections",
       "subPermissions": [
-        "serials-management.refdata.collection.get",
+        "serials-management.refdata.value.collection.get",
+        "serials-management.refdata.category.collection.get",
         "serials-management.refdata.item.get"
       ]
     },
