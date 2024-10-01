@@ -218,6 +218,15 @@
         },
         {
           "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/serials-management/predictedPieces/{id}",
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.item.delete"
+          ]
+        },
+        {
+          "methods": [
             "GET"
           ],
           "pathPattern": "/serials-management/locales",
