@@ -204,7 +204,7 @@
           ],
           "pathPattern": "/serials-management/predictedPieces/generate",
           "permissionsRequired": [
-            "serials-management.predictedPieceSets.item.post"
+            "serials-management.predictedPieceSets.transient.generate"
           ]
         },
         {
@@ -213,7 +213,7 @@
           ],
           "pathPattern": "/serials-management/predictedPieces/create",
           "permissionsRequired": [
-            "serials-management.predictedPieceSets.item.post"
+            "serials-management.predictedPieceSets.generate"
           ]
         },
         {
@@ -507,9 +507,20 @@
       ]
     },
     {
-      "permissionName": "serials-management.predictedPieceSets.item.post",
-      "displayName": "Predicted piece set item post",
-      "description": "Post a predicted piece set record"
+      "permissionName": "serials-management.predictedPieceSets.transient.generate",
+      "displayName": "Predicted piece set preview generate",
+      "description": "Generate predicted piece set for preview without saving",
+      "replaces": [
+        "serials-management.predictedPieceSets.item.post"
+      ]
+    },
+    {
+      "permissionName": "serials-management.predictedPieceSets.generate",
+      "displayName": "Predicted piece set generate",
+      "description": "Generate predicted piece set",
+      "replaces": [
+        "serials-management.predictedPieceSets.item.post"
+      ]
     },
     {
       "permissionName": "serials-management.predictedPieceSets.item.put",
@@ -525,7 +536,8 @@
       "permissionName": "serials-management.predictedPieceSets.edit",
       "subPermissions": [
         "serials-management.predictedPieceSets.view",
-        "serials-management.predictedPieceSets.item.post",
+        "serials-management.predictedPieceSets.transient.generate",
+        "serials-management.predictedPieceSets.generate",
         "serials-management.predictedPieceSets.item.put"
       ]
     },
