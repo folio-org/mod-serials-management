@@ -150,7 +150,7 @@
           ],
           "pathPattern": "/serials-management/rulesets/{id}/active",
           "permissionsRequired": [
-            "serials-management.rulesets.item.put"
+            "serials-management.rulesets.set-active.execute"
           ]
         },
         {
@@ -159,7 +159,7 @@
           ],
           "pathPattern": "/serials-management/rulesets/{id}/deprecated",
           "permissionsRequired": [
-            "serials-management.rulesets.item.put"
+            "serials-management.rulesets.set-deprecated.execute"
           ]
         },
         {
@@ -168,7 +168,7 @@
           ],
           "pathPattern": "/serials-management/rulesets/{id}/draft",
           "permissionsRequired": [
-            "serials-management.rulesets.item.put"
+            "serials-management.rulesets.set-draft.execute"
           ]
         },
         {
@@ -444,16 +444,37 @@
       "description": "Post a ruleset record"
     },
     {
-      "permissionName": "serials-management.rulesets.item.put",
-      "displayName": "Ruleset item put",
-      "description": "Put a ruleset record"
+      "permissionName": "serials-management.rulesets.set-active.execute",
+      "displayName": "Set ruleset status active",
+      "description": "Permit the changing of a ruleset status to \"active\"",
+      "replaces": [
+        "serials-management.rulesets.item.put"
+      ]
+    },
+    {
+      "permissionName": "serials-management.rulesets.set-deprecated.execute",
+      "displayName": "Set ruleset status deprecated",
+      "description": "Permit the changing of a ruleset status to \"deprecated\"",
+      "replaces": [
+        "serials-management.rulesets.item.put"
+      ]
+    },
+    {
+      "permissionName": "serials-management.rulesets.set-draft.execute",
+      "displayName": "Set ruleset status draft",
+      "description": "Permit the changing of a ruleset status to \"draft\"",
+      "replaces": [
+        "serials-management.rulesets.item.put"
+      ]
     },
     {
       "permissionName": "serials-management.rulesets.edit",
       "subPermissions": [
         "serials-management.rulesets.view",
         "serials-management.rulesets.item.post",
-        "serials-management.rulesets.item.put"
+        "serials-management.rulesets.set-active.execute",
+        "serials-management.rulesets.set-deprecated.execute",
+        "serials-management.rulesets.set-draft.execute"
       ]
     },
     {
