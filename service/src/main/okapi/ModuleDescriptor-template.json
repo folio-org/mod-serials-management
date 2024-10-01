@@ -5,146 +5,253 @@
     {
       "id": "serials-management",
       "version": "${info.app.minorVersion}",
-      "handlers" : [
+      "handlers": [
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/refdata",
-          "permissionsRequired": [ "serials-management.refdata.collection.get" ]
-        },{
-          "methods": ["GET"],
+          "permissionsRequired": [
+            "serials-management.refdata.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/refdata/{domain}/{property}",
-          "permissionsRequired": [ "serials-management.refdata.collection.get" ]
-        },{
-          "methods": ["GET"],
-          "pathPattern": "/serials-management/refdata/{id}",
-          "permissionsRequired": [ "serials-management.refdata.item.get" ]
+          "permissionsRequired": [
+            "serials-management.refdata.collection.get"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/serials-management/refdata/{id}",
+          "permissionsRequired": [
+            "serials-management.refdata.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/refdata",
-          "permissionsRequired": [ "serials-management.refdata.item.post" ]
-        },{
-          "methods": ["PUT"],
+          "permissionsRequired": [
+            "serials-management.refdata.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
           "pathPattern": "/serials-management/refdata/{id}",
-          "permissionsRequired": [ "serials-management.refdata.item.put" ]
-        },{
-          "methods": ["DELETE"],
+          "permissionsRequired": [
+            "serials-management.refdata.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
           "pathPattern": "/serials-management/refdata/{id}",
-          "permissionsRequired": [ "serials-management.refdata.item.delete" ]
+          "permissionsRequired": [
+            "serials-management.refdata.item.delete"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/serials",
-          "permissionsRequired": [ "serials-management.serials.collection.get" ],
-          "modulePermissions": ["orders.po-lines.item.get"]
+          "permissionsRequired": [
+            "serials-management.serials.collection.get"
+          ],
+          "modulePermissions": [
+            "orders.po-lines.item.get"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/serials/{id}",
-          "permissionsRequired": [ "serials-management.serials.item.get" ]
+          "permissionsRequired": [
+            "serials-management.serials.item.get"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/serials",
-          "permissionsRequired": [ "serials-management.serials.item.post" ]
-        },{
-          "methods": ["PUT"],
+          "permissionsRequired": [
+            "serials-management.serials.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
           "pathPattern": "/serials-management/serials/{id}",
-          "permissionsRequired": [ "serials-management.serials.item.put" ]
-        },{
-          "methods": ["DELETE"],
+          "permissionsRequired": [
+            "serials-management.serials.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
           "pathPattern": "/serials-management/serials/{id}",
-          "permissionsRequired": [ "serials-management.serials.item.delete" ]
+          "permissionsRequired": [
+            "serials-management.serials.item.delete"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/rulesets",
-          "permissionsRequired": [ "serials-management.rulesets.collection.get" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.collection.get"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/rulesets/{id}",
-          "permissionsRequired": [ "serials-management.rulesets.item.get" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.get"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/rulesets",
-          "permissionsRequired": [ "serials-management.rulesets.item.post" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.post"
+          ]
         },
         {
-          "methods": ["DELETE"],
+          "methods": [
+            "DELETE"
+          ],
           "pathPattern": "/serials-management/rulesets/{id}",
-          "permissionsRequired": [ "serials-management.rulesets.item.delete" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.delete"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/rulesets/{id}/active",
-          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.put"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/rulesets/{id}/deprecated",
-          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.put"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/rulesets/{id}/draft",
-          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+          "permissionsRequired": [
+            "serials-management.rulesets.item.put"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/predictedPieces",
-          "permissionsRequired": [ "serials-management.predictedPieceSets.collection.get" ]
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.collection.get"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/predictedPieces/{id}",
-          "permissionsRequired": [ "serials-management.predictedPieceSets.item.get" ]
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.item.get"
+          ]
         },
         {
-          "methods": ["PUT"],
+          "methods": [
+            "PUT"
+          ],
           "pathPattern": "/serials-management/predictedPieces/{id}",
-          "permissionsRequired": [ "serials-management.predictedPieceSets.item.put" ]
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.item.put"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/predictedPieces/generate",
-          "permissionsRequired": [ "serials-management.predictedPieceSets.item.post" ]
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.item.post"
+          ]
         },
         {
-          "methods": ["POST"],
+          "methods": [
+            "POST"
+          ],
           "pathPattern": "/serials-management/predictedPieces/create",
-          "permissionsRequired": [ "serials-management.predictedPieceSets.item.post" ]
+          "permissionsRequired": [
+            "serials-management.predictedPieceSets.item.post"
+          ]
         },
         {
-          "methods": ["GET"],
+          "methods": [
+            "GET"
+          ],
           "pathPattern": "/serials-management/locales",
-          "permissionsRequired": [ "serials-management.locales.collection.get" ]
+          "permissionsRequired": [
+            "serials-management.locales.collection.get"
+          ]
         }
       ]
     },
     {
       "id": "_tenant",
       "version": "1.2",
-      "interfaceType" : "system",
+      "interfaceType": "system",
       "handlers": [
         {
-          "permissionsRequired" : [],
-          "methods": ["POST", "DELETE"],
+          "permissionsRequired": [],
+          "methods": [
+            "POST",
+            "DELETE"
+          ],
           "pathPattern": "/_/tenant"
-        }, 
+        },
         {
-         "permissionsRequired" : [],
-         "methods" : [ "POST" ],
-         "pathPattern" : "/_/tenant/disable"
+          "permissionsRequired": [],
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/_/tenant/disable"
         }
-
       ]
     }
   ],
-  "requires":[
-  ],
-  "optional":[
+  "requires": [],
+  "optional": [
     {
       "id": "orders",
       "version": "12.0"
@@ -156,19 +263,19 @@
       "displayName": "settings get",
       "description": "get settings",
       "visible": false
-    }, 
+    },
     {
       "permissionName": "serials-management.settings.post",
       "displayName": "settings post",
       "description": "post settings",
       "visible": false
-    }, 
+    },
     {
       "permissionName": "serials-management.settings.put",
       "displayName": "settings put",
       "description": "put settings",
       "visible": false
-    }, 
+    },
     {
       "permissionName": "serials-management.settings.delete",
       "displayName": "settings delete",
@@ -181,7 +288,7 @@
       "description": "read settings",
       "visible": false,
       "subPermissions": [
-          "serials-management.settings.get"
+        "serials-management.settings.get"
       ]
     },
     {
@@ -190,10 +297,10 @@
       "description": "write settings",
       "visible": false,
       "subPermissions": [
-          "serials-management.settings.read",
-          "serials-management.settings.post",
-          "serials-management.settings.put",
-          "serials-management.settings.delete"
+        "serials-management.settings.read",
+        "serials-management.settings.post",
+        "serials-management.settings.put",
+        "serials-management.settings.delete"
       ]
     },
     {
@@ -404,20 +511,47 @@
   "launchDescriptor": {
     "dockerImage": "${info.app.name}:${info.app.version}",
     "dockerArgs": {
-      "HostConfig": { 
+      "HostConfig": {
         "Memory": 1073741824,
-        "PortBindings": { "8080/tcp":  [{ "HostPort": "%p" }] } 
+        "PortBindings": {
+          "8080/tcp": [
+            {
+              "HostPort": "%p"
+            }
+          ]
+        }
       }
     },
-    "dockerPull" : false,
+    "dockerPull": false,
     "env": [
-      { "name": "JAVA_OPTIONS", "value": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal" },
-      { "name": "DB_HOST", "value": "postgres" },
-      { "name": "DB_PORT", "value": "5432" },
-      { "name": "DB_USERNAME", "value": "folio_admin" },
-      { "name": "DB_PASSWORD", "value": "folio_admin" },
-      { "name": "DB_DATABASE", "value": "okapi_modules" },
-      { "name": "DB_MAXPOOLSIZE", "value": "50" }
+      {
+        "name": "JAVA_OPTIONS",
+        "value": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=55.0 -XX:+PrintFlagsFinal"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "postgres"
+      },
+      {
+        "name": "DB_PORT",
+        "value": "5432"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "folio_admin"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "folio_admin"
+      },
+      {
+        "name": "DB_DATABASE",
+        "value": "okapi_modules"
+      },
+      {
+        "name": "DB_MAXPOOLSIZE",
+        "value": "50"
+      }
     ]
   }
 }
