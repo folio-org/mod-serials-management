@@ -13,17 +13,19 @@ import org.olf.internalPiece.InternalPiece
 import com.k_int.okapi.OkapiTenantAwareController
 
 import java.time.LocalDate
+import java.util.regex.Pattern
+
+import static org.springframework.http.HttpStatus.*
 
 import grails.rest.*
 import grails.converters.*
+import grails.gorm.transactions.Transactional
+import grails.gorm.multitenancy.CurrentTenant
+
 import org.grails.web.json.JSONObject
 import org.grails.web.json.JSONArray
 
-import grails.gorm.transactions.Transactional
-import grails.gorm.multitenancy.CurrentTenant
 import groovy.util.logging.Slf4j
-
-import java.util.regex.Pattern
 
 @Slf4j
 @CurrentTenant
@@ -86,5 +88,27 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     respond pps
 
+  }
+
+  @Transactional
+  def delete() {
+    PredictedPieceSet pps = queryForResource(params.id)
+
+    if (pps == null) {
+      transactionStatus.setRollbackOnly()
+      notFound()
+      return
+    }
+
+    // Return the relevant status if not allowed to delete.
+    if (pps.pieces?.any {p -> p?.receivingPieces?.size() >= 1}) {
+      transactionStatus.setRollbackOnly()
+      render status: METHOD_NOT_ALLOWED, text: "Cannot delete a predicted piece set which contains receiving pieces"
+      return
+    }
+
+    // Finally delete the predicted piece set if we get this far and respond.
+    deleteResource pps
+    render status: NO_CONTENT
   }
 }

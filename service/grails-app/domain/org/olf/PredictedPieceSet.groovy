@@ -52,7 +52,6 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     note column: 'pps_note'
 
     pieces cascade: 'all-delete-orphan'
-    ruleset cascade: 'all-delete-orphan'
   }
   
   static constraints = {
