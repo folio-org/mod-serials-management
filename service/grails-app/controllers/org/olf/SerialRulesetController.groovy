@@ -55,14 +55,25 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
   }
 
   def replaceAndDelete() {
-
+    SerialRuleset.withTransaction {
+      def data = getObjectToBind()
+      SerialRuleset ruleset = new SerialRuleset(data)
+      if(ruleset?.rulesetStatus?.value == 'active'){
+        String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
+        if(activeRulesetId){
+          serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
+        }
+      }
+      ruleset.save(failOnError: true)
+      if(ruleset.hasErrors()) {
+        transactionStatus.setRollbackOnly()
+        respond ruleset.errors
+      }
+      respond ruleset
+    }
   }
 
   def replaceAndDeprecate() {
-    // TODO THis will be our ruleset 'editing' endpoint
-    // Only allow editing if the ruleset is in draft
-    // Ensure that the ruleset has no associated predicted piece sets
-    // Additionally ensure that if the 'replace' action fails, do NOT delete the old ruleset
     SerialRuleset.withTransaction {
       def data = getObjectToBind()
       SerialRuleset ruleset = new SerialRuleset(data)
