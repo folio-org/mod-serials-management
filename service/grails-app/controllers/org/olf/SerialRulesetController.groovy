@@ -13,6 +13,8 @@ import grails.converters.*
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
 
+import static org.springframework.http.HttpStatus.*
+
 import groovy.util.logging.Slf4j
 
 import java.util.regex.Pattern
@@ -42,7 +44,7 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
   }
 
   def activateRuleset() {
-    String serialRulesetId = params.get("serialRulesetId") 
+    String serialRulesetId = params.get("serialRulesetId")
     SerialRuleset ruleset = SerialRuleset.findById(serialRulesetId)
 
     String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
@@ -54,10 +56,29 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
     respond result
   }
 
+  @Transactional
   def replaceAndDelete() {
     SerialRuleset.withTransaction {
       def data = getObjectToBind()
+      // Existing ruleset
+      String existingRulesetId = params.get("serialRulesetId") 
+      SerialRuleset existing = queryForResource(existingRulesetId)
+      // If existing ruleset doesnt exist, return error
+      if (existing == null) {
+        transactionStatus.setRollbackOnly()
+        notFound()
+        return
+      }
+      // Check to see if the existing ruleset has any predicted piece sets associated with it
+      Integer pieceSetCount = serialRulesetService.countPieceSets(existingRulesetId)[0]
+      if(pieceSetCount > 0){
+        transactionStatus.setRollbackOnly()
+        render status: METHOD_NOT_ALLOWED, text: "Cannot delete a serial ruleset which has been used to generate a predicted piece set"
+        return
+      }
+      // New ruleset
       SerialRuleset ruleset = new SerialRuleset(data)
+      //Check to see if new ruleset is active, if it is, additionally set the current active ruleset to deprecated
       if(ruleset?.rulesetStatus?.value == 'active'){
         String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
         if(activeRulesetId){
@@ -69,14 +90,28 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
         transactionStatus.setRollbackOnly()
         respond ruleset.errors
       }
+      // Finally delete the predicted piece set if we get this far and respond.
+      deleteResource existing
       respond ruleset
     }
   }
 
+  @Transactional
   def replaceAndDeprecate() {
     SerialRuleset.withTransaction {
       def data = getObjectToBind()
+      // Existing ruleset
+      String existingRulesetId = params.get("serialRulesetId") 
+      SerialRuleset existing = queryForResource(existingRulesetId)
+      // If existing ruleset doesnt exist, return error
+      if (existing == null) {
+        transactionStatus.setRollbackOnly()
+        notFound()
+        return
+      }
+      // New ruleset
       SerialRuleset ruleset = new SerialRuleset(data)
+      //Check to see if new ruleset is active, if it is, additionally set the current active ruleset to deprecated
       if(ruleset?.rulesetStatus?.value == 'active'){
         String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
         if(activeRulesetId){
@@ -88,6 +123,8 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
         transactionStatus.setRollbackOnly()
         respond ruleset.errors
       }
+      // Finally deprecate existing ruleset
+      serialRulesetService.updateRulesetStatus(existingRulesetId, 'deprecated')
       respond ruleset
     }
   }

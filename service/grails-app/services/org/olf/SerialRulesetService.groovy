@@ -10,6 +10,12 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 @Transactional
 class SerialRulesetService {
 
+  List<Integer> countPieceSets(String rulesetId) {
+    return PredictedPieceSet.executeQuery("""
+      SELECT COUNT(pps.id) from PredictedPieceSet as pps WHERE pps.ruleset.id = :rulesetId
+    """.toString(), [rulesetId: rulesetId,])
+  }
+
   String findActive(String serialId) {
     return SerialRuleset.executeQuery("""
       SELECT id from SerialRuleset WHERE owner.id = :serialId AND rulesetStatus.value = :active
