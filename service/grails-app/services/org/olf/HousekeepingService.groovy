@@ -82,7 +82,7 @@ class HousekeepingService {
             level.rawValue = level.value as Integer
             level.valueFormat = RefdataValue.lookupOrCreate('EnumerationNumericLevelTMRF.Format', 'Number')
           }
-      
+          // TODO Check this should actually be a flush
           level.save(flush:true, failOnError:true)
         }
       }

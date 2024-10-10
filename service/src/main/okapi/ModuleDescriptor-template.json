@@ -173,6 +173,20 @@
         },
         {
           "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/rulesets/{id}/replaceAndDeprecate",
+          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/rulesets/{id}/replaceAndDelete",
+          "permissionsRequired": [ "serials-management.rulesets.item.put" ]
+        },
+        {
+          "methods": [
             "GET"
           ],
           "pathPattern": "/serials-management/predictedPieces",
