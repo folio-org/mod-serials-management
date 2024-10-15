@@ -76,5 +76,25 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
     omission nullable: true
     combination nullable: true
     templateConfig nullable: true
-  }   
+  } 
+
+  def beforeValidate() {
+    if ( rulesetNumber == null ) {
+      this.rulesetNumber = generateHrid()
+    }
+  }
+
+  private String generateHrid() {
+    String result = null;
+
+    // Use this to make sessionFactory.currentSession work as expected
+    PublicationRequest.withSession { SessionImpl session ->
+      log.debug("Generate hrid");
+      def sql = new Sql(session.connection())
+      def query_result = sql.rows("select nextval('serial_ruleset_hrid_seq')".toString())
+      log.debug("Query result: ${query_result.toString()}")
+      result = query_result[0].get('nextval')?.toString()
+    }
+    return result;
+  }
 }
