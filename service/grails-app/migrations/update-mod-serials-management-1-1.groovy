@@ -81,4 +81,8 @@ databaseChangeLog = {
       column(name: "eluctmt_value_format_fk", type: "VARCHAR(36)") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20241015-1457-001") {
+    createSequence(sequenceName: "serial_ruleset_hrid_seq")
+  }
 }
