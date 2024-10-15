@@ -88,7 +88,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
     String result = null;
 
     // Use this to make sessionFactory.currentSession work as expected
-    PublicationRequest.withSession { SessionImpl session ->
+    SerialRuleset.withSession { SessionImpl session ->
       log.debug("Generate hrid");
       def sql = new Sql(session.connection())
       def query_result = sql.rows("select nextval('serial_ruleset_hrid_seq')".toString())
