@@ -56,6 +56,16 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
     respond result
   }
 
+  //Check to see if new ruleset is active, if it is, additionally set the current active ruleset to deprecated
+  private void activeRulesetCheck(SerialRuleset ruleset) {
+    if(ruleset?.rulesetStatus?.value == 'active'){
+      String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
+      if(activeRulesetId){
+        serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
+      }
+    }
+  }
+
   @Transactional
   def replaceAndDelete() {
     SerialRuleset.withTransaction {
@@ -78,13 +88,8 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
       }
       // New ruleset
       SerialRuleset ruleset = new SerialRuleset(data)
-      //Check to see if new ruleset is active, if it is, additionally set the current active ruleset to deprecated
-      if(ruleset?.rulesetStatus?.value == 'active'){
-        String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
-        if(activeRulesetId){
-          serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
-        }
-      }
+      activeRulesetCheck(ruleset)
+
       ruleset.save(failOnError: true)
       if(ruleset.hasErrors()) {
         transactionStatus.setRollbackOnly()
@@ -112,12 +117,8 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
       // New ruleset
       SerialRuleset ruleset = new SerialRuleset(data)
       //Check to see if new ruleset is active, if it is, additionally set the current active ruleset to deprecated
-      if(ruleset?.rulesetStatus?.value == 'active'){
-        String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
-        if(activeRulesetId){
-          serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
-        }
-      }
+      activeRulesetCheck(ruleset)
+
       ruleset.save(failOnError: true)
       if(ruleset.hasErrors()) {
         transactionStatus.setRollbackOnly()
@@ -134,12 +135,8 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
     SerialRuleset.withTransaction {
       def data = getObjectToBind()
       SerialRuleset ruleset = new SerialRuleset(data)
-      if(ruleset?.rulesetStatus?.value == 'active'){
-        String activeRulesetId = serialRulesetService.findActive(ruleset?.owner?.id)
-        if(activeRulesetId){
-          serialRulesetService.updateRulesetStatus(activeRulesetId, 'deprecated')
-        }
-      }
+      activeRulesetCheck(ruleset)
+
       ruleset.save(failOnError: true)
       if(ruleset.hasErrors()) {
         transactionStatus.setRollbackOnly()
