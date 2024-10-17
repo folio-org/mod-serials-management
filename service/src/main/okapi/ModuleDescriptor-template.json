@@ -173,6 +173,20 @@
         },
         {
           "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/rulesets/{id}/replaceAndDeprecate",
+          "permissionsRequired": [ "serials-management.rulesets.replace-deprecate.execute" ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/rulesets/{id}/replaceAndDelete",
+          "permissionsRequired": [ "serials-management.rulesets.replace-delete.execute" ]
+        },
+        {
+          "methods": [
             "GET"
           ],
           "pathPattern": "/serials-management/predictedPieces",
@@ -477,13 +491,25 @@
       ]
     },
     {
+      "permissionName": "serials-management.rulesets.replace-delete.execute",
+      "displayName": "Replace and delete a ruleset",
+      "description": "Permit the deletion and replacement of a ruleset"
+    },
+    {
+      "permissionName": "serials-management.rulesets.replace-deprecate.execute",
+      "displayName": "Replace and deprecate a ruleset",
+      "description": "Permit the deprecation and replacement of a ruleset"
+    },
+    {
       "permissionName": "serials-management.rulesets.edit",
       "subPermissions": [
         "serials-management.rulesets.view",
         "serials-management.rulesets.item.post",
         "serials-management.rulesets.set-active.execute",
         "serials-management.rulesets.set-deprecated.execute",
-        "serials-management.rulesets.set-draft.execute"
+        "serials-management.rulesets.set-draft.execute",
+        "serials-management.rulesets.replace-delete.execute",
+        "serials-management.rulesets.replace-deprecate.execute"
       ]
     },
     {

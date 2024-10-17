@@ -83,6 +83,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       startDate: data?.startDate,
       firstPieceTemplateMetadata: firstPieceTemplateMetadata,
       nextPieceTemplateMetadata: nextPieceTemplateMetadata
+      // TODO Check that this should be a flush
     ]).save(flush: true, failOnError: true)
 
     respond pps
