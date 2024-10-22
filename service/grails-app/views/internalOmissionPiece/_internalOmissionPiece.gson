@@ -7,4 +7,6 @@ def should_expand = [
 ]
 
 @Field InternalOmissionPiece internalOmissionPiece
-json g.render(internalOmissionPiece, [expand: should_expand])
+json g.render(internalOmissionPiece, [excludes: ['owner'], expand: should_expand]){
+  'class' internalOmissionPiece.class.name
+}
