@@ -36,13 +36,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   PieceGenerationService pieceGenerationService
   PieceLabellingService pieceLabellingService
 
-  // This takes in a JSON shape and outputs predicted pieces without saving domain objects
-  def generatePredictedPiecesTransient() {
-    JSONObject data = request.JSON
-    JSONArray startingValuesJson = data?.startingValues ?: []
-    
-    SerialRuleset ruleset = new SerialRuleset(data)
-
+  private PredictedPieceSet setupPredictedPieces(JSONObject data, JSONArray startingValuesJson, SerialRuleset ruleset) {
     //TODO Not super happy with the implementation of this conditional, however the JSONArray .get() freaks out over null array elements vs empty
     // This conditional is to check if the starting array contains elements and if they are of the older/newer shape
     if(!startingValuesJson?.toString()?.contains('userConfiguredTemplateMetadataType') && startingValuesJson.size()){
@@ -50,23 +44,6 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     }
 
     ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(startingValuesJson)
-
-    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
-    pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
-
-    respond ips
-  }
-
-  def generatePredictedPieces() {
-    JSONObject data = request.JSON
-    SerialRuleset ruleset = SerialRuleset.get(data?.id)
-    JSONArray startingValuesJson = data?.startingValues ?: []
-
-    if(!startingValuesJson?.toString()?.contains('userConfiguredTemplateMetadataType') && startingValuesJson.size()){
-    pieceLabellingService.updateStartingValuesShape(startingValuesJson)
-    }
-
-    ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(data?.startingValues ?: [])
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
@@ -83,11 +60,34 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       startDate: data?.startDate,
       firstPieceTemplateMetadata: firstPieceTemplateMetadata,
       nextPieceTemplateMetadata: nextPieceTemplateMetadata
-      // TODO Check that this should be a flush
-    ]).save(flush: true, failOnError: true)
+    ])
+
+    return pps
+    
+  }
+
+  // This takes in a JSON shape and outputs predicted pieces without saving domain objects
+  def generatePredictedPiecesTransient() {
+    JSONObject data = request.JSON
+    JSONArray startingValuesJson = data?.startingValues ?: []
+    
+    SerialRuleset ruleset = new SerialRuleset(data)
+
+    PredictedPieceSet pps = setupPredictedPieces(data, startingValuesJson, ruleset)
 
     respond pps
+  }
 
+  def generatePredictedPieces() {
+    JSONObject data = request.JSON
+    JSONArray startingValuesJson = data?.startingValues ?: []
+
+    SerialRuleset ruleset = SerialRuleset.get(data?.id)
+
+    PredictedPieceSet pps = setupPredictedPieces(data, startingValuesJson, ruleset)
+    // TODO Check that this should be a flush
+    pps.save(flush: true, failOnError: true)
+    respond pps
   }
 
   @Transactional
