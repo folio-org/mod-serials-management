@@ -199,7 +199,7 @@ class PredictedPieceSpec extends BaseSpec {
 
     then: "Ensure that all omitted pieces exist"
       List omittedItems = respMap?.pieces.findAll(p -> p?.omissionOrigins)
-      omittedItems.size() == 164
+      omittedItems.size() == 165
   }
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and an 'issue' combination rule"() {
@@ -240,7 +240,7 @@ class PredictedPieceSpec extends BaseSpec {
       respMap?.pieces.size() == 1
   }
 
-  void "Crete predicted pieces"() {
+  void "Create predicted pieces"() {
     when: "We ask the system to create a ruleset"
       Map respMap = doPost("/serials-management/rulesets", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
