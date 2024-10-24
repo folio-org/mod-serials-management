@@ -63,13 +63,6 @@ public class PieceGenerationService {
     Integer currentTimeUnitPeriod = 1
     LocalDate currentTimeUnit = startDate
 
-    // Map<String, ChronoField> getTimeUnit = [
-    //   day: ChronoField.DAY_OF_YEAR,
-    //   week: ChronoField.ALIGNED_WEEK_OF_YEAR,
-    //   month: ChronoField.MONTH_OF_YEAR,
-    //   year: ChronoField.YEAR,
-    // ]
-
     // TODO Potential refactor, mapping ordinal blocks outside of for loop?
     // TODO Potential new patterns, range of issues with time unit
 

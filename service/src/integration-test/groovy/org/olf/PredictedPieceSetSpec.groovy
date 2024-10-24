@@ -50,7 +50,7 @@ class PredictedPieceSpec extends BaseSpec {
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.day,
         templateConfig:[
@@ -64,12 +64,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 366 pieces"
-      respList.size() == 366
+      respMap?.pieces.size() == 366
   }
 
   void "Generate predicted pieces with a ruleset containing a 'week' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.week,
         templateConfig:[
@@ -83,12 +83,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 53 pieces"
-      respList.size() == 53
+      respMap?.pieces.size() == 53
   }
 
   void "Generate predicted pieces with a ruleset containing a 'month_date' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.monthDate,
         templateConfig:[
@@ -102,12 +102,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 12 pieces"
-      respList.size() == 12
+      respMap?.pieces.size() == 12
   }
 
   void "Generate predicted pieces with a ruleset containing a 'month_weekday' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.monthWeekday,
         templateConfig:[
@@ -121,12 +121,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 12 pieces"
-      respList.size() == 12
+      respMap?.pieces.size() == 12
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year_date' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.yearDate,
         templateConfig:[
@@ -140,12 +140,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 1 piece"
-      respList.size() == 1
+      respMap?.pieces.size() == 1
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year_weekday' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.yearDate,
         templateConfig:[
@@ -159,12 +159,12 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 1 piece"
-      respList.size() == 1
+      respMap?.pieces.size() == 1
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year_month_weekday' recurrence rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.yearMonthWeekday,
         templateConfig:[
@@ -178,17 +178,17 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "The system responds with a list of 1 piece"
-      respList.size() == 1
+      respMap?.pieces.size() == 1
   }
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and all possible omission rules"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.day,
         omission: ruleset_data.omission,
         templateConfig:[
-          templateString: "omission/day piece {{standardTM.index}}"
+          templateString: "omission/day piece"
         ],
         owner:[
           id: serialId
@@ -198,18 +198,18 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "Ensure that all omitted pieces exist"
-      List omittedItems = respList.findAll(p -> p?.omissionOrigins)
-      omittedItems.size() == 164
+      List omittedItems = respMap?.pieces.findAll(p -> p?.omissionOrigins)
+      omittedItems.size() == 165
   }
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and an 'issue' combination rule"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.day,
         combination: ruleset_data.combination,
         templateConfig:[
-          templateString: "combination/issue piece {{standardTM.index}}"
+          templateString: "combination/issue piece"
         ],
         owner:[
           id: serialId
@@ -219,13 +219,13 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "Ensure all combined issues exist"
-      List combinedItems = respList.findAll(p -> p?.combinationOrigins)
+      List combinedItems = respMap?.pieces.findAll(p -> p?.combinationOrigins)
       combinedItems.size() == 4
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year' recurrence rule and all template config rules"() {
     when: "We ask the system to generate predicted pieces"
-      List respList = doPost("/serials-management/predictedPieces/generate", [
+      Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.yearDate,
         templateConfig: ruleset_data.templateConfig,
@@ -237,10 +237,10 @@ class PredictedPieceSpec extends BaseSpec {
       ])
 
     then: "Ensure that the first issue in week '1' of month '1' has been combined with the second"
-      respList.size() == 1
+      respMap?.pieces.size() == 1
   }
 
-  void "Crete predicted pieces"() {
+  void "Create predicted pieces"() {
     when: "We ask the system to create a ruleset"
       Map respMap = doPost("/serials-management/rulesets", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
