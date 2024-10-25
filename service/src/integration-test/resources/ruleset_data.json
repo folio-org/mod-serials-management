@@ -147,7 +147,7 @@
         },
         "patternType": "day_month",
         "pattern": {
-          "day": "1",
+          "day": "8",
           "month": {
             "value": "january"
           }
@@ -186,7 +186,7 @@
         },
         "patternType": "day",
         "pattern": {
-          "day": "1"
+          "day": "2"
         }
       },
       {
@@ -196,7 +196,7 @@
         "patternType": "day_weekday",
         "pattern": {
           "weekday": {
-            "value": "tuesday"
+            "value": "wednesday"
           }
         }
       },
@@ -275,7 +275,7 @@
         "patternType": "issue_week",
         "pattern": {
           "issue": "1",
-          "week": "50"
+          "week": "30"
         }
       },
       {
