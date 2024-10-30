@@ -1,4 +1,5 @@
 ## 1.1.0 In progress
+  * Separate out okapi interface version from module version
 
 ## 1.0.3 2024-04-26
   * MODSER-35 Endpoints should be protected by fine-grained permissions
