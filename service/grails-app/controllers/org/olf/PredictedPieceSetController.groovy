@@ -47,7 +47,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
 
-    TemplateMetadata firstPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata initialPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
 
     // Check for omission rules within the ruleset
     // Since we presently only handle omissions OR combinations, only one should ever been applied to the internal pieces
@@ -59,15 +59,15 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
 
     InternalPiece nextPiece = pieceGenerationService.generateNextPiece(ips.get(ips.size()-1), ruleset)
-    TemplateMetadata nextPieceTemplateMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata continuationPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
       pieces: ips,
       note: data?.note,
       startDate: data?.startDate,
-      firstPieceTemplateMetadata: firstPieceTemplateMetadata,
-      nextPieceTemplateMetadata: nextPieceTemplateMetadata
+      initialPieceRecurrenceMetadata: initialPieceRecurrenceMetadata,
+      continuationPieceRecurrenceMetadata: continuationPieceRecurrenceMetadata
     ])
 
     return pps
