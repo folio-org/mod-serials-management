@@ -288,6 +288,8 @@ project.gradle.projectsEvaluated {
 		// Get a System property
 		properties.setProperty('build.java.version', System.getProperty('java.version'))
 
+		properties.setProperty('okapiInterfaceVersion', "$okapiInterfaceVersion")
+
 		// Write the properties back to the file
 		grailsBuildInfoFile.withOutputStream {
 			properties.store(it,null)
