@@ -1,3 +1,5 @@
+## 1.2.0 IN PROGRESS
+
 ## 1.1.0 2024-10-30
   * MODSER-58 Generating template metadata for internal omitted piece
   * MODSER-57 Generate/create piece set endpoints to return same objects
