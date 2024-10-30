@@ -85,4 +85,9 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20241015-1457-001") {
     createSequence(sequenceName: "serial_ruleset_hrid_seq")
   }
+
+  changeSet(author: "Jack_Golding (manual)", id: "20241030-1409-001") {
+    renameColumn(tableName: "predicted_piece_set", oldColumnName: "first_piece_template_metadata_id", newColumnName: "initial_piece_recurrence_metadata_id")
+    renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
+  }
 }

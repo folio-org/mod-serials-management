@@ -6,13 +6,15 @@ def should_expand = [
   'serial',
   'ruleset',
   'pieces',
-  'firstPieceTemplateMetadata',
-  'nextPieceTemplateMetadata'
+  // As this is not currently used anywhere on the front end, removing from view for now
+  // We are still storing this information just not exposing it through the API
+  // 'initialPieceRecurrenceMetadata',
+  'continuationPieceRecurrenceMetadata'
 ]
 
 @Field PredictedPieceSet predictedPieceSet
 
-json g.render(predictedPieceSet, [expand: should_expand]){
+json g.render(predictedPieceSet, [expand: should_expand, excludes: ['initialPieceRecurrenceMetadata']]){
 
   title predictedPieceSet.getTitle()
 

@@ -29,9 +29,14 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
 
   SerialRuleset ruleset
 
-  TemplateMetadata firstPieceTemplateMetadata
+  // The template metadata for the first piece within a pieceset
+  // prior to omission/combination rules applied
+  TemplateMetadata initialPieceRecurrenceMetadata
 
-  TemplateMetadata nextPieceTemplateMetadata
+  
+  // The template metadata for the next piece within a following pieceset
+  // prior to omission/combination rules applied
+  TemplateMetadata continuationPieceRecurrenceMetadata
 
   String note
 

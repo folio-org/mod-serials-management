@@ -87,123 +87,123 @@ public class PieceGenerationService {
         }       
       }
     }
-
-    if (!!ruleset?.omission) {
-      // Internalpieces iteratorfor each piece check each rule passing in list of pieces and date from piece to see if it matches
-      // If it does remove element
-      ListIterator<InternalPiece> iterator = internalPieces.listIterator()
-      while(iterator.hasNext()){
-        InternalPiece currentPiece = iterator.next()
-        ruleset?.omission?.rules.each { rule ->
-          // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
-          String formattedOmissionPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-          Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
-
-          //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
-          if(opc.compareDate(rule, currentPiece.date, internalPieces)) {
-            if(currentPiece instanceof InternalRecurrencePiece){
-              iterator.remove()
-              InternalOmissionPiece omissionPiece = new InternalOmissionPiece([date: currentPiece.date])
-              omissionPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
-              iterator.add(omissionPiece)
-            }else if(currentPiece instanceof InternalOmissionPiece){
-              currentPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
-            }
-            // Grab new internal omission piece
-            iterator.previous()
-            currentPiece = iterator.next()
-          }
-        }
-      }
-    }
-
-    if (!!ruleset?.combination) {
-      ListIterator<InternalPiece> iterator = internalPieces.listIterator()
-      while(iterator.hasNext()){
-        InternalPiece currentPiece = iterator.next()
-        Set<CombinationRule> combinationOriginRules = []
-        ruleset?.combination?.rules.each { rule ->
-          // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
-          String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-          Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-          if(cpc.compareDate(rule, currentPiece.date, internalPieces)) {
-            // Assumption made that there are no omission pieces
-            combinationOriginRules << rule
-          }
-        }
-        if(combinationOriginRules.size() > 0){
-          // Setup a set of combination pieces the current piece should belong to
-          Set<InternalCombinationPiece> parentCombinationPieces = []
-          combinationOriginRules.each{ cor -> 
-            internalPieces.each{ ip ->
-              if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
-                parentCombinationPieces << ip
-              }
-            }
-          } 
-
-
-          // For each piece, find all of the combination rule sets it belongs to and put in temp set
-          // Then run through combination rules, and add all internal combination pieces that have that combination rule to a set, must be unique
-          // 3 Cases, case 1, there are zero internal combination pieces, in this case, we remove the recurrence, create an inernal combination piece and the combination
-          // case 2, there is one combination piece that matches, we remove the current recurrence piece and whilst in memeroy, add it to the single combination pieces array of combination pieces, and change the combination pieces combinations origins the set of 
-          // Case 3, there are multiple combination pieces, set up a set as a union of all origins and current origin, somehow, remove all of the combination pieces SOMEHOW AND INSERT A NEW COMBINATION PIECE THAT COMBINES THEM, will need to make union of recurrence pieces
-          switch (parentCombinationPieces.size()){
-            case 0:
-              iterator.remove()
-              InternalCombinationPiece combinationPiece = new InternalCombinationPiece()
-              combinationPiece.addToRecurrencePieces(currentPiece)
-              combinationOriginRules.each { cor ->
-                combinationPiece.addToCombinationOrigins(new CombinationOrigin([combinationRule: cor]))
-              }
-              iterator.add(combinationPiece)
-              break;
-            case 1:
-              iterator.remove()
-              parentCombinationPieces[0].addToRecurrencePieces(currentPiece)
-              // We dont need to avoid database churn because none of this is saved
-              combinationOriginRules = combinationOriginRules.plus(parentCombinationPieces[0].combinationOrigins.collect{it.combinationRule})
-              parentCombinationPieces[0].combinationOrigins.clear()
-              combinationOriginRules.each { cor ->
-                parentCombinationPieces[0].addToCombinationOrigins(new CombinationOrigin([combinationRule: cor]))
-              }
-              break;
-            // We dont think default case will be hit, but here for safety
-            // As of version 1.0.0 the default case cannot be hit and therefore cannot be tested
-            // Its being kept here as a for potential future combinations work
-            default:
-              Set<InternalRecurrencePiece> superCombinedPieces = [currentPiece]
-              parentCombinationPieces.each { pcp ->
-                superCombinedPieces = superCombinedPieces.plus(pcp.recurrencePieces)
-                combinationOriginRules = combinationOriginRules.plus(pcp.combinationOrigins.collect{it.combinationRule})
-              }
-              superCombinedPieces = superCombinedPieces.sort{ a,b -> a.date <=> b.date }
-              // Use current piece as bookmark, step backwards through list to remove all combined pieces from parent combination pieces
-              InternalPiece checkPiece = null
-              while(iterator.hasPrevious()){
-                checkPiece = iterator.previous()
-                if(parentCombinationPieces.any{it == checkPiece}){
-                  iterator.remove()
-                }
-              }                    
-              // We are now at the beginning of the list with all combination pieces removed
-              // Step back through until we reach current piece
-              while(iterator.hasNext() && checkPiece != currentPiece){
-                checkPiece = iterator.next()
-              } 
-              // Iterator is on current piece with all relevant combination pieces removed
-              iterator.remove()
-              InternalCombinationPiece icp = new InternalCombinationPiece()
-              superCombinedPieces.each{ icp.addToRecurrencePieces(it) }
-              combinationOriginRules.each{ icp.addToCombinationOrigins(new CombinationOrigin([combinationRule: it])) }
-              iterator.add(icp)
-              break;
-          }
-        }
-      }
-    }
     
     return internalPieces
+  }
+
+
+  public void applyOmissionRules (ArrayList<InternalPiece> internalPieces, SerialRuleset ruleset){
+    // Internalpieces iteratorfor each piece check each rule passing in list of pieces and date from piece to see if it matches
+    ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+    while(iterator.hasNext()){
+      InternalPiece currentPiece = iterator.next()
+      ruleset?.omission?.rules.each { rule ->
+        // Convert pattern type to associated omission pattern i.e day_month -> OmissionPatternDayMonth
+        String formattedOmissionPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+        Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
+
+        //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
+        if(opc.compareDate(rule, currentPiece.date, internalPieces)) {
+          if(currentPiece instanceof InternalRecurrencePiece){
+            iterator.remove()
+            InternalOmissionPiece omissionPiece = new InternalOmissionPiece([date: currentPiece.date])
+            omissionPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
+            iterator.add(omissionPiece)
+          }else if(currentPiece instanceof InternalOmissionPiece){
+            currentPiece.addToOmissionOrigins(new OmissionOrigin([omissionRule: rule]))
+          }
+          // Grab new internal omission piece
+          iterator.previous()
+          currentPiece = iterator.next()
+        }
+      }
+    }
+  }
+
+  public void applyCombinationRules (ArrayList<InternalPiece> internalPieces, SerialRuleset ruleset){
+    ListIterator<InternalPiece> iterator = internalPieces.listIterator()
+    while(iterator.hasNext()){
+      InternalPiece currentPiece = iterator.next()
+      Set<CombinationRule> combinationOriginRules = []
+      ruleset?.combination?.rules.each { rule ->
+        // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
+        String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
+        Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
+        if(cpc.compareDate(rule, currentPiece.date, internalPieces)) {
+          // Assumption made that there are no omission pieces
+          combinationOriginRules << rule
+        }
+      }
+      if(combinationOriginRules.size() > 0){
+        // Setup a set of combination pieces the current piece should belong to
+        Set<InternalCombinationPiece> parentCombinationPieces = []
+        combinationOriginRules.each{ cor -> 
+          internalPieces.each{ ip ->
+            if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
+              parentCombinationPieces << ip
+            }
+          }
+        } 
+
+
+        // For each piece, find all of the combination rule sets it belongs to and put in temp set
+        // Then run through combination rules, and add all internal combination pieces that have that combination rule to a set, must be unique
+        // 3 Cases, case 1, there are zero internal combination pieces, in this case, we remove the recurrence, create an inernal combination piece and the combination
+        // case 2, there is one combination piece that matches, we remove the current recurrence piece and whilst in memeroy, add it to the single combination pieces array of combination pieces, and change the combination pieces combinations origins the set of 
+        // Case 3, there are multiple combination pieces, set up a set as a union of all origins and current origin, somehow, remove all of the combination pieces SOMEHOW AND INSERT A NEW COMBINATION PIECE THAT COMBINES THEM, will need to make union of recurrence pieces
+        switch (parentCombinationPieces.size()){
+          case 0:
+            iterator.remove()
+            InternalCombinationPiece combinationPiece = new InternalCombinationPiece()
+            combinationPiece.addToRecurrencePieces(currentPiece)
+            combinationOriginRules.each { cor ->
+              combinationPiece.addToCombinationOrigins(new CombinationOrigin([combinationRule: cor]))
+            }
+            iterator.add(combinationPiece)
+            break;
+          case 1:
+            iterator.remove()
+            parentCombinationPieces[0].addToRecurrencePieces(currentPiece)
+            // We dont need to avoid database churn because none of this is saved
+            combinationOriginRules = combinationOriginRules.plus(parentCombinationPieces[0].combinationOrigins.collect{it.combinationRule})
+            parentCombinationPieces[0].combinationOrigins.clear()
+            combinationOriginRules.each { cor ->
+              parentCombinationPieces[0].addToCombinationOrigins(new CombinationOrigin([combinationRule: cor]))
+            }
+            break;
+          // We dont think default case will be hit, but here for safety
+          // As of version 1.0.0 the default case cannot be hit and therefore cannot be tested
+          // Its being kept here as a for potential future combinations work
+          default:
+            Set<InternalRecurrencePiece> superCombinedPieces = [currentPiece]
+            parentCombinationPieces.each { pcp ->
+              superCombinedPieces = superCombinedPieces.plus(pcp.recurrencePieces)
+              combinationOriginRules = combinationOriginRules.plus(pcp.combinationOrigins.collect{it.combinationRule})
+            }
+            superCombinedPieces = superCombinedPieces.sort{ a,b -> a.date <=> b.date }
+            // Use current piece as bookmark, step backwards through list to remove all combined pieces from parent combination pieces
+            InternalPiece checkPiece = null
+            while(iterator.hasPrevious()){
+              checkPiece = iterator.previous()
+              if(parentCombinationPieces.any{it == checkPiece}){
+                iterator.remove()
+              }
+            }                    
+            // We are now at the beginning of the list with all combination pieces removed
+            // Step back through until we reach current piece
+            while(iterator.hasNext() && checkPiece != currentPiece){
+              checkPiece = iterator.next()
+            } 
+            // Iterator is on current piece with all relevant combination pieces removed
+            iterator.remove()
+            InternalCombinationPiece icp = new InternalCombinationPiece()
+            superCombinedPieces.each{ icp.addToRecurrencePieces(it) }
+            combinationOriginRules.each{ icp.addToCombinationOrigins(new CombinationOrigin([combinationRule: it])) }
+            iterator.add(icp)
+            break;
+        }
+      }
+    }
   }
 
   // This method is using the same logic contained with the first lines of createPiecesTransient but contained within a while loop
