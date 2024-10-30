@@ -1,4 +1,13 @@
-## 1.1.0 In progress
+## 1.1.0 2024-10-30
+  * MODSER-58 Generating template metadata for internal omitted piece
+  * MODSER-57 Generate/create piece set endpoints to return same objects
+  * MODSER-56 Internal omission/combination pieces not expanding fields
+  * MODSER-50 Update module license, guidance and dependencies for mod-serials-management
+  * MODSER-43 Review and cleanup Module Descriptors for mod-serials-management (Eureka)
+  * MODSER-37 Prepare backend to support UISER-91 (On generating predicted pieces, if the active ruleset has previously been used, then the form should populate with the next set of starting values)
+  * MODSER-35 Endpoints should be protected by fine-grained permissions (Eureka)
+  * MODSER-32 Change default labels for chronology format and enumeration format reference data values
+  * UISER-153 Support edit for publication patterns
   * Separate out okapi interface version from module version
 
 ## 1.0.3 2024-04-26
