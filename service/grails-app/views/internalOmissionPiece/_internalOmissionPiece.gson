@@ -2,8 +2,10 @@ import groovy.transform.*
 import org.olf.internalPiece.InternalOmissionPiece
 import groovy.transform.Field
 
+// We may wish to remove receivingPieces from this in the future
 def should_expand = [
   'omissionOrigins',
+  'receivingPieces'
 ]
 
 @Field InternalOmissionPiece internalOmissionPiece
