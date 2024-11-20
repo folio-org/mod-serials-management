@@ -47,15 +47,15 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     // Array of EnumerationNumericLevels sorted by index
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     // Array of starting values sorted by index
-    ArrayList<EnumerationLevelUCTMT> svArray = startingValues?.levels?.sort { it?.index }
+    ArrayList<EnumerationLevelUCTMT> levellevelStartingValueArray = startingValues?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> result = []
 
+    // Will always be true for the lowest level of enumeration, decides whether subsequent levels should be incremented
     Boolean shouldIncrement = true
     // Iterate through the EnumerationNumericLevels starting at the lowest level
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
-
       // Set value to previous pieces corresponding value
-      Integer value = (svArray?.getAt(i)?.rawValue ?: svArray?.getAt(i)?.value) as Integer
+      Integer value = levelStartingValueArray?.getAt(i)?.rawValue as Integer ?: 1
       // Only calculate if we're past the first piece, otherwise use starting values
       if(index != 0){
         //If previous level has set flag to  true, increment
