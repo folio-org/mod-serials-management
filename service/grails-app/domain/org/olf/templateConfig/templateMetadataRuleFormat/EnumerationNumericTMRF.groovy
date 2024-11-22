@@ -44,25 +44,31 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
   public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
     RomanNumeralFormat rnf = new RomanNumeralFormat();
 
+    // Array of EnumerationNumericLevels sorted by index
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
-    ArrayList<EnumerationLevelUCTMT> svArray = startingValues?.levels?.sort { it?.index }
+    // Array of starting values sorted by index
+    ArrayList<EnumerationLevelUCTMT> levelStartingValueArray = startingValues?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> result = []
 
-    Integer adjustedIndex = 0
-    Integer divisor = 1
-
+    // Will always be true for the lowest level of enumeration, decides whether subsequent levels should be incremented
+    Boolean shouldIncrement = true
+    // Iterate through the EnumerationNumericLevels starting at the lowest level
     for(int i=enltmrfArray?.size()-1; i>=0; i--){
-      if(svArray?.getAt(i)?.value !== null){
-        adjustedIndex = adjustedIndex + ((svArray.getAt(i)?.value as Integer - 1)*divisor)
-      }
-
-      Integer value = 0
-      for(int j=0; j<=index+adjustedIndex; j++){
-        if(j % divisor == 0){
-          value++
+      // Set value to previous pieces corresponding value
+      Integer value = levelStartingValueArray?.getAt(i)?.rawValue as Integer ?: 1
+      // Only calculate if we're past the first piece, otherwise use starting values
+      if(index != 0){
+        //If previous level has set flag to  true, increment
+        //Always incremement on lowest level then set to false so higher levels should only ever increment with permission from lower levels
+        if(shouldIncrement == true){
+          if (value % enltmrfArray[i]?.units != 0) {
+            shouldIncrement = false
+          }
+          value ++
         }
       }
 
+      // If the number should be reset on every cycle, calculate its actual value
       if(enltmrfArray[i]?.sequence?.value == 'reset'){
         if(value%enltmrfArray[i]?.units == 0){
           value = enltmrfArray[i]?.units
@@ -86,8 +92,6 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
         valueFormat: enltmrfArray[i]?.format,
         index: i
       ])
-      
-      divisor = enltmrfArray[i]?.units*divisor
     }
     return new EnumerationUCTMT([levels: result.reverse()])
   }
