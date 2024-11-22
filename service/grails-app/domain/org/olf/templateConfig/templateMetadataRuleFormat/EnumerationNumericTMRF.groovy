@@ -47,7 +47,7 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     // Array of EnumerationNumericLevels sorted by index
     ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
     // Array of starting values sorted by index
-    ArrayList<EnumerationLevelUCTMT> levellevelStartingValueArray = startingValues?.levels?.sort { it?.index }
+    ArrayList<EnumerationLevelUCTMT> levelStartingValueArray = startingValues?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> result = []
 
     // Will always be true for the lowest level of enumeration, decides whether subsequent levels should be incremented

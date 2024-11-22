@@ -75,7 +75,8 @@ public class PieceLabellingService {
     }
   }
 
-  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues) {
+  //Returns the last label template binding for use in next piece
+  public LabelTemplateBindings setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues) {
     ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
     LabelTemplateBindings previousLabelTemplateBindings = null
     while(iterator.hasNext()){
@@ -86,9 +87,11 @@ public class PieceLabellingService {
         String label = generateLabelForPiece(ltb, templateConfig?.templateString)
         currentPiece.label = label
         currentPiece.templateString = templateConfig?.templateString
+        // Not a huge fan of overwriting a previous binding
         previousLabelTemplateBindings = ltb
       }
     }
+    return previousLabelTemplateBindings
   }
 
   // This probably doesnt belong here, potentially in different service
@@ -196,7 +199,6 @@ public class PieceLabellingService {
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        // EnumerationUCTMT ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)?.metdataType
         // previousEnumerationArray might be null
         EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
@@ -209,7 +211,13 @@ public class PieceLabellingService {
   }
 
 
-  public TemplateMetadata generateTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
+  public TemplateMetadata generateTemplateMetadataForPiece(
+    InternalPiece piece,
+    ArrayList<InternalPiece> internalPieces, 
+    TemplateConfig templateConfig, 
+    ArrayList<UserConfiguredTemplateMetadata> startingValues, 
+    ArrayList<EnumerationUCTMT> previousEnumerationArray
+    ){
     // TODO alot of the variable here can be renamed for easier maintainability
     ArrayList<InternalPiece> ipsPlusNext = internalPieces.clone()
     ipsPlusNext << piece
@@ -225,7 +233,7 @@ public class PieceLabellingService {
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       Class<? extends TemplateMetadataRuleType> tmrt = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
       if(templateMetadataType == 'enumeration'){
-        EnumerationUCTMT ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
