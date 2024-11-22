@@ -9,6 +9,7 @@ import org.olf.PredictedPieceSet
 import org.olf.internalPiece.templateMetadata.TemplateMetadata
 import org.olf.internalPiece.templateMetadata.UserConfiguredTemplateMetadata
 import org.olf.internalPiece.InternalPiece
+import org.olf.templating.LabelTemplateBindings
 
 import com.k_int.okapi.OkapiTenantAwareController
 
@@ -47,7 +48,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
 
-    TemplateMetadata initialPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata initialPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues, null)
 
     // Check for omission rules within the ruleset
     // Since we presently only handle omissions OR combinations, only one should ever been applied to the internal pieces
@@ -56,10 +57,11 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     } else if (!!ruleset?.combination) {
       pieceGenerationService.applyCombinationRules(ips, ruleset)
     }
-    pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
+    // TODO This should be seperated out into one method setting labels for pieces and another that grabs last piece template bindings
+    LabelTemplateBindings lastPieceLabelTemplateBindings = pieceLabellingService.setLabelsForInternalPieces(ips, ruleset?.templateConfig, startingValues)
 
     InternalPiece nextPiece = pieceGenerationService.generateNextPiece(ips.get(ips.size()-1), ruleset)
-    TemplateMetadata continuationPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues)
+    TemplateMetadata continuationPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues, lastPieceLabelTemplateBindings?.enumerationArray)
 
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
