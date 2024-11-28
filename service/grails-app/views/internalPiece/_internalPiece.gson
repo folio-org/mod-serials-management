@@ -3,8 +3,6 @@ import org.olf.internalPiece.InternalPiece
 import groovy.transform.Field
 import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
 
-def should_expand = ['receivingPieces', 'templateMetadata']
-
 @Field InternalPiece internalPiece
 internalPiece = GrailsHibernateUtil.unwrapIfProxy(internalPiece) as InternalPiece
 

@@ -34,23 +34,40 @@ public class PieceLabellingService {
 
 
   // This needs to take in an individual piece and ooutput a String label
-  public String generateTemplatedLabelForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues) { 
-    Template template = hte.createTemplate(templateConfig.templateString);
-    // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
-
+  // PreviousLabelTemplateBindings will b null for first piece
+  public LabelTemplateBindings generateTemplateBindingsForPiece(
+    InternalPiece piece,
+    ArrayList<InternalPiece> internalPieces,
+    TemplateConfig templateConfig,
+    ArrayList<UserConfiguredTemplateMetadata> startingValues,
+    LabelTemplateBindings previousLabelTemplateBindings
+  ){
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     // Having to enforce a sort here
     Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
     ArrayList<UserConfiguredTemplateMetadata> sortedStartingValues = startingValues?.sort{ it.index }
 
+    // Makig assumption that chronologies dont have starting values
     ArrayList<ChronologyUCTMT> chronologyArray = generateChronologyMetadata(standardTM, sortedRules)
-    ArrayList<EnumerationUCTMT> enumerationArray = generateEnumerationMetadata(standardTM, sortedRules, sortedStartingValues)
+    ArrayList<EnumerationUCTMT> enumerationArray = generateEnumerationMetadata(
+      standardTM, 
+      sortedRules, 
+      sortedStartingValues, 
+      previousLabelTemplateBindings?.enumerationArray
+    )
 
     LabelTemplateBindings ltb = new LabelTemplateBindings()
     ltb.setupChronologyArray(chronologyArray)
     ltb.setupEnumerationArray(enumerationArray)
     ltb.setupStandardTM(standardTM)
 
+    return ltb
+  }
+
+  public String generateLabelForPiece(LabelTemplateBindings ltb, String templateString){
+    Template template = hte.createTemplate(templateString);
+    // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
+    
     return template.make(ltb).with { 
       StringWriter sw = new StringWriter()
       writeTo(sw)
@@ -58,16 +75,23 @@ public class PieceLabellingService {
     }
   }
 
-  public void setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues) {
+  //Returns the last label template binding for use in next piece
+  public LabelTemplateBindings setLabelsForInternalPieces(ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues) {
     ListIterator<InternalPiece> iterator = internalPieces?.listIterator()
+    LabelTemplateBindings previousLabelTemplateBindings = null
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
       if(currentPiece instanceof InternalRecurrencePiece || currentPiece instanceof InternalCombinationPiece){
-        String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig, startingValues)
+        // String label = generateTemplatedLabelForPiece(currentPiece, internalPieces, templateConfig, startingValues)
+        LabelTemplateBindings ltb = generateTemplateBindingsForPiece(currentPiece, internalPieces, templateConfig, startingValues, previousLabelTemplateBindings)
+        String label = generateLabelForPiece(ltb, templateConfig?.templateString)
         currentPiece.label = label
         currentPiece.templateString = templateConfig?.templateString
+        // Not a huge fan of overwriting a previous binding
+        previousLabelTemplateBindings = ltb
       }
     }
+    return previousLabelTemplateBindings
   }
 
   // This probably doesnt belong here, potentially in different service
@@ -160,25 +184,40 @@ public class PieceLabellingService {
     return chronologyTemplateMetadataArray
   }
 
-  public ArrayList<EnumerationUCTMT> generateEnumerationMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules, ArrayList<UserConfiguredTemplateMetadata> startingValues) {
+  public ArrayList<EnumerationUCTMT> generateEnumerationMetadata(
+    StandardTemplateMetadata standardTM, 
+    Set<TemplateMetadataRule> templateMetadataRules, 
+    ArrayList<UserConfiguredTemplateMetadata> startingValues,
+    ArrayList<EnumerationUCTMT> previousEnumerationArray
+  ) {
     ArrayList<EnumerationUCTMT> enumerationTemplateMetadataArray = []
     Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
+    // TODO This should get neater once enumeration/chronology are seperated
+    int enumerationIndex = 0
     while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       if(templateMetadataType == 'enumeration'){
         Class<? extends TemplateMetadataRuleType> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        EnumerationUCTMT ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        // previousEnumerationArray might be null
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         enumerationTemplateMetadataArray << enumerationUCTMT
+        enumerationIndex++
       }
     }
     return enumerationTemplateMetadataArray
   }
 
 
-  public TemplateMetadata generateTemplateMetadataForPiece(InternalPiece piece, ArrayList<InternalPiece> internalPieces, TemplateConfig templateConfig, ArrayList<UserConfiguredTemplateMetadata> startingValues){
+  public TemplateMetadata generateTemplateMetadataForPiece(
+    InternalPiece piece,
+    ArrayList<InternalPiece> internalPieces, 
+    TemplateConfig templateConfig, 
+    ArrayList<UserConfiguredTemplateMetadata> startingValues, 
+    ArrayList<EnumerationUCTMT> previousEnumerationArray
+    ){
     // TODO alot of the variable here can be renamed for easier maintainability
     ArrayList<InternalPiece> ipsPlusNext = internalPieces.clone()
     ipsPlusNext << piece
@@ -194,7 +233,7 @@ public class PieceLabellingService {
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       Class<? extends TemplateMetadataRuleType> tmrt = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
       if(templateMetadataType == 'enumeration'){
-        EnumerationUCTMT ruleStartingValues = startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
