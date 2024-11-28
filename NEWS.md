@@ -1,5 +1,9 @@
 ## 1.2.0 IN PROGRESS
 
+## 1.1.1 2024-11-28
+  * MODSER-62 Multiple levels of continuous enumeration in a publication pattern result in incorrect numbering
+  * MODSER-60 Receiving piece count not displaying in predicted piece set
+
 ## 1.1.0 2024-10-30
   * MODSER-58 Generating template metadata for internal omitted piece
   * MODSER-57 Generate/create piece set endpoints to return same objects
