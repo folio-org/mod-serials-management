@@ -4,18 +4,16 @@ import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFor
 import groovy.transform.Field
 import java.util.regex.Pattern
 
-// Important that 'ChronologyTemplateMetadataRule' is named 'ruleType' due to 'TemplateMetadataRule' template
-
 def should_expand = [
   'ruleFormat',
   'templateMetadataRuleFormat'
 ]
 
-@Field ChronologyTemplateMetadataRule ruleType
+@Field ChronologyTemplateMetadataRule chronologyTemplateMetadataRule
 
-String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(ruleType.templateMetadataRuleFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
+String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(chronologyTemplateMetadataRule.templateMetadataRuleFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
 
-json g.render(ruleType, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
-  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString}TMRF", model: ['ruleFormat' : ruleType.ruleFormat])
+json g.render(chronologyTemplateMetadataRule, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
+  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString}TMRF", model: ['ruleFormat' : chronologyTemplateMetadataRule.ruleFormat])
 }
 

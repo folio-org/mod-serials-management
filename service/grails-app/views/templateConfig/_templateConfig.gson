@@ -3,7 +3,8 @@ import org.olf.templateConfig.TemplateConfig
 import groovy.transform.Field
 
 def should_expand = [
-  'rules'
+  'chronology',
+  'enumeration'
 ]
 
 @Field TemplateConfig templateConfig

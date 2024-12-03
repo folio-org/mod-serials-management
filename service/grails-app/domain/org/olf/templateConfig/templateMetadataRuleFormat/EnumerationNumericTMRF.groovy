@@ -1,6 +1,6 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
 import org.olf.internalPiece.templateMetadata.EnumerationLevelUCTMT
 
@@ -14,7 +14,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 import com.github.fracpete.romannumerals4j.RomanNumeralFormat;
 
-public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationNumericTMRF> {
+public class EnumerationNumericTMRF extends EnumerationTemplateMetadataRuleFormat implements MultiTenant<EnumerationNumericTMRF> {
   Set<EnumerationNumericLevelTMRF> levels
   
   static hasMany = [
@@ -41,7 +41,7 @@ public class EnumerationNumericTMRF extends TemplateMetadataRuleFormat implement
     }
 	}
 
-  public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
+  public static EnumerationUCTMT handleFormat (EnumerationTemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
     RomanNumeralFormat rnf = new RomanNumeralFormat();
 
     // Array of EnumerationNumericLevels sorted by index

@@ -1,6 +1,8 @@
 package org.olf.templateConfig
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.ChronologyTemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRule
+
 import org.olf.SerialRuleset
 
 import grails.gorm.MultiTenant
@@ -15,8 +17,8 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
   String templateString
 
   static hasMany = [
-    chronology: TemplateMetadataRule,
-    enumeration: TemplateMetadataRule
+    chronology: ChronologyTemplateMetadataRule,
+    enumeration: EnumerationTemplateMetadataRule
   ]
 
   static belongsTo = [

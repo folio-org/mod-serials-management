@@ -3,17 +3,15 @@ import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRu
 import groovy.transform.Field
 import java.util.regex.Pattern
 
-// Important that 'EnumerationTemplateMetadataRule' is named 'ruleType' due to 'TemplateMetadataRule' template
-
 def should_expand = [
   'ruleFormat',
   'templateMetadataRuleFormat'
 ]
 
-@Field EnumerationTemplateMetadataRule ruleType
+@Field EnumerationTemplateMetadataRule enumerationTemplateMetadataRule
 
-String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(ruleType.templateMetadataRuleFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
+String ruleFormatClassString = Pattern.compile("_([a-z])").matcher(enumerationTemplateMetadataRule.templateMetadataRuleFormat.value).replaceAll{match -> match.group(1).toUpperCase()}
 
-json g.render(ruleType, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
-  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString}TMRF", model: ['ruleFormat' : ruleType.ruleFormat])
+json g.render(enumerationTemplateMetadataRule, [excludes: ['owner', 'ruleFormat'], expand: should_expand]) {
+  'ruleFormat' g.render(template: "/templateMetadataRuleFormat/${ruleFormatClassString}TMRF", model: ['ruleFormat' : enumerationTemplateMetadataRule.ruleFormat])
 }

@@ -44,14 +44,16 @@ public class PieceLabellingService {
   ){
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     // Having to enforce a sort here
-    Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
+    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig.rules?.sort{ it.index }
+    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.rules?.sort{ it.index }
+
     ArrayList<UserConfiguredTemplateMetadata> sortedStartingValues = startingValues?.sort{ it.index }
 
     // Makig assumption that chronologies dont have starting values
-    ArrayList<ChronologyUCTMT> chronologyArray = generateChronologyMetadata(standardTM, sortedRules)
+    ArrayList<ChronologyUCTMT> chronologyArray = generateChronologyMetadata(standardTM, sortedChronologyRules)
     ArrayList<EnumerationUCTMT> enumerationArray = generateEnumerationMetadata(
       standardTM, 
-      sortedRules, 
+      sortedEnumerationRules, 
       sortedStartingValues, 
       previousLabelTemplateBindings?.enumerationArray
     )
@@ -169,43 +171,34 @@ public class PieceLabellingService {
 
   }
 
-  public ArrayList<ChronologyUCTMT> generateChronologyMetadata(StandardTemplateMetadata standardTM, Set<TemplateMetadataRule> templateMetadataRules) {
+  public ArrayList<ChronologyUCTMT> generateChronologyMetadata(StandardTemplateMetadata standardTM, Set<ChronologyTemplateMetadataRule> templateMetadataRules) {
     ArrayList<ChronologyUCTMT> chronologyTemplateMetadataArray = []
-    Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
+    Iterator<ChronologyTemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     while(iterator?.hasNext()){
-      TemplateMetadataRule currentMetadataRule = iterator.next()
-      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      if(templateMetadataType == 'chronology'){
-        Class<? extends TemplateMetadataRule> tmrtc = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-        ChronologyUCTMT chronologyUCTMT = tmrtc.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+      ChronologyTemplateMetadataRule currentMetadataRule = iterator.next()
+        ChronologyUCTMT chronologyUCTMT = ChronologyTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         chronologyTemplateMetadataArray << chronologyUCTMT
-      }
     }
     return chronologyTemplateMetadataArray
   }
 
   public ArrayList<EnumerationUCTMT> generateEnumerationMetadata(
     StandardTemplateMetadata standardTM, 
-    Set<TemplateMetadataRule> templateMetadataRules, 
+    Set<EnumerationTemplateMetadataRule> templateMetadataRules, 
     ArrayList<UserConfiguredTemplateMetadata> startingValues,
     ArrayList<EnumerationUCTMT> previousEnumerationArray
   ) {
     ArrayList<EnumerationUCTMT> enumerationTemplateMetadataArray = []
-    Iterator<TemplateMetadataRule> iterator = templateMetadataRules?.iterator()
-    // TODO This should get neater once enumeration/chronology are seperated
+    Iterator<EnumerationTemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     int enumerationIndex = 0
     while(iterator?.hasNext()){
-      TemplateMetadataRule currentMetadataRule = iterator.next()
-      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      if(templateMetadataType == 'enumeration'){
-        Class<? extends TemplateMetadataRule> tmrte = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
+      EnumerationTemplateMetadataRule currentMetadataRule = iterator.next()
         // previousEnumerationArray might be null
         EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
-        EnumerationUCTMT enumerationUCTMT = tmrte.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
+        EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         enumerationTemplateMetadataArray << enumerationUCTMT
         enumerationIndex++
-      }
     }
     return enumerationTemplateMetadataArray
   }
@@ -226,30 +219,18 @@ public class PieceLabellingService {
     // This block here is doing alot of what was copied from the code blocks above except instead of seperating into chronology and enumeration arrays
     // they are instead being compiled into a single template UserConfiguredTemplateMetadata array
     Set<UserConfiguredTemplateMetadata> uctmArray = []
-    Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
-    Iterator<TemplateMetadataRule> iterator = sortedRules?.iterator()
+    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig.rules?.sort{ it.index }
+
+    // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
+    // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
+    // It sets the metadataType field to null so we have to directly assign it after the fact, this can almost certainly be resolved within the UserConfiguredTemplateMetadataTypeHelpers class 
+
+    // FIXME This is currently using the old model of having both enumeration and chronology within the same array
+    
+    Iterator<ChronologyTemplateMetadataRule> iterator = sortedChronologyRules?.iterator()
     while(iterator?.hasNext()){
-      TemplateMetadataRule currentMetadataRule = iterator.next()
-      String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
-      Class<? extends TemplateMetadataRule> tmrt = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
-      if(templateMetadataType == 'enumeration'){
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
-        EnumerationUCTMT enumerationUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
-
-        // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
-        // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
-        // It sets the metadataType field to null so we have to directly assign it after the fact, this can almost certainly be resolved within the UserConfiguredTemplateMetadataTypeHelpers class 
-        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
-          userConfiguredTemplateMetadataType: 'enumeration',
-          metadataType: enumerationUCTMT,
-          index: currentMetadataRule?.index,
-          owner: tm
-        ])
-        currentUCTM.metadataType = enumerationUCTMT
-        tm.userConfigured << currentUCTM
-
-      } else {
-        ChronologyUCTMT chronologyUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index)
+      ChronologyTemplateMetadataRule currentMetadataRule = iterator.next()
+        ChronologyUCTMT chronologyUCTMT = ChronologyTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         
         // Same thing happening here as reference above
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
@@ -260,7 +241,22 @@ public class PieceLabellingService {
         ])
         currentUCTM.metadataType = chronologyUCTMT
         tm.userConfigured << currentUCTM
-      }
+    }
+
+    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.rules?.sort{ it.index }
+    while(iterator?.hasNext()){
+      EnumerationTemplateMetadataRule currentMetadataRule = iterator.next()
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
+
+        UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
+          userConfiguredTemplateMetadataType: 'enumeration',
+          metadataType: enumerationUCTMT,
+          index: currentMetadataRule?.index,
+          owner: tm
+        ])
+        currentUCTM.metadataType = enumerationUCTMT
+        tm.userConfigured << currentUCTM
     }
     return tm
   }

@@ -1,17 +1,6 @@
 import groovy.transform.*
 import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRuleType
 import groovy.transform.Field
-import java.util.regex.Pattern
-
-def should_expand = [
-  'templateMetadataRuleType',
-]
 
 @Field TemplateMetadataRule templateMetadataRule
-
-String ruleTypeClassString = Pattern.compile("_([a-z])").matcher(templateMetadataRule.templateMetadataRuleType.value).replaceAll{match -> match.group(1).toUpperCase()}
-
-json g.render(templateMetadataRule, [excludes: ['owner', 'ruleType'], expand: should_expand]) {
-  'ruleType' g.render(template: "/templateMetadataRule/${ruleTypeClassString}TemplateMetadataRule", model: ['ruleType' : templateMetadataRule.ruleType])
-}
+json g.render(templateMetadataRule, [excludes: ['owner']])
