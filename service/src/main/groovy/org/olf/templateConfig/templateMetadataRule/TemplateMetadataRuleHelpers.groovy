@@ -1,6 +1,6 @@
 package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRuleType
+import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
 
 import grails.databinding.BindUsing
 import grails.databinding.SimpleMapDataBindingSource
@@ -29,51 +29,51 @@ public class TemplateMetadataRuleHelpers {
 	}
 
 	// Compile the regex once and reference statically.
-	private static final Pattern RGX_RULE_TYPE_CLASS = Pattern.compile("_([a-z])")
+	private static final Pattern RGX_RULE_FORMAT_CLASS = Pattern.compile("_([a-z])")
 	
-	public static <T extends TemplateMetadataRuleType> T doRuleTypeBinding( TemplateMetadataRule obj, SimpleMapDataBindingSource source) {
-		
-		String ruleTypeString = null
-		if ( source['templateMetadataRuleType'] && RefdataValue.class.isAssignableFrom(source['templateMetadataRuleType'].class)) {
-			ruleTypeString = (source['templateMetadataRuleType'] as RefdataValue).value;
+	public static <T extends TemplateMetadataRuleFormat> T doRuleFormatBinding( TemplateMetadataRule obj, SimpleMapDataBindingSource source) {
+
+		String ruleFormatString = null
+		if ( source['templateMetadataRuleFormat'] && RefdataValue.class.isAssignableFrom(source['templateMetadataRuleFormat'].class)) {
+			ruleFormatString = (source['templateMetadataRuleFormat'] as RefdataValue).value;
 		} else {
-			ruleTypeString = source['templateMetadataRuleType']?.toString();
+			ruleFormatString = source['templateMetadataRuleFormat']?.toString();
 		}
 
 		// Do the string replacement.
-		final String ruleTypeClassString = RGX_RULE_TYPE_CLASS.matcher(ruleTypeString)
+		final String ruleFormatClassString = RGX_RULE_FORMAT_CLASS.matcher(ruleFormatString)
 				.replaceAll{ match -> match.group(1).toUpperCase() }
 
-		final String ruleTypeClasspathString = "org.olf.templateConfig.templateMetadataRule.${ruleTypeClassString.capitalize()}TemplateMetadataRule"
+		final String ruleFormatClasspathString = "org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF"
 
-		final Class<? extends TemplateMetadataRuleType> rc = Class.forName(ruleTypeClasspathString)
+		final Class<? extends TemplateMetadataRuleFormat> rc = Class.forName(ruleFormatClasspathString)
 
-		final String currentId = source['ruleType']?.getAt("id")?.toString()
+		final String currentId = source['ruleFormat']?.getAt("id")?.toString()
 
 		def rpApi = GormUtils.gormStaticApi(rc)
 
 		T rp = currentId ? rpApi.get(currentId) : rpApi.create()
 
-		dataBinder.bind( rp, new SimpleMapDataBindingSource(source['ruleType'] as Map) )
+		dataBinder.bind( rp, new SimpleMapDataBindingSource(source['ruleFormat'] as Map) )
 		
-		log.debug ('Binding Template Metadata Rule Type of type {} to Object {}', rp, obj)
+		log.debug ('Binding Template Metadata Rule Type Format of type {} to Object {}', rp, obj)
 		
 		rp
 	}
 	
 	
-	public static Closure ruleTypeValidator = { TemplateMetadataRuleType value, TemplateMetadataRule instance, Errors err ->
-		validateRuleType( value, instance, err )
+	public static Closure ruleFormatValidator = { TemplateMetadataRuleFormat value, TemplateMetadataRule instance, Errors err ->
+		validateRuleFormat( value, instance, err )
 	}
 	
-	private static void validateRuleType ( TemplateMetadataRuleType value, TemplateMetadataRule instance, Errors err ) {
+	private static void validateRuleFormat ( TemplateMetadataRuleFormat value, TemplateMetadataRule instance, Errors err ) {
 		GormValidateable rpVal = value as GormValidateable
 		
 		if (!rpVal.validate(deepValidate: false)) { // Make sure this validation isn't fired again.
 			
-			Errors styleErrors = rpVal.getErrors()
-			for( def error : styleErrors.allErrors) {
-				err.rejectValue('ruleType', error.code, error.arguments, error.defaultMessage)
+			Errors formatErrors = rpVal.getErrors()
+			for( def error : formatErrors.allErrors) {
+				err.rejectValue('ruleFormat', error.code, error.arguments, error.defaultMessage)
 			}
 		}
 	}

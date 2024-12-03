@@ -15,14 +15,14 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<EnumerationTemplateMetadataRule> {
+public class EnumerationTemplateMetadataRule extends TemplateMetadataRule implements MultiTenant<EnumerationTemplateMetadataRule> {
   @CategoryId(value="EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat", defaultInternal=true)
   // We setup these defaults within the HouseKeepingService in order to assign non-standard labels
   // @Defaults(['Enumeration Numeric', 'Enumeration Textual'])
   RefdataValue templateMetadataRuleFormat
 
-  @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->
-		TemplateMetadataRuleTypeHelpers.doRuleFormatBinding(obj, source)
+  @BindUsing({ EnumerationTemplateMetadataRule obj, SimpleMapDataBindingSource source ->
+		TemplateMetadataRuleHelpers.doRuleFormatBinding(obj, source)
   })
   TemplateMetadataRuleFormat ruleFormat
 
@@ -37,7 +37,7 @@ public class EnumerationTemplateMetadataRule extends TemplateMetadataRuleType im
 
   static constraints = {
     templateMetadataRuleFormat nullable: false
-    ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
+    ruleFormat nullable: false, validator: TemplateMetadataRuleHelpers.ruleFormatValidator
   }
 
   public static EnumerationUCTMT handleType(TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues) {

@@ -16,7 +16,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType implements MultiTenant<ChronologyTemplateMetadataRule> {
+public class ChronologyTemplateMetadataRule extends TemplateMetadataRule implements MultiTenant<ChronologyTemplateMetadataRule> {
 
   @CategoryId(value="ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat", defaultInternal=true)
   // We setup these defaults within the HouseKeepingService in order to assign non-standard labels
@@ -25,8 +25,8 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
 
   String ruleLocale = 'en'
 
-  @BindUsing({ TemplateMetadataRuleType obj, SimpleMapDataBindingSource source ->
-		TemplateMetadataRuleTypeHelpers.doRuleFormatBinding(obj, source)
+  @BindUsing({ ChronologyTemplateMetadataRule obj, SimpleMapDataBindingSource source ->
+		TemplateMetadataRuleHelpers.doRuleFormatBinding(obj, source)
   })
   TemplateMetadataRuleFormat ruleFormat
 
@@ -44,7 +44,7 @@ public class ChronologyTemplateMetadataRule extends TemplateMetadataRuleType imp
   static constraints = {
     templateMetadataRuleFormat nullable: false
     ruleLocale nullable: false
-    ruleFormat nullable: false, validator: TemplateMetadataRuleTypeHelpers.ruleFormatValidator
+    ruleFormat nullable: false, validator: TemplateMetadataRuleHelpers.ruleFormatValidator
   }
 
   public static ChronologyUCTMT handleType(TemplateMetadataRule rule, LocalDate date, int index) {
