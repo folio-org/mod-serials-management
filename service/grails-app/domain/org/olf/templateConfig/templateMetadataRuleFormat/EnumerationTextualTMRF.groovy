@@ -27,7 +27,7 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
   }
 
   private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index){
-    ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
+    ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
     while (true) {
       for (int i = 0; i < etltmrfArray?.size(); i++) {
         index -= etltmrfArray[i]?.units;

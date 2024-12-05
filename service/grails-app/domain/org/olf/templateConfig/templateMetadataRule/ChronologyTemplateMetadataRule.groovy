@@ -59,7 +59,7 @@ public class ChronologyTemplateMetadataRule implements MultiTenant<ChronologyTem
 
   public static ChronologyUCTMT handleType(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
     final Pattern RGX_RULE_FORMAT = Pattern.compile('_([a-z])')
-    String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.ruleType?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
+    String ruleFormatClassString = RGX_RULE_FORMAT.matcher(rule?.templateMetadataRuleFormat?.value).replaceAll { match -> match.group(1).toUpperCase() }
     Class<? extends ChronologyTemplateMetadataRuleFormat> rfc = Class.forName("org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF")
     return rfc.handleFormat(rule, date, index)
   }

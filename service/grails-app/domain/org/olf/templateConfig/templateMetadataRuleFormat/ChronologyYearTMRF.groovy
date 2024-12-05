@@ -27,8 +27,8 @@ public class ChronologyYearTMRF extends ChronologyTemplateMetadataRuleFormat imp
   }
 
   public static ChronologyUCTMT handleFormat(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
-    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
-		ChronologyYearTMRF tmrf = rule?.ruleType?.ruleFormat
+    Locale locale = new Locale(rule?.ruleLocale)
+		ChronologyYearTMRF tmrf = rule?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',

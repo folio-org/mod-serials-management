@@ -77,8 +77,8 @@ public class ChronologyDateTMRF extends ChronologyTemplateMetadataRuleFormat imp
 		]
    
   public static ChronologyUCTMT handleFormat(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
-    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
-    ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
+    Locale locale = new Locale(rule?.ruleLocale)
+    ChronologyDateTMRF tmrf = rule?.ruleFormat
     // TODO Dont handle if not a chronology rule
 		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value), locale))
 		if(tmrf?.weekdayFormat?.value.endsWith('upper')){

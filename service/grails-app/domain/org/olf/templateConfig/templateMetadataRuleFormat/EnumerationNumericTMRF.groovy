@@ -45,7 +45,7 @@ public class EnumerationNumericTMRF extends EnumerationTemplateMetadataRuleForma
     RomanNumeralFormat rnf = new RomanNumeralFormat();
 
     // Array of EnumerationNumericLevels sorted by index
-    ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
+    ArrayList<EnumerationNumericLevelTMRF> enltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
     // Array of starting values sorted by index
     ArrayList<EnumerationLevelUCTMT> levelStartingValueArray = startingValues?.levels?.sort { it?.index }
     ArrayList<EnumerationLevelUCTMT> result = []
