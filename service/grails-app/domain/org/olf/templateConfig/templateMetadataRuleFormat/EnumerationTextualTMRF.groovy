@@ -1,6 +1,6 @@
 package org.olf.templateConfig.templateMetadataRuleFormat
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.EnumerationUCTMT
 
 import java.time.LocalDate
@@ -11,7 +11,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {  
+public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {  
   Set<EnumerationTextualLevelTMRF> levels
 
   static hasMany = [
@@ -26,8 +26,8 @@ public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implement
     levels nullable: false
   }
 
-  private static String findResultIndex(TemplateMetadataRule rule, int index){
-    ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleType?.ruleFormat?.levels?.sort { it?.index }
+  private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index){
+    ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
     while (true) {
       for (int i = 0; i < etltmrfArray?.size(); i++) {
         index -= etltmrfArray[i]?.units;
@@ -38,7 +38,7 @@ public class EnumerationTextualTMRF extends TemplateMetadataRuleFormat implement
     }
   }
 
-  public static EnumerationUCTMT handleFormat (TemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
+  public static EnumerationUCTMT handleFormat (EnumerationTemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
     String result = findResultIndex(rule, index + 1)
     return new EnumerationUCTMT([value: result])
   }

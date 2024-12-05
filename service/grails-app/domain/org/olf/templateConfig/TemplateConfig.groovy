@@ -1,6 +1,8 @@
 package org.olf.templateConfig
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.ChronologyTemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.EnumerationTemplateMetadataRule
+
 import org.olf.SerialRuleset
 
 import grails.gorm.MultiTenant
@@ -13,10 +15,10 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
   String id
   SerialRuleset owner
   String templateString
-  // TODO Maybe seprate into two seperate lists for enumeration and chronology
 
   static hasMany = [
-    rules: TemplateMetadataRule
+    chronologyRules: ChronologyTemplateMetadataRule,
+    enumerationRules: EnumerationTemplateMetadataRule
   ]
 
   static belongsTo = [
@@ -28,12 +30,14 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
     owner column: 'tc_owner_fk'
     version column: 'tc_version'
     templateString column: 'tc_template_string'
-    rules cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
+    chronologyRules cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
+    enumerationRules cascade: 'all-delete-orphan', sort: 'index', order: 'asc'
   }
 
   static constraints = {
     owner nullable: false
-    rules nullable: true
+    chronologyRules nullable: true
+    enumerationRules nullable: true
     templateString nullable: false
   }
 }

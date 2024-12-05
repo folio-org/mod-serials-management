@@ -2,7 +2,7 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.ChronologyTemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
 
 import java.time.LocalDate
@@ -14,7 +14,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements MultiTenant<ChronologyDateTMRF> {
+public class ChronologyDateTMRF extends ChronologyTemplateMetadataRuleFormat implements MultiTenant<ChronologyDateTMRF> {
 
   @CategoryId(value="Global.WeekdayFormat", defaultInternal=true)
   @Defaults(['Slice Lower', 'Slice Upper', 'Full Lower', 'Full Upper'])
@@ -76,9 +76,9 @@ public class ChronologyDateTMRF extends TemplateMetadataRuleFormat implements Mu
       full_lower: 'EEEE',
 		]
    
-  public static ChronologyUCTMT handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
-    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
-    ChronologyDateTMRF tmrf = rule?.ruleType?.ruleFormat
+  public static ChronologyUCTMT handleFormat(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
+    Locale locale = new Locale(rule?.ruleLocale)
+    ChronologyDateTMRF tmrf = rule?.ruleFormat
     // TODO Dont handle if not a chronology rule
 		String weekday = date.format(DateTimeFormatter.ofPattern(weekdayFormatTransform.get(tmrf?.weekdayFormat?.value), locale))
 		if(tmrf?.weekdayFormat?.value.endsWith('upper')){
