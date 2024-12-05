@@ -1,0 +1,6 @@
+import groovy.transform.*
+import org.olf.templateConfig.templateMetadataRuleFormat.ChronologyTemplateMetadataRuleFormat
+import groovy.transform.Field
+
+@Field ChronologyTemplateMetadataRuleFormat chronologyTemplateMetadataRuleFormat
+json g.render(chronologyTemplateMetadataRuleFormat, [excludes: ['owner']])

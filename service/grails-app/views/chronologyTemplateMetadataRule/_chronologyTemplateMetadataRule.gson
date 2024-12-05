@@ -1,6 +1,5 @@
 import groovy.transform.*
 import org.olf.templateConfig.templateMetadataRule.ChronologyTemplateMetadataRule
-import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
 import groovy.transform.Field
 import java.util.regex.Pattern
 
