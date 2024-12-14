@@ -46,7 +46,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(startingValuesJson)
 
-    Integer numberOfCycles = data?.numberOfCycles ?: 1
+    Integer numberOfCycles = data?.numberOfCycles as Integer ?: 1
 
     ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate), numberOfCycles)
 
