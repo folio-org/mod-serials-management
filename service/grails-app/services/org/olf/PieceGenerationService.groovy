@@ -39,7 +39,7 @@ public class PieceGenerationService {
   ]
 
   // This takes in a SerialRuleset and generates pieces without saving any domain objects
-  public createPiecesTransient (SerialRuleset ruleset, LocalDate startDate) {
+  public createPiecesTransient (SerialRuleset ruleset, LocalDate startDate, Integer numberOfCycles) {
     ArrayList<InternalPiece> internalPieces = []
     Map<String, Integer> timeUnitValues = [
       day: 1,
@@ -50,7 +50,7 @@ public class PieceGenerationService {
 
     // Calculate minimum whole number of years
     // Time unit * period / 365 - rounded up to next whole number
-    Integer minNumberOfYears = Math.ceil(timeUnitValues.get(ruleset?.recurrence?.timeUnit?.value) * ruleset?.recurrence?.period / 365)
+    Integer minNumberOfYears = Math.ceil(timeUnitValues.get(ruleset?.recurrence?.timeUnit?.value) * ruleset?.recurrence?.period / 365) * numberOfCycles
 
     // Establish start and end date
     LocalDate endDate = startDate.plusYears(minNumberOfYears)
