@@ -26,6 +26,7 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   Date dateCreated
 
   LocalDate startDate
+  Integer numberOfCycles
 
   SerialRuleset ruleset
 
@@ -54,6 +55,7 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     dateCreated column: 'pps_date_created'
     version column: 'pps_version'
     startDate column: 'pps_start_date'
+    numberOfCycles column: 'pps_number_of_cycles'
     note column: 'pps_note'
 
     pieces cascade: 'all-delete-orphan'
@@ -62,8 +64,9 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   static constraints = {
     lastUpdated nullable: true
     dateCreated nullable: true
-    note nullable: true
     startDate nullable: false
+    numberOfCycles nullable: true
+    note nullable: true
     pieces nullable: false
     ruleset nullable: false
   }

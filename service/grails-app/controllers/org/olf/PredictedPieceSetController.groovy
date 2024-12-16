@@ -70,6 +70,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       pieces: ips,
       note: data?.note,
       startDate: data?.startDate,
+      numberOfCycles: numberOfCycles,
       initialPieceRecurrenceMetadata: initialPieceRecurrenceMetadata,
       continuationPieceRecurrenceMetadata: continuationPieceRecurrenceMetadata
     ])
