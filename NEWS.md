@@ -1,3 +1,6 @@
+## 1.0.4 2025-01-07
+  * MODSER-56 Internal omission/combination pieces not expanding fields
+
 ## 1.0.3 2024-04-26
   * MODSER-35 Endpoints should be protected by fine-grained permissions
 
