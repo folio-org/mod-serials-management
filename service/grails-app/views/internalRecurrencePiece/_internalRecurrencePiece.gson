@@ -4,7 +4,10 @@ import groovy.transform.Field
 
 def should_expand = [
   'recurrenceRule',
+  'receivingPieces'
 ]
 
 @Field InternalRecurrencePiece internalRecurrencePiece
-json g.render(internalRecurrencePiece, [excludes: ['owner'], expand: should_expand])
+json g.render(internalRecurrencePiece, [excludes: ['owner'], expand: should_expand]){
+  'class' internalRecurrencePiece.class.name
+}

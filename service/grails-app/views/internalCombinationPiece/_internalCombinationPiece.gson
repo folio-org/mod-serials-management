@@ -4,8 +4,11 @@ import groovy.transform.Field
 
 def should_expand = [
   'recurrencePieces',
-  'combinationOrigins'
+  'combinationOrigins',
+  'receivingPieces'
 ]
 
 @Field InternalCombinationPiece internalCombinationPiece
-json g.render(internalCombinationPiece, [excludes: ['owner'], expand: should_expand])
+json g.render(internalCombinationPiece, [excludes: ['owner'], expand: should_expand]){
+  'class' internalCombinationPiece.class.name
+}

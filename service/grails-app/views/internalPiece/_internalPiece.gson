@@ -1,8 +1,21 @@
 import groovy.transform.*
 import org.olf.internalPiece.InternalPiece
 import groovy.transform.Field
-
-def should_expand = ['receivingPieces']
+import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
 
 @Field InternalPiece internalPiece
-json g.render(internalPiece, [expand: should_expand])
+internalPiece = GrailsHibernateUtil.unwrapIfProxy(internalPiece) as InternalPiece
+
+switch(internalPiece.class.name){
+  case 'org.olf.internalPiece.InternalOmissionPiece':
+    json g.render (template: '/internalOmissionPiece/internalOmissionPiece', model: [internalOmissionPiece: binding.variables.internalPiece])
+    break;
+  case 'org.olf.internalPiece.InternalRecurrencePiece':
+    json g.render (template: '/internalRecurrencePiece/internalRecurrencePiece', model: [internalRecurrencePiece: binding.variables.internalPiece])
+    break;
+  case 'org.olf.internalPiece.InternalCombinationPiece':
+    json g.render (template: '/internalCombinationPiece/internalCombinationPiece', model: [internalCombinationPiece: binding.variables.internalPiece])
+    break;
+  default:
+    throw new RuntimeException("Unexpected internalPiece class ${internalPiece.class.name}")
+}
