@@ -814,12 +814,14 @@ components:
         type: integer
   schemas:
     Locales:
-      type: object
-      properties:
-        label:
-          type: string
-        value:
-          type: string
+      type: array
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          value:
+            type: string
     RefData:
       type: object
       properties:
