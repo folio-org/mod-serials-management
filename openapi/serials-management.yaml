@@ -12,7 +12,7 @@ security:
 paths:
   /serials-management/locales:
     get:
-      summary: Get a set of serial records
+      summary: Get a set of locales
       operationId: getLocales
       parameters:
         - $ref: '#/components/parameters/keyLocales'
