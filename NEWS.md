@@ -1,5 +1,8 @@
 ## 1.2.0 IN PROGRESS
 
+## 1.1.2 2025-01-09
+  * MODSER-70 Update API documentation for preview/generate predicted pieces
+
 ## 1.1.1 2024-11-28
   * MODSER-62 Multiple levels of continuous enumeration in a publication pattern result in incorrect numbering
   * MODSER-60 Receiving piece count not displaying in predicted piece set
