@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.1.0
   title: Folio Serials Management
   description: API for the Folio library services platform mod-serials-management app
 servers:
@@ -10,6 +10,25 @@ security:
   - accessToken: []
   - okapiToken: []
 paths:
+  /serials-management/locales:
+    get:
+      summary: Get a set of locales
+      operationId: getLocales
+      parameters:
+        - $ref: '#/components/parameters/keyLocales'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Locales'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
   /serials-management/refdata:
     get:
       operationId: getRefData
@@ -522,6 +541,82 @@ paths:
           description: Forbidden
         '500':
           description: Internal server error
+  /serials-management/rulesets/{uuid}/replaceAndDelete:
+    post:
+      summary: Replace and delete an unused publicaiton patter
+      operationId: replaceAndDeleteRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset record to be replaced and deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+        description: Ruleset JSON
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+  /serials-management/rulesets/{uuid}/replaceAndDeprecate:
+    post:
+      summary: Replace and deprecate an used publicaiton patter
+      operationId: replaceAndDeprecateRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the ruleset record to be replaced and deprecated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serialRuleset'
+        description: Ruleset JSON
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
   /serials-management/predictedPieces:
     get:
       summary: Get a set of predicted piece sets
@@ -668,6 +763,13 @@ components:
       in: cookie
       name: folioAccessToken
   parameters:
+    keyLocales:
+      in: query
+      name: keyLocales
+      required: false
+      schema:
+        type: boolean
+        default: true
     filters:
       in: query
       name: filters
@@ -711,6 +813,15 @@ components:
       schema:
         type: integer
   schemas:
+    Locales:
+      type: array
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          value:
+            type: string
     RefData:
       type: object
       properties:
@@ -941,6 +1052,183 @@ components:
           $ref: '#/components/schemas/RecurrencePatternType'
         timeUnit:
           $ref: '#/components/schemas/TimeUnit'
+    OmissionPatternDay:
+      type: object
+      required:
+        - day
+      properties:
+        id:
+          type: string
+          format: uuid
+        day:
+          type: integer
+    OmissionPatternDayMonth:
+      type: object
+      required:
+        - day
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        day:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternDayWeek:
+      type: object
+      required:
+        - week
+        - weekday
+      properties:
+        id:
+          type: string
+          format: uuid
+        week:
+          type: integer
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternDayWeekday:
+      type: object
+      required:
+        - weekday
+      properties:
+        id:
+          type: string
+          format: uuid
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternDayWeekMonth:
+      type: object
+      required:
+        - weekday
+        - week
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        weekday:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        week:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternIssue:
+      type: object
+      required:
+        - issue
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+    OmissionPatternIssueMonth:
+      type: object
+      required:
+        - issue
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternIssueWeek:
+      type: object
+      required:
+        - issue
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        week:
+          type: integer
+    OmissionPatternIssueWeekMonth:
+      type: object
+      required:
+        - issue
+        - week
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        week:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    OmissionPatternMonth:
+      type: object
+      required:
+        - monthFrom
+        - isRange
+      properties:
+        id:
+          type: string
+          format: uuid
+        monthFrom:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        monthTo:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        isRange:
+          type: boolean
+    OmissionPatternWeek:
+      type: object
+      required:
+        - weekFrom
+        - isRange
+      properties:
+        id:
+          type: string
+          format: uuid
+        weekFrom:
+          type: integer
+        weekTo:
+          type: integer
+        isRange:
+          type: boolean
+    OmissionPatternWeekMonth:
+      type: object
+      required:
+        - week
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        week:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
     OmissionPatternType:
       type: object
       properties:
@@ -967,11 +1255,20 @@ components:
     OmissionRule:
       type: object
       properties:
-        ordinal:
-          type: integer
         pattern:
-          type: string
-          format: uuid
+          oneOf:
+            - $ref: '#/components/schemas/OmissionPatternDay'
+            - $ref: '#/components/schemas/OmissionPatternDayMonth'
+            - $ref: '#/components/schemas/OmissionPatternDayWeek'
+            - $ref: '#/components/schemas/OmissionPatternDayWeekday'
+            - $ref: '#/components/schemas/OmissionPatternDayWeekMonth'
+            - $ref: '#/components/schemas/OmissionPatternIssue'
+            - $ref: '#/components/schemas/OmissionPatternIssueMonth'
+            - $ref: '#/components/schemas/OmissionPatternIssueWeek'
+            - $ref: '#/components/schemas/OmissionPatternIssueWeekMonth'
+            - $ref: '#/components/schemas/OmissionPatternMonth'
+            - $ref: '#/components/schemas/OmissionPatternWeek'
+            - $ref: '#/components/schemas/OmissionPatternWeekMonth'
         patternType:
           $ref: '#/components/schemas/OmissionPatternType'
         timeUnit:
@@ -983,6 +1280,62 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OmissionRule'
+    CombinationPatternIssue:
+      type: object
+      required:
+        - issue
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+    CombinationPatternIssueMonth:
+      type: object
+      required:
+        - issue
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    CombinationPatternIssueWeek:
+      type: object
+      required:
+        - issue
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        week:
+          type: integer
+    CombinationPatternIssueWeekMonth:
+      type: object
+      required:
+        - issue
+        - week
+        - month
+      properties:
+        id:
+          type: string
+          format: uuid
+        issue:
+          type: integer
+        week:
+          type: integer
+        month:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
     CombinationPatternType:
       type: object
       properties:
@@ -1001,11 +1354,14 @@ components:
     CombinationRule:
       type: object
       properties:
-        ordinal:
+        issuesToCombine:
           type: integer
         pattern:
-          type: string
-          format: uuid
+          oneOf:
+            - $ref: '#/components/schemas/CombinationPatternIssue'
+            - $ref: '#/components/schemas/CombinationPatternIssueMonth'
+            - $ref: '#/components/schemas/CombinationPatternIssueWeek'
+            - $ref: '#/components/schemas/CombinationPatternIssueWeekMonth'
         patternType:
           $ref: '#/components/schemas/CombinationPatternType'
         timeUnit:
@@ -1040,68 +1396,6 @@ components:
           $ref: '#/components/schemas/TemplateConfiguration'
         owner:
           $ref: '#/components/schemas/Serial'
-        rulesetNumber:
-          type: string
-    Serial:
-      type: object
-      required:
-        - status
-      properties:
-        id:
-          type: string
-          format: uuid
-        description:
-          type: string
-        serialStatus:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
-        orderLine:
-          type: object
-          $ref: '#/components/schemas/SerialOrderLine'
-        serialRulesets:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/serialRuleset'
-        notes:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/SerialNote'
-        dateCreated:
-          type: string
-          format: datetime
-        lastUpdated:
-          type: string
-          format: datetime
-    SerialRuleset:
-      type: object
-      required:
-        - rulesetStatus
-        - templateConfig
-        - recurrence
-        - owner
-      properties:
-        id:
-          type: string
-          format: uuid
-        rulesetStatus:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
-        description:
-          type: string
-        recurrence:
-          $ref: '#/components/schemas/Recurrence'
-        omission:
-          $ref: '#/components/schemas/Omission'
-        combination:
-          $ref: '#/components/schemas/Combination'
-        templateConfig:
-          $ref: '#/components/schemas/Omission'
-        owner:
-          $ref: '#/components/schemas/Serial'
     TemplateConfiguration:
       type: object
       required:
@@ -1120,30 +1414,40 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemplateMetadataRule'
-    TemplateMetadataRule:
+    Serial:
       type: object
       required:
-        - owner
-        - index
-        - ruleType
+        - status
       properties:
         id:
           type: string
           format: uuid
-        owner:
-          $ref: '#/components/schemas/TemplateConfiguration'
-        index:
-          type: integer
-        ruleType:
+        description:
+          type: string
+        serialStatus:
           oneOf:
             - type: string
             - $ref: '#/components/schemas/RefData'
-    serialRuleset:
+        orderLine:
+          $ref: '#/components/schemas/SerialOrderLine'
+        serialRulesets:
+          type: array
+          items:
+            $ref: '#/components/schemas/serialRuleset'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerialNote'
+        dateCreated:
+          type: string
+          format: datetime
+        lastUpdated:
+          type: string
+          format: datetime
+    SerialRuleset:
       type: object
       required:
         - rulesetStatus
-        - templateConfig
-        - recurrence
         - owner
       properties:
         id:
@@ -1162,9 +1466,203 @@ components:
         combination:
           $ref: '#/components/schemas/Combination'
         templateConfig:
-          $ref: '#/components/schemas/Omission'
+          $ref: '#/components/schemas/TemplateConfiguration'
         owner:
           $ref: '#/components/schemas/Serial'
+        rulesetNumber:
+          type: string
+    ChronologyDateTMRF:
+      type: object
+      required:
+        - weekdayFormat
+        - monthDayFormat
+        - monthFormat
+        - yearFormat
+      properties:
+        weekdayFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        monthDayFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        monthFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        yearFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    ChronologyMonthTMRF:
+      type: object
+      required:
+        - monthFormat
+        - yearFormat
+      properties:
+        monthFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        yearFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    ChronologyYearTMRF:
+      type: object
+      required:
+        - yearFormat
+      properties:
+        yearFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    ChronologyTemplateMetadataRule:
+      type: object
+      required:
+        - ruleLocale
+        - ruleFormat
+      properties:
+        id:
+          type: string
+          format: uuid
+        ruleFormat:
+          oneOf:
+            - $ref: '#/components/schemas/ChronologyDateTMRF'
+            - $ref: '#/components/schemas/ChronologyMonthTMRF'
+            - $ref: '#/components/schemas/ChronologyYearTMRF'
+        ruleLocale:
+          type: string
+    EnumerationNumericLevelTMRF:
+      type: object
+      required:
+        - index
+        - units
+        - format
+        - sequence
+      properties:
+        id:
+          type: string
+          format: uuid
+        index:
+          type: integer
+        units:
+          type: integer
+        format:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        sequence:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        internalNote:
+          type: string
+    EnumerationNumericTMRF:
+      type: object
+      required:
+        - levels
+      properties:
+        id:
+          type: string
+          format: uuid
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumerationNumericLevelTMRF'
+    EnumerationTextualLevelTMRF:
+      type: object
+      required:
+        - index
+        - units
+        - format
+        - sequence
+      properties:
+        id:
+          type: string
+          format: uuid
+        index:
+          type: integer
+        units:
+          type: integer
+        value:
+          type: string
+        internalNote:
+          type: string
+    EnumerationTextualTMRF:
+      type: object
+      required:
+        - levels
+      properties:
+        id:
+          type: string
+          format: uuid
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumerationTextualLevelTMRF'
+    EnumerationTemplateMetadataRule:
+      type: object
+      required:
+        - ruleFormat
+      properties:
+        id:
+          type: string
+          format: uuid
+        ruleFormat:
+          oneOf:
+            - $ref: '#/components/schemas/EnumerationNumericTMRF'
+            - $ref: '#/components/schemas/EnumerationTextualTMRF'
+    TemplateMetadataRule:
+      type: object
+      required:
+        - index
+        - templateMetadataRuleType
+        - ruleType
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner:
+          $ref: '#/components/schemas/TemplateConfiguration'
+        index:
+          type: integer
+        ruleType:
+          oneOf:
+            - $ref: '#/components/schemas/ChronologyTemplateMetadataRule'
+            - $ref: '#/components/schemas/EnumerationTemplateMetadataRule'
+        templateMetadataRuleType:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    serialRuleset:
+      type: object
+      required:
+        - rulesetStatus
+        - owner
+      properties:
+        id:
+          type: string
+          format: uuid
+        rulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        description:
+          type: string
+        recurrence:
+          $ref: '#/components/schemas/Recurrence'
+        omission:
+          $ref: '#/components/schemas/Omission'
+        combination:
+          $ref: '#/components/schemas/Combination'
+        templateConfig:
+          $ref: '#/components/schemas/TemplateConfiguration'
+        owner:
+          $ref: '#/components/schemas/Serial'
+        rulesetNumber:
+          type: string
     SerialNote:
       type: object
       required:
@@ -1227,12 +1725,92 @@ components:
           type: integer
         totalRecords:
           type: integer
+    EnumerationLevelUCTMT:
+      type: object
+      required:
+        - index
+        - value
+        - rawValue
+      properties:
+        id:
+          type: string
+          format: uuid
+        value:
+          type: string
+        rawValue:
+          type: integer
+        index:
+          type: integer
+        valueFormat:
+          $ref: '#/components/schemas/RefData'
+    EnumerationUCTMT:
+      type: object
+      properties:
+        value:
+          type: string
+        levels:
+          $ref: '#/components/schemas/EnumerationLevelUCTMT'
+    ChronologyUCTMT:
+      type: object
+      properties:
+        weekday:
+          type: string
+        monthDay:
+          type: string
+        month:
+          type: string
+        year:
+          type: string
+    UserConfiguredTemplateMetadata:
+      type: object
+      required:
+        - index
+        - metadataType
+      properties:
+        id:
+          type: string
+          format: uuid
+        index:
+          type: integer
+        metadataType:
+          oneOf:
+            - $ref: '#/components/schemas/EnumerationUCTMT'
+            - $ref: '#/components/schemas/ChronologyUCTMT'
+        userConfiguredMetadataType:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+    TemplateMetadata:
+      type: object
+      required:
+        - standard
+      properties:
+        id:
+          type: string
+          format: uuid
+        userConfigured:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserConfiguredTemplateMetadata'
+    ReceivingPiece:
+      type: object
+      required:
+        - receivingId
+      properties:
+        id:
+          type: string
+          format: uuid
+        receivingId:
+          type: string
+          format: uuid
     InternalPiece:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        class:
+          type: string
         templateString:
           type: string
         label:
@@ -1240,6 +1818,60 @@ components:
         receivingId:
           type: string
           format: uuid
+        receivingPieces:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceivingPiece'
+    InternalRecurrencePiece:
+      allOf:
+        - $ref: '#/components/schemas/InternalPiece'
+        - type: object
+          properties:
+            recurrenceRule:
+              $ref: '#/components/schemas/RecurrenceRule'
+            date:
+              type: string
+              format: date
+    CombinationOrigin:
+      allOf:
+        - $ref: '#/components/schemas/InternalPiece'
+        - type: object
+          properties:
+            combinationRule:
+              $ref: '#/components/schemas/CombinationRule'
+    InternalCombinationPiece:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InternalPiece'
+        - type: object
+          properties:
+            recurrencePieces:
+              type: array
+              items:
+                $ref: '#/components/schemas/InternalRecurrencePiece'
+            combinationOrigins:
+              type: array
+              items:
+                $ref: '#/components/schemas/CombinationOrigin'
+    OmissionOrigin:
+      allOf:
+        - $ref: '#/components/schemas/InternalPiece'
+        - type: object
+          properties:
+            omissionRule:
+              $ref: '#/components/schemas/OmissionRule'
+    InternalOmissionPiece:
+      allOf:
+        - $ref: '#/components/schemas/InternalPiece'
+        - type: object
+          properties:
+            omissionOrigins:
+              type: array
+              items:
+                $ref: '#/components/schemas/OmissionOrigin'
+            date:
+              type: string
+              format: date
     PredictedPieceSet:
       type: object
       required:
@@ -1247,22 +1879,27 @@ components:
         - pieces
         - ruleSet
       properties:
+        continuationPieceRecurrenceMetadata:
+          $ref: '#/components/schemas/TemplateMetadata'
         dateCreated:
           type: string
           format: datetime
         id:
           type: string
           format: uuid
+        initialPieceRecurrenceMetadata:
+          $ref: '#/components/schemas/TemplateMetadata'
         lastUpdated:
           type: string
           format: datetime
         pieces:
           type: array
           items:
-            type: object
-            $ref: '#/components/schemas/InternalPiece'
+            anyOf:
+              - $ref: '#/components/schemas/InternalCombinationPiece'
+              - $ref: '#/components/schemas/InternalOmissionPiece'
+              - $ref: '#/components/schemas/InternalRecurrencePiece'
         ruleset:
-          type: object
           $ref: '#/components/schemas/SerialRuleset'
         startDate:
           type: string
