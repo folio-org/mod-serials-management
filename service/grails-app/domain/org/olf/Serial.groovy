@@ -16,11 +16,12 @@ import groovy.sql.Sql
 
 
 @GrailsCompileStatic
-class Serial implements MultiTenant<Serial> {
+class Serial extends RulesetOwner implements MultiTenant<Serial> {
 
-  String id
-  Date lastUpdated
-  Date dateCreated
+  // TODO Remove commented properties before merging
+  // String id
+  // Date lastUpdated
+  // Date dateCreated
   String description
 
   @CategoryId(defaultInternal=true)
@@ -42,12 +43,12 @@ class Serial implements MultiTenant<Serial> {
   ]
 
   static mapping = {
-    id column: 's_id', generator: 'uuid2', length: 36
-    lastUpdated column: 's_last_updated'
-    dateCreated column: 's_date_created'
+    // id column: 's_id', generator: 'uuid2', length: 36
+    // lastUpdated column: 's_last_updated'
+    // dateCreated column: 's_date_created'
     serialStatus column: 's_serial_status'
     description column: 's_description'
-    version column: 's_version'
+    // version column: 's_version'
 
     orderLine cascade: 'all-delete-orphan'
     serialRulesets cascade: 'all-delete-orphan'
@@ -56,8 +57,8 @@ class Serial implements MultiTenant<Serial> {
   
   static constraints = {
     orderLine nullable: true
-    lastUpdated nullable: true
-    dateCreated nullable: true
+    // lastUpdated nullable: true
+    // dateCreated nullable: true
     serialStatus nullable: true
     description nullable: true
     serialRulesets nullable: true, validator: { Collection<SerialRuleset> s_rulesets, _obj, Errors errors ->
