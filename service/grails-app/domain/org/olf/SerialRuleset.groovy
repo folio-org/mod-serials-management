@@ -26,6 +26,8 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   String rulesetNumber
   String description
 
+  RulesetOwner owner
+
   @CategoryId(defaultInternal=true)
   @Defaults(['Active', 'Draft', 'Deprecated'])
   RefdataValue rulesetStatus
@@ -42,11 +44,6 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
     omission: 'owner',
     combination: 'owner',
     templateConfig: 'owner'
-  ]
-
-  static belongsTo = [
-    owner: RulesetOwner
-    // predictedPieceSet: PredictedPieceSet
   ]
 
   static mapping = {

@@ -19,23 +19,33 @@ class RulesetTemplateController extends OkapiTenantAwareController<RulesetTempla
     super(RulesetTemplate)
   }
 
-  @Transactional
+  // @Transactional
+  @Override
   def save() {
     RulesetTemplate.withTransaction {
       def data = getObjectToBind()
+
+      SerialRuleset ruleset = new SerialRuleset(data?.serialRuleset).save(failOnError: true)
 
       RulesetTemplate rulesetTemplate = new RulesetTemplate([
         name: data?.name,
         description: data?.description,
         exampleLabel: data?.exampleLabel,
-      ]).save()
+        rulesetTemplateStatus: data?.rulesetTemplateStatus
+        // serialRuleset: ruleset
+      ])
 
-      SerialRuleset ruleset = new SerialRuleset(data?.serialRuleset)
-      ruleset.owner = rulesetTemplate.id
-      ruleset.save(failOnError: true)
-      rulesetTemplate.serialRuleset = ruleset
-      
+      rulesetTemplate.setSerialRuleset(ruleset)
       rulesetTemplate.save(failOnError: true)
+
+
+
+      // SerialRuleset ruleset = new SerialRuleset(data?.serialRuleset)
+      // ruleset.owner = rulesetTemplate.id
+      // ruleset.save(failOnError: true)
+      // rulesetTemplate.serialRuleset = ruleset
+      
+      // rulesetTemplate.save(failOnError: true)
 
       respond rulesetTemplate
     }

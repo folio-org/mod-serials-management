@@ -13,6 +13,7 @@ class RulesetOwner implements MultiTenant<RulesetOwner> {
     lastUpdated column: 'ro_last_updated'
     dateCreated column: 'ro_date_created'
     version column: 'ro_version'
+    tablePerHierarchy false
   }
   
   static constraints = {

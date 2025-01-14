@@ -19,7 +19,7 @@ import groovy.sql.Sql
 class Serial extends RulesetOwner implements MultiTenant<Serial> {
 
   // TODO Remove commented properties before merging
-  // String id
+  String id
   // Date lastUpdated
   // Date dateCreated
   String description
@@ -39,11 +39,12 @@ class Serial extends RulesetOwner implements MultiTenant<Serial> {
 
   static mappedBy = [
     orderLine: 'owner',
-    recurrence: 'owner'
+    recurrence: 'owner',
+    serialRulesets: 'owner'
   ]
 
   static mapping = {
-    // id column: 's_id', generator: 'uuid2', length: 36
+    id column: 's_id', generator: 'uuid2', length: 36
     // lastUpdated column: 's_last_updated'
     // dateCreated column: 's_date_created'
     serialStatus column: 's_serial_status'

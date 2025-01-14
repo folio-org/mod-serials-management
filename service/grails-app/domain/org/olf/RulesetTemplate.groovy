@@ -15,12 +15,17 @@ import org.springframework.validation.Errors
 import groovy.sql.Sql
 
 
+// ModelRuleset
+
 @GrailsCompileStatic
 class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplate> {
 
+  String id
   String name
   String description
   String exampleLabel
+
+  SerialRuleset serialRuleset
 
   @CategoryId(defaultInternal=true)
   @Defaults(['Active', 'Closed'])
@@ -35,6 +40,7 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
   ]
 
   static mapping = {
+    id column: 'rt_id', generator: 'uuid2', length: 36
     name column: 'rt_name'
     description column: 'rt_description'
     exampleLabel column: 'rt_example_label'
