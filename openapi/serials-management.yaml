@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.1.0
+  version: 1.2.0
   title: Folio Serials Management
   description: API for the Folio library services platform mod-serials-management app
 servers:
@@ -716,7 +716,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/PredictedPieceSetGenerator'
       responses:
         '201':
           description: Created
@@ -738,7 +738,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/PredictedPieceSetGenerator'
       responses:
         '201':
           description: Created
@@ -1904,6 +1904,8 @@ components:
         startDate:
           type: string
           format: date
+        numberOfCycles:
+          type: integer
         note:
           type: string
     PredictedPieceSetResults:
@@ -1931,3 +1933,16 @@ components:
           type: integer
         totalRecords:
           type: integer
+    PredictedPieceSetGenerator:
+      allOf:
+        - $ref: '#/components/schemas/SerialRuleset'
+        - type: object
+          properties:
+            note:
+              type: string
+            numberOfCycles:
+              type: integer
+            startingValues:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserConfiguredTemplateMetadata'
