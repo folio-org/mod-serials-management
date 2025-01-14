@@ -36,7 +36,7 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
 
   static mapping = {
     name column: 'rt_name'
-    description column: 'rt_name'
+    description column: 'rt_description'
     exampleLabel column: 'rt_example_label'
     rulesetTemplateStatus column: 'rt_ruleset_template_status'
     serialRuleset cascade: 'all-delete-orphan'
@@ -48,6 +48,5 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
     // TODO Should example be false?
     exampleLabel nullable: true
     rulesetTemplateStatus nullable: false
-    serialRuleset nullable: false
   }   
 }

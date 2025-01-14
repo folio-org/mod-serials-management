@@ -15,6 +15,8 @@ class UrlMappings {
 
     "/serials-management/serials" (resources: 'serial')
 
+    "/serials-management/rulesetTemplate" (resources: 'rulesetTemplate')
+
     "/serials-management/rulesets" (resources: 'serialRuleset'){
 
       '/active' (controller: 'serialRuleset', action: 'activateRuleset', method: 'POST')

@@ -4,4 +4,22 @@ databaseChangeLog = {
       column(name: "pps_number_of_cycles", type: "INTEGER") { constraints(nullable: "true") }
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-001") {
+    createTable(tableName: "ruleset_owner") {
+      column(name: "ro_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ro_version", type: "BIGINT") { constraints(nullable: "false") }
+      column(name: "ro_date_created", type: "timestamp")
+      column(name: "ro_last_updated", type: "timestamp")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-002") {
+    createTable(tableName: "ruleset_template") {
+      column(name: "rt_name", type: "TEXT") { constraints(nullable: "false") }
+      column(name: "rt_description", type: "TEXT") { constraints(nullable: "true") }
+      column(name: "rt_example_label", type: "TEXT") { constraints(nullable: "true") }
+      column(name: "rt_ruleset_template_status", type: "VARCHAR(36)") { constraints(nullable: "false") }
+    }
+  }
 }

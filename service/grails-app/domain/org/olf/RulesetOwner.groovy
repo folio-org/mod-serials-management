@@ -2,7 +2,7 @@ package org.olf
 
 import grails.gorm.MultiTenant
 
-public abstract class RulesetOwner implements MultiTenant<RulesetOwner> {
+class RulesetOwner implements MultiTenant<RulesetOwner> {
 
   String id
   Date lastUpdated
