@@ -1,24 +1,13 @@
 package org.olf
 
-import org.olf.recurrence.Recurrence
-
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
-import org.hibernate.Session
-import org.hibernate.internal.SessionImpl
 import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-import org.springframework.validation.Errors
-
-import groovy.sql.Sql
-
-
-// ModelRuleset
-
 @GrailsCompileStatic
-class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplate> {
+class ModelRuleset extends RulesetOwner implements MultiTenant<ModelRuleset> {
 
   String id
   String name
@@ -29,7 +18,7 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
 
   @CategoryId(defaultInternal=true)
   @Defaults(['Active', 'Closed'])
-  RefdataValue rulesetTemplateStatus
+  RefdataValue modelRulesetStatus
 
   static hasOne = [
     serialRuleset: SerialRuleset
@@ -40,11 +29,11 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
   ]
 
   static mapping = {
-    id column: 'rt_id', generator: 'uuid2', length: 36
-    name column: 'rt_name'
-    description column: 'rt_description'
-    exampleLabel column: 'rt_example_label'
-    rulesetTemplateStatus column: 'rt_ruleset_template_status'
+    id column: 'mr_id', generator: 'uuid2', length: 36
+    name column: 'mr_name'
+    description column: 'mr_description'
+    exampleLabel column: 'mr_example_label'
+    modelRulesetStatus column: 'mr_ruleset_template_status'
     serialRuleset cascade: 'all-delete-orphan'
   }
   
@@ -53,6 +42,6 @@ class RulesetTemplate extends RulesetOwner implements MultiTenant<RulesetTemplat
     description nullable: true
     // TODO Should example be false?
     exampleLabel nullable: true
-    rulesetTemplateStatus nullable: false
+    modelRulesetStatus nullable: false
   }   
 }

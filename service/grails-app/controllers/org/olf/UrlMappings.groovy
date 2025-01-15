@@ -15,7 +15,7 @@ class UrlMappings {
 
     "/serials-management/serials" (resources: 'serial')
 
-    "/serials-management/rulesetTemplate" (resources: 'rulesetTemplate')
+    "/serials-management/modelRulesets" (resources: 'modelRuleset')
 
     "/serials-management/rulesets" (resources: 'serialRuleset'){
 

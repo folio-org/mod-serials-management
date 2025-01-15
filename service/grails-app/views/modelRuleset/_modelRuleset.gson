@@ -1,0 +1,12 @@
+import groovy.transform.*
+import org.olf.ModelRuleset
+import groovy.transform.Field
+
+def should_expand = [
+  'modelRulesetStatus',
+  'serialRuleset',
+]
+
+@Field ModelRuleset modelRuleset
+
+json g.render(modelRuleset, [expand: should_expand])

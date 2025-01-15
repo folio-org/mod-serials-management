@@ -252,27 +252,27 @@
           "methods": [
             "GET"
           ],
-          "pathPattern": "/serials-management/rulesetTemplate",
+          "pathPattern": "/serials-management/modelRuleset",
           "permissionsRequired": [
-            "serials-management.rulesetTemplate.collection.get"
+            "serials-management.modelRuleset.collection.get"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/serials-management/rulesetTemplate/{id}",
+          "pathPattern": "/serials-management/modelRuleset/{id}",
           "permissionsRequired": [
-            "serials-management.rulesetTemplate.item.get"
+            "serials-management.modelRuleset.item.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/serials-management/rulesetTemplate",
+          "pathPattern": "/serials-management/modelRuleset",
           "permissionsRequired": [
-            "serials-management.rulesetTemplate.item.post"
+            "serials-management.modelRuleset.item.post"
           ]
         }
       ]
@@ -616,26 +616,33 @@
       "description": "Get the collection of locales"
     },
     {
-      "permissionName": "serials-management.rulesetTemplate.collection.get",
-      "displayName": "Ruleset template collection get",
-      "description": "Get a collection of ruleset template records"
+      "permissionName": "serials-management.modelRulesets.collection.get",
+      "displayName": "Model ruleset collection get",
+      "description": "Get a collection of model ruleset records"
     },
     {
-      "permissionName": "serials-management.rulesetTemplate.item.get",
-      "displayName": "Ruleset template item get",
-      "description": "Get a ruleset template record"
+      "permissionName": "serials-management.modelRulesets.item.get",
+      "displayName": "Model ruleset item get",
+      "description": "Get a model ruleset record"
     },
     {
-      "permissionName": "serials-management.rulesetTemplate.view",
+      "permissionName": "serials-management.modelRulesets.view",
       "subPermissions": [
-        "serials-management.rulesetTemplate.collection.get",
-        "serials-management.rulesetTemplate.item.get"
+        "serials-management.modelRulesets.collection.get",
+        "serials-management.modelRulesets.item.get"
       ]
     },
     {
-      "permissionName": "serials-management.rulesetTemplate.item.post",
-      "displayName": "Ruleset template item post",
-      "description": "Post a ruleset template record"
+      "permissionName": "serials-management.modelRulesets.item.post",
+      "displayName": "Model ruleset item post",
+      "description": "Post a model ruleset record"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.edit",
+      "subPermissions": [
+        "serials-management.modelRulesets.view",
+        "serials-management.modelRulesets.item.post"
+      ]
     }
   ],
   "launchDescriptor": {
