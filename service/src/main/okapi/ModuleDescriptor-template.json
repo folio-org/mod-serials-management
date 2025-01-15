@@ -254,7 +254,7 @@
           ],
           "pathPattern": "/serials-management/modelRulesets",
           "permissionsRequired": [
-            "serials-management.modelRuleset.collection.get"
+            "serials-management.modelRulesets.collection.get"
           ]
         },
         {
