@@ -134,6 +134,7 @@ class SerialRulesetController extends OkapiTenantAwareController<SerialRuleset> 
   def save() {
     SerialRuleset.withTransaction {
       def data = getObjectToBind()
+
       SerialRuleset ruleset = new SerialRuleset(data)
       activeRulesetCheck(ruleset)
 

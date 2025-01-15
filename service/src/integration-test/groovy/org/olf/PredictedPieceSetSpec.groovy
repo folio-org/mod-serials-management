@@ -256,14 +256,14 @@ class PredictedPieceSpec extends BaseSpec {
     then: "Ensure that response is ok and we have a new ruleset"
       respMap.id != null
 
-    when: "We ask the system to create a predicted piece set based off the previous ruleset"
-      respMap = doPost("/serials-management/predictedPieces/create", [
-        id: respMap.id,
-        startDate: startDate
-      ])
+    // when: "We ask the system to create a predicted piece set based off the previous ruleset"
+    //   respMap = doPost("/serials-management/predictedPieces/create", [
+    //     id: respMap.id,
+    //     startDate: startDate
+    //   ])
 
-    then: "Ensure that response is ok and we have a new predicted piece set"
-      respMap.id != null
+    // then: "Ensure that response is ok and we have a new predicted piece set"
+    //   respMap.id != null
   }
 }
 

@@ -3,7 +3,6 @@ import org.olf.Serial
 import groovy.transform.Field
 
 def should_expand = [
-  'serial',
   'ruleset',
   'pieces',
   // As this is not currently used anywhere on the front end, removing from view for now
