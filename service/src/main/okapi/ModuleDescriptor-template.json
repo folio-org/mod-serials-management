@@ -252,7 +252,7 @@
           "methods": [
             "GET"
           ],
-          "pathPattern": "/serials-management/modelRuleset",
+          "pathPattern": "/serials-management/modelRulesets",
           "permissionsRequired": [
             "serials-management.modelRuleset.collection.get"
           ]
@@ -261,18 +261,27 @@
           "methods": [
             "GET"
           ],
-          "pathPattern": "/serials-management/modelRuleset/{id}",
+          "pathPattern": "/serials-management/modelRulesets/{id}",
           "permissionsRequired": [
-            "serials-management.modelRuleset.item.get"
+            "serials-management.modelRulesets.item.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/serials-management/modelRuleset",
+          "pathPattern": "/serials-management/modelRulesets",
           "permissionsRequired": [
-            "serials-management.modelRuleset.item.post"
+            "serials-management.modelRulesets.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/serials-management/modelRulesets/{id}",
+          "permissionsRequired": [
+            "serials-management.modelRulesets.item.delete"
           ]
         }
       ]
@@ -642,6 +651,18 @@
       "subPermissions": [
         "serials-management.modelRulesets.view",
         "serials-management.modelRulesets.item.post"
+      ]
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.item.delete",
+      "displayName": "Model ruleset item delete",
+      "description": "Delete a model ruleset record"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.manage",
+      "subPermissions": [
+        "serials-management.modelRulesets.edit",
+        "serials-management.modelRulesets.item.delete"
       ]
     }
   ],
