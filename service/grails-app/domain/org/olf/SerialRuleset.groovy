@@ -15,7 +15,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 
 import groovy.sql.Sql
 
-
+// TODO With the addition of a RulesetOwner super class, this should be renamed to just Ruleset (or something similar)
 @GrailsCompileStatic
 class SerialRuleset implements MultiTenant<SerialRuleset> {
 
