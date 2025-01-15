@@ -36,9 +36,9 @@ databaseChangeLog = {
     }
     
     // Then dropping columns from the original table (except id)
-    dropColumn(columnName: "s_version", tableName: "work")
-    dropColumn(columnName: "s_date_created", tableName: "work")
-    dropColumn(columnName: "s_last_updated", tableName: "work")
+    dropColumn(columnName: "s_version", tableName: "serial")
+    dropColumn(columnName: "s_date_created", tableName: "serial")
+    dropColumn(columnName: "s_last_updated", tableName: "serial")
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-004") {
@@ -46,6 +46,7 @@ databaseChangeLog = {
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-005") {
+    addUniqueConstraint(columnNames: "ro_id", constraintName: "ro_id_unique", tableName: "ruleset_owner")
     addForeignKeyConstraint(
       baseColumnNames: "sr_owner_fk",
       baseTableName: "serial_ruleset",
