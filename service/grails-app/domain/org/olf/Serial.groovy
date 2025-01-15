@@ -29,7 +29,6 @@ class Serial extends RulesetOwner implements MultiTenant<Serial> {
 
   static mappedBy = [
     orderLine: 'owner',
-    recurrence: 'owner',
     serialRulesets: 'owner'
   ]
 
