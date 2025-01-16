@@ -12,6 +12,8 @@ import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
 import grails.gorm.multitenancy.Tenants
 
+import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
+
 import org.hibernate.Session
 import org.hibernate.internal.SessionImpl
 
@@ -74,16 +76,19 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
   }
 
   String getTitle() {
-    Tenants.withCurrent {
-      def titleResult = (SerialOrderLine.executeQuery("""
-        SELECT title FROM SerialOrderLine sol
-        WHERE sol.owner.id = :owner
-        """,
-              [owner: ruleset?.owner?.id]
-      ) ?: [])
-      def title = titleResult[0]
-
-      return title;
+    String title = '';
+    SerialOrderLine.withNewTransaction {
+      Serial owner = GrailsHibernateUtil.unwrapIfProxy(ruleset?.owner);
+      Tenants.withCurrent {
+        title = (SerialOrderLine.executeQuery("""
+          SELECT title FROM SerialOrderLine sol
+          WHERE sol.owner.id = :owner
+          """,
+          [owner: owner?.id]
+        ) ?: [])[0] ?: '';
+      }
     }
+
+    return title;
   }
 }
