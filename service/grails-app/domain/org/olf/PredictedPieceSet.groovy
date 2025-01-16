@@ -12,6 +12,8 @@ import grails.compiler.GrailsCompileStatic
 import grails.gorm.MultiTenant
 import grails.gorm.multitenancy.Tenants
 
+import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
+
 import org.hibernate.Session
 import org.hibernate.internal.SessionImpl
 
@@ -49,6 +51,8 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     pieces: 'owner',
   ]
 
+  static transients = [ 'title' ]
+
   static mapping = {
     id column: 'pps_id', generator: 'uuid2', length: 36
     lastUpdated column: 'pps_last_updated'
@@ -71,16 +75,20 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     ruleset nullable: false
   }
 
-  @Transient
-  public String getTitle() {
-    Tenants.withCurrent {
-      String title = (SerialOrderLine.executeQuery("""
-        SELECT title FROM SerialOrderLine sol
-        WHERE sol.owner.id = :owner
-        """,
-        [owner: ruleset?.owner?.id]
-      ) ?: [])[0];
-      return title;
+  String getTitle() {
+    String title = '';
+    SerialOrderLine.withNewTransaction {
+      Serial owner = GrailsHibernateUtil.unwrapIfProxy(ruleset?.owner);
+      Tenants.withCurrent {
+        title = (SerialOrderLine.executeQuery("""
+          SELECT title FROM SerialOrderLine sol
+          WHERE sol.owner.id = :owner
+          """,
+          [owner: owner?.id]
+        ) ?: [])[0] ?: '';
+      }
     }
+
+    return title;
   }
 }

@@ -15,6 +15,6 @@ def should_expand = [
 
 json g.render(predictedPieceSet, [expand: should_expand, excludes: ['initialPieceRecurrenceMetadata']]){
 
-  title predictedPieceSet.getTitle()
+  'title' predictedPieceSet.title
 
 }
