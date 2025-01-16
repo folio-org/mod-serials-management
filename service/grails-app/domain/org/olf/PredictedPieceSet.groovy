@@ -49,6 +49,8 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     pieces: 'owner',
   ]
 
+  static transients = [ 'title' ]
+
   static mapping = {
     id column: 'pps_id', generator: 'uuid2', length: 36
     lastUpdated column: 'pps_last_updated'
@@ -71,15 +73,16 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
     ruleset nullable: false
   }
 
-  @Transient
-  public String getTitle() {
+  String getTitle() {
     Tenants.withCurrent {
-      String title = (SerialOrderLine.executeQuery("""
+      def titleResult = (SerialOrderLine.executeQuery("""
         SELECT title FROM SerialOrderLine sol
         WHERE sol.owner.id = :owner
         """,
-        [owner: ruleset?.owner?.id]
-      ) ?: [])[0];
+              [owner: ruleset?.owner?.id]
+      ) ?: [])
+      def title = titleResult[0]
+
       return title;
     }
   }
