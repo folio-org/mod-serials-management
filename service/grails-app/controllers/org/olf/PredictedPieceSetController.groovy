@@ -91,6 +91,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     respond pps
   }
 
+  @Transactional
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     JSONArray startingValuesJson = data?.startingValues ?: []
