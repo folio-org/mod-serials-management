@@ -247,6 +247,42 @@
           "permissionsRequired": [
             "serials-management.locales.collection.get"
           ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/serials-management/modelRulesets",
+          "permissionsRequired": [
+            "serials-management.modelRulesets.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/serials-management/modelRulesets/{id}",
+          "permissionsRequired": [
+            "serials-management.modelRulesets.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/modelRulesets",
+          "permissionsRequired": [
+            "serials-management.modelRulesets.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/serials-management/modelRulesets/{id}",
+          "permissionsRequired": [
+            "serials-management.modelRulesets.item.delete"
+          ]
         }
       ]
     },
@@ -587,6 +623,47 @@
       "permissionName": "serials-management.locales.collection.get",
       "displayName": "Locales collection get",
       "description": "Get the collection of locales"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.collection.get",
+      "displayName": "Model ruleset collection get",
+      "description": "Get a collection of model ruleset records"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.item.get",
+      "displayName": "Model ruleset item get",
+      "description": "Get a model ruleset record"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.view",
+      "subPermissions": [
+        "serials-management.modelRulesets.collection.get",
+        "serials-management.modelRulesets.item.get"
+      ]
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.item.post",
+      "displayName": "Model ruleset item post",
+      "description": "Post a model ruleset record"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.edit",
+      "subPermissions": [
+        "serials-management.modelRulesets.view",
+        "serials-management.modelRulesets.item.post"
+      ]
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.item.delete",
+      "displayName": "Model ruleset item delete",
+      "description": "Delete a model ruleset record"
+    },
+    {
+      "permissionName": "serials-management.modelRulesets.manage",
+      "subPermissions": [
+        "serials-management.modelRulesets.edit",
+        "serials-management.modelRulesets.item.delete"
+      ]
     }
   ],
   "launchDescriptor": {

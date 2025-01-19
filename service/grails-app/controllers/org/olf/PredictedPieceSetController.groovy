@@ -46,7 +46,9 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
 
     ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(startingValuesJson)
 
-    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate))
+    Integer numberOfCycles = data?.numberOfCycles as Integer ?: 1
+
+    ArrayList<InternalPiece> ips = pieceGenerationService.createPiecesTransient(ruleset, LocalDate.parse(data.startDate), numberOfCycles)
 
     TemplateMetadata initialPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(ips?.get(0), ips, ruleset?.templateConfig, startingValues, null)
 
@@ -68,6 +70,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
       pieces: ips,
       note: data?.note,
       startDate: data?.startDate,
+      numberOfCycles: numberOfCycles,
       initialPieceRecurrenceMetadata: initialPieceRecurrenceMetadata,
       continuationPieceRecurrenceMetadata: continuationPieceRecurrenceMetadata
     ])
@@ -88,6 +91,7 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     respond pps
   }
 
+  @Transactional
   def generatePredictedPieces() {
     JSONObject data = request.JSON
     JSONArray startingValuesJson = data?.startingValues ?: []
