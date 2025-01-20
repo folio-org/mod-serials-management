@@ -69,6 +69,23 @@ databaseChangeLog = {
     }
   }
 
+  // changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-003") {
+  //   // Copy all serial id/version/lastUpdated/dateCreated into rulesetOwner table
+  //   grailsChange {
+  //     change {
+  //       sql.execute("""
+  //         INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule(etmr_owner_fk, etmr_version, etmr_index)
+  //         SELECT tmrt_, s_version, s_date_created, s_last_updated FROM ${database.defaultSchemaName}.serial;
+  //       """.toString())
+  //     }
+  //   }
+    
+  //   // Then dropping columns from the original table (except id)
+  //   dropColumn(columnName: "s_version", tableName: "serial")
+  //   dropColumn(columnName: "s_date_created", tableName: "serial")
+  //   dropColumn(columnName: "s_last_updated", tableName: "serial")
+  // }
+
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-002") {
     renameColumn(tableName: "enumeration_template_metadata_rule", oldColumnName: "tmrt_id", newColumnName: "etmr_id")
   }
