@@ -80,16 +80,15 @@ databaseChangeLog = {
         
           // Grab owner from template_metadatarule_type super class from matching ID
           sql.rows("""
-            SELECT DISTINCT tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type AS owner WHERE tmrt_id = :etmr_id
+            SELECT DISTINCT tmrt_id, tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type WHERE tmrt_id = :etmr_id
           """.toString(), [etmr_id: row.etmr_id]).each {
           
           // Finally update enumeration_template_metadata_rule owner, version index with values from template_metadata_rule
           sql.execute("""  
             UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule
-            SET etmr_owner_fk = (SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner)
-            SET etmr_version = (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner)
-            SET etmr_index = (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner)
-          """.toString(), [owner: it.owner])
+            SET (etmr_owner_fk, etmr_version, etmr_index) = ((SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner))
+            WHERE etmr_id = :rowId
+          """.toString(), [etmr_id: row.etmr_id, owner: it.tmrt_owner_fk])
           }
         }
       }
