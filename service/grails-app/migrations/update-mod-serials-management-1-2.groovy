@@ -63,9 +63,9 @@ databaseChangeLog = {
   // ENUMERATION CHANGES
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-001") {
     addColumn(tableName: "enumeration_template_metadata_rule") {
-      column(name: "etmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "etmr_version", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "etmr_index", type:"INTEGER") { constraints(nullable: "false") }
+      column(name: "etmr_owner_fk", type: "VARCHAR(36)")
+      column(name: "etmr_version", type: "BIGINT")
+      column(name: "etmr_index", type:"INTEGER")
     }
   }
 
@@ -73,12 +73,37 @@ databaseChangeLog = {
     renameColumn(tableName: "enumeration_template_metadata_rule", oldColumnName: "tmrt_id", newColumnName: "etmr_id")
   }
 
+  changeSet(author: "Jack_golding (manual)", id: "20231128-1115-002") {
+		grailsChange {
+      change {
+        sql.eachRow("SELECT DISTINCT etmr_id FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule".toString()) { def row ->
+        
+          // Grab owner from template_metadatarule_type super class from matching ID
+          def match = sql.execute("""
+            SELECT tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type WHERE tmrt_id = :etmr_id
+          """.toString(), ['etmr': rown.etmr_id])
+          
+          // Save the owner ID.
+          def owner = ['tmrt_owner_fk': (match[0][0])]
+          
+          // Also add the same ID as a CP container.
+          sql.execute("""  
+            UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule
+            SET etmr_owner_fk = (SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :tmrt_owner_fk)
+            SET etmr_version = (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :tmrt_owner_fk)
+            SET etmr_index = (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :tmrt_owner_fk)
+          """.toString(), owner)
+        }
+      }
+    }
+	}
+
   // CHRONOLOGY CHANGES
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-003") {
     addColumn(tableName: "chronology_template_metadata_rule") {
-      column(name: "ctmr_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ctmr_version", type: "BIGINT") { constraints(nullable: "false") }
-      column(name: "ctmr_index", type:"INTEGER") { constraints(nullable: "false") }
+      column(name: "ctmr_owner_fk", type: "VARCHAR(36)")
+      column(name: "ctmr_version", type: "BIGINT")
+      column(name: "ctmr_index", type:"INTEGER")
     }
   }
 
@@ -97,65 +122,66 @@ databaseChangeLog = {
   //   }
   // }
   
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-005") {
-    createTable(tableName: "enumeration_template_metadata_rule_format") {
-      column(name: "etmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "etmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "etmrf_version", type: "BIGINT") { constraints(nullable: "false") }
-    }
-  }
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-005") {
+  //   createTable(tableName: "enumeration_template_metadata_rule_format") {
+  //     column(name: "etmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //     column(name: "etmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //     column(name: "etmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+  //   }
+  // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-006") {
-    createTable(tableName: "chronology_template_metadata_rule_format") {
-      column(name: "ctmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ctmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ctmrf_version", type: "BIGINT") { constraints(nullable: "false") }
-    }
-  }
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-006") {
+  //   createTable(tableName: "chronology_template_metadata_rule_format") {
+  //     column(name: "ctmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //     column(name: "ctmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //     column(name: "ctmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+  //   }
+  // }
 
-  //Update enumeration TMRF tables "tmrf_id" to match new ETMRF "etmrf_id"
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-007") {
-    renameColumn(tableName: "enumeration_numerictmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
-  }
+  // //Update enumeration TMRF tables "tmrf_id" to match new ETMRF "etmrf_id"
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-007") {
+  //   renameColumn(tableName: "enumeration_numerictmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
+  // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-008") {
-    renameColumn(tableName: "enumeration_textualtmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
-  }
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-008") {
+  //   renameColumn(tableName: "enumeration_textualtmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
+  // }
 
-  //Update chronology TMRF tables "tmrf_id" to match new CTMRF "Ctmrf_id"
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-009") {
-    renameColumn(tableName: "chronology_datetmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
-  }
+  // //Update chronology TMRF tables "tmrf_id" to match new CTMRF "Ctmrf_id"
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-009") {
+  //   renameColumn(tableName: "chronology_datetmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
+  // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-010") {
-    renameColumn(tableName: "chronology_monthtmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
-  }
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-010") {
+  //   renameColumn(tableName: "chronology_monthtmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
+  // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-011") {
-    renameColumn(tableName: "chronology_yeartmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
-  }
+  // changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-011") {
+  //   renameColumn(tableName: "chronology_yeartmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
+  // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-003") {
-    // Copy all serial id/version/lastUpdated/dateCreated into rulesetOwner table
-    grailsChange {
-      change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule(etmr_version)
-          SELECT tmrt_version FROM ${database.defaultSchemaName}.template_metadata_rule_type;
-        """.toString())
-      }
-    }
+  // changeSet(author: "Jack-Golding (manual)", id: "20250111-1201-003") {
+  //   // Copy all serial id/version/lastUpdated/dateCreated into rulesetOwner table
+  //   grailsChange {
+  //     change {
+  //       sql.execute("""
+  //         INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule(etmr_version)
+  //         SELECT tmrt_version FROM ${database.defaultSchemaName}.template_metadata_rule_type;
+  //       """.toString())
+  //     }
+  //   }
+  // }
 
-    grailsChange {
-      change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule(etmr_index, etmr_owner_fk)
-          SELECT tmr_index, tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule;
-        """.toString())
-      }
-    }
+  //   grailsChange {
+  //     change {
+  //       sql.execute("""
+  //         INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule(etmr_index, etmr_owner_fk)
+  //         SELECT tmr_index, tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule;
+  //       """.toString())
+  //     }
+  //   }
     
-    // Then drop table
-    dropTable(tableName: "template_metadata_rule_type")
-  }
+  //   // Then drop table
+  //   dropTable(tableName: "template_metadata_rule_type")
+  // }
 }
