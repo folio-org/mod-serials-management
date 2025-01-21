@@ -87,7 +87,7 @@ databaseChangeLog = {
           sql.execute("""  
             UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule
             SET (etmr_owner_fk, etmr_version, etmr_index) = ((SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner))
-            WHERE etmr_id = :rowId
+            WHERE etmr_id = :etmr_id
           """.toString(), [etmr_id: row.etmr_id, owner: it.tmrt_owner_fk])
           }
         }
