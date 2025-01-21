@@ -80,11 +80,13 @@ databaseChangeLog = {
         
           // Grab owner from template_metadatarule_type super class from matching ID
           def match = sql.execute("""
-            SELECT tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type WHERE tmrt_id = :etmr_id
-          """.toString(), ['etmr': rown.etmr_id])
+            SELECT DISTINCT tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type AS owner WHERE tmrt_id = :etmr_id
+          """.toString(), ['etmr': row.etmr_id])
+          println(match)
           
           // Save the owner ID.
           def owner = ['tmrt_owner_fk': (match[0][0])]
+          println(owner)
           
           // Also add the same ID as a CP container.
           sql.execute("""  
