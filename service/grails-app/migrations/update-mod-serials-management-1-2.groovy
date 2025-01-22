@@ -73,46 +73,46 @@ databaseChangeLog = {
     renameColumn(tableName: "enumeration_template_metadata_rule", oldColumnName: "tmrt_id", newColumnName: "etmr_id")
   }
 
-  changeSet(author: "Jack_golding (manual)", id: "20241205-1222-003") {
-		grailsChange {
-      change {
-        sql.eachRow("SELECT DISTINCT etmr_id FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule".toString()) { def row ->
+  // changeSet(author: "Jack_golding (manual)", id: "20241205-1222-003") {
+	// 	grailsChange {
+  //     change {
+  //       sql.eachRow("SELECT DISTINCT etmr_id FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule".toString()) { def row ->
         
-          // Grab owner from template_metadatarule_type super class from matching ID
-          sql.rows("""
-            SELECT DISTINCT tmrt_id, tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type WHERE tmrt_id = :etmr_id
-          """.toString(), [etmr_id: row.etmr_id]).each {
+  //         // Grab owner from template_metadatarule_type super class from matching ID
+  //         sql.rows("""
+  //           SELECT DISTINCT tmrt_id, tmrt_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule_type WHERE tmrt_id = :etmr_id
+  //         """.toString(), [etmr_id: row.etmr_id]).each {
           
-          // Finally update enumeration_template_metadata_rule owner, version index with values from template_metadata_rule
-          sql.execute("""  
-            UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule
-            SET (etmr_owner_fk, etmr_version, etmr_index) = ((SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner))
-            WHERE etmr_id = :etmr_id
-          """.toString(), [etmr_id: row.etmr_id, owner: it.tmrt_owner_fk])
-          }
-        }
-      }
-    }
-	}
+  //         // Finally update enumeration_template_metadata_rule owner, version index with values from template_metadata_rule
+  //         sql.execute("""  
+  //           UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule
+  //           SET (etmr_owner_fk, etmr_version, etmr_index) = ((SELECT tmr_owner_fk FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_version FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner), (SELECT tmr_index FROM ${database.defaultSchemaName}.template_metadata_rule WHERE tmr_id = :owner))
+  //           WHERE etmr_id = :etmr_id
+  //         """.toString(), [etmr_id: row.etmr_id, owner: it.tmrt_owner_fk])
+  //         }
+  //       }
+  //     }
+  //   }
+	// }
 
-  changeSet(author: "Jack_golding (manual)", id: "20241205-1222-003") {
-		grailsChange {
-      change {
-        sql.execute("""
-        UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule AS enum
-        SET
-          enum.etmr_owner_fk = tmr.tmr_owner_fk,
-          enum.etmr_version = tmr.tmr_version,
-          enum.etmr_index = tmr.tmr_index
-        FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule AS enum1
-        INNER JOIN ${database.defaultSchemaName}.template_metadata_rule_type as tmrt
-          ON enum1.etmr_id = tmrt.tmrt_id
-        INNER JOIN ${database.defaultSchemaName}.template_metadata_rule as tmr
-          ON tmrt.tmrt_owner_fk = tmr.tmr_id; 
-        """)
-      }
-    }
-	}
+  // changeSet(author: "Jack_golding (manual)", id: "20241205-1222-003") {
+	// 	grailsChange {
+  //     change {
+  //       sql.execute("""
+  //       UPDATE enum
+  //       SET
+  //         enum.etmr_owner_fk = tmr.tmr_owner_fk,
+  //         enum.etmr_version = tmr.tmr_version,
+  //         enum.etmr_index = tmr.tmr_index
+  //       FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule enum
+  //       LEFT JOIN ${database.defaultSchemaName}.template_metadata_rule_type tmrt
+  //         ON enum.etmr_id = tmrt.tmrt_id
+  //       LEFT JOIN ${database.defaultSchemaName}.template_metadata_rule tmr
+  //         ON tmrt.tmrt_owner_fk = tmr.tmr_id; 
+  //       """)
+  //     }
+  //   }
+	// }
 
 
 
