@@ -186,7 +186,7 @@ databaseChangeLog = {
         sql.execute("""  
             INSERT INTO ${database.defaultSchemaName}.chronology_template_metadata_rule_format (ctmrf_id, ctmrf_owner_fk, ctmrf_version)
             SELECT tmrf_id, tmrf_owner_fk as owner_id, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format;
-            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.chronology_template_metadata_rule WHERE ctmr_id = id)
+            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.chronology_template_metadata_rule WHERE ctmr_id = owner_id)
           """.toString())
         }
       }
