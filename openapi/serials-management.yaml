@@ -344,6 +344,146 @@ paths:
                 $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
+  /serials-management/modelRulesets:
+    get:
+      summary: Get a set of model ruleset records
+      operationId: getModelRulesets
+      parameters:
+        - $ref: '#/components/parameters/filters'
+        - $ref: '#/components/parameters/match'
+        - $ref: '#/components/parameters/term'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/stats'
+        - $ref: '#/components/parameters/perPage'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ModelRulesetResults'
+                  - $ref: '#/components/schemas/ModelRulesetResultsArray'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+    post:
+      summary: Create model ruleset record
+      operationId: postModelRuleset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/modelRuleset'
+        description: Ruleset JSON
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/modelRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /serials-management/modelRulesets/{uuid}:
+    get:
+      summary: Get a specified model ruleset record
+      operationId: getModelRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the model ruleset record to be fetched
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    put:
+      summary: Update model ruleset record
+      operationId: putModelRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the model ruleset record to be put
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRuleset'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelRuleset'
+        '400':
+          description: Bad request error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a specified model ruleset record
+      operationId: deleteModelRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the model ruleset record to be deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
   /serials-management/rulesets:
     get:
       summary: Get a set of ruleset records
@@ -543,7 +683,7 @@ paths:
           description: Internal server error
   /serials-management/rulesets/{uuid}/replaceAndDelete:
     post:
-      summary: Replace and delete an unused publicaiton patter
+      summary: Replace and delete an unused publication pattern
       operationId: replaceAndDeleteRuleset
       parameters:
         - name: uuid
@@ -856,9 +996,7 @@ components:
         - results
       properties:
         results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RefDataCategory'
+          $ref: '#/components/schemas/RefDataResults'
         meta:
           type: object
         page:
@@ -1468,9 +1606,38 @@ components:
         templateConfig:
           $ref: '#/components/schemas/TemplateConfiguration'
         owner:
-          $ref: '#/components/schemas/Serial'
+          oneOf:
+            - $ref: '#/components/schemas/Serial'
+            - $ref: '#/components/schemas/ModelRuleset'
         rulesetNumber:
           type: string
+    ModelRuleset:
+      type: object
+      required:
+        - name
+        - modelRulesetStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        dateCreated:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        exampleLabel:
+          type: string
+        modelRulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        serialRuleset:
+          $ref: '#/components/schemas/SerialRuleset'
     ChronologyDateTMRF:
       type: object
       required:
@@ -1660,7 +1827,9 @@ components:
         templateConfig:
           $ref: '#/components/schemas/TemplateConfiguration'
         owner:
-          $ref: '#/components/schemas/Serial'
+          oneOf:
+            - $ref: '#/components/schemas/Serial'
+            - $ref: '#/components/schemas/ModelRuleset'
         rulesetNumber:
           type: string
     SerialNote:
@@ -1685,9 +1854,7 @@ components:
         - results
       properties:
         results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Serial'
+          $ref: '#/components/schemas/SerialResults'
         meta:
           type: object
         page:
@@ -1700,6 +1867,60 @@ components:
           type: integer
         totalRecords:
           type: integer
+    ModelRulesetResults:
+      type: array
+      items:
+        $ref: '#/components/schemas/ModelRuleset'
+    ModelRuleSetResults:
+      type: array
+      items:
+        $ref: '#/components/schemas/ModelRuleset'
+    ModelRulesetResultsArray:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          $ref: '#/components/schemas/ModelRuleSetResults'
+        meta:
+          type: object
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        totalRecords:
+          type: integer
+    modelRuleset:
+      type: object
+      required:
+        - name
+        - modelRulesetStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        dateCreated:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        exampleLabel:
+          type: string
+        modelRulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        serialRuleset:
+          $ref: '#/components/schemas/SerialRuleset'
     SerialRulesetResults:
       type: array
       items:
@@ -1918,9 +2139,7 @@ components:
         - results
       properties:
         results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PredictedPieceSet'
+          $ref: '#/components/schemas/PredictedPieceSetResults'
         meta:
           type: object
         page:
