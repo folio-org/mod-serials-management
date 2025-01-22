@@ -191,7 +191,6 @@ databaseChangeLog = {
         }
       }
   }
-
   //   // Then drop table
   //   dropTable(tableName: "template_metadata_rule_type")
   // }
