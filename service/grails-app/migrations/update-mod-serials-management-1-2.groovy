@@ -178,7 +178,20 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-013") {
     renameColumn(tableName: "chronology_yeartmrf", oldColumnName: "tmrf_id", newColumnName: "ctmrf_id")
-  } 
+  }
+
+  changeSet(author: "Jack_golding (manual)", id: "20241205-1222-014") {
+		grailsChange {
+      change {
+        sql.execute("""  
+            INSERT INTO ${database.defaultSchemaName}.chronology_template_metadata_rule_format (ctmrf_id, ctmrf_owner_fk, ctmrf_version)
+            SELECT tmrf_id, tmrf_owner_fk as owner_id, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format;
+            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.chronology_template_metadata_rule WHERE ctmr_id = id)
+          """.toString(), [ctmr_id: row.etmr_id, owner: it.tmrt_owner_fk])
+        }
+      }
+  }
+
   //   // Then drop table
   //   dropTable(tableName: "template_metadata_rule_type")
   // }
