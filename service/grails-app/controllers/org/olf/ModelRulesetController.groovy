@@ -24,7 +24,7 @@ class ModelRulesetController extends OkapiTenantAwareController<ModelRulesetCont
     ModelRuleset.withTransaction {
       def data = getObjectToBind()
 
-      SerialRuleset ruleset = new SerialRuleset(data?.serialRuleset).save(failOnError: true)
+      SerialRuleset ruleset = new SerialRuleset(data?.serialRuleset)
 
       ModelRuleset modelRuleset = new ModelRuleset([
         name: data?.name,

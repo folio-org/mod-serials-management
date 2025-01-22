@@ -65,7 +65,7 @@ class SerialRuleset implements MultiTenant<SerialRuleset> {
   static constraints = {
     lastUpdated nullable: true
     dateCreated nullable: true
-    owner nullable: false
+    owner nullable: true
     rulesetNumber nullable: true
     rulesetStatus nullable: false
     description nullable: true
