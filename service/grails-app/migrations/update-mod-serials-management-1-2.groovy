@@ -91,13 +91,13 @@ databaseChangeLog = {
 		grailsChange {
       change {
           sql.execute("""  
-          UPDATE test1_mod_serials_management.enumeration_template_metadata_rule enumeration
+          UPDATE ${database.defaultSchemaName}.enumeration_template_metadata_rule enumeration
 		      SET
             etmr_owner_fk = tmr.tmr_owner_fk,
             etmr_version = tmr.tmr_version,
             etmr_index = tmr.tmr_index
-		      FROM test1_mod_serials_management.template_metadata_rule tmr
-		      LEFT JOIN test1_mod_serials_management.template_metadata_rule_type tmrt
+		      FROM ${database.defaultSchemaName}.template_metadata_rule tmr
+		      LEFT JOIN ${database.defaultSchemaName}.template_metadata_rule_type tmrt
             ON tmrt.tmrt_owner_fk = tmr.tmr_id
 		      WHERE enumeration.etmr_id = tmrt.tmrt_id;
           """.toString())
@@ -124,13 +124,13 @@ databaseChangeLog = {
 		grailsChange {
       change {
           sql.execute("""  
-          UPDATE test1_mod_serials_management.chronology_template_metadata_rule chronology
+          UPDATE ${database.defaultSchemaName}.chronology_template_metadata_rule chronology
 		      SET
             ctmr_owner_fk = tmr.tmr_owner_fk,
             ctmr_version = tmr.tmr_version,
             ctmr_index = tmr.tmr_index
-		      FROM test1_mod_serials_management.template_metadata_rule tmr
-		      LEFT JOIN test1_mod_serials_management.template_metadata_rule_type tmrt
+		      FROM ${database.defaultSchemaName}.template_metadata_rule tmr
+		      LEFT JOIN ${database.defaultSchemaName}.template_metadata_rule_type tmrt
             ON tmrt.tmrt_owner_fk = tmr.tmr_id
 		      WHERE chronology.ctmr_id = tmrt.tmrt_id;
           """.toString())
