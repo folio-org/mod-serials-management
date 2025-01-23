@@ -220,6 +220,7 @@ public class PieceLabellingService {
     // they are instead being compiled into a single template UserConfiguredTemplateMetadata array
     Set<UserConfiguredTemplateMetadata> uctmArray = []
     Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig.chronologyRules?.sort{ it.index }
+    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.enumerationRules?.sort{ it.index }
 
     // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
     // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
@@ -227,9 +228,9 @@ public class PieceLabellingService {
 
     // FIXME This is currently using the old model of having both enumeration and chronology within the same array
     
-    Iterator<ChronologyTemplateMetadataRule> iterator = sortedChronologyRules?.iterator()
-    while(iterator?.hasNext()){
-      ChronologyTemplateMetadataRule currentMetadataRule = iterator.next()
+    Iterator<ChronologyTemplateMetadataRule> chronologyIterator = sortedChronologyRules?.iterator()
+    while(chronologyIterator?.hasNext()){
+      ChronologyTemplateMetadataRule currentMetadataRule = chronologyIterator.next()
         ChronologyUCTMT chronologyUCTMT = ChronologyTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         
         // Same thing happening here as reference above
@@ -243,9 +244,9 @@ public class PieceLabellingService {
         tm.userConfigured << currentUCTM
     }
 
-    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.enumerationRules?.sort{ it.index }
-    while(iterator?.hasNext()){
-      EnumerationTemplateMetadataRule currentMetadataRule = iterator.next()
+    Iterator<EnumerationTemplateMetadataRule> enumerationIterator = sortedEnumerationRules?.iterator()
+    while(enumerationIterator?.hasNext()){
+      EnumerationTemplateMetadataRule currentMetadataRule = enumerationIterator.next()
         EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
