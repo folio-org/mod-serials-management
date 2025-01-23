@@ -245,9 +245,10 @@ public class PieceLabellingService {
     }
 
     Iterator<EnumerationTemplateMetadataRule> enumerationIterator = sortedEnumerationRules?.iterator()
+    int enumerationIndex = 0
     while(enumerationIterator?.hasNext()){
       EnumerationTemplateMetadataRule currentMetadataRule = enumerationIterator.next()
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
@@ -258,6 +259,7 @@ public class PieceLabellingService {
         ])
         currentUCTM.metadataType = enumerationUCTMT
         tm.userConfigured << currentUCTM
+        enumerationIndex++
     }
     return tm
   }
