@@ -228,12 +228,13 @@ public class PieceLabellingService {
     Set<UserConfiguredTemplateMetadata> uctmArray = []
     Set<TemplateMetadataRule> sortedRules = templateConfig.rules?.sort{ it.index }
     Iterator<TemplateMetadataRule> iterator = sortedRules?.iterator()
+    int enumerationIndex = 0
     while(iterator?.hasNext()){
       TemplateMetadataRule currentMetadataRule = iterator.next()
       String templateMetadataType = RGX_METADATA_RULE_TYPE.matcher(currentMetadataRule?.templateMetadataRuleType?.value).replaceAll { match -> match.group(1).toUpperCase() }
       Class<? extends TemplateMetadataRuleType> tmrt = Class.forName("org.olf.templateConfig.templateMetadataRule.${templateMetadataType.capitalize()}TemplateMetadataRule")
       if(templateMetadataType == 'enumeration'){
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(currentMetadataRule?.index) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
@@ -247,7 +248,7 @@ public class PieceLabellingService {
         ])
         currentUCTM.metadataType = enumerationUCTMT
         tm.userConfigured << currentUCTM
-
+        enumerationIndex++
       } else {
         ChronologyUCTMT chronologyUCTMT = tmrt.handleType(currentMetadataRule, standardTM.date, standardTM.index)
         
