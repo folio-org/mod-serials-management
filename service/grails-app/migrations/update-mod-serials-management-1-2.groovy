@@ -61,6 +61,7 @@ databaseChangeLog = {
   // With the removal of TemplateMetadataRule abstract class. both ChronologyTMR and EnumerationTMR will now need to store their own id, owner, version and index
   
   // ENUMERATION CHANGES
+  // First we add the new columns to the existing enumeration template metadata rule table
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-001") {
     addColumn(tableName: "enumeration_template_metadata_rule") {
       column(name: "etmr_owner_fk", type: "VARCHAR(36)")
@@ -69,10 +70,23 @@ databaseChangeLog = {
     }
   }
 
+  // Rename the id column to etmr_id so that its now differentiated from the chronology template metadata rule class
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-002") {
     renameColumn(tableName: "enumeration_template_metadata_rule", oldColumnName: "tmrt_id", newColumnName: "etmr_id")
   }
 
+  // Now we need to update the 3 columns we added with the data from the template metadata rule type superclasses owner (confusing)
+  // Originally the structur was as follows:
+
+  // templateConfig.rules <-one-to-many-> templateMetadataRule <-one-to-one-> templateMetadataType -child-> enumeration/chronologyTemplateMetadataRUle
+
+  // and we wish to chage this to:
+
+  // templateConfig.chronologyRules <-one-to-many-> chronologyTemplateMetadataRule
+  // templateConfig.enumerationRules <-one-to-many-> enumerationTemplateMetadataRule
+
+  // In this migration wee therefore need to update the owner, version and index field by grabbing the matching templatemetadataruletype ids owner field
+  // and fetch the 3 fields from the templatemetadatarule which is defined as said owner
   changeSet(author: "Jack_golding (manual)", id: "20241205-1222-003") {
 		grailsChange {
       change {
@@ -92,6 +106,7 @@ databaseChangeLog = {
 	}
 
   // CHRONOLOGY CHANGES
+  // We then repeat the 3 above steps for the chronology
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-004") {
     addColumn(tableName: "chronology_template_metadata_rule") {
       column(name: "ctmr_owner_fk", type: "VARCHAR(36)")
@@ -134,6 +149,8 @@ databaseChangeLog = {
   // //   }
   // // }
   
+  // ENUMERATION CHANGES
+  // Create a new table to track the id, owner and version
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-007") {
     createTable(tableName: "enumeration_template_metadata_rule_format") {
       column(name: "etmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
@@ -142,21 +159,37 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-008") {
-    createTable(tableName: "chronology_template_metadata_rule_format") {
-      column(name: "ctmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ctmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "ctmrf_version", type: "BIGINT") { constraints(nullable: "false") }
-    }
-  }
-
-  // //Update enumeration TMRF tables "tmrf_id" to match new ETMRF "etmrf_id"
+  // //Update enumeration TMRF tables "tmrf_id" to match new ETMRF "etmrf_id" as they are now their own distinct classes
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-009") {
     renameColumn(tableName: "enumeration_numerictmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
   }
 
   changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-010") {
     renameColumn(tableName: "enumeration_textualtmrf", oldColumnName: "tmrf_id", newColumnName: "etmrf_id")
+  }
+
+  // Now we need to insert into the new enumeration table the id, owner and version fields
+  // Grabbing them from the old template metadata rule format table but only if the owner id exists as an Id within the enumeration template metadata rule table
+  changeSet(author: "Jack_golding (manual)", id: "20241205-1222-015") {
+		grailsChange {
+      change {
+        sql.execute("""  
+            INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule_format (etmrf_id, etmrf_owner_fk, etmrf_version)
+            SELECT tmrf_id, tmrf_owner_fk, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format
+            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule WHERE etmr_id = tmrf_owner_fk)
+          """.toString())
+        }
+      }
+  }
+
+  // CHRONOLOGY CHANGES
+  // These steps are repeated from the enumeration changes above
+  changeSet(author: "Jack-Golding (manual)", id: "20241205-1222-008") {
+    createTable(tableName: "chronology_template_metadata_rule_format") {
+      column(name: "ctmrf_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ctmrf_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+      column(name: "ctmrf_version", type: "BIGINT") { constraints(nullable: "false") }
+    }
   }
 
   // //Update chronology TMRF tables "tmrf_id" to match new CTMRF "Ctmrf_id"
@@ -177,25 +210,14 @@ databaseChangeLog = {
       change {
         sql.execute("""  
             INSERT INTO ${database.defaultSchemaName}.chronology_template_metadata_rule_format (ctmrf_id, ctmrf_owner_fk, ctmrf_version)
-            SELECT tmrf_id, tmrf_owner_fk as owner_id, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format;
-            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.chronology_template_metadata_rule WHERE ctmr_id = owner_id)
+            SELECT tmrf_id, tmrf_owner_fk, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format
+            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.chronology_template_metadata_rule WHERE ctmr_id = tmrf_owner_fk)
           """.toString())
         }
       }
   }
-
-  changeSet(author: "Jack_golding (manual)", id: "20241205-1222-015") {
-		grailsChange {
-      change {
-        sql.execute("""  
-            INSERT INTO ${database.defaultSchemaName}.enumeration_template_metadata_rule_format (etmrf_id, etmrf_owner_fk, etmrf_version)
-            SELECT tmrf_id, tmrf_owner_fk, tmrf_version FROM ${database.defaultSchemaName}.template_metadata_rule_format;
-            WHERE EXISTS(SELECT FROM ${database.defaultSchemaName}.enumeration_template_metadata_rule_format WHERE etmr_id = tmrf_owner_fk)
-          """.toString())
-        }
-      }
-  }
-  //   // Then drop tables that are no longer needed
+  
+  // Then drop tables that are no longer needed
   changeSet(author: "Jack_golding (manual)", id: "20241205-1222-016") {
     dropTable(tableName: "template_metadata_rule")
     dropTable(tableName: "template_metadata_rule_type")
