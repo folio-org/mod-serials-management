@@ -1,3 +1,6 @@
+## 1.1.3 2025-01-24
+  * MODSER-84 Add missing required interfaces to Module Descriptor
+
 ## 1.1.2 2025-01-09
   * MODSER-70 Update API documentation for preview/generate predicted pieces
 
