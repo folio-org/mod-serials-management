@@ -68,12 +68,13 @@ databaseChangeLog = {
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20230201-1008-008") {
-    addColumn(tableName: "predicted_piece_set") {
-      column(name: "first_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-      column(name: "next_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
-    }
-  }
+  // REMOVED DUE TO NULLABLE CONSTRAINTS
+  // changeSet(author: "Jack-Golding (manual)", id: "20230201-1008-008") {
+  //   addColumn(tableName: "predicted_piece_set") {
+  //     column(name: "first_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //     column(name: "next_piece_template_metadata_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+  //   }
+  // }
 
   changeSet(author: "Jack-Golding (manual)", id: "20240725-1425-001") {
     addColumn(tableName: "enumeration_leveluctmt") {
@@ -86,8 +87,36 @@ databaseChangeLog = {
     createSequence(sequenceName: "serial_ruleset_hrid_seq")
   }
 
-  changeSet(author: "Jack_Golding (manual)", id: "20241030-1409-001") {
-    renameColumn(tableName: "predicted_piece_set", oldColumnName: "first_piece_template_metadata_id", newColumnName: "initial_piece_recurrence_metadata_id")
-    renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
+  // ADDITIONALLY SISNCE THIS ALSO REFERENCES THE REMOVED MIGRATION, REMOVED FOR THE TIME BEING ASWELL
+  // changeSet(author: "Jack_Golding (manual)", id: "20241030-1409-001") {
+  //   renameColumn(tableName: "predicted_piece_set", oldColumnName: "first_piece_template_metadata_id", newColumnName: "initial_piece_recurrence_metadata_id")
+  //   renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
+  // }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-001") {
+    preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
+			columnExists(tableName: 'predicted_piece_set', columnNames: 'first_piece_template_metadata_id,next_piece_template_metadata_id')
+		}
+		addColumn(tableName: "predicted_piece_set") {
+      renameColumn(tableName: "predicted_piece_set", oldColumnName: "first_piece_template_metadata_id", newColumnName: "initial_piece_recurrence_metadata_id")
+      renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-002") {
+    preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
+			not {
+				columnExists(tableName: 'predicted_piece_set', columnNames: 'initial_piece_recurrence_metadata_id,continuation_piece_recurrence_metadata_id')
+			}
+		}
+		addColumn(tableName: "predicted_piece_set") {
+      column(name: "initial_piece_recurrence_metadata_id", type: "VARCHAR(36)")
+      column(name: "continuation_piece_recurrence_metadata_id", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-003") {
+		dropNotNullConstraint(tableName: "predicted_piece_set", columnName: "initial_piece_recurrence_metadata_id")
+		dropNotNullConstraint(tableName: "predicted_piece_set", columnName: "continuation_piece_recurrence_metadata_id")
   }
 }
