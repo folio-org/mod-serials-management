@@ -93,27 +93,43 @@ databaseChangeLog = {
   //   renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
   // }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-001") {
+  changeSet(author: "Jack-Golding (manual)", id: "20250204-0950-001") {
     preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
-			columnExists(tableName: 'predicted_piece_set', columnNames: 'first_piece_template_metadata_id,next_piece_template_metadata_id')
+			columnExists(tableName: 'predicted_piece_set', columnName: 'first_piece_template_metadata_id')
 		}
     renameColumn(tableName: "predicted_piece_set", oldColumnName: "first_piece_template_metadata_id", newColumnName: "initial_piece_recurrence_metadata_id")
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250204-0950-002") {
+    preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
+			columnExists(tableName: 'predicted_piece_set', columnName: 'next_piece_template_metadata_id')
+		}
     renameColumn(tableName: "predicted_piece_set", oldColumnName: "next_piece_template_metadata_id", newColumnName: "continuation_piece_recurrence_metadata_id")
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-002") {
+  changeSet(author: "Jack-Golding (manual)", id: "20250204-0950-003") {
     preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
 			not {
-				columnExists(tableName: 'predicted_piece_set', columnNames: 'initial_piece_recurrence_metadata_id,continuation_piece_recurrence_metadata_id')
+				columnExists(tableName: 'predicted_piece_set', columnName: 'initial_piece_recurrence_metadata_id')
 			}
-		}
-		addColumn(tableName: "predicted_piece_set") {
+    }
+    addColumn(tableName: "predicted_piece_set") {
       column(name: "initial_piece_recurrence_metadata_id", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250204-0950-004") {
+    preConditions (onFail: 'MARK_RAN', onError: 'WARN') {
+			not {
+				columnExists(tableName: 'predicted_piece_set', columnName: 'continuation_piece_recurrence_metadata_id')
+			}
+    }
+    addColumn(tableName: "predicted_piece_set") {
       column(name: "continuation_piece_recurrence_metadata_id", type: "VARCHAR(36)")
     }
   }
 
-  changeSet(author: "Jack-Golding (manual)", id: "20250203-1457-003") {
+  changeSet(author: "Jack-Golding (manual)", id: "20250204-0950-005") {
 		dropNotNullConstraint(tableName: "predicted_piece_set", columnName: "initial_piece_recurrence_metadata_id")
 		dropNotNullConstraint(tableName: "predicted_piece_set", columnName: "continuation_piece_recurrence_metadata_id")
   }
