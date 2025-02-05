@@ -190,11 +190,16 @@ public class PieceLabellingService {
   ) {
     ArrayList<EnumerationUCTMT> enumerationTemplateMetadataArray = []
     Iterator<EnumerationTemplateMetadataRule> iterator = templateMetadataRules?.iterator()
+    
+    // This block is due to be refactor when we seperate out chronology and enumeration in the starting values
+    // Currently we have to track indexs independently depedending on userConfiguredTemplateMetadataType
     int enumerationIndex = 0
+    ArrayList<UserConfiguredTemplateMetadata> enumerationStartingValues = startingValues.findAll { it.userConfiguredTemplateMetadataType == 'enumeration' }
+
     while(iterator?.hasNext()){
       EnumerationTemplateMetadataRule currentMetadataRule = iterator.next()
         // previousEnumerationArray might be null
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         enumerationTemplateMetadataArray << enumerationUCTMT
@@ -225,8 +230,6 @@ public class PieceLabellingService {
     // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
     // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
     // It sets the metadataType field to null so we have to directly assign it after the fact, this can almost certainly be resolved within the UserConfiguredTemplateMetadataTypeHelpers class 
-
-    // FIXME This is currently using the old model of having both enumeration and chronology within the same array
     
     Iterator<ChronologyTemplateMetadataRule> chronologyIterator = sortedChronologyRules?.iterator()
     while(chronologyIterator?.hasNext()){
@@ -245,10 +248,15 @@ public class PieceLabellingService {
     }
 
     Iterator<EnumerationTemplateMetadataRule> enumerationIterator = sortedEnumerationRules?.iterator()
+
+    // This block is due to be refactor when we seperate out chronology and enumeration in the starting values
+    // Currently we have to track indexs independently depedending on userConfiguredTemplateMetadataType
     int enumerationIndex = 0
+    ArrayList<UserConfiguredTemplateMetadata> enumerationStartingValues = startingValues.findAll { it.userConfiguredTemplateMetadataType == 'enumeration' }
+
     while(enumerationIterator?.hasNext()){
       EnumerationTemplateMetadataRule currentMetadataRule = enumerationIterator.next()
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : startingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(currentMetadataRule?.index)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
