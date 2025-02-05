@@ -1,6 +1,6 @@
 package org.olf.templateConfig.templateMetadataRule
 
-import org.olf.templateConfig.templateMetadataRuleFormat.TemplateMetadataRuleFormat
+import org.olf.templateConfig.templateMetadataRuleFormat.ChronologyTemplateMetadataRuleFormat
 
 import grails.databinding.BindUsing
 import grails.databinding.SimpleMapDataBindingSource
@@ -22,7 +22,7 @@ import com.k_int.web.toolkit.utils.GormUtils
 
 @CompileStatic
 @Slf4j
-public class TemplateMetadataRuleTypeHelpers {
+public class ChronologyTemplateMetadataRuleHelpers {
 
 	private static GrailsWebDataBinder getDataBinder() {
 		Holders.grailsApplication.mainContext.getBean(DataBindingUtils.DATA_BINDER_BEAN_NAME) as GrailsWebDataBinder
@@ -31,7 +31,7 @@ public class TemplateMetadataRuleTypeHelpers {
 	// Compile the regex once and reference statically.
 	private static final Pattern RGX_RULE_FORMAT_CLASS = Pattern.compile("_([a-z])")
 	
-	public static <T extends TemplateMetadataRuleFormat> T doRuleFormatBinding( TemplateMetadataRuleType obj, SimpleMapDataBindingSource source) {
+	public static <T extends ChronologyTemplateMetadataRuleFormat> T doRuleFormatBinding( ChronologyTemplateMetadataRule obj, SimpleMapDataBindingSource source) {
 
 		String ruleFormatString = null
 		if ( source['templateMetadataRuleFormat'] && RefdataValue.class.isAssignableFrom(source['templateMetadataRuleFormat'].class)) {
@@ -46,7 +46,7 @@ public class TemplateMetadataRuleTypeHelpers {
 
 		final String ruleFormatClasspathString = "org.olf.templateConfig.templateMetadataRuleFormat.${ruleFormatClassString.capitalize()}TMRF"
 
-		final Class<? extends TemplateMetadataRuleFormat> rc = Class.forName(ruleFormatClasspathString)
+		final Class<? extends ChronologyTemplateMetadataRuleFormat> rc = Class.forName(ruleFormatClasspathString)
 
 		final String currentId = source['ruleFormat']?.getAt("id")?.toString()
 
@@ -62,11 +62,11 @@ public class TemplateMetadataRuleTypeHelpers {
 	}
 	
 	
-	public static Closure ruleFormatValidator = { TemplateMetadataRuleFormat value, TemplateMetadataRuleType instance, Errors err ->
+	public static Closure ruleFormatValidator = { ChronologyTemplateMetadataRuleFormat value, ChronologyTemplateMetadataRule instance, Errors err ->
 		validateRuleFormat( value, instance, err )
 	}
 	
-	private static void validateRuleFormat ( TemplateMetadataRuleFormat value, TemplateMetadataRuleType instance, Errors err ) {
+	private static void validateRuleFormat ( ChronologyTemplateMetadataRuleFormat value, ChronologyTemplateMetadataRule instance, Errors err ) {
 		GormValidateable rpVal = value as GormValidateable
 		
 		if (!rpVal.validate(deepValidate: false)) { // Make sure this validation isn't fired again.

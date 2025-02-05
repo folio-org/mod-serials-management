@@ -2,7 +2,7 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
-import org.olf.templateConfig.templateMetadataRule.TemplateMetadataRule
+import org.olf.templateConfig.templateMetadataRule.ChronologyTemplateMetadataRule
 import org.olf.internalPiece.templateMetadata.ChronologyUCTMT
 
 import java.time.LocalDate
@@ -12,7 +12,7 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-public class ChronologyYearTMRF extends TemplateMetadataRuleFormat implements MultiTenant<ChronologyYearTMRF> {
+public class ChronologyYearTMRF extends ChronologyTemplateMetadataRuleFormat implements MultiTenant<ChronologyYearTMRF> {
 
   @CategoryId(value="Global.YearFormat", defaultInternal=true)
   @Defaults(['Full', 'Slice'])
@@ -26,9 +26,9 @@ public class ChronologyYearTMRF extends TemplateMetadataRuleFormat implements Mu
     yearFormat nullable: false
   }
 
-  public static ChronologyUCTMT handleFormat(TemplateMetadataRule rule, LocalDate date, int index) {
-    Locale locale = new Locale(rule?.ruleType?.ruleLocale)
-		ChronologyYearTMRF tmrf = rule?.ruleType?.ruleFormat
+  public static ChronologyUCTMT handleFormat(ChronologyTemplateMetadataRule rule, LocalDate date, int index) {
+    Locale locale = new Locale(rule?.ruleLocale)
+		ChronologyYearTMRF tmrf = rule?.ruleFormat
     Map<String, String> getYearFormat = [
     	slice: 'yy',
      	full: 'yyyy',
