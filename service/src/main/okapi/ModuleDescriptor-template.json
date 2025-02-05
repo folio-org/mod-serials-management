@@ -312,8 +312,8 @@
   "requires": [],
   "optional": [
     {
-      "id": "orders",
-      "version": "12.0"
+      "id": "order-lines",
+      "version": "3.3"
     }
   ],
   "permissionSets": [

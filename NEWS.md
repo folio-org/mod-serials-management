@@ -1,5 +1,11 @@
 ## 1.2.0 IN PROGRESS
 
+## 1.1.4 2025-02-03
+  * MODSER-88 Mod-serials-management fails to migrate from 1.0.3 to 1.1.2 due to liquibase errors
+
+## 1.1.3 2025-01-24
+  * MODSER-84 Add missing required interfaces to Module Descriptor
+
 ## 1.1.2 2025-01-09
   * MODSER-70 Update API documentation for preview/generate predicted pieces
 
