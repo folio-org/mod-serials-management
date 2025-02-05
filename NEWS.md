@@ -1,5 +1,8 @@
 ## 1.2.0 IN PROGRESS
 
+## 1.1.5 2025-02-04
+  * MODSER-90 Migration issue with module mod-serials-management
+
 ## 1.1.4 2025-02-03
   * MODSER-88 Mod-serials-management fails to migrate from 1.0.3 to 1.1.2 due to liquibase errors
 
