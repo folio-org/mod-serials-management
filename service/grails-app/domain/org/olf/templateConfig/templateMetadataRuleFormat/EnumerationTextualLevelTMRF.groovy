@@ -14,10 +14,6 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
 
   Integer units
 
-  // TODO shoudld be dynamically assigned refdata
-  // FIXME Should also have a more district name than just 'Value'
-//  String value
-
   RefdataValue refdataValue
 
   String internalNote
@@ -33,7 +29,6 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
     version column: 'etltmrf_version'
     index column: 'etltmrf_index'
     units column: 'etltmrf_units'
-//    value column: 'etltmrf_value'
     refdataValue column: 'etlmrf_refdata_value_fk'
     internalNote column: 'etltmrf_internal_note'
   }
@@ -42,7 +37,6 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
     owner(nullable:false, blank:false);
     index nullable: false
     units nullable: false
-//    value nullable: false
     refdataValue nullable: false
     internalNote nullable: true
   }   
