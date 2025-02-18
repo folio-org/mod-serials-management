@@ -38,12 +38,6 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
   PieceLabellingService pieceLabellingService
 
   private PredictedPieceSet setupPredictedPieces(JSONObject data, JSONArray startingValuesJson, SerialRuleset ruleset) {
-    //TODO Not super happy with the implementation of this conditional, however the JSONArray .get() freaks out over null array elements vs empty
-    // This conditional is to check if the starting array contains elements and if they are of the older/newer shape
-    if(!startingValuesJson?.toString()?.contains('userConfiguredTemplateMetadataType') && startingValuesJson.size()){
-    pieceLabellingService.updateStartingValuesShape(startingValuesJson)
-    }
-
     ArrayList<UserConfiguredTemplateMetadata> startingValues = new ArrayList<UserConfiguredTemplateMetadata>(startingValuesJson)
 
     Integer numberOfCycles = data?.numberOfCycles as Integer ?: 1
