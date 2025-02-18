@@ -3,8 +3,7 @@ import org.olf.templateConfig.templateMetadataRuleFormat.EnumerationTextualLevel
 import groovy.transform.Field
 
 def should_expand = [
-  'format',
-  'sequence',
+    'refdataValue'
 ]
 
 @Field EnumerationTextualLevelTMRF enumerationTextualLevelTMRF
