@@ -92,6 +92,21 @@ public class PieceLabellingService {
         // Not a huge fan of overwriting a previous binding
         previousLabelTemplateBindings = ltb
       }
+      // If the piece is a combined piece, in order to get the correct template bindings which account for all recurrence pieces within a combination piece,
+      // we need need to iterate over the recurrence pieces, generating the LTB for each and then passing the final one to the outer loop so labelling can continue
+      if(currentPiece instanceof InternalCombinationPiece){
+        // Create an iterator for the recurrence pieces
+        Iterator recurrencePiecesIterator = currentPiece?.recurrencePieces?.iterator()
+          while(recurrencePiecesIterator.hasNext()){
+            InternalPiece currentRecurrencePiece = recurrencePiecesIterator.next()
+            // Since the recurrence pieces are currently stored as a Set and the method accepts an ArrayList, it needs to be converted
+            // TODO Unsure if this needs to be a set vs an array list or vice versa
+            List<InternalPiece> recurrencePiecesList = new ArrayList<>(currentPiece?.recurrencePieces);
+            LabelTemplateBindings recurrencePieceLTB = generateTemplateBindingsForPiece(currentRecurrencePiece, recurrencePiecesList, templateConfig, startingValues, previousLabelTemplateBindings)
+            // Pass the LTB back, when all recurrence pieces have had their ltb generated, the next internal piece will us the last recurrence pieces bindings
+            previousLabelTemplateBindings = recurrencePieceLTB
+          }
+      }
     }
     return previousLabelTemplateBindings
   }
@@ -217,6 +232,7 @@ public class PieceLabellingService {
     ArrayList<EnumerationUCTMT> previousEnumerationArray
     ){
     // TODO alot of the variable here can be renamed for easier maintainability
+    // Also do we actually need this anymore?
     ArrayList<InternalPiece> ipsPlusNext = internalPieces.clone()
     ipsPlusNext << piece
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, ipsPlusNext)
