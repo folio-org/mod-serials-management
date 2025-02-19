@@ -226,7 +226,7 @@ databaseChangeLog = {
 
   changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-001") {
     addColumn(tableName: "enumeration_textual_leveltmrf") {
-      column(name: "etlmrf_refdata_value_fk", type: "VARCHAR(36)")
+      column(name: "etltmrf_refdata_value_fk", type: "VARCHAR(36)")
     }
   }
 

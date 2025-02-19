@@ -29,7 +29,7 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
     version column: 'etltmrf_version'
     index column: 'etltmrf_index'
     units column: 'etltmrf_units'
-    refdataValue column: 'etlmrf_refdata_value_fk'
+    refdataValue column: 'etltmrf_refdata_value_fk'
     internalNote column: 'etltmrf_internal_note'
   }
   
