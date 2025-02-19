@@ -25,7 +25,7 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
   }
   
   static constraints = {
-    refdataCategory column: false
+    refdataCategory nullable: false
     levels nullable: false
   }
 
