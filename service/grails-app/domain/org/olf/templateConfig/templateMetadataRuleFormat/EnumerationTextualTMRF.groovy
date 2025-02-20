@@ -10,13 +10,17 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataCategory
 
 
-public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {  
+public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleFormat implements MultiTenant<EnumerationTextualTMRF> {
   Set<EnumerationTextualLevelTMRF> levels
 
   RefdataCategory refdataCategory
 
   static hasMany = [
     levels: EnumerationTextualLevelTMRF,
+  ]
+
+  static mappedBy = [
+    levels: 'owner',
   ]
 
   static mapping = {

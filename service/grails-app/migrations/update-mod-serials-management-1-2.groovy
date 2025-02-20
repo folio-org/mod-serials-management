@@ -235,4 +235,8 @@ databaseChangeLog = {
       column(name: "ettmrf_refdata_category_fk", type: "VARCHAR(36)")
     }
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-003") {
+    dropNotNullConstraint(columnName: "etltmrf_value", tableName: "enumeration_textual_leveltmrf")
+  }
 }
