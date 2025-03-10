@@ -35,14 +35,13 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
 
   private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index){
     ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
-    while (true) {
-      for (int i = 0; i < etltmrfArray?.size(); i++) {
-        index -= etltmrfArray[i]?.units;
-        if (index <= 0) {
-          return etltmrfArray[i]?.refdataValue.value;
-        }    
-      }
+    for (int i = 0; i < etltmrfArray?.size(); i++) {
+      index -= etltmrfArray[i]?.units;
+      if (index <= 0) {
+        return etltmrfArray[i]?.refdataValue.value;
+      }    
     }
+    return ''
   }
 
   public static EnumerationUCTMT handleFormat (EnumerationTemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){
