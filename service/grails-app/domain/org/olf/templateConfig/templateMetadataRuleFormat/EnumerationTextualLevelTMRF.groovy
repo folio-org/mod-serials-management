@@ -10,6 +10,8 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
   Integer index
   Integer units
 
+  String value
+
   // This needs to be passed down as refdataValue.id for reasons
   RefdataValue refdataValue
 
@@ -25,6 +27,7 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
     version column: 'etltmrf_version'
     index column: 'etltmrf_index'
     units column: 'etltmrf_units'
+    value column: 'etltmrf_value'
     refdataValue column: 'etltmrf_refdata_value_fk'
     internalNote column: 'etltmrf_internal_note'
   }
@@ -33,6 +36,7 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
     owner(nullable:false, blank:false)
     index nullable: false
     units nullable: false
+    value nullable: true
     refdataValue nullable: false
     internalNote nullable: true
   }

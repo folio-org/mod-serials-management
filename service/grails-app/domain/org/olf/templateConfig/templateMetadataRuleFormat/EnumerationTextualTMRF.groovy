@@ -38,7 +38,11 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
     for (int i = 0; i < etltmrfArray?.size(); i++) {
       index -= etltmrfArray[i]?.units;
       if (index <= 0) {
-        return etltmrfArray[i]?.refdataValue.value;
+        if (etltmrfArray[i]?.refdataValue?.value != null){
+          return etltmrfArray[i]?.refdataValue?.value
+        } else {
+          return etltmrfArray[i]?.value
+        }
       }    
     }
     return ''
