@@ -10,9 +10,10 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
   Integer index
   Integer units
 
-  String value
+  // DEPRECATED
+  String staticValue
 
-  // This needs to be passed down as refdataValue.id for reasons
+  // This needs to be passed down as refdataValue.id
   RefdataValue refdataValue
 
   String internalNote
@@ -27,7 +28,7 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
     version column: 'etltmrf_version'
     index column: 'etltmrf_index'
     units column: 'etltmrf_units'
-    value column: 'etltmrf_value'
+    staticValue column: 'etltmrf_static_value'
     refdataValue column: 'etltmrf_refdata_value_fk'
     internalNote column: 'etltmrf_internal_note'
   }
@@ -36,9 +37,17 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
     owner(nullable:false, blank:false)
     index nullable: false
     units nullable: false
-    value nullable: true
-    refdataValue nullable: false
+    staticValue nullable: true
+    refdataValue nullable: true
     internalNote nullable: true
+  }
+
+  String getValue() {
+    if (this.refdataValue?.value != null) {
+      return this?.refdataValue?.value
+    } else {
+      return this?.staticValue
+    }
   }
 }
 

@@ -33,19 +33,16 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
     levels nullable: false
   }
 
-  private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index){
+  private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index) {
     ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
-    for (int i = 0; i < etltmrfArray?.size(); i++) {
-      index -= etltmrfArray[i]?.units;
-      if (index <= 0) {
-        if (etltmrfArray[i]?.refdataValue?.value != null){
-          return etltmrfArray[i]?.refdataValue?.value
-        } else {
-          return etltmrfArray[i]?.value
+    while (true) {
+      for (int i = 0; i < etltmrfArray?.size(); i++) {
+        index -= etltmrfArray[i]?.units;
+        if (index <= 0) {
+          return etltmrfArray[i]?.getValue();
         }
-      }    
+      }
     }
-    return ''
   }
 
   public static EnumerationUCTMT handleFormat (EnumerationTemplateMetadataRule rule, LocalDate date, int index, EnumerationUCTMT startingValues){

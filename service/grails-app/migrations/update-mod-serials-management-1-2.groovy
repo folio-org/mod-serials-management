@@ -239,4 +239,8 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-003") {
     dropNotNullConstraint(columnName: "etltmrf_value", tableName: "enumeration_textual_leveltmrf")
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250311-1044-001") {
+    renameColumn(tableName: "enumeration_textual_leveltmrf", oldColumnName: "etltmrf_value", newColumnName: "etltmrf_static_value")
+  }
 }
