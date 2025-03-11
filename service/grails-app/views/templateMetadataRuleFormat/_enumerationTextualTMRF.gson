@@ -11,8 +11,8 @@ def should_expand = [
 @Field EnumerationTextualTMRF ruleFormat
 json g.render(ruleFormat, [excludes: ['owner', 'refdataCategory'], expand: should_expand]){
     refdataCategory {
-        id ruleFormat.refdataCategory.id
-        desc ruleFormat.refdataCategory.desc
-        internal ruleFormat.refdataCategory.internal
+        id ruleFormat?.refdataCategory?.id
+        desc ruleFormat?.refdataCategory?.desc
+        internal ruleFormat?.refdataCategory?.internal
     }
 }
