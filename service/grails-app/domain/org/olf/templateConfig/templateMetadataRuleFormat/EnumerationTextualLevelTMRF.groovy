@@ -43,8 +43,8 @@ public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextu
   }
 
   String getValue() {
-    if (this.refdataValue?.value != null) {
-      return this?.refdataValue?.value
+    if (this.refdataValue?.label != null) {
+      return this?.refdataValue?.label
     } else {
       return this?.staticValue
     }
