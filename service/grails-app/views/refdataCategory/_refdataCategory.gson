@@ -1,5 +1,0 @@
-import groovy.transform.*
-import com.k_int.web.toolkit.refdata.RefdataCategory
-
-@Field RefdataCategory refdataCategory
-json g.render(refdataCategory, [excludes:['values'] ])
