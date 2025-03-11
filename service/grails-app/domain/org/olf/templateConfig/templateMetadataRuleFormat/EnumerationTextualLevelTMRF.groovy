@@ -2,24 +2,21 @@ package org.olf.templateConfig.templateMetadataRuleFormat
 
 import grails.gorm.MultiTenant
 
-import com.k_int.web.toolkit.refdata.CategoryId
-import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevelTMRF> {
+public class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevelTMRF> {
 
   String id
-
   Integer index
-
   Integer units
 
-  // TODO shoudld be dynamically assigned refdata
-  // FIXME Should also have a more district name than just 'Value'
-  String value
+  // DEPRECATED
+  String staticValue
+
+  // This needs to be passed down as refdataValue.id
+  RefdataValue refdataValue
 
   String internalNote
-
 
   static belongsTo = [
     owner: EnumerationTextualTMRF
@@ -31,16 +28,26 @@ class EnumerationTextualLevelTMRF implements MultiTenant<EnumerationTextualLevel
     version column: 'etltmrf_version'
     index column: 'etltmrf_index'
     units column: 'etltmrf_units'
-    value column: 'etltmrf_value'
+    staticValue column: 'etltmrf_static_value'
+    refdataValue column: 'etltmrf_refdata_value_fk'
     internalNote column: 'etltmrf_internal_note'
   }
   
   static constraints = {
-    owner(nullable:false, blank:false);
+    owner(nullable:false, blank:false)
     index nullable: false
     units nullable: false
-    value nullable: false
+    staticValue nullable: true
+    refdataValue nullable: true
     internalNote nullable: true
-  }   
+  }
+
+  String getValue() {
+    if (this.refdataValue?.value != null) {
+      return this?.refdataValue?.value
+    } else {
+      return this?.staticValue
+    }
+  }
 }
 

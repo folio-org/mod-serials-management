@@ -223,4 +223,24 @@ databaseChangeLog = {
     dropTable(tableName: "template_metadata_rule_type")
     dropTable(tableName: "template_metadata_rule_format")
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-001") {
+    addColumn(tableName: "enumeration_textual_leveltmrf") {
+      column(name: "etltmrf_refdata_value_fk", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-002") {
+    addColumn(tableName: "enumeration_textualtmrf") {
+      column(name: "ettmrf_refdata_category_fk", type: "VARCHAR(36)")
+    }
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250218-1612-003") {
+    dropNotNullConstraint(columnName: "etltmrf_value", tableName: "enumeration_textual_leveltmrf")
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250311-1044-001") {
+    renameColumn(tableName: "enumeration_textual_leveltmrf", oldColumnName: "etltmrf_value", newColumnName: "etltmrf_static_value")
+  }
 }

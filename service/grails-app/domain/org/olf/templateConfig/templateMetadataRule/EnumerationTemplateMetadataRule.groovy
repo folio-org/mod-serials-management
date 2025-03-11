@@ -27,7 +27,8 @@ public class EnumerationTemplateMetadataRule implements MultiTenant<EnumerationT
   RefdataValue templateMetadataRuleFormat
 
   @BindUsing({ EnumerationTemplateMetadataRule obj, SimpleMapDataBindingSource source ->
-		EnumerationTemplateMetadataRuleHelpers.doRuleFormatBinding(obj, source)
+    def rf = EnumerationTemplateMetadataRuleHelpers.doRuleFormatBinding(obj, source)
+    rf
   })
   EnumerationTemplateMetadataRuleFormat ruleFormat
 
