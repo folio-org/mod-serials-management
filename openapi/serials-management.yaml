@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.2.0
+  version: 2.0.0
   title: Folio Serials Management
   description: API for the Folio library services platform mod-serials-management app
 servers:
@@ -1548,10 +1548,14 @@ components:
           $ref: '#/components/schemas/SerialRuleset'
         templateString:
           type: string
-        rules:
+        chronologyRules:
           type: array
           items:
-            $ref: '#/components/schemas/TemplateMetadataRule'
+            $ref: '#/components/schemas/ChronologyTemplateMetadataRule'
+        enumerationRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumerationTemplateMetadataRule'
     Serial:
       type: object
       required:
@@ -1646,6 +1650,9 @@ components:
         - monthFormat
         - yearFormat
       properties:
+        id:
+          type: string
+          format: uuid
         weekdayFormat:
           oneOf:
             - type: string
@@ -1668,6 +1675,9 @@ components:
         - monthFormat
         - yearFormat
       properties:
+        id:
+          type: string
+          format: uuid
         monthFormat:
           oneOf:
             - type: string
@@ -1681,6 +1691,9 @@ components:
       required:
         - yearFormat
       properties:
+        id:
+          type: string
+          format: uuid
         yearFormat:
           oneOf:
             - type: string
@@ -1694,6 +1707,12 @@ components:
         id:
           type: string
           format: uuid
+        index:
+          type: integer
+        templateMetadataRuleFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
         ruleFormat:
           oneOf:
             - $ref: '#/components/schemas/ChronologyDateTMRF'
@@ -1738,13 +1757,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EnumerationNumericLevelTMRF'
+    RefDataIDRequired:
+      allOf:
+        - $ref: '#/components/schemas/RefData'
+        - type: object
+          required:
+            - id
     EnumerationTextualLevelTMRF:
       type: object
       required:
         - index
         - units
-        - format
-        - sequence
       properties:
         id:
           type: string
@@ -1753,18 +1776,23 @@ components:
           type: integer
         units:
           type: integer
-        value:
+        staticValue:
           type: string
+        refdataValue:
+          $ref: '#/components/schemas/RefDataIDRequired'
         internalNote:
           type: string
     EnumerationTextualTMRF:
       type: object
       required:
         - levels
+        - refdataCategory
       properties:
         id:
           type: string
           format: uuid
+        refdataCategory:
+          $ref: '#/components/schemas/RefDataCategory'
         levels:
           type: array
           items:
@@ -1777,32 +1805,16 @@ components:
         id:
           type: string
           format: uuid
+        index:
+          type: integer
+        templateMetadataRuleFormat:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
         ruleFormat:
           oneOf:
             - $ref: '#/components/schemas/EnumerationNumericTMRF'
             - $ref: '#/components/schemas/EnumerationTextualTMRF'
-    TemplateMetadataRule:
-      type: object
-      required:
-        - index
-        - templateMetadataRuleType
-        - ruleType
-      properties:
-        id:
-          type: string
-          format: uuid
-        owner:
-          $ref: '#/components/schemas/TemplateConfiguration'
-        index:
-          type: integer
-        ruleType:
-          oneOf:
-            - $ref: '#/components/schemas/ChronologyTemplateMetadataRule'
-            - $ref: '#/components/schemas/EnumerationTemplateMetadataRule'
-        templateMetadataRuleType:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
     serialRuleset:
       type: object
       required:
