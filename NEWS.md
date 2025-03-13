@@ -1,4 +1,12 @@
-## 1.2.0 IN PROGRESS
+## 2.0.0 2025-03-13
+  * MODSER-101 Combined enumeration does not skip the combined issue numbers
+  * MODSER-99 Update data binding to support the use of ref data values in textual enumeration
+  * MODSER-97 Update Serials API documentation
+  * MODSER-83 Implement integration tests workflow for Github Actions
+  * MODSER-71 continuationPieceRecurrenceMetadata stores incorrect enumeration rawValues/values
+  * MODSER-68 Add backend support for publication pattern templates
+  * MODSER-42 Separate out chronology and enumeration
+  * Removed old starting value shape support
 
 ## 1.1.5 2025-02-04
   * MODSER-90 Migration issue with module mod-serials-management
