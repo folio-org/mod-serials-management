@@ -210,6 +210,7 @@ public class PieceGenerationService {
   // The main difference being it is only looping until the nextPiece following the last piece within the internal pieces array is found (using date.plusDays(1))
   public InternalPiece generateNextPiece (InternalPiece lastPiece, SerialRuleset ruleset) {
     InternalPiece nextPiece = null
+    LocalDate initialDate
     LocalDate date
     Integer currentTimeUnitPeriod = 1
     LocalDate currentTimeUnit
@@ -217,9 +218,11 @@ public class PieceGenerationService {
     // Block for handling the last piece, if it is an internal combination piece, we need to grab the date from the first recurrence piece
     if(lastPiece instanceof InternalCombinationPiece){
       date = lastPiece.recurrencePieces.getAt(0).date
+      initialDate = date
       currentTimeUnit = date
     } else {
       date = lastPiece.date
+      initialDate = date
       currentTimeUnit = date
     }
 
@@ -242,7 +245,7 @@ public class PieceGenerationService {
       ruleset?.recurrence?.rules.each { rule ->
         // Iterating through recurrence rules, if the ordinal matches current time unit period then it is a valid date
         if (currentTimeUnitPeriod == rule?.ordinal && rpc.compareDate(rule, date)) {
-          if(date != lastPiece.date){
+          if(date != initialDate){
           nextPiece = new InternalRecurrencePiece([date: date, recurrenceRule: rule])
           }
         }       
