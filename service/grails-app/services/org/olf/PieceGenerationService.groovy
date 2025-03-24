@@ -210,9 +210,18 @@ public class PieceGenerationService {
   // The main difference being it is only looping until the nextPiece following the last piece within the internal pieces array is found (using date.plusDays(1))
   public InternalPiece generateNextPiece (InternalPiece lastPiece, SerialRuleset ruleset) {
     InternalPiece nextPiece = null
-    LocalDate date = lastPiece.date
+    LocalDate date
     Integer currentTimeUnitPeriod = 1
-    LocalDate currentTimeUnit = lastPiece.date
+    LocalDate currentTimeUnit
+
+    // Block for handling the last piece, if it is an internal combination piece, we need to grab the date from the first recurrence piece
+    if(lastPiece instanceof InternalCombinationPiece){
+      date = lastPiece.recurrencePieces.getAt(0).date
+      currentTimeUnit = date
+    } else {
+      date = lastPiece.date
+      currentTimeUnit = date
+    }
 
     final String formattedRecurrencePatternType = RGX_REFDATA_VALUE.matcher(ruleset?.recurrence?.rules[0]?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
     final Class<? extends RecurrencePattern> rpc = Class.forName("org.olf.recurrence.recurrencePattern.RecurrencePattern${formattedRecurrencePatternType.capitalize()}")
