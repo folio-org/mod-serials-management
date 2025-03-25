@@ -1,11 +1,7 @@
 package org.olf
 
 import grails.testing.mixin.integration.Integration
-import groovy.json.JsonSlurper
 import spock.lang.Stepwise
-import spock.lang.Shared
-
-import org.springframework.beans.factory.annotation.Value
 
 import groovy.util.logging.Slf4j
 
@@ -13,12 +9,6 @@ import groovy.util.logging.Slf4j
 @Integration
 @Stepwise
 class SerialSpec extends BaseSpec {
-
-  @Value('${local.server.port}')
-  Integer serverPort
-
-  @Shared
-  String serialId
 
   void "List Initial Serials"() {
     when:'We ask the system to list known Serials'
