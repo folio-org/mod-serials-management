@@ -12,16 +12,19 @@ import groovy.util.logging.Slf4j
 class SunflowerReleaseSpec extends BaseSpec {
 
   // Refs MODSER-104
-  void "Check creating a serial and then query for created serial"() {
-    log.debug("Testing....")
+  void "Check that passing a refdata category desc to an enumeration textual rule does not cause a new refdata category to be created"() {
+
+    // Used to ensure test data exists and refdata values can be used later in the test
     when: "Grab refdata category Global.Month"
       List refdataList = doGet("/serials-management/refdata", [filters: ['desc==Global.Month']])
-
-    log.debug("Refdata list: ${refdataList}")
+      log.debug("Refdata list: ${refdataList}")
+    
+    // Ensure we have the refdata category we need
     then: "Response is good and we have a refdata category"
       refdataList[0].id != null
       refdataList[0].desc == 'Global.Month'
     
+    // Create a serial to assign the ruleset to
     when: "Post to create new empty serial with description"
       Map serialPostMap = doPost('/serials-management/serials', [
         serialStatus: 'active',
@@ -30,21 +33,10 @@ class SunflowerReleaseSpec extends BaseSpec {
 
     then: 'Response is good and we have a new serial'
       serialPostMap.id != null
-      serialPostMap.description == 'test description'
-      serialPostMap.serialStatus.value == 'active'
 
-    when: 'Query for the created serial'
-      String serialId = serialPostMap.id
-      Map serialGetMap = doGet("/serials-management/serials/${serialId}")
-
-    then: 'Serial found and ID matches returned one from before'
-      serialGetMap.id == serialId
-      serialGetMap.description == 'test description'
-      serialGetMap.serialStatus.value == 'active'
-
+    // Create a new serial using refdataCategory.desc and refdataValue Id from fetched values
     when: "Post to create new ruleset with daily recurrence and active status"
-      log.debug("Create new rulset");
-
+      String serialId = serialPostMap.id
       Map rulesetPostMap = doPost('/serials-management/rulesets', [
         rulesetStatus: 'active',
         recurrence: [
@@ -94,14 +86,11 @@ class SunflowerReleaseSpec extends BaseSpec {
 
     then: "Response is good and we have a new ID and a status of active"
       rulesetPostMap.id != null
-      def activeRulesetId = rulesetPostMap.id
-      rulesetPostMap.rulesetStatus.value == 'active'
 
     when: "Grab refdata category Global.Month"
       refdataList = doGet("/serials-management/refdata", [filters: ['desc==Global.Month']])
 
-    log.debug("Refdata list: ${refdataList}")
-    then: "Response is good and we have a refdata category"
+    then: "We still only have one refdata category"
       refdataList.size() == 1
   }
 }
