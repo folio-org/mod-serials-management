@@ -1,5 +1,12 @@
 ## 2.1.0 IN PROGRESS
 
+## 2.0.1 2025-03-28
+  * MODSER-111 Patch mod-serials-management for instability during update
+  * MODSER-109 Error on attempting to preview/generate pieces for publication pattern after Ramsons->Sunflower migration
+  * MODSER-105 Attempting to create a ModelRuleset with an owner causes an error
+  * MODSER-103 Error when attempting to create a piece set with a combined last piece
+  * Improved integration test coverage
+
 ## 2.0.0 2025-03-13
   * MODSER-101 Combined enumeration does not skip the combined issue numbers
   * MODSER-99 Update data binding to support the use of ref data values in textual enumeration
