@@ -1,3 +1,6 @@
+## 1.0.5 2025-04-01
+  * ERM-3667 Prevent instability of grails modules during updates: Quesnelia
+
 ## 1.0.4 2025-01-07
   * MODSER-56 Internal omission/combination pieces not expanding fields
 
