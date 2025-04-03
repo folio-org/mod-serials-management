@@ -206,15 +206,15 @@ public class PieceLabellingService {
     ArrayList<EnumerationUCTMT> enumerationTemplateMetadataArray = []
     Iterator<EnumerationTemplateMetadataRule> iterator = templateMetadataRules?.iterator()
     
-    // This block is due to be refactor when we seperate out chronology and enumeration in the starting values
-    // Currently we have to track indexs independently depedending on userConfiguredTemplateMetadataType
+    // This block is due to be refactor when we separate out chronology and enumeration in the starting values
+    // Currently we have to track indexs independently depending on userConfiguredTemplateMetadataType
     int enumerationIndex = 0
     ArrayList<UserConfiguredTemplateMetadata> enumerationStartingValues = startingValues.findAll { it.userConfiguredTemplateMetadataType == 'enumeration' }
 
     while(iterator?.hasNext()){
       EnumerationTemplateMetadataRule currentMetadataRule = iterator.next()
         // previousEnumerationArray might be null
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(enumerationIndex)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         enumerationTemplateMetadataArray << enumerationUCTMT
@@ -272,7 +272,7 @@ public class PieceLabellingService {
 
     while(enumerationIterator?.hasNext()){
       EnumerationTemplateMetadataRule currentMetadataRule = enumerationIterator.next()
-        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(currentMetadataRule?.index)?.metadataType
+        EnumerationUCTMT ruleStartingValues = previousEnumerationArray ? previousEnumerationArray?.getAt(enumerationIndex) : enumerationStartingValues.getAt(enumerationIndex)?.metadataType
         EnumerationUCTMT enumerationUCTMT = EnumerationTemplateMetadataRule.handleType(currentMetadataRule, standardTM.date, standardTM.index, ruleStartingValues)
 
         UserConfiguredTemplateMetadata currentUCTM = new UserConfiguredTemplateMetadata([
