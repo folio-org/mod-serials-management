@@ -1,3 +1,6 @@
+## 1.1.6 2025-04-03
+  * MODSER-111 Prevent instability of grails modules during updates: Ramsons
+
 ## 1.1.5 2025-02-04
   * MODSER-90 Migration issue with module mod-serials-management
 
