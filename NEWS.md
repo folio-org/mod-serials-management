@@ -1,4 +1,5 @@
 ## 2.1.0 IN PROGRESS
+  * MODSER-110: Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces 
 
 ## 2.0.1 2025-03-28
   * MODSER-111 Patch mod-serials-management for instability during update
