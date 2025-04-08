@@ -9,7 +9,7 @@ import groovy.util.logging.Slf4j
 @Slf4j
 @Integration
 @Stepwise
-class SunflowerReleaseSpec extends BaseSpec {
+class SunflowerBugfestSpec extends BaseSpec {
 
   // Refs MODSER-104
   void "Check that passing a refdata category desc to an enumeration textual rule does not cause a new refdata category to be created"() {
