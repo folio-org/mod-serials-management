@@ -76,6 +76,8 @@ configurations {
 	}
 }
 
+ext['jackson.version'] = '2.18.3'
+
 dependencies {
 	/* ---- Grails 6 ---- */
 	compileOnly("io.micronaut:micronaut-inject-groovy")
@@ -167,7 +169,7 @@ dependencies {
 	implementation 'com.github.fracpete:romannumerals4j:0.0.1'
 
 	/* ---- Custom non profile deps ---- */
-  implementation 'org.apache.kafka:kafka-clients:3.7.0'
+  implementation 'org.apache.kafka:kafka-clients:3.7.2'
   implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
 
 	// Better test reports.
