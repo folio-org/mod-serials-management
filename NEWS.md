@@ -1,6 +1,13 @@
 ## 2.1.0 IN PROGRESS
   * MODSER-110: Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces
 
+## 2.0.2 2025-04-15
+  * MODSER-115 Upgrade undertow from 2.2.28.Final to 2.2.37.Final fixing vulns
+  * MODSER-114 kafka-clients 3.7.2, jackson 2.18.3 fixing vulns
+  * MODSER-110 Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces
+  * MODSER-104 Passing a refdata category desc to an enumeration textual rule causes a new refdata category to be created
+
+
 ## 2.0.1 2025-03-28
   * MODSER-111 Patch mod-serials-management for instability during update
   * MODSER-109 Error on attempting to preview/generate pieces for publication pattern after Ramsons->Sunflower migration
