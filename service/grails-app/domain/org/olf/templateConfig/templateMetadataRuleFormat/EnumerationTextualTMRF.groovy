@@ -33,6 +33,16 @@ public class EnumerationTextualTMRF extends EnumerationTemplateMetadataRuleForma
     levels nullable: false
   }
 
+  def beforeValidate() {
+    // An issue exists where if a RefdataCategory desc is the only property passed down then a new RefdataCategory would be generated
+    // This check ensures that if this occurs, the RefdataCategory will attempt to be found based on the desc and the property will be set to the result
+    if(this.refdataCategory?.id === null && this.refdataCategory.hasProperty('desc')){
+      RefdataCategory rdc = RefdataCategory.findByDesc(this.refdataCategory.desc)
+      this.refdataCategory = rdc
+    }
+  }
+
+
   private static String findResultIndex(EnumerationTemplateMetadataRule rule, int index) {
     ArrayList<EnumerationTextualLevelTMRF> etltmrfArray = rule?.ruleFormat?.levels?.sort { it?.index }
     while (true) {

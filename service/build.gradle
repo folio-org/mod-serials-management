@@ -76,6 +76,8 @@ configurations {
 	}
 }
 
+ext['jackson.version'] = '2.18.3'
+
 dependencies {
 	/* ---- Grails 6 ---- */
 	compileOnly("io.micronaut:micronaut-inject-groovy")
@@ -136,7 +138,21 @@ dependencies {
 	
 	implementation 'io.github.http-builder-ng:http-builder-ng-core:1.0.4'
 	implementation 'org.codehaus.janino:janino:3.1.9'
+	
 	implementation "org.springframework.boot:spring-boot-starter-undertow" // Replaces spring-boot-starter-tomcat
+	// security upgrade for undertow, using same exclusions as
+  // https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-undertow/2.7.18/spring-boot-starter-undertow-2.7.18.pom
+  implementation("io.undertow:undertow-core:2.2.37.Final")
+  implementation("io.undertow:undertow-servlet:2.2.37.Final") {
+    exclude group: "org.jboss.spec.javax.servlet", module: "jboss-servlet-api_4.0_spec"
+    exclude group: "org.jboss.spec.javax.annotation", module: "jboss-annotations-api_1.3_spec"
+  }
+  implementation("io.undertow:undertow-websockets-jsr:2.2.37.Final") {
+    exclude group: "org.jboss.spec.javax.websocket", module: "jboss-websocket-api_1.1_spec"
+    exclude group: "org.jboss.spec.javax.servlet", module: "jboss-servlet-api_4.0_spec"
+    exclude group: "org.jboss.spec.javax.annotation", module: "jboss-annotations-api_1.3_spec"
+  }
+
 	implementation "org.hibernate:hibernate-java8"
 	runtimeOnly "com.zaxxer:HikariCP:5.1.0"                             // Replaces Tomcat JDBC pool
   runtimeOnly "org.postgresql:postgresql:42.7.3"
@@ -167,7 +183,7 @@ dependencies {
 	implementation 'com.github.fracpete:romannumerals4j:0.0.1'
 
 	/* ---- Custom non profile deps ---- */
-  implementation 'org.apache.kafka:kafka-clients:3.7.0'
+  implementation 'org.apache.kafka:kafka-clients:3.7.2'
   implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
 
 	// Better test reports.
