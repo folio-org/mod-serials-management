@@ -243,4 +243,12 @@ databaseChangeLog = {
   changeSet(author: "Jack-Golding (manual)", id: "20250311-1044-001") {
     renameColumn(tableName: "enumeration_textual_leveltmrf", oldColumnName: "etltmrf_value", newColumnName: "etltmrf_static_value")
   }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250424-1354-001") {
+        addPrimaryKey(columnNames: "ctmr_id", constraintName: "chronology_template_metadata_rulePK", tableName: "chronology_template_metadata_rule")
+  }
+
+  changeSet(author: "Jack-Golding (manual)", id: "20250424-1354-002") {
+        addPrimaryKey(columnNames: "etmr_id", constraintName: "enumeration_template_metadata_rulePK", tableName: "enumeration_template_metadata_rule")
+  }
 }
