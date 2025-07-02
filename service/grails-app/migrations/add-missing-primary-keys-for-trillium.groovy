@@ -4,19 +4,20 @@ databaseChangeLog = {
       not { primaryKeyExists(tableName: 'omission_pattern_day_week') }
     }
     addPrimaryKey(tableName: "omission_pattern_day_week", columnNames: "op_id", constraintName: "omission_pattern_day_weekPK")
+  }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-02") {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'chronology_datetmrf') }
       }
-      addPrimaryKey(tableName: "chronology_datetmrf", columnNames: "tmrf_id", constraintName: "chronology_datetmrfPK")
+      addPrimaryKey(tableName: "chronology_datetmrf", columnNames: "ctmrf_id", constraintName: "chronology_datetmrfPK")
     }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-03") {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'chronology_monthtmrf') }
       }
-      addPrimaryKey(tableName: "chronology_monthtmrf", columnNames: "tmrf_id", constraintName: "chronology_monthtmrfPK")
+      addPrimaryKey(tableName: "chronology_monthtmrf", columnNames: "ctmrf_id", constraintName: "chronology_monthtmrfPK")
     }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-04") {
@@ -30,7 +31,7 @@ databaseChangeLog = {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'chronology_yeartmrf') }
       }
-      addPrimaryKey(tableName: "chronology_yeartmrf", columnNames: "tmrf_id", constraintName: "chronology_yeartmrfPK")
+      addPrimaryKey(tableName: "chronology_yeartmrf", columnNames: "ctmrf_id", constraintName: "chronology_yeartmrfPK")
     }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-06") {
@@ -170,7 +171,7 @@ databaseChangeLog = {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'enumeration_numerictmrf') }
       }
-      addPrimaryKey(tableName: "enumeration_numerictmrf", columnNames: "tmrf_id", constraintName: "enumeration_numerictmrfPK")
+      addPrimaryKey(tableName: "enumeration_numerictmrf", columnNames: "etmrf_id", constraintName: "enumeration_numerictmrfPK")
     }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-26") {
@@ -191,7 +192,7 @@ databaseChangeLog = {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'enumeration_textualtmrf') }
       }
-      addPrimaryKey(tableName: "enumeration_textualtmrf", columnNames: "tmrf_id", constraintName: "enumeration_textualtmrfPK")
+      addPrimaryKey(tableName: "enumeration_textualtmrf", columnNames: "etmrf_id", constraintName: "enumeration_textualtmrfPK")
     }
 
     changeSet(author: "mchaib (manual)", id: "20250702-1515-29") {
@@ -510,5 +511,3 @@ databaseChangeLog = {
     }
   }
 
-
-}
