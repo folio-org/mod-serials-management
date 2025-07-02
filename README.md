@@ -50,6 +50,13 @@ The following reference data (refdata) categories are created on installation:
 |SerialRuleset.RulesetStatus|/serials-management/refdata/SerialRuleset/RulesetStatus|
 |TemplateMetadataRule.TemplateMetadataRuleType|/serials-management/refdata/TemplateMetadataRule/TemplateMetadataRuleType|
 
+### Environment variables
+This is a NON-EXHAUSTIVE list of environment variables which tweak behaviour in this module
+
+| Variable                   | Description                                                                                                                                                                                                                                                          | Options                                                    | Default                       |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|-------------------------------|                               |
+| `ENDPOINTS_INCLUDE_STACK_TRACE` | Allows the HTTP response 500 to contain stacktrace from the exception thrown. Default return will be a generic message and a timestamp.                                                                                                                             | <ul><li>`true`</li><li>`false`</li></ul>                                                     | `false`                       |
+
 ### Deployment
 
 A sample k8s resource definition for service and deployment [can be found the scripts directory](https://github.com/folio-org/mod-serials-management/blob/master/scripts/k8s_deployment_template.yaml)
