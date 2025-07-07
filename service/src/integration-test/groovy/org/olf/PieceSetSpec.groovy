@@ -6,6 +6,10 @@ import spock.lang.Shared
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
+import java.time.LocalDate;
+import java.util.stream.Collectors;
+import groovy.json.JsonOutput
+
 @Slf4j
 @Integration
 @Stepwise
@@ -21,6 +25,9 @@ class PieceSetSpec extends BaseSpec {
 
   @Shared
   Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data.json"))
+
+  @Shared
+  Map expectedOutcomes = new HashMap();
 
   private List getRecurrenceAndOmissionCombinations() {
     def combinations = []
@@ -51,7 +58,7 @@ class PieceSetSpec extends BaseSpec {
 
       // test the recurrence rule combined with each type of omission rule
       allOmissions.eachWithIndex { omissionRule, index ->
-        def omissionName = "omission_${omissionRule.patternType}_${index}"
+        def omissionName = omissionRule.id
         combinations.add([
           recurrenceName,
           recurrenceRule,
@@ -76,6 +83,15 @@ class PieceSetSpec extends BaseSpec {
     serialId != null
   }
 
+  void "Load expected outcomes"() {
+    when: "Expected values are loaded"
+    def expectedValues = new File("src/integration-test/resources/expected_outcomes.json")
+    expectedOutcomes = new groovy.json.JsonSlurper().parse(expectedValues)
+
+    then:
+    true
+  }
+
   @Unroll
   def "Generate pieces for recurrence '#recurrenceName' with #omissionName"() {
     given: "A request payload for generating pieces"
@@ -83,7 +99,7 @@ class PieceSetSpec extends BaseSpec {
       rulesetStatus: ruleset_data.rulesetStatus.active,
       recurrence: recurrenceRule,
       templateConfig: [
-        templateString: "Test piece for #recurrenceName with #omissionName"
+        templateString: "{{chronology1.weekday}}"
       ],
       owner: [
         id: serialId
@@ -93,7 +109,7 @@ class PieceSetSpec extends BaseSpec {
 
     // Conditionally add the omission rules to the payload
     if (omissionRules) {
-      payload.omissions = [ rules: omissionRules ]
+      payload.omission = [ rules: omissionRules ]
     }
 
     when: "We generate predicted pieces with the given rules"
@@ -103,6 +119,45 @@ class PieceSetSpec extends BaseSpec {
     then: "We get a response with pieces"
     respMap != null
     respMap.pieces instanceof List
+    int n = 10;
+    log.info("Dates: ")
+    List<String> dates = respMap.pieces.stream()
+      .map(p -> p.date) // get dates for each piece
+      .sorted(Comparator.comparing(LocalDate::parse)) // sort
+      .collect(Collectors.toList());
+
+    if (respMap.pieces) {
+      log.info(respMap.pieces.size().toString())
+      List<String> omissionDates = respMap.pieces.stream()
+        .filter(map -> "org.olf.internalPiece.InternalOmissionPiece".equals(map.get("class")))
+        .map(map -> (String) map.get("date"))
+        .sorted(Comparator.comparing(LocalDate::parse))
+        .collect(Collectors.toList());
+
+      List<String> publicationDates = respMap.pieces.stream()
+        .filter(map -> "org.olf.internalPiece.InternalRecurrencePiece".equals(map.get("class")))
+        .map(map -> (String) map.get("date"))
+        .sorted(Comparator.comparing(LocalDate::parse))
+        .collect(Collectors.toList());
+
+      System.out.println("Dates of Omission Pieces (from Maps): " + omissionDates);
+      log.info(dates.toListString())
+      log.info(respMap.pieces.toString())
+
+      assert expectedOutcomes.get(recurrenceName).get(omissionName).get("omissionDates") == omissionDates
+      assert expectedOutcomes.get(recurrenceName).get(omissionName).get("publicationDates") == publicationDates
+
+//      Map omissionOutput = [:]
+//      if (expectedOutcomes.get(recurrenceName)) {
+//        omissionOutput = expectedOutcomes.get(recurrenceName)
+//      }
+//      Map thisOmission = [:]
+//      thisOmission.put("omissionDates", omissionDates)
+//      thisOmission.put("publicationDates", publicationDates)
+//      omissionOutput.put(omissionName, thisOmission)
+//      expectedOutcomes.put(recurrenceName, omissionOutput)
+//    }
+    }
 
     and: "The number of pieces matches the expected count"
     if (expectedPieceCount != null) {
@@ -113,7 +168,6 @@ class PieceSetSpec extends BaseSpec {
     [recurrenceName, recurrenceRule, omissionName, omissionRules, expectedPieceCount] << getRecurrenceAndOmissionCombinations()
   }
 
-// todo: How to test against labels?
-  // todo: How to calculate expected omission sizes?
+  // todo: How to test against labels?
 
 }
