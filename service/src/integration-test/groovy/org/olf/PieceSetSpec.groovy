@@ -167,7 +167,4 @@ class PieceSetSpec extends BaseSpec {
     where:
     [recurrenceName, recurrenceRule, omissionName, omissionRules, expectedPieceCount] << getRecurrenceAndOmissionCombinations()
   }
-
-  // todo: How to test against labels?
-
 }

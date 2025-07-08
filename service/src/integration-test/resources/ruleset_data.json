@@ -323,7 +323,7 @@
     ]
   },
   "templateConfig": {
-    "templateString": "123",
+    "templateString": "{{chronology1.weekday}} {{chronology1.monthDay}} {{chronology1.month}} {{chronology1.year}}",
     "rules": [
       {
         "templateMetadataRuleType": "chronology",
@@ -438,5 +438,114 @@
         "index": 4
       }
     ]
+  },
+  "templateConfigBase":{
+    "chronologyRules": [
+      {
+        "ruleLocale": "en",
+        "templateMetadataRuleFormat": "chronology_date",
+        "ruleFormat": {
+          "weekdayFormat": {
+            "value": "full_lower"
+          },
+          "monthDayFormat": {
+            "value": "number"
+          },
+          "monthFormat": {
+            "value": "full"
+          },
+          "yearFormat": {
+            "value": "full"
+          }
+        },
+        "index": 0
+      }
+    ],
+    "templateString": "{{chronology1.weekday}} {{chronology1.monthDay}} {{chronology1.month}} {{chronology1.year}} {{enumeration1.level1}} {{enumeration1.level2}}",
+    "enumerationRules": [
+      {
+        "templateMetadataRuleFormat": "enumeration_numeric",
+        "ruleFormat": {
+          "levels": [
+            {
+              "units": "1",
+              "format": {
+                "value": "number"
+              },
+              "sequence": {
+                "value": "continuous"
+              },
+              "index": 0
+            },
+            {
+              "units": "4",
+              "format": {
+                "value": "number"
+              },
+              "sequence": {
+                "value": "reset"
+              },
+              "index": 1
+            }
+          ]
+        },
+        "index": 0
+      }
+    ]
+  },
+  "templateConfigBaseEnumeration":{
+    "chronologyRules": [
+      {
+        "ruleLocale": "en",
+        "templateMetadataRuleFormat": "chronology_date",
+        "ruleFormat": {
+          "weekdayFormat": {
+            "value": "full_lower"
+          },
+          "monthDayFormat": {
+            "value": "number"
+          },
+          "monthFormat": {
+            "value": "full"
+          },
+          "yearFormat": {
+            "value": "full"
+          }
+        },
+        "index": 0
+      }
+    ],
+    "templateString": "{{enumeration1.level1}} {{enumeration1.level2}}",
+    "enumerationRules": [
+      {
+        "templateMetadataRuleFormat": "enumeration_numeric",
+        "ruleFormat": {
+          "levels": [
+            {
+              "units": "1",
+              "format": {
+                "value": "number"
+              },
+              "sequence": {
+                "value": "continuous"
+              },
+              "index": 0
+            },
+            {
+              "units": "4",
+              "format": {
+                "value": "number"
+              },
+              "sequence": {
+                "value": "reset"
+              },
+              "index": 1
+            }
+          ]
+        },
+        "index": 0
+      }
+    ]
   }
+
 }
