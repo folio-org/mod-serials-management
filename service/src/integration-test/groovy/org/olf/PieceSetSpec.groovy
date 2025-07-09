@@ -29,45 +29,59 @@ class PieceSetSpec extends BaseSpec {
   @Shared
   Map expectedOutcomes = new HashMap();
 
-  private List getRecurrenceAndOmissionCombinations() {
-    def combinations = []
+  @Shared
+  Map expectedOutcomesCombinationRules = new HashMap();
 
-    // Define the known outcomes for recurrence rules without any omissions
-    def baseExpectedCounts = [
-      day: 366,
-      week: 53,
-      monthDate: 12,
-      monthWeekday: 12,
-      yearDate: 1,
-      yearWeekday: 1,
-      yearMonthWeekday: 1
-    ]
+  // Helper function to create all the combinations of reccurence and omission rules in ruleset_data.json
+  private List getRecurrenceOmissionScenarios() {
+    def combinations = []
 
     def allRecurrences = ruleset_data.recurrence
     def allOmissions = ruleset_data.omission.rules
 
     allRecurrences.each { recurrenceName, recurrenceRule ->
-      // Test the recurrence rule by itself (no omission rules)
+      // Test the recurrence rule by itself (no omission or combination rules)
       combinations.add([
         recurrenceName,
         recurrenceRule,
-        'no_omission', // arbitrary name for the no omission case.
-        null,            // No omission rules for this case
-        baseExpectedCounts[recurrenceName]
+        'no_rules', // generic name for the base case
+        null,
+        null, // No omission rules
+        null, // No combination rules
       ])
 
-      // test the recurrence rule combined with each type of omission rule
+      // Test the recurrence rule combined with each type of omission rule
       allOmissions.each { omissionName, omissionRule ->
         combinations.add([
           recurrenceName,
           recurrenceRule,
-          omissionName,   // The key from the map is the rule's name/id
-          [omissionRule], // The value from the map is the rule object, wrapped in a list
-          null
+          "omission: ${omissionName}",
+          [omissionRule], // Omission rules
+          null           // No combination rules
         ])
       }
     }
 
+    return combinations
+  }
+
+  // Helper function to create all the combinations of reccurence and combination rules in ruleset_data.json
+  private List getRecurrenceCombinationScenarios() {
+    def combinations = []
+    def allRecurrences = ruleset_data.recurrence
+    def allCombinations = ruleset_data.combination.rules
+
+    allRecurrences.each { recurrenceName, recurrenceRule ->
+      allCombinations.each { combinationName, combinationRule ->
+        combinations.add([
+          recurrenceName,
+          recurrenceRule,
+          "combination: ${combinationName}",
+          null, // No omission rules
+          [combinationRule] // Combination rules
+        ])
+      }
+    }
     return combinations
   }
 
@@ -85,14 +99,16 @@ class PieceSetSpec extends BaseSpec {
   void "Load expected outcomes"() {
     when: "Expected values are loaded"
     def expectedValues = new File("src/integration-test/resources/expected_outcomes.json")
+    def expectedValuesCombinationRules = new File("src/integration-test/resources/expected_outcomes_combination_rules.json")
     expectedOutcomes = new groovy.json.JsonSlurper().parse(expectedValues)
+    expectedOutcomesCombinationRules = new groovy.json.JsonSlurper().parse(expectedValuesCombinationRules)
 
     then:
     true
   }
 
   @Unroll
-  def "Generate pieces for recurrence '#recurrenceName' with #omissionName"() {
+  def "Generate pieces for recurrence '#recurrenceName' with #scenarioDescription"() {
     given: "A request payload for generating pieces"
     def payload = [
       rulesetStatus: ruleset_data.rulesetStatus.active,
@@ -106,64 +122,68 @@ class PieceSetSpec extends BaseSpec {
       startDate: startDate
     ]
 
-    // Conditionally add the omission rules to the payload
+    // Conditionally add the omission or combination rules to the payload
     if (omissionRules) {
       payload.omission = [ rules: omissionRules ]
     }
+    if (combinationRules) {
+      payload.combination = [ rules: combinationRules ]
+    }
 
     when: "We generate predicted pieces with the given rules"
-    log.debug("Testing recurrence: ${recurrenceName} with omission: ${omissionName}")
+    log.debug("Testing scenario: Recurrence '${recurrenceName}' with ${scenarioDescription}")
     Map respMap = doPost("/serials-management/predictedPieces/generate", payload)
 
-    then: "We get a response with pieces"
+    String ruleName = scenarioDescription.split(":").size() > 1 ? scenarioDescription.split(":")[1].trim() : "no_rules"
+
+    then: "We get a response with pieces and the output matches expectations"
     respMap != null
     respMap.pieces instanceof List
-    int n = 10;
-    log.info("Dates: ")
-    List<String> dates = respMap.pieces.stream()
-      .map(p -> p.date) // get dates for each piece
-      .sorted(Comparator.comparing(LocalDate::parse)) // sort
-      .collect(Collectors.toList());
 
     if (respMap.pieces) {
-      log.info(respMap.pieces.size().toString())
+      log.info("Total pieces generated: ${respMap.pieces.size()}")
+
+      // Get lists of omission dates, publication dates and combined dates.
       List<String> omissionDates = respMap.pieces.stream()
-        .filter(map -> "org.olf.internalPiece.InternalOmissionPiece".equals(map.get("class")))
-        .map(map -> (String) map.get("date"))
+        .filter(p -> "org.olf.internalPiece.InternalOmissionPiece".equals(p.get("class")))
+        .map(p -> (String) p.get("date"))
         .sorted(Comparator.comparing(LocalDate::parse))
         .collect(Collectors.toList());
 
       List<String> publicationDates = respMap.pieces.stream()
-        .filter(map -> "org.olf.internalPiece.InternalRecurrencePiece".equals(map.get("class")))
-        .map(map -> (String) map.get("date"))
+        .filter(p -> "org.olf.internalPiece.InternalRecurrencePiece".equals(p.get("class")))
+        .map(p -> (String) p.get("date"))
         .sorted(Comparator.comparing(LocalDate::parse))
         .collect(Collectors.toList());
 
-      System.out.println("Dates of Omission Pieces (from Maps): " + omissionDates);
-      log.info(dates.toListString())
-      log.info(respMap.pieces.toString())
+      List<String> combinedDates = respMap.pieces.stream()
+        .filter(p -> "org.olf.internalPiece.InternalCombinationPiece".equals(p.get("class")))
+        .flatMap(p -> ((List<Map>) p.get("recurrencePieces")).stream()) // get the list of dates from the combined recurrence pieces
+        .map(rp -> (String) rp.get("date")) // From the flat stream, get the list of dates.
+        .sorted(Comparator.comparing(LocalDate::parse))
+        .collect(Collectors.toList());
 
-      assert expectedOutcomes.get(recurrenceName).get(omissionName).get("omissionDates") == omissionDates
-      assert expectedOutcomes.get(recurrenceName).get(omissionName).get("publicationDates") == publicationDates
+      log.info("Omission dates: ${omissionDates}")
+      log.info("Publication dates: ${publicationDates}")
+      log.info("Combined dates: ${combinedDates}")
 
-//      Map omissionOutput = [:]
-//      if (expectedOutcomes.get(recurrenceName)) {
-//        omissionOutput = expectedOutcomes.get(recurrenceName)
-//      }
-//      Map thisOmission = [:]
-//      thisOmission.put("omissionDates", omissionDates)
-//      thisOmission.put("publicationDates", publicationDates)
-//      omissionOutput.put(omissionName, thisOmission)
-//      expectedOutcomes.put(recurrenceName, omissionOutput)
-//    }
-    }
+      // Load the expected values
+      Map expectedRuleOutcome = expectedOutcomes.get(recurrenceName)?.get(ruleName)
 
-    and: "The number of pieces matches the expected count"
-    if (expectedPieceCount != null) {
-      respMap.pieces.size() == expectedPieceCount
+      // If it's a combination rule test, then assert against the combinedDates and publicationDates
+      if (scenarioDescription.startsWith("combination:")) {
+        expectedRuleOutcome = expectedOutcomesCombinationRules.get(recurrenceName)?.get(ruleName) //Have stored the expected values for combination rules in a separate json for now.
+        assert expectedRuleOutcome.get("publicationDates") == publicationDates
+        assert expectedRuleOutcome.get("combinedDates") == combinedDates
+      } else {
+        // Else assert that the omissionDates and publicationDates match those we expect.
+        assert expectedRuleOutcome.get("omissionDates") == omissionDates
+        assert expectedRuleOutcome.get("publicationDates") == publicationDates
+      }
     }
 
     where:
-    [recurrenceName, recurrenceRule, omissionName, omissionRules, expectedPieceCount] << getRecurrenceAndOmissionCombinations()
+    [recurrenceName, recurrenceRule, scenarioDescription, omissionRules, combinationRules] <<
+      (getRecurrenceOmissionScenarios() + getRecurrenceCombinationScenarios())
   }
 }

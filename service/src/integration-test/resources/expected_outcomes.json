@@ -1,6 +1,6 @@
 {
     "monthDate": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -280,7 +280,7 @@
         }
     },
     "week": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -1172,7 +1172,7 @@
         }
     },
     "yearWeekday": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -1294,7 +1294,7 @@
         }
     },
     "yearMonthWeekday": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -1416,7 +1416,7 @@
         }
     },
     "monthWeekday": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -1696,7 +1696,7 @@
         }
     },
     "yearDate": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
@@ -1818,7 +1818,7 @@
         }
     },
     "day": {
-        "no_omission": {
+        "no_rules": {
             "omissionDates": [
                 
             ],
