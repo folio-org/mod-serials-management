@@ -26,12 +26,15 @@ class LabelSpec extends BaseSpec {
   @Shared
   Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data.json"))
 
+  @Shared
+  Map templateConfigurations = ruleset_data.templateConfigurations
+
   /* Chronology labels tests
   * Approach:
   *  */
   void "level 1: continuous, 3; level 2: continuous, 1"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBase
+    def baseConfig = templateConfigurations.templateConfigBase
     Map respMap = doPost("/serials-management/predictedPieces/generate", [
       rulesetStatus: ruleset_data.rulesetStatus.active,
       recurrence: ruleset_data.recurrence.monthDate,
@@ -58,7 +61,7 @@ class LabelSpec extends BaseSpec {
    */
   void "level 1: continuous, 1; level 2: reset, 4"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "reset"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "1"
@@ -72,7 +75,7 @@ class LabelSpec extends BaseSpec {
 
   void "level 1: continuous, 1; level 2: reset, 1"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "reset"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "1"
@@ -87,7 +90,7 @@ class LabelSpec extends BaseSpec {
 
   void "level 1: continuous, 4; level 2: reset, 1"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "reset"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "4"
@@ -101,7 +104,7 @@ class LabelSpec extends BaseSpec {
 
   void "level 1: continuous, 4; level 2: continuous, 1"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "4"
@@ -115,7 +118,7 @@ class LabelSpec extends BaseSpec {
 
   void "level 1: continuous, 1; level 2: continuous, 3"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "1"
@@ -129,7 +132,7 @@ class LabelSpec extends BaseSpec {
 
   void "level 1: continuous, 3; level 2: continuous, 1"() {
     when: "We ask the system to generate predicted pieces"
-    def baseConfig = ruleset_data.templateConfigBaseEnumeration
+    def baseConfig = templateConfigurations.templateConfigBaseEnumeration
     baseConfig.enumerationRules[0].ruleFormat.levels[0].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[1].sequence.value = "continuous"
     baseConfig.enumerationRules[0].ruleFormat.levels[0].units = "3"
@@ -144,10 +147,44 @@ class LabelSpec extends BaseSpec {
   /* Multiple Enumeration Labels -
     Approach:
    */
+  void "Two enumeration labels"() {
+    when: "We ask the system to generate predicted pieces"
+    def baseConfig = templateConfigurations.templateConfigTwoEnumerations
+    Labels labels = getLabels(baseConfig)
+
+    then: "The system responds with a list of 12 pieces"
+    assert labels.level1 == [1,2,3,4,5,6,7,8,9,10,11,12].collect { it as String }
+    assert labels.level2 == [1,2,3,4,5,6,7,8,9,10,11,12].collect { it as String }
+    assert labels.level3 == [1,2,3,4,5,6,7,8,9,10,11,12].collect { it as String } // Labels for enum2
+  }
 
   /* Changes to start dates -
-  Approach:
+  Approach: ?
  */
+
+  /* Initial values cause reset to trigger on first month -
+    Approach: ?
+    */
+  void "Initial values cause reset to trigger in first month"() {
+    when: "We ask the system to generate predicted pieces"
+    def baseConfig = templateConfigurations.initialValues
+    Map respMap = doPost("/serials-management/predictedPieces/generate", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.monthDate,
+      templateConfig: baseConfig,
+      owner:[
+        id: serialId
+      ],
+      patternType: "month_date",
+      startDate: "2025-05-08",
+      startingValues: ruleset_data.startingValues.initialValues
+    ])
+    Labels labels = getLabelsUsingResponse(respMap)
+
+    then: "The system responds with a list of 12 pieces"
+    assert labels.level1 == [1,2,2,3,3,4,4,5,5,6,6,7].collect { it as String }
+    assert labels.level2 == [2,1,2,1,2,1,2,1,2,1,2,1].collect { it as String }
+  }
 
   /* Changes to initial level label values -
     Approach:
@@ -168,14 +205,52 @@ class LabelSpec extends BaseSpec {
   class Labels {
     List level1
     List level2
+    List level3
 
     @Override
     public String toString() {
       return "Labels{" +
         "level1=" + level1 +
         ", level2=" + level2 +
+        ", level3=" + level3 +
         '}';
     }
+  }
+
+  private Labels getLabelsUsingResponse(Map respMap) {
+    respMap.pieces.stream()
+      .sorted(Comparator.comparing(
+        piece -> LocalDate.parse((String) piece.get("date"))
+      ))
+      .forEach(piece -> log.info(piece.label));
+
+    respMap.pieces.stream()
+      .sorted(Comparator.comparing(
+        piece -> LocalDate.parse((String) piece.get("date"))
+      ))
+      .forEach(piece -> log.info(piece.date));
+
+
+    // The goal is to go from [[1, 1], [1, 2], [1, 3]] to [1, 1, 1], [1, 2, 3]
+    // i.e. to separate label 1 and 2 into two separate lists.
+    // NOTE: this ASSUMES that enumeration template strings come in the form {enum1.level1 enum1.level2 enum2.level1}
+    def transposedList = respMap.pieces.stream()
+      .sorted(Comparator.comparing(
+        piece -> LocalDate.parse((String) piece.get("date"))
+      ))
+      .map(piece -> piece.label)
+      .map(label -> label.split(' ').toList())
+      .collect(Collectors.toList()).transpose();
+
+    def transposedLabels = new Labels()
+    transposedLabels.level1 = transposedList[0]
+    transposedLabels.level2 = transposedList[1]
+    transposedLabels.level3 = transposedList[2]
+
+    log.info(respMap.pieces.toString())
+    log.info(transposedLabels.toString())
+
+    return transposedLabels
   }
 
   private Labels getLabels(Object baseConfig) {
@@ -190,30 +265,7 @@ class LabelSpec extends BaseSpec {
       startDate: startDate
     ])
 
-    respMap.pieces.stream()
-      .sorted(Comparator.comparing(
-        piece -> LocalDate.parse((String) piece.get("date"))
-      ))
-      .forEach(piece -> log.info(piece.label));
-
-    // The goal is to go from [[1, 1], [1, 2], [1, 3]] to [1, 1, 1], [1, 2, 3]
-    // i.e. to separate label 1 and 2 into two separate lists.
-    def transposedList = respMap.pieces.stream()
-      .sorted(Comparator.comparing(
-        piece -> LocalDate.parse((String) piece.get("date"))
-      ))
-      .map(piece -> piece.label)
-      .map(label -> label.split(' ').toList())
-      .collect(Collectors.toList()).transpose();
-
-    def transposedLabels = new Labels()
-    transposedLabels.level1 = transposedList[0]
-    transposedLabels.level2 = transposedList[1]
-
-    log.info(respMap.pieces.toString())
-    log.info(transposedLabels.toString())
-
-    return transposedLabels
+    return getLabelsUsingResponse(respMap)
   }
 }
 
