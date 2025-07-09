@@ -140,68 +140,136 @@
     }
   },
   "omission": {
-    "rules": [
-      {
+    "rules": {
+      "omit_by_day_of_month_jan_8": {
         "id": "omit_by_day_of_month_jan_8",
-        "timeUnit": { "value": "day" },
+        "timeUnit": {
+          "value": "day"
+        },
         "patternType": "day_month",
-        "pattern": { "day": "8", "month": { "value": "january" } }
+        "pattern": {
+          "day": "8",
+          "month": {
+            "value": "january"
+          }
+        }
       },
-      {
+      "omit_by_first_tuesday_of_year": {
         "id": "omit_by_first_tuesday_of_year",
-        "timeUnit": { "value": "day" },
+        "timeUnit": {
+          "value": "day"
+        },
         "patternType": "day_week",
-        "pattern": { "weekday": { "value": "tuesday" }, "week": "1" }
+        "pattern": {
+          "weekday": {
+            "value": "tuesday"
+          },
+          "week": "1"
+        }
       },
-      {
+      "omit_by_first_wednesday_in_january": {
         "id": "omit_by_first_wednesday_in_january",
-        "timeUnit": { "value": "day" },
+        "timeUnit": {
+          "value": "day"
+        },
         "patternType": "day_week_month",
-        "pattern": { "weekday": { "value": "wednesday" }, "week": "1", "month": { "value": "january" } }
+        "pattern": {
+          "weekday": {
+            "value": "wednesday"
+          },
+          "week": "1",
+          "month": {
+            "value": "january"
+          }
+        }
       },
-      {
+      "omit_by_day_of_month_2nd": {
         "id": "omit_by_day_of_month_2nd",
-        "timeUnit": { "value": "day" },
+        "timeUnit": {
+          "value": "day"
+        },
         "patternType": "day",
-        "pattern": { "day": "2" }
+        "pattern": {
+          "day": "2"
+        }
       },
-      {
+      "omit_by_weekday_wednesday": {
         "id": "omit_by_weekday_wednesday",
-        "timeUnit": { "value": "day" },
+        "timeUnit": {
+          "value": "day"
+        },
         "patternType": "day_weekday",
-        "pattern": { "weekday": { "value": "wednesday" } }
+        "pattern": {
+          "weekday": {
+            "value": "wednesday"
+          }
+        }
       },
-      {
+      "omit_by_week_of_year_5": {
         "id": "omit_by_week_of_year_5",
-        "timeUnit": { "value": "week" },
+        "timeUnit": {
+          "value": "week"
+        },
         "patternType": "week",
-        "pattern": { "isRange": false, "weekFrom": "5" }
+        "pattern": {
+          "isRange": false,
+          "weekFrom": "5"
+        }
       },
-      {
+      "omit_by_week_of_year_range_6_to_7": {
         "id": "omit_by_week_of_year_range_6_to_7",
-        "timeUnit": { "value": "week" },
+        "timeUnit": {
+          "value": "week"
+        },
         "patternType": "week",
-        "pattern": { "weekFrom": "6", "isRange": true, "weekTo": "7" }
+        "pattern": {
+          "weekFrom": "6",
+          "isRange": true,
+          "weekTo": "7"
+        }
       },
-      {
+      "omit_by_first_week_in_march": {
         "id": "omit_by_first_week_in_march",
-        "timeUnit": { "value": "week" },
+        "timeUnit": {
+          "value": "week"
+        },
         "patternType": "week_month",
-        "pattern": { "week": "1", "month": { "value": "march" } }
+        "pattern": {
+          "week": "1",
+          "month": {
+            "value": "march"
+          }
+        }
       },
-      {
+      "omit_by_month_april": {
         "id": "omit_by_month_april",
-        "timeUnit": { "value": "month" },
+        "timeUnit": {
+          "value": "month"
+        },
         "patternType": "month",
-        "pattern": { "monthFrom": { "value": "april" } }
+        "pattern": {
+          "monthFrom": {
+            "value": "april"
+          }
+        }
       },
-      {
+      "omit_by_month_range_may_to_june": {
         "id": "omit_by_month_range_may_to_june",
-        "timeUnit": { "value": "month" },
+        "timeUnit": {
+          "value": "month"
+        },
         "patternType": "month",
-        "pattern": { "monthFrom": { "value": "may" }, "isRange": true, "monthTo": { "value": "june" } }
+        "pattern": {
+          "monthFrom": {
+            "value": "may"
+          },
+          "isRange": true,
+          "monthTo": {
+            "value": "june"
+          }
+        }
       },
-      {
+      "omit_by_issue_300": {
         "id": "omit_by_issue_300",
         "timeUnit": {
           "value": "issue"
@@ -211,7 +279,7 @@
           "issue": "300"
         }
       },
-      {
+      "omit_by_issue_week_30": {
         "id": "omit_by_issue_week_30",
         "timeUnit": {
           "value": "issue"
@@ -222,7 +290,7 @@
           "week": "30"
         }
       },
-      {
+      "omit_by_issue_week_month": {
         "id": "omit_by_issue_week_month",
         "timeUnit": {
           "value": "issue"
@@ -236,7 +304,7 @@
           }
         }
       },
-      {
+      "omit_by_issue_month": {
         "id": "omit_by_issue_month",
         "timeUnit": {
           "value": "issue"
@@ -249,11 +317,11 @@
           }
         }
       }
-    ]
+    }
   },
   "combination": {
-    "rules": [
-      {
+    "rules": {
+      "combine_by_issue_1": {
         "timeUnit": {
           "value": "issue"
         },
@@ -261,9 +329,10 @@
         "pattern": {
           "issue": "1"
         },
-        "issuesToCombine": "2"
+        "issuesToCombine": "2",
+        "id": "combine_by_issue_1"
       },
-      {
+      "combine_by_issue_11": {
         "timeUnit": {
           "value": "issue"
         },
@@ -271,9 +340,10 @@
         "issuesToCombine": "2",
         "pattern": {
           "issue": "11"
-        }
+        },
+        "id": "combine_by_issue_11"
       },
-      {
+      "combine_by_issue_1_week_4_month_may": {
         "timeUnit": {
           "value": "issue"
         },
@@ -285,9 +355,10 @@
             "value": "may"
           }
         },
-        "issuesToCombine": "2"
+        "issuesToCombine": "2",
+        "id": "combine_by_issue_1_week_4_month_may"
       },
-      {
+      "combine_by_issue_1_month_october": {
         "timeUnit": {
           "value": "issue"
         },
@@ -298,9 +369,10 @@
             "value": "october"
           }
         },
-        "issuesToCombine": "2"
+        "issuesToCombine": "2",
+        "id": "combine_by_issue_1_month_october"
       },
-      {
+      "combine_by_issue_2": {
         "timeUnit": {
           "value": "issue"
         },
@@ -308,9 +380,10 @@
         "pattern": {
           "issue": "2"
         },
-        "issuesToCombine": "2"
+        "issuesToCombine": "2",
+        "id": "combine_by_issue_2"
       },
-      {
+      "combine_by_issue_10": {
         "timeUnit": {
           "value": "issue"
         },
@@ -318,9 +391,10 @@
         "pattern": {
           "issue": "10"
         },
-        "issuesToCombine": "2"
+        "issuesToCombine": "2",
+        "id": "combine_by_issue_10"
       }
-    ]
+    }
   },
   "templateConfigurations": {
     "templateConfig": {
@@ -631,6 +705,29 @@
         }
       ],
       "templateString": "{{enumeration1.level1}} {{enumeration1.level2}}"
+    },
+    "simpleSingleEnumeration": {
+      "enumerationRules": [
+        {
+          "templateMetadataRuleFormat": "enumeration_numeric",
+          "ruleFormat": {
+            "levels": [
+              {
+                "units": "1",
+                "format": {
+                  "value": "number"
+                },
+                "sequence": {
+                  "value": "continuous"
+                },
+                "index": 0
+              }
+            ]
+          },
+          "index": 0
+        }
+      ],
+      "templateString": "{{enumeration1.level1}}"
     }
   },
   "startingValues": {

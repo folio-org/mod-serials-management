@@ -57,13 +57,12 @@ class PieceSetSpec extends BaseSpec {
       ])
 
       // test the recurrence rule combined with each type of omission rule
-      allOmissions.eachWithIndex { omissionRule, index ->
-        def omissionName = omissionRule.id
+      allOmissions.each { omissionName, omissionRule ->
         combinations.add([
           recurrenceName,
           recurrenceRule,
-          omissionName,
-          [omissionRule],
+          omissionName,   // The key from the map is the rule's name/id
+          [omissionRule], // The value from the map is the rule object, wrapped in a list
           null
         ])
       }
