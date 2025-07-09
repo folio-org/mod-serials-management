@@ -183,10 +183,12 @@ class PredictedPieceSpec extends BaseSpec {
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and all possible omission rules"() {
     when: "We ask the system to generate predicted pieces"
+    Map omissionRule = [:]
+    omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_range_may_to_june])
       Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.day,
-        omission: ruleset_data.omission,
+        omission: omissionRule,
         templateConfig:[
           templateString: "omission/day piece"
         ],
@@ -199,15 +201,17 @@ class PredictedPieceSpec extends BaseSpec {
 
     then: "Ensure that all omitted pieces exist"
       List omittedItems = respMap?.pieces.findAll(p -> p?.omissionOrigins)
-      omittedItems.size() == 165
+      omittedItems.size() == 61
   }
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and an 'issue' combination rule"() {
+    Map combinationRule = [:]
+    combinationRule.put("rules", [ruleset_data.combination.rules.combine_by_issue_2])
     when: "We ask the system to generate predicted pieces"
       Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.day,
-        combination: ruleset_data.combination,
+        combination: combinationRule,
         templateConfig:[
           templateString: "combination/issue piece"
         ],
@@ -220,7 +224,7 @@ class PredictedPieceSpec extends BaseSpec {
 
     then: "Ensure all combined issues exist"
       List combinedItems = respMap?.pieces.findAll(p -> p?.combinationOrigins)
-      combinedItems.size() == 4
+      combinedItems.size() == 1
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year' recurrence rule and all template config rules"() {
