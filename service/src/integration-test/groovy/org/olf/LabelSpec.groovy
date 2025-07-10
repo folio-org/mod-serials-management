@@ -274,6 +274,7 @@ class LabelSpec extends BaseSpec {
     @Override
     public String toString() {
       return "Labels{" +
+        "full_label=" + full_label +
         "level1=" + level1 +
         ", level2=" + level2 +
         ", level3=" + level3 +
@@ -285,6 +286,7 @@ class LabelSpec extends BaseSpec {
     List full_labels = []
     respMap.pieces.stream()
       .sorted(Comparator.comparing(
+        // Sort pieces by date. If the piece has been combined, take the date from the first combined piece.
         piece -> {
           String dateString = (String) piece.get("date")
           if (!dateString && piece.combinationOrigins)  {
@@ -294,7 +296,6 @@ class LabelSpec extends BaseSpec {
         }
       ))
       .forEach(piece -> {
-        log.info(piece.label)
         full_labels.add(piece.label?.trim())
       });
 
@@ -311,6 +312,7 @@ class LabelSpec extends BaseSpec {
         .map(piece -> piece.label)
         .map(label -> label.split(' ').toList())
         .collect(Collectors.toList()).transpose();
+
       transposedLabels.level1 = transposedList[0]
       transposedLabels.level2 = transposedList[1]
       transposedLabels.level3 = transposedList[2]
@@ -319,9 +321,6 @@ class LabelSpec extends BaseSpec {
       log.info("Null present in labels due to omission or combination rule, ignoring.")
     }
     transposedLabels.full_label = full_labels
-
-    log.info(respMap.pieces.toString())
-    log.info(transposedLabels.toString())
 
     return transposedLabels
   }

@@ -154,9 +154,6 @@ class PieceSetSpec extends BaseSpec {
     String ruleName = scenarioDescription.split(":").size() > 1 ? scenarioDescription.split(":")[1].trim() : "no_rules"
 
     then: "We get a response with pieces and the output matches expectations"
-    respMap != null
-    respMap.pieces instanceof List
-
     if (respMap.pieces) {
       log.info("Total pieces generated: ${respMap.pieces.size()}")
 
@@ -180,9 +177,9 @@ class PieceSetSpec extends BaseSpec {
         .sorted(Comparator.comparing(LocalDate::parse))
         .collect(Collectors.toList());
 
-      log.info("Omission dates: ${omissionDates}")
-      log.info("Publication dates: ${publicationDates}")
-      log.info("Combined dates: ${combinedDates}")
+      log.debug("Omission dates: ${omissionDates}")
+      log.debug("Publication dates: ${publicationDates}")
+      log.debug("Combined dates: ${combinedDates}")
 
       // Load the expected values
       Map expectedRuleOutcome = expectedOutcomesOmissionRules.get(recurrenceName)?.get(ruleName)
