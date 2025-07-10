@@ -181,7 +181,7 @@ class PredictedPieceSpec extends BaseSpec {
       respMap?.pieces.size() == 1
   }
 
-  void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and all possible omission rules"() {
+  void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and one omission rule"() {
     when: "We ask the system to generate predicted pieces"
     Map omissionRule = [:]
     omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_range_may_to_june])
@@ -202,6 +202,29 @@ class PredictedPieceSpec extends BaseSpec {
     then: "Ensure that all omitted pieces exist"
       List omittedItems = respMap?.pieces.findAll(p -> p?.omissionOrigins)
       omittedItems.size() == 61
+  }
+
+  void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and multiple omission rules"() {
+    when: "We ask the system to generate predicted pieces"
+    Map omissionRule = [:]
+    omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_range_may_to_june, ruleset_data.omission.rules.omit_by_first_wednesday_in_january, ruleset_data.omission.rules.omit_by_issue_week_month])
+    Map respMap = doPost("/serials-management/predictedPieces/generate", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.day,
+      omission: omissionRule,
+      templateConfig:[
+        templateString: "omission/day piece"
+      ],
+      owner:[
+        id: serialId
+      ],
+      patternType: "day",
+      startDate: startDate
+    ])
+
+    then: "Ensure that all omitted pieces exist"
+    List omittedItems = respMap?.pieces.findAll(p -> p?.omissionOrigins)
+    omittedItems.size() == 63
   }
 
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and an 'issue' combination rule"() {
@@ -225,6 +248,39 @@ class PredictedPieceSpec extends BaseSpec {
     then: "Ensure all combined issues exist"
       List combinedItems = respMap?.pieces.findAll(p -> p?.combinationOrigins)
       combinedItems.size() == 1
+      List totalPiecesCombined = []
+      respMap?.pieces.forEach{p -> {
+        if (p?.recurrencePieces) p.recurrencePieces.forEach{rp -> totalPiecesCombined.add(rp)}
+      }}
+      totalPiecesCombined.size() == 2
+  }
+
+  void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and multiple 'issue' combination rules"() {
+    Map combinationRule = [:]
+    combinationRule.put("rules", [ruleset_data.combination.rules.combine_by_issue_2, ruleset_data.combination.rules.combine_by_issue_10])
+    when: "We ask the system to generate predicted pieces"
+    Map respMap = doPost("/serials-management/predictedPieces/generate", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.day,
+      combination: combinationRule,
+      templateConfig:[
+        templateString: "combination/issue piece"
+      ],
+      owner:[
+        id: serialId
+      ],
+      patternType: "day",
+      startDate: startDate
+    ])
+
+    then: "Ensure all combined issues exist"
+    List combinedItems = respMap?.pieces.findAll(p -> p?.combinationOrigins)
+    combinedItems.size() == 2
+    List totalPiecesCombined = []
+    respMap?.pieces.forEach{p -> {
+      if (p?.recurrencePieces) p.recurrencePieces.forEach{rp -> totalPiecesCombined.add(rp)}
+    }}
+    totalPiecesCombined.size() == 4
   }
 
   void "Generate predicted pieces with a ruleset containing a 'year' recurrence rule and all template config rules"() {

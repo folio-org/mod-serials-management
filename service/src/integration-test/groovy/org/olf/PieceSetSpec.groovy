@@ -8,12 +8,30 @@ import spock.lang.Unroll
 
 import java.time.LocalDate;
 import java.util.stream.Collectors;
-import groovy.json.JsonOutput
 
 @Slf4j
 @Integration
 @Stepwise
 class PieceSetSpec extends BaseSpec {
+  /*
+  These tests use a combinatorial approach using Spock's "where" block to test many different
+  recurrence rules against combination OR omission rules. The tests use rule data from "ruleset_data",
+  so are heavily dependent on this file. Any changes to data in ruleset_data are likely to lead to changes
+  in the expected values of these tests or require a change in the test logic.
+
+  The class begins by creating a new serial which then has rulesets attached to it so piece sets can be
+  generated.
+
+  Expected values are loaded in from "/resource/expected_outcomes.json" which contains lists of expected
+  dates (publication dates + omission dates/combined dates) in the form : {omission/combination -> recurrence_name -> rule_name -> {publicationDates + omission/combinationDates} }
+
+   Combinations are generated using two private helper functions which are called in the "where: " block.
+
+   The actual integration test is quite simple. It creates a payload with the relevant omission/combination rules
+   then hits the /generate endpoint to generate a piece set. The dates are then extracted from the piece set
+   for each type of piece (recurrence, omission, combination) and these different dates are asserted against expected values.
+   */
+
   @Shared
   String serialId
 
@@ -27,7 +45,7 @@ class PieceSetSpec extends BaseSpec {
   Map ruleset_data = new groovy.json.JsonSlurper().parse(new File("src/integration-test/resources/ruleset_data.json"))
 
   @Shared
-  Map expectedOutcomes = new HashMap();
+  Map expectedOutcomesOmissionRules = new HashMap();
 
   @Shared
   Map expectedOutcomesCombinationRules = new HashMap();
@@ -45,7 +63,7 @@ class PieceSetSpec extends BaseSpec {
         recurrenceName,
         recurrenceRule,
         'no_rules', // generic name for the base case
-        null,
+        null, // No rule name
         null, // No omission rules
         null, // No combination rules
       ])
@@ -99,9 +117,8 @@ class PieceSetSpec extends BaseSpec {
   void "Load expected outcomes"() {
     when: "Expected values are loaded"
     def expectedValues = new File("src/integration-test/resources/expected_outcomes.json")
-    def expectedValuesCombinationRules = new File("src/integration-test/resources/expected_outcomes_combination_rules.json")
-    expectedOutcomes = new groovy.json.JsonSlurper().parse(expectedValues)
-    expectedOutcomesCombinationRules = new groovy.json.JsonSlurper().parse(expectedValuesCombinationRules)
+    expectedOutcomesOmissionRules = new groovy.json.JsonSlurper().parse(expectedValues).omission
+    expectedOutcomesCombinationRules = new groovy.json.JsonSlurper().parse(expectedValues).combination
 
     then:
     true
@@ -168,7 +185,7 @@ class PieceSetSpec extends BaseSpec {
       log.info("Combined dates: ${combinedDates}")
 
       // Load the expected values
-      Map expectedRuleOutcome = expectedOutcomes.get(recurrenceName)?.get(ruleName)
+      Map expectedRuleOutcome = expectedOutcomesOmissionRules.get(recurrenceName)?.get(ruleName)
 
       // If it's a combination rule test, then assert against the combinedDates and publicationDates
       if (scenarioDescription.startsWith("combination:")) {
