@@ -232,7 +232,7 @@ class PredictedPieceSpec extends BaseSpec {
       Map respMap = doPost("/serials-management/predictedPieces/generate", [
         rulesetStatus: ruleset_data.rulesetStatus.active,
         recurrence: ruleset_data.recurrence.yearDate,
-        templateConfig: ruleset_data.templateConfig,
+        templateConfig: ruleset_data.templateConfigurations.templateConfig,
         owner:[
           id: serialId
         ],
