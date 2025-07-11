@@ -29,6 +29,17 @@ class LabelSpec extends BaseSpec {
   @Shared
   Map templateConfigurations = ruleset_data.templateConfigurations
 
+  void "Create an empty serial"() {
+
+    when: "Post to create new empty serial named Empty serial Test"
+    log.debug("Create new serial : Empty serial Test");
+    Map respMap = doPost("/serials-management/serials", serial_data.activeSerial)
+    serialId = respMap.id
+
+    then: "Response is good and we have a new ID"
+    serialId != null
+  }
+
   /* Chronology labels tests
   * Approach: Template config specifies a chronology template.
   *  */
@@ -263,6 +274,99 @@ class LabelSpec extends BaseSpec {
 
     then: "The system responds with a list of 12 pieces"
     assert labels.full_label == [1,2,4,5,6,7,8,9,10,11,12].collect { it as String }
+  }
+
+  /* ContinuationMetadata values -
+Approach: Check that the ContinuationMetadata rawValue
+*/
+  void "Check ContinuationMetadata rawValue is correct with recurrence rule"() {
+
+    when: "We ask the system to generate predicted pieces"
+    def baseConfig = templateConfigurations.simpleSingleEnumeration
+    Map rulesetResponse = doPost("/serials-management/rulesets", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.monthDate,
+      templateConfig: baseConfig,
+      owner:[
+        id: serialId
+      ],
+      patternType: "month_date",
+      startDate: startDate
+    ])
+    Map respMap = doPost("/serials-management/predictedPieces/create", [id: rulesetResponse.id, startDate: startDate])
+
+    then: "The continuationPieceRecurrenceMetadata exists and has the correct "
+    assert respMap.continuationPieceRecurrenceMetadata.id
+
+    def userConfiguredList = respMap.continuationPieceRecurrenceMetadata.userConfigured
+    def enumerationElement = userConfiguredList.find { item ->
+      item.userConfiguredTemplateMetadataType.value == 'enumeration'
+    }
+
+    def rawValue = enumerationElement?.metadataType?.levels?.get(0)?.rawValue
+    assert rawValue == 13
+  }
+
+  void "Check ContinuationMetadata rawValue is correct with omission rule"() {
+    Map omissionRule = [:]
+    omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_april])
+
+    when: "We ask the system to generate predicted pieces"
+    def baseConfig = templateConfigurations.simpleSingleEnumeration
+    Map rulesetResponse = doPost("/serials-management/rulesets", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.monthDate,
+      templateConfig: baseConfig,
+      omission: omissionRule,
+      owner:[
+        id: serialId
+      ],
+      patternType: "month_date",
+      startDate: startDate
+    ])
+    Map respMap = doPost("/serials-management/predictedPieces/create", [id: rulesetResponse.id, startDate: startDate])
+
+    then: "The continuationPieceRecurrenceMetadata exists and has the correct "
+    assert respMap.continuationPieceRecurrenceMetadata.id
+
+    def userConfiguredList = respMap.continuationPieceRecurrenceMetadata.userConfigured
+    def enumerationElement = userConfiguredList.find { item ->
+      item.userConfiguredTemplateMetadataType.value == 'enumeration'
+    }
+
+    def rawValue = enumerationElement?.metadataType?.levels?.get(0)?.rawValue
+    assert rawValue == 12
+  }
+
+  void "Check ContinuationMetadata rawValue is correct with combination rule"() {
+    Map combinationRule = [:]
+    combinationRule.put("rules", [ruleset_data.combination.rules.combine_by_issue_2]) // combines issues 2 for 2 issues (i.e. issues 2 and 3)
+
+    when: "We ask the system to generate predicted pieces"
+    def baseConfig = templateConfigurations.simpleSingleEnumeration
+    Map rulesetResponse = doPost("/serials-management/rulesets", [
+      rulesetStatus: ruleset_data.rulesetStatus.active,
+      recurrence: ruleset_data.recurrence.monthDate,
+      templateConfig: baseConfig,
+      combination: combinationRule,
+      owner:[
+        id: serialId
+      ],
+      patternType: "month_date",
+      startDate: startDate
+    ])
+    Map respMap = doPost("/serials-management/predictedPieces/create", [id: rulesetResponse.id, startDate: startDate])
+
+    then: "The continuationPieceRecurrenceMetadata exists and has the correct "
+    assert respMap.continuationPieceRecurrenceMetadata.id
+
+    def userConfiguredList = respMap.continuationPieceRecurrenceMetadata.userConfigured
+    def enumerationElement = userConfiguredList.find { item ->
+      item.userConfiguredTemplateMetadataType.value == 'enumeration'
+    }
+
+    def rawValue = enumerationElement?.metadataType?.levels?.get(0)?.rawValue
+    assert rawValue == 13
   }
 
   class Labels {
