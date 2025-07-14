@@ -209,13 +209,6 @@ databaseChangeLog = {
       addPrimaryKey(tableName: "internal_combination_piece", columnNames: "ip_id", constraintName: "internal_combination_piecePK")
     }
 
-    changeSet(author: "mchaib (manual)", id: "20250702-1515-31") {
-      preConditions(onFail: 'MARK_RAN') {
-        not { primaryKeyExists(tableName: 'internal_combination_piece_internal_recurrence_piece') }
-      }
-      addPrimaryKey(tableName: "internal_combination_piece_internal_recurrence_piece", columnNames: "internal_combination_piece_recurrence_pieces_id", constraintName: "internal_combination_piece_internal_recurrence_piecePK")
-    }
-
     changeSet(author: "mchaib (manual)", id: "20250702-1515-32") {
       preConditions(onFail: 'MARK_RAN') {
         not { primaryKeyExists(tableName: 'internal_omission_piece') }
