@@ -1,11 +1,13 @@
 databaseChangeLog = {
+
+
   changeSet(author: "mchaib (manual)", id: "20250723-1100-001") {
     grailsChange {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ModelRuleset.modelRulesetStatus', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ModelRuleset.modelRulesetStatus');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ModelRuleset.ModelRulesetStatus', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ModelRuleset.ModelRulesetStatus');
         """.toString())
       }
     }
@@ -14,13 +16,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingmodelRulesetStatusRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ModelRuleset.modelRulesetStatus'),
-            'missingmodelRulesetStatusRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingModelRulesetStatusRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ModelRuleset.ModelRulesetStatus'),
+            'missingModelRulesetStatusRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'ModelRuleset.modelRulesetStatus' AND rdv.rdv_value = 'missingmodelRulesetStatusRefDataValue'
+            WHERE rdc.rdc_description = 'ModelRuleset.ModelRulesetStatus' AND rdv.rdv_value = 'missingModelRulesetStatusRefDataValue'
           );
         """.toString())
       }
@@ -33,7 +35,7 @@ databaseChangeLog = {
             mr_ruleset_template_status = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ModelRuleset.modelRulesetStatus' AND rdv.rdv_value = 'missingmodelRulesetStatusRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'ModelRuleset.ModelRulesetStatus' AND rdv.rdv_value = 'missingModelRulesetStatusRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -142,8 +144,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationRule.TimeUnit', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.TimeUnit');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationRule.TimeUnits', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.TimeUnits');
         """.toString())
       }
     }
@@ -152,13 +154,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.TimeUnit'),
-            'missingTimeUnitRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitsRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.TimeUnits'),
+            'missingTimeUnitsRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationRule.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue'
+            WHERE rdc.rdc_description = 'CombinationRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
           );
         """.toString())
       }
@@ -171,7 +173,7 @@ databaseChangeLog = {
             cr_time_unit_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationRule.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'CombinationRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -234,8 +236,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternDayMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -245,12 +247,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternDayMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -263,7 +265,7 @@ databaseChangeLog = {
             cpdm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternDayMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -280,8 +282,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternDayWeek.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeek.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -291,12 +293,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeek.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternDayWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -309,7 +311,7 @@ databaseChangeLog = {
             cpdw_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternDayWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -326,8 +328,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternDayWeekMonth.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekMonth.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -337,12 +339,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekMonth.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternDayWeekMonth.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -355,7 +357,7 @@ databaseChangeLog = {
             cpdwm_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternDayWeekMonth.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -372,8 +374,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternDayWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -383,12 +385,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternDayWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -401,7 +403,7 @@ databaseChangeLog = {
             cpdwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternDayWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -418,8 +420,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternDayWeekday.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekday.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -429,12 +431,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternDayWeekday.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternDayWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -447,7 +449,7 @@ databaseChangeLog = {
             cpdwd_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternDayWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -464,8 +466,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternIssueMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternIssueMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -475,12 +477,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternIssueMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternIssueMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -493,7 +495,7 @@ databaseChangeLog = {
             cpim_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternIssueMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -510,8 +512,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternIssueWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternIssueWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -521,12 +523,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternIssueWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternIssueWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -539,7 +541,7 @@ databaseChangeLog = {
             cpiwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternIssueWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -556,8 +558,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -567,12 +569,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -585,7 +587,7 @@ databaseChangeLog = {
             cpm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -602,8 +604,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationPatternWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -613,12 +615,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationPatternWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'CombinationPatternWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -631,7 +633,7 @@ databaseChangeLog = {
             cpwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationPatternWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -648,8 +650,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'EnumerationLevelUCTMT.ValueFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationLevelUCTMT.ValueFormat');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'EnumerationNumericLevelTMRF.Format', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationNumericLevelTMRF.Format');
         """.toString())
       }
     }
@@ -658,13 +660,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingValueFormatRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationLevelUCTMT.ValueFormat'),
-            'missingValueFormatRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingFormatRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationNumericLevelTMRF.Format'),
+            'missingFormatRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'EnumerationLevelUCTMT.ValueFormat' AND rdv.rdv_value = 'missingValueFormatRefDataValue'
+            WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue'
           );
         """.toString())
       }
@@ -677,7 +679,7 @@ databaseChangeLog = {
             eluctmt_value_format_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'EnumerationLevelUCTMT.ValueFormat' AND rdv.rdv_value = 'missingValueFormatRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -694,8 +696,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'UserConfiguredTemplateMetadata.userConfiguredTemplateMetadataType', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'UserConfiguredTemplateMetadata.userConfiguredTemplateMetadataType');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType');
         """.toString())
       }
     }
@@ -704,13 +706,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missinguserConfiguredTemplateMetadataTypeRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'UserConfiguredTemplateMetadata.userConfiguredTemplateMetadataType'),
-            'missinguserConfiguredTemplateMetadataTypeRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingUserConfiguredTemplateMetadataTypeRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType'),
+            'missingUserConfiguredTemplateMetadataTypeRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.userConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missinguserConfiguredTemplateMetadataTypeRefDataValue'
+            WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missingUserConfiguredTemplateMetadataTypeRefDataValue'
           );
         """.toString())
       }
@@ -723,7 +725,7 @@ databaseChangeLog = {
             uctm_user_configured_template_metadata_type_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.userConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missinguserConfiguredTemplateMetadataTypeRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missingUserConfiguredTemplateMetadataTypeRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -740,8 +742,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionRule.TimeUnit', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.TimeUnit');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionRule.TimeUnits', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.TimeUnits');
         """.toString())
       }
     }
@@ -750,13 +752,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.TimeUnit'),
-            'missingTimeUnitRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitsRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.TimeUnits'),
+            'missingTimeUnitsRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionRule.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue'
+            WHERE rdc.rdc_description = 'OmissionRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
           );
         """.toString())
       }
@@ -769,7 +771,7 @@ databaseChangeLog = {
             or_time_unit_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionRule.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'OmissionRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -832,8 +834,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternDayMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -843,12 +845,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternDayMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -861,7 +863,7 @@ databaseChangeLog = {
             opdm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternDayMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -878,8 +880,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternDayWeek.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeek.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -889,12 +891,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeek.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternDayWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -907,7 +909,7 @@ databaseChangeLog = {
             opdw_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternDayWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -924,8 +926,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternDayWeekMonth.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekMonth.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -935,12 +937,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekMonth.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternDayWeekMonth.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -953,7 +955,7 @@ databaseChangeLog = {
             opdwm_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternDayWeekMonth.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -970,8 +972,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternDayWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -981,12 +983,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternDayWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -999,7 +1001,7 @@ databaseChangeLog = {
             opdwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternDayWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1016,8 +1018,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternDayWeekday.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekday.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -1027,12 +1029,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternDayWeekday.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternDayWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -1045,7 +1047,7 @@ databaseChangeLog = {
             opdwd_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternDayWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1062,8 +1064,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternIssueMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternIssueMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1073,12 +1075,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternIssueMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternIssueMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1091,7 +1093,7 @@ databaseChangeLog = {
             opim_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternIssueMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1108,8 +1110,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternIssueWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternIssueWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1119,12 +1121,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternIssueWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternIssueWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1137,7 +1139,7 @@ databaseChangeLog = {
             opiwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternIssueWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1154,8 +1156,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternMonth.MonthFrom', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternMonth.MonthFrom');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1164,13 +1166,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingMonthFromRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternMonth.MonthFrom'),
-            'missingMonthFromRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
+            'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternMonth.MonthFrom' AND rdv.rdv_value = 'missingMonthFromRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1183,7 +1185,7 @@ databaseChangeLog = {
             opm_month_from_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternMonth.MonthFrom' AND rdv.rdv_value = 'missingMonthFromRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1200,8 +1202,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternMonth.MonthTo', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternMonth.MonthTo');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1210,13 +1212,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingMonthToRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternMonth.MonthTo'),
-            'missingMonthToRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
+            'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternMonth.MonthTo' AND rdv.rdv_value = 'missingMonthToRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1229,7 +1231,7 @@ databaseChangeLog = {
             opm_month_to_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternMonth.MonthTo' AND rdv.rdv_value = 'missingMonthToRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1246,8 +1248,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionPatternWeekMonth.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternWeekMonth.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1257,12 +1259,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionPatternWeekMonth.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'OmissionPatternWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1275,7 +1277,7 @@ databaseChangeLog = {
             opwm_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionPatternWeekMonth.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1292,8 +1294,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Recurrence.TimeUnit', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Recurrence.TimeUnit');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Recurrence.TimeUnits', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Recurrence.TimeUnits');
         """.toString())
       }
     }
@@ -1302,13 +1304,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Recurrence.TimeUnit'),
-            'missingTimeUnitRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingTimeUnitsRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Recurrence.TimeUnits'),
+            'missingTimeUnitsRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'Recurrence.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue'
+            WHERE rdc.rdc_description = 'Recurrence.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
           );
         """.toString())
       }
@@ -1321,7 +1323,7 @@ databaseChangeLog = {
             r_time_unit_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Recurrence.TimeUnit' AND rdv.rdv_value = 'missingTimeUnitRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Recurrence.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1384,8 +1386,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternMonthWeekday.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternMonthWeekday.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -1395,12 +1397,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternMonthWeekday.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternMonthWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -1413,7 +1415,7 @@ databaseChangeLog = {
             rpmwd_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternMonthWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1430,8 +1432,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternWeek.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternWeek.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -1441,12 +1443,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternWeek.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -1459,7 +1461,7 @@ databaseChangeLog = {
             rpw_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternWeek.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1476,8 +1478,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternYearDate.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearDate.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1487,12 +1489,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearDate.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternYearDate.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1505,7 +1507,7 @@ databaseChangeLog = {
             rpyd_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternYearDate.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1522,8 +1524,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternYearMonthWeekday.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearMonthWeekday.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -1533,12 +1535,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearMonthWeekday.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternYearMonthWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -1551,7 +1553,7 @@ databaseChangeLog = {
             rpymwd_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternYearMonthWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1568,8 +1570,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternYearMonthWeekday.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearMonthWeekday.Month');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
         """.toString())
       }
     }
@@ -1579,12 +1581,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearMonthWeekday.Month'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month'),
             'missingMonthRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternYearMonthWeekday.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
           );
         """.toString())
       }
@@ -1597,7 +1599,7 @@ databaseChangeLog = {
             rpymwd_month_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternYearMonthWeekday.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1614,8 +1616,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrencePatternYearWeekday.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearWeekday.Weekday');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
         """.toString())
       }
     }
@@ -1625,12 +1627,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingWeekdayRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrencePatternYearWeekday.Weekday'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday'),
             'missingWeekdayRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'RecurrencePatternYearWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+            WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
           );
         """.toString())
       }
@@ -1643,7 +1645,7 @@ databaseChangeLog = {
             rpywd_weekday_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrencePatternYearWeekday.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1660,8 +1662,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyTemplateMetadataRule.Format', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyTemplateMetadataRule.Format');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat');
         """.toString())
       }
     }
@@ -1670,13 +1672,13 @@ databaseChangeLog = {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
-            md5(random()::text || clock_timestamp()::text), 0, 'missingFormatRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyTemplateMetadataRule.Format'),
-            'missingFormatRefDataValue'
+            md5(random()::text || clock_timestamp()::text), 0, 'missingTemplateMetadataRuleFormatRefDataValue',
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat'),
+            'missingTemplateMetadataRuleFormatRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.Format' AND rdv.rdv_value = 'missingFormatRefDataValue'
+            WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' AND rdv.rdv_value = 'missingTemplateMetadataRuleFormatRefDataValue'
           );
         """.toString())
       }
@@ -1689,7 +1691,7 @@ databaseChangeLog = {
             ctmr_template_metadata_rule_format_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.Format' AND rdv.rdv_value = 'missingFormatRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' AND rdv.rdv_value = 'missingTemplateMetadataRuleFormatRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1706,8 +1708,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyMonthTMRF.MonthFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyMonthTMRF.MonthFormat');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.MonthFormat', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.MonthFormat');
         """.toString())
       }
     }
@@ -1717,12 +1719,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingMonthFormatRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyMonthTMRF.MonthFormat'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.MonthFormat'),
             'missingMonthFormatRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'ChronologyMonthTMRF.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue'
+            WHERE rdc.rdc_description = 'Global.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue'
           );
         """.toString())
       }
@@ -1735,7 +1737,7 @@ databaseChangeLog = {
             cmtmrf_month_format_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ChronologyMonthTMRF.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1752,8 +1754,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyMonthTMRF.YearFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyMonthTMRF.YearFormat');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.YearFormat', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat');
         """.toString())
       }
     }
@@ -1763,12 +1765,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingYearFormatRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyMonthTMRF.YearFormat'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat'),
             'missingYearFormatRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'ChronologyMonthTMRF.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
+            WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
           );
         """.toString())
       }
@@ -1781,7 +1783,7 @@ databaseChangeLog = {
             cmtmrf_year_format_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ChronologyMonthTMRF.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
@@ -1798,8 +1800,8 @@ databaseChangeLog = {
       change {
         sql.execute("""
           INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyYearTMRF.YearFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyYearTMRF.YearFormat');
+          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.YearFormat', false
+          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat');
         """.toString())
       }
     }
@@ -1809,12 +1811,12 @@ databaseChangeLog = {
           INSERT INTO ${database.defaultSchemaName}.refdata_value (rdv_id, rdv_version, rdv_value, rdv_owner, rdv_label)
           SELECT
             md5(random()::text || clock_timestamp()::text), 0, 'missingYearFormatRefDataValue',
-            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyYearTMRF.YearFormat'),
+            (SELECT rdc_id FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat'),
             'missingYearFormatRefDataValue'
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-            WHERE rdc.rdc_description = 'ChronologyYearTMRF.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
+            WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
           );
         """.toString())
       }
@@ -1827,7 +1829,7 @@ databaseChangeLog = {
             cytmrf_year_format_fk = (
               SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
               JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ChronologyYearTMRF.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
+              WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
             )
           WHERE NOT EXISTS (
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
