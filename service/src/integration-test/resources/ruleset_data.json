@@ -290,8 +290,8 @@
           "week": "30"
         }
       },
-      "omit_by_issue_week_month": {
-        "id": "omit_by_issue_week_month",
+      "omit_by_issue_1_week_1_month_november": {
+        "id": "omit_by_issue_1_week_1_month_november",
         "timeUnit": {
           "value": "issue"
         },
@@ -304,8 +304,8 @@
           }
         }
       },
-      "omit_by_issue_month": {
-        "id": "omit_by_issue_month",
+      "omit_by_issue_1_month_october": {
+        "id": "omit_by_issue_1_month_october",
         "timeUnit": {
           "value": "issue"
         },

@@ -337,7 +337,7 @@ class PieceSetSpec extends BaseSpec {
   void "Generate predicted pieces with a ruleset containing a 'day' recurrence rule and multiple omission rules"() {
     when: "We ask the system to generate predicted pieces"
     Map omissionRule = [:]
-    omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_range_may_to_june, ruleset_data.omission.rules.omit_by_first_wednesday_in_january, ruleset_data.omission.rules.omit_by_issue_week_month])
+    omissionRule.put("rules", [ruleset_data.omission.rules.omit_by_month_range_may_to_june, ruleset_data.omission.rules.omit_by_first_wednesday_in_january, ruleset_data.omission.rules.omit_by_issue_1_week_1_month_november])
     Map respMap = doPost("/serials-management/predictedPieces/generate", [
       rulesetStatus: ruleset_data.rulesetStatus.active,
       recurrence: ruleset_data.recurrence.day,
