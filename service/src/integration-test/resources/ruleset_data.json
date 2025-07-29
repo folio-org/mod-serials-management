@@ -305,7 +305,7 @@
         }
       },
       "omit_by_issue_1_month_october": {
-        "id": "omit_by_issue_month",
+        "id": "omit_by_issue_1_month_october",
         "timeUnit": {
           "value": "issue"
         },
