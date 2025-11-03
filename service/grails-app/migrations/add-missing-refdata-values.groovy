@@ -1,7 +1,7 @@
 databaseChangeLog = {
 
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-001") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-001") {
     grailsChange {
       change {
         sql.execute("""
@@ -23,6 +23,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'ModelRuleset.ModelRulesetStatus' AND rdv.rdv_value = 'missingModelRulesetStatusRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.model_ruleset mr
+              WHERE mr.mr_ruleset_template_status IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = mr.mr_ruleset_template_status
+                  )
           );
         """.toString())
       }
@@ -47,7 +59,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "mr_ruleset_template_status", baseTableName: "model_ruleset", constraintName: "ruleset_template_status_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-002") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-002") {
     grailsChange {
       change {
         sql.execute("""
@@ -69,6 +81,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Serial.SerialStatus' AND rdv.rdv_value = 'missingSerialStatusRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.serial
+              WHERE serial.s_serial_status IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = serial.s_serial_status
+                  )
           );
         """.toString())
       }
@@ -93,7 +117,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "s_serial_status", baseTableName: "serial", constraintName: "serial_status_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-003") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-003") {
     grailsChange {
       change {
         sql.execute("""
@@ -115,6 +139,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'SerialRuleset.RulesetStatus' AND rdv.rdv_value = 'missingRulesetStatusRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.serial_ruleset
+              WHERE serial_ruleset.sr_ruleset_status_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = serial_ruleset.sr_ruleset_status_fk
+                  )
           );
         """.toString())
       }
@@ -139,7 +175,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "sr_ruleset_status_fk", baseTableName: "serial_ruleset", constraintName: "ruleset_status_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-004") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-004") {
     grailsChange {
       change {
         sql.execute("""
@@ -161,6 +197,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'CombinationRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_rule
+              WHERE combination_rule.cr_time_unit_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = combination_rule.cr_time_unit_fk
+                  )
           );
         """.toString())
       }
@@ -185,7 +233,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cr_time_unit_fk", baseTableName: "combination_rule", constraintName: "time_unit_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-005") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-005") {
     grailsChange {
       change {
         sql.execute("""
@@ -207,6 +255,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'CombinationRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_rule
+              WHERE combination_rule.cr_pattern_type_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = combination_rule.cr_pattern_type_fk
+                  )
           );
         """.toString())
       }
@@ -231,7 +291,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cr_pattern_type_fk", baseTableName: "combination_rule", constraintName: "pattern_type_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-006") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-006") {
     grailsChange {
       change {
         sql.execute("""
@@ -253,6 +313,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_day_month cpdm
+              WHERE cpdm.cpdm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpdm.cpdm_month_fk
+                  )
           );
         """.toString())
       }
@@ -277,7 +349,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpdm_month_fk", baseTableName: "combination_pattern_day_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-007") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-007") {
     grailsChange {
       change {
         sql.execute("""
@@ -299,6 +371,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_day_week cpdw
+              WHERE cpdw.cpdw_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpdw.cpdw_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -323,7 +407,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpdw_weekday_fk", baseTableName: "combination_pattern_day_week", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-008") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-008") {
     grailsChange {
       change {
         sql.execute("""
@@ -345,6 +429,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_day_week_month cpdwm
+              WHERE cpdwm.cpdwm_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpdwm.cpdwm_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -369,7 +465,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpdwm_weekday_fk", baseTableName: "combination_pattern_day_week_month", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-009") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-009") {
     grailsChange {
       change {
         sql.execute("""
@@ -391,6 +487,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_day_week_month cpdwm
+              WHERE cpdwm.cpdwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpdwm.cpdwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -415,7 +523,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpdwm_month_fk", baseTableName: "combination_pattern_day_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-010") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-010") {
     grailsChange {
       change {
         sql.execute("""
@@ -437,6 +545,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_day_weekday cpdwd
+              WHERE cpdwd.cpdwd_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpdwd.cpdwd_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -461,7 +581,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpdwd_weekday_fk", baseTableName: "combination_pattern_day_weekday", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-011") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-011") {
     grailsChange {
       change {
         sql.execute("""
@@ -483,6 +603,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_issue_month cpim
+              WHERE cpim.cpim_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpim.cpim_month_fk
+                  )
           );
         """.toString())
       }
@@ -507,7 +639,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpim_month_fk", baseTableName: "combination_pattern_issue_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-012") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-012") {
     grailsChange {
       change {
         sql.execute("""
@@ -529,6 +661,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_issue_week_month cpiwm
+              WHERE cpiwm.cpiwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpiwm.cpiwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -553,7 +697,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpiwm_month_fk", baseTableName: "combination_pattern_issue_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-013") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-013") {
     grailsChange {
       change {
         sql.execute("""
@@ -575,6 +719,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_month
+              WHERE combination_pattern_month.cpm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = combination_pattern_month.cpm_month_fk
+                  )
           );
         """.toString())
       }
@@ -599,7 +755,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpm_month_fk", baseTableName: "combination_pattern_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-014") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-014") {
     grailsChange {
       change {
         sql.execute("""
@@ -621,6 +777,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.combination_pattern_week_month cpwm
+              WHERE cpwm.cpwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = cpwm.cpwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -645,7 +813,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cpwm_month_fk", baseTableName: "combination_pattern_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-015") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-015") {
     grailsChange {
       change {
         sql.execute("""
@@ -667,6 +835,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.enumeration_leveluctmt
+              WHERE enumeration_leveluctmt.eluctmt_value_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = enumeration_leveluctmt.eluctmt_value_format_fk
+                  )
           );
         """.toString())
       }
@@ -691,7 +871,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "eluctmt_value_format_fk", baseTableName: "enumeration_leveluctmt", constraintName: "value_format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-016") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-016") {
     grailsChange {
       change {
         sql.execute("""
@@ -713,6 +893,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missingUserConfiguredTemplateMetadataTypeRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.user_configured_template_metadata uctm
+              WHERE uctm.uctm_user_configured_template_metadata_type_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = uctm.uctm_user_configured_template_metadata_type_fk
+                  )
           );
         """.toString())
       }
@@ -737,7 +929,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "uctm_user_configured_template_metadata_type_fk", baseTableName: "user_configured_template_metadata", constraintName: "user_configured_template_metadata_type_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-017") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-017") {
     grailsChange {
       change {
         sql.execute("""
@@ -759,6 +951,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'OmissionRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_rule
+              WHERE omission_rule.or_time_unit_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = omission_rule.or_time_unit_fk
+                  )
           );
         """.toString())
       }
@@ -783,7 +987,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "or_time_unit_fk", baseTableName: "omission_rule", constraintName: "time_unit_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-018") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-018") {
     grailsChange {
       change {
         sql.execute("""
@@ -805,6 +1009,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'OmissionRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_rule
+              WHERE omission_rule.or_pattern_type_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = omission_rule.or_pattern_type_fk
+                  )
           );
         """.toString())
       }
@@ -829,7 +1045,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "or_pattern_type_fk", baseTableName: "omission_rule", constraintName: "pattern_type_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-019") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-019") {
     grailsChange {
       change {
         sql.execute("""
@@ -851,6 +1067,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_day_month opdm
+              WHERE opdm.opdm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opdm.opdm_month_fk
+                  )
           );
         """.toString())
       }
@@ -875,7 +1103,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opdm_month_fk", baseTableName: "omission_pattern_day_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-020") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-020") {
     grailsChange {
       change {
         sql.execute("""
@@ -897,6 +1125,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_day_week opdw
+              WHERE opdw.opdw_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opdw.opdw_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -921,7 +1161,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opdw_weekday_fk", baseTableName: "omission_pattern_day_week", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-021") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-021") {
     grailsChange {
       change {
         sql.execute("""
@@ -943,6 +1183,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_day_week_month opdwm
+              WHERE opdwm.opdwm_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opdwm.opdwm_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -967,7 +1219,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opdwm_weekday_fk", baseTableName: "omission_pattern_day_week_month", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-022") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-022") {
     grailsChange {
       change {
         sql.execute("""
@@ -989,6 +1241,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_day_week_month opdwm
+              WHERE opdwm.opdwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opdwm.opdwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -1013,7 +1277,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opdwm_month_fk", baseTableName: "omission_pattern_day_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-023") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-023") {
     grailsChange {
       change {
         sql.execute("""
@@ -1035,6 +1299,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_day_weekday opdwd
+              WHERE opdwd.opdwd_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opdwd.opdwd_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -1059,7 +1335,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opdwd_weekday_fk", baseTableName: "omission_pattern_day_weekday", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-024") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-024") {
     grailsChange {
       change {
         sql.execute("""
@@ -1081,6 +1357,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_issue_month opim
+              WHERE opim.opim_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opim.opim_month_fk
+                  )
           );
         """.toString())
       }
@@ -1105,7 +1393,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opim_month_fk", baseTableName: "omission_pattern_issue_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-025") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-025") {
     grailsChange {
       change {
         sql.execute("""
@@ -1127,6 +1415,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_issue_week_month opiwm
+              WHERE opiwm.opiwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opiwm.opiwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -1151,7 +1451,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opiwm_month_fk", baseTableName: "omission_pattern_issue_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-026") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-026") {
     grailsChange {
       change {
         sql.execute("""
@@ -1173,6 +1473,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_month opm
+              WHERE opm.opm_month_from_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opm.opm_month_from_fk
+                  )
           );
         """.toString())
       }
@@ -1197,7 +1509,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opm_month_from_fk", baseTableName: "omission_pattern_month", constraintName: "month_from_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-027") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-027") {
     grailsChange {
       change {
         sql.execute("""
@@ -1219,6 +1531,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_month opm
+              WHERE opm.opm_month_to_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opm.opm_month_to_fk
+                  )
           );
         """.toString())
       }
@@ -1243,7 +1567,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opm_month_to_fk", baseTableName: "omission_pattern_month", constraintName: "month_to_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-028") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-028") {
     grailsChange {
       change {
         sql.execute("""
@@ -1265,6 +1589,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.omission_pattern_week_month opwm
+              WHERE opwm.opwm_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = opwm.opwm_month_fk
+                  )
           );
         """.toString())
       }
@@ -1289,7 +1625,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "opwm_month_fk", baseTableName: "omission_pattern_week_month", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-029") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-029") {
     grailsChange {
       change {
         sql.execute("""
@@ -1311,6 +1647,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Recurrence.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence
+              WHERE recurrence.r_time_unit_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = recurrence.r_time_unit_fk
+                  )
           );
         """.toString())
       }
@@ -1335,7 +1683,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "r_time_unit_fk", baseTableName: "recurrence", constraintName: "time_unit_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-030") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-030") {
     grailsChange {
       change {
         sql.execute("""
@@ -1357,6 +1705,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'RecurrenceRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_rule
+              WHERE recurrence_rule.rr_pattern_type_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = recurrence_rule.rr_pattern_type_fk
+                  )
           );
         """.toString())
       }
@@ -1381,7 +1741,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rr_pattern_type_fk", baseTableName: "recurrence_rule", constraintName: "pattern_type_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-031") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-031") {
     grailsChange {
       change {
         sql.execute("""
@@ -1403,6 +1763,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_month_weekday rpmwd
+              WHERE rpmwd.rpmwd_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpmwd.rpmwd_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -1427,7 +1799,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpmwd_weekday_fk", baseTableName: "recurrence_pattern_month_weekday", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-032") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-032") {
     grailsChange {
       change {
         sql.execute("""
@@ -1449,6 +1821,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_week rpw
+              WHERE rpw.rpw_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpw.rpw_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -1473,7 +1857,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpw_weekday_fk", baseTableName: "recurrence_pattern_week", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-033") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-033") {
     grailsChange {
       change {
         sql.execute("""
@@ -1495,6 +1879,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_year_date rpyd
+              WHERE rpyd.rpyd_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpyd.rpyd_month_fk
+                  )
           );
         """.toString())
       }
@@ -1519,7 +1915,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpyd_month_fk", baseTableName: "recurrence_pattern_year_date", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-034") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-034") {
     grailsChange {
       change {
         sql.execute("""
@@ -1541,6 +1937,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday rpymwd
+              WHERE rpymwd.rpymwd_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpymwd.rpymwd_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -1565,7 +1973,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpymwd_weekday_fk", baseTableName: "recurrence_pattern_year_month_weekday", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-035") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-035") {
     grailsChange {
       change {
         sql.execute("""
@@ -1587,6 +1995,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday rpymwd
+              WHERE rpymwd.rpymwd_month_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpymwd.rpymwd_month_fk
+                  )
           );
         """.toString())
       }
@@ -1611,7 +2031,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpymwd_month_fk", baseTableName: "recurrence_pattern_year_month_weekday", constraintName: "month_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-036") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-036") {
     grailsChange {
       change {
         sql.execute("""
@@ -1633,6 +2053,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.recurrence_pattern_year_weekday rpywd
+              WHERE rpywd.rpywd_weekday_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = rpywd.rpywd_weekday_fk
+                  )
           );
         """.toString())
       }
@@ -1657,7 +2089,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "rpywd_weekday_fk", baseTableName: "recurrence_pattern_year_weekday", constraintName: "weekday_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-037") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-037") {
     grailsChange {
       change {
         sql.execute("""
@@ -1679,6 +2111,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' AND rdv.rdv_value = 'missingTemplateMetadataRuleFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.chronology_template_metadata_rule ctmr
+              WHERE ctmr.ctmr_template_metadata_rule_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = ctmr.ctmr_template_metadata_rule_format_fk
+                  )
           );
         """.toString())
       }
@@ -1703,7 +2147,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "ctmr_template_metadata_rule_format_fk", baseTableName: "chronology_template_metadata_rule", constraintName: "template_metadata_rule_format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-038") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-038") {
     grailsChange {
       change {
         sql.execute("""
@@ -1725,6 +2169,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.chronology_monthtmrf
+              WHERE chronology_monthtmrf.cmtmrf_month_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = chronology_monthtmrf.cmtmrf_month_format_fk
+                  )
           );
         """.toString())
       }
@@ -1749,7 +2205,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cmtmrf_month_format_fk", baseTableName: "chronology_monthtmrf", constraintName: "month_format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-039") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-039") {
     grailsChange {
       change {
         sql.execute("""
@@ -1771,6 +2227,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.chronology_monthtmrf
+              WHERE chronology_monthtmrf.cmtmrf_year_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = chronology_monthtmrf.cmtmrf_year_format_fk
+                  )
           );
         """.toString())
       }
@@ -1795,7 +2263,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cmtmrf_year_format_fk", baseTableName: "chronology_monthtmrf", constraintName: "year_format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-040") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-040") {
     grailsChange {
       change {
         sql.execute("""
@@ -1817,6 +2285,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.chronology_yeartmrf
+              WHERE chronology_yeartmrf.cytmrf_year_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = chronology_yeartmrf.cytmrf_year_format_fk
+                  )
           );
         """.toString())
       }
@@ -1841,7 +2321,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "cytmrf_year_format_fk", baseTableName: "chronology_yeartmrf", constraintName: "year_format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-041") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-041") {
     grailsChange {
       change {
         sql.execute("""
@@ -1863,6 +2343,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.enumeration_numeric_leveltmrf
+              WHERE enumeration_numeric_leveltmrf.enltmrf_format_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = enumeration_numeric_leveltmrf.enltmrf_format_fk
+                  )
           );
         """.toString())
       }
@@ -1887,7 +2379,7 @@ databaseChangeLog = {
     addForeignKeyConstraint(baseColumnNames: "enltmrf_format_fk", baseTableName: "enumeration_numeric_leveltmrf", constraintName: "format_to_rdv_fk", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
   }
 
-  changeSet(author: "mchaib (manual)", id: "20250723-1100-042") {
+  changeSet(author: "CalamityC (manual)", id: "20251103-1400-042") {
     grailsChange {
       change {
         sql.execute("""
@@ -1909,6 +2401,18 @@ databaseChangeLog = {
             SELECT 1 FROM ${database.defaultSchemaName}.refdata_value rdv
             JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
             WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Sequence' AND rdv.rdv_value = 'missingSequenceRefDataValue'
+          )
+          AND
+          -- create only if there are orphaned FKs
+          EXISTS (
+            SELECT 1
+              FROM ${database.defaultSchemaName}.enumeration_numeric_leveltmrf
+              WHERE enumeration_numeric_leveltmrf.enltmrf_sequence_fk IS NOT NULL
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM ${database.defaultSchemaName}.refdata_value rdv2
+                    WHERE rdv2.rdv_id = enumeration_numeric_leveltmrf.enltmrf_sequence_fk
+                  )
           );
         """.toString())
       }
