@@ -4,11 +4,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-001") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ModelRuleset.ModelRulesetStatus', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ModelRuleset.ModelRulesetStatus');
-        """.toString())
+        // Create category 'ModelRuleset.ModelRulesetStatus' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'ModelRuleset.ModelRulesetStatus' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'ModelRuleset.ModelRulesetStatus'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -62,11 +71,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-002") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Serial.SerialStatus', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Serial.SerialStatus');
-        """.toString())
+        // Create category 'Serial.SerialStatus' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Serial.SerialStatus' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Serial.SerialStatus'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -120,11 +138,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-003") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'SerialRuleset.RulesetStatus', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'SerialRuleset.RulesetStatus');
-        """.toString())
+        // Create category 'SerialRuleset.RulesetStatus' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'SerialRuleset.RulesetStatus' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'SerialRuleset.RulesetStatus'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -178,11 +205,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-004") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationRule.TimeUnits', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.TimeUnits');
-        """.toString())
+        // Create category 'CombinationRule.TimeUnits' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'CombinationRule.TimeUnits' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'CombinationRule.TimeUnits'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -236,11 +272,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-005") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'CombinationRule.PatternType', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'CombinationRule.PatternType');
-        """.toString())
+        // Create category 'CombinationRule.PatternType' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'CombinationRule.PatternType' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'CombinationRule.PatternType'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -294,11 +339,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-006") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -352,11 +406,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-007") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -410,11 +473,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-008") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -468,11 +540,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-009") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -526,11 +607,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-010") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -584,11 +674,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-011") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -642,11 +741,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-012") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -700,11 +808,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-013") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -758,11 +875,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-014") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -816,11 +942,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-015") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'EnumerationNumericLevelTMRF.Format', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationNumericLevelTMRF.Format');
-        """.toString())
+        // Create category 'EnumerationNumericLevelTMRF.Format' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'EnumerationNumericLevelTMRF.Format' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'EnumerationNumericLevelTMRF.Format'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -874,11 +1009,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-016") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType');
-        """.toString())
+        // Create category 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -932,11 +1076,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-017") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionRule.TimeUnits', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.TimeUnits');
-        """.toString())
+        // Create category 'OmissionRule.TimeUnits' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'OmissionRule.TimeUnits' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'OmissionRule.TimeUnits'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -990,11 +1143,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-018") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'OmissionRule.PatternType', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'OmissionRule.PatternType');
-        """.toString())
+        // Create category 'OmissionRule.PatternType' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'OmissionRule.PatternType' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'OmissionRule.PatternType'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1048,11 +1210,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-019") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1106,11 +1277,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-020") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1164,11 +1344,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-021") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1222,11 +1411,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-022") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1280,11 +1478,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-023") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1338,11 +1545,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-024") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1396,11 +1612,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-025") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1454,11 +1679,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-026") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1512,11 +1746,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-027") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1570,11 +1813,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-028") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1628,11 +1880,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-029") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Recurrence.TimeUnits', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Recurrence.TimeUnits');
-        """.toString())
+        // Create category 'Recurrence.TimeUnits' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Recurrence.TimeUnits' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Recurrence.TimeUnits'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1686,11 +1947,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-030") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'RecurrenceRule.PatternType', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'RecurrenceRule.PatternType');
-        """.toString())
+        // Create category 'RecurrenceRule.PatternType' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'RecurrenceRule.PatternType' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'RecurrenceRule.PatternType'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1744,11 +2014,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-031") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1802,11 +2081,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-032") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1860,11 +2148,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-033") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1918,11 +2215,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-034") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -1976,11 +2282,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-035") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Month', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Month');
-        """.toString())
+        // Create category 'Global.Month' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Month' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Month'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2034,11 +2349,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-036") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.Weekday', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.Weekday');
-        """.toString())
+        // Create category 'Global.Weekday' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.Weekday' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.Weekday'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2092,11 +2416,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-037") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat');
-        """.toString())
+        // Create category 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2150,11 +2483,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-038") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.MonthFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.MonthFormat');
-        """.toString())
+        // Create category 'Global.MonthFormat' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.MonthFormat' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.MonthFormat'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2208,11 +2550,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-039") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.YearFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat');
-        """.toString())
+        // Create category 'Global.YearFormat' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.YearFormat' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.YearFormat'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2266,11 +2617,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-040") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'Global.YearFormat', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'Global.YearFormat');
-        """.toString())
+        // Create category 'Global.YearFormat' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'Global.YearFormat' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'Global.YearFormat'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2324,11 +2684,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-041") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'EnumerationNumericLevelTMRF.Format', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationNumericLevelTMRF.Format');
-        """.toString())
+        // Create category 'EnumerationNumericLevelTMRF.Format' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'EnumerationNumericLevelTMRF.Format' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'EnumerationNumericLevelTMRF.Format'
+						);
+				""".toString())
       }
     }
     grailsChange {
@@ -2382,11 +2751,20 @@ databaseChangeLog = {
   changeSet(author: "CalamityC (manual)", id: "20251103-1400-042") {
     grailsChange {
       change {
-        sql.execute("""
-          INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
-          SELECT md5(random()::text || clock_timestamp()::text), 0, 'EnumerationNumericLevelTMRF.Sequence', false
-          WHERE NOT EXISTS (SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE rdc_description = 'EnumerationNumericLevelTMRF.Sequence');
-        """.toString())
+        // Create category 'EnumerationNumericLevelTMRF.Sequence' if not exists
+				sql.execute("""
+					INSERT INTO ${database.defaultSchemaName}.refdata_category (rdc_id, rdc_version, rdc_description, internal)
+						SELECT md5(random()::text || clock_timestamp()::text) as id,
+						0 as version,
+						'EnumerationNumericLevelTMRF.Sequence' as description,
+						false as internal
+					WHERE
+						-- don't recreate category if it already exists
+						NOT EXISTS (
+						SELECT 1 FROM ${database.defaultSchemaName}.refdata_category WHERE
+							rdc_description = 'EnumerationNumericLevelTMRF.Sequence'
+						);
+				""".toString())
       }
     }
     grailsChange {
