@@ -51,17 +51,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.model_ruleset
-          SET
-            mr_ruleset_template_status = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ModelRuleset.ModelRulesetStatus' AND rdv.rdv_value = 'missingModelRulesetStatusRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.model_ruleset.mr_ruleset_template_status
-          );
+          UPDATE ${database.defaultSchemaName}.model_ruleset table
+          SET mr_ruleset_template_status = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'ModelRuleset.ModelRulesetStatus'
+            AND rv.rdv_value = 'missingModelRulesetStatusRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.mr_ruleset_template_status
+            );
         """.toString())
       }
     }
@@ -118,17 +124,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.serial
-          SET
-            s_serial_status = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Serial.SerialStatus' AND rdv.rdv_value = 'missingSerialStatusRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.serial.s_serial_status
-          );
+          UPDATE ${database.defaultSchemaName}.serial table
+          SET s_serial_status = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Serial.SerialStatus'
+            AND rv.rdv_value = 'missingSerialStatusRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.s_serial_status
+            );
         """.toString())
       }
     }
@@ -185,17 +197,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.serial_ruleset
-          SET
-            sr_ruleset_status_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'SerialRuleset.RulesetStatus' AND rdv.rdv_value = 'missingRulesetStatusRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.serial_ruleset.sr_ruleset_status_fk
-          );
+          UPDATE ${database.defaultSchemaName}.serial_ruleset table
+          SET sr_ruleset_status_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'SerialRuleset.RulesetStatus'
+            AND rv.rdv_value = 'missingRulesetStatusRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.sr_ruleset_status_fk
+            );
         """.toString())
       }
     }
@@ -252,17 +270,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_rule
-          SET
-            cr_time_unit_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_rule.cr_time_unit_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_rule table
+          SET cr_time_unit_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'CombinationRule.TimeUnits'
+            AND rv.rdv_value = 'missingTimeUnitsRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cr_time_unit_fk
+            );
         """.toString())
       }
     }
@@ -319,17 +343,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_rule
-          SET
-            cr_pattern_type_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'CombinationRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_rule.cr_pattern_type_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_rule table
+          SET cr_pattern_type_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'CombinationRule.PatternType'
+            AND rv.rdv_value = 'missingPatternTypeRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cr_pattern_type_fk
+            );
         """.toString())
       }
     }
@@ -386,17 +416,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_month
-          SET
-            cpdm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_day_month.cpdm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_month table
+          SET cpdm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpdm_month_fk
+            );
         """.toString())
       }
     }
@@ -453,17 +489,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week
-          SET
-            cpdw_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_day_week.cpdw_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week table
+          SET cpdw_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpdw_weekday_fk
+            );
         """.toString())
       }
     }
@@ -520,17 +562,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month
-          SET
-            cpdwm_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_day_week_month.cpdwm_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month table
+          SET cpdwm_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpdwm_weekday_fk
+            );
         """.toString())
       }
     }
@@ -587,17 +635,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month
-          SET
-            cpdwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_day_week_month.cpdwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month table
+          SET cpdwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpdwm_month_fk
+            );
         """.toString())
       }
     }
@@ -654,17 +708,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_weekday
-          SET
-            cpdwd_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_day_weekday.cpdwd_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_weekday table
+          SET cpdwd_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpdwd_weekday_fk
+            );
         """.toString())
       }
     }
@@ -721,17 +781,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_month
-          SET
-            cpim_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_issue_month.cpim_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_month table
+          SET cpim_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpim_month_fk
+            );
         """.toString())
       }
     }
@@ -788,17 +854,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_week_month
-          SET
-            cpiwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_issue_week_month.cpiwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_week_month table
+          SET cpiwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpiwm_month_fk
+            );
         """.toString())
       }
     }
@@ -855,17 +927,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_month
-          SET
-            cpm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_month.cpm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_month table
+          SET cpm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpm_month_fk
+            );
         """.toString())
       }
     }
@@ -922,17 +1000,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_week_month
-          SET
-            cpwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.combination_pattern_week_month.cpwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.combination_pattern_week_month table
+          SET cpwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cpwm_month_fk
+            );
         """.toString())
       }
     }
@@ -989,17 +1073,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_leveluctmt
-          SET
-            eluctmt_value_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.enumeration_leveluctmt.eluctmt_value_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.enumeration_leveluctmt table
+          SET eluctmt_value_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'EnumerationNumericLevelTMRF.Format'
+            AND rv.rdv_value = 'missingFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.eluctmt_value_format_fk
+            );
         """.toString())
       }
     }
@@ -1056,17 +1146,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.user_configured_template_metadata
-          SET
-            uctm_user_configured_template_metadata_type_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType' AND rdv.rdv_value = 'missingUserConfiguredTemplateMetadataTypeRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.user_configured_template_metadata.uctm_user_configured_template_metadata_type_fk
-          );
+          UPDATE ${database.defaultSchemaName}.user_configured_template_metadata table
+          SET uctm_user_configured_template_metadata_type_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'UserConfiguredTemplateMetadata.UserConfiguredTemplateMetadataType'
+            AND rv.rdv_value = 'missingUserConfiguredTemplateMetadataTypeRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.uctm_user_configured_template_metadata_type_fk
+            );
         """.toString())
       }
     }
@@ -1123,17 +1219,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_rule
-          SET
-            or_time_unit_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionRule.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_rule.or_time_unit_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_rule table
+          SET or_time_unit_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'OmissionRule.TimeUnits'
+            AND rv.rdv_value = 'missingTimeUnitsRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.or_time_unit_fk
+            );
         """.toString())
       }
     }
@@ -1190,17 +1292,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_rule
-          SET
-            or_pattern_type_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'OmissionRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_rule.or_pattern_type_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_rule table
+          SET or_pattern_type_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'OmissionRule.PatternType'
+            AND rv.rdv_value = 'missingPatternTypeRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.or_pattern_type_fk
+            );
         """.toString())
       }
     }
@@ -1257,17 +1365,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_month
-          SET
-            opdm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_day_month.opdm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_month table
+          SET opdm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opdm_month_fk
+            );
         """.toString())
       }
     }
@@ -1324,17 +1438,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week
-          SET
-            opdw_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_day_week.opdw_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week table
+          SET opdw_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opdw_weekday_fk
+            );
         """.toString())
       }
     }
@@ -1391,17 +1511,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month
-          SET
-            opdwm_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_day_week_month.opdwm_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month table
+          SET opdwm_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opdwm_weekday_fk
+            );
         """.toString())
       }
     }
@@ -1458,17 +1584,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month
-          SET
-            opdwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_day_week_month.opdwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month table
+          SET opdwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opdwm_month_fk
+            );
         """.toString())
       }
     }
@@ -1525,17 +1657,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_weekday
-          SET
-            opdwd_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_day_weekday.opdwd_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_weekday table
+          SET opdwd_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opdwd_weekday_fk
+            );
         """.toString())
       }
     }
@@ -1592,17 +1730,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_month
-          SET
-            opim_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_issue_month.opim_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_month table
+          SET opim_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opim_month_fk
+            );
         """.toString())
       }
     }
@@ -1659,17 +1803,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_week_month
-          SET
-            opiwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_issue_week_month.opiwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_week_month table
+          SET opiwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opiwm_month_fk
+            );
         """.toString())
       }
     }
@@ -1726,17 +1876,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_month
-          SET
-            opm_month_from_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_month.opm_month_from_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_month table
+          SET opm_month_from_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opm_month_from_fk
+            );
         """.toString())
       }
     }
@@ -1793,17 +1949,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_month
-          SET
-            opm_month_to_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_month.opm_month_to_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_month table
+          SET opm_month_to_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opm_month_to_fk
+            );
         """.toString())
       }
     }
@@ -1860,17 +2022,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_week_month
-          SET
-            opwm_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.omission_pattern_week_month.opwm_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.omission_pattern_week_month table
+          SET opwm_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.opwm_month_fk
+            );
         """.toString())
       }
     }
@@ -1927,17 +2095,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence
-          SET
-            r_time_unit_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Recurrence.TimeUnits' AND rdv.rdv_value = 'missingTimeUnitsRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence.r_time_unit_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence table
+          SET r_time_unit_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Recurrence.TimeUnits'
+            AND rv.rdv_value = 'missingTimeUnitsRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.r_time_unit_fk
+            );
         """.toString())
       }
     }
@@ -1994,17 +2168,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_rule
-          SET
-            rr_pattern_type_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'RecurrenceRule.PatternType' AND rdv.rdv_value = 'missingPatternTypeRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_rule.rr_pattern_type_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_rule table
+          SET rr_pattern_type_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'RecurrenceRule.PatternType'
+            AND rv.rdv_value = 'missingPatternTypeRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rr_pattern_type_fk
+            );
         """.toString())
       }
     }
@@ -2061,17 +2241,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_month_weekday
-          SET
-            rpmwd_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_month_weekday.rpmwd_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_month_weekday table
+          SET rpmwd_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpmwd_weekday_fk
+            );
         """.toString())
       }
     }
@@ -2128,17 +2314,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_week
-          SET
-            rpw_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_week.rpw_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_week table
+          SET rpw_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpw_weekday_fk
+            );
         """.toString())
       }
     }
@@ -2195,17 +2387,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_date
-          SET
-            rpyd_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_year_date.rpyd_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_date table
+          SET rpyd_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpyd_month_fk
+            );
         """.toString())
       }
     }
@@ -2262,17 +2460,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday
-          SET
-            rpymwd_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday.rpymwd_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday table
+          SET rpymwd_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpymwd_weekday_fk
+            );
         """.toString())
       }
     }
@@ -2329,17 +2533,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday
-          SET
-            rpymwd_month_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Month' AND rdv.rdv_value = 'missingMonthRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday.rpymwd_month_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday table
+          SET rpymwd_month_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Month'
+            AND rv.rdv_value = 'missingMonthRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpymwd_month_fk
+            );
         """.toString())
       }
     }
@@ -2396,17 +2606,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_weekday
-          SET
-            rpywd_weekday_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.Weekday' AND rdv.rdv_value = 'missingWeekdayRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.recurrence_pattern_year_weekday.rpywd_weekday_fk
-          );
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_weekday table
+          SET rpywd_weekday_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.Weekday'
+            AND rv.rdv_value = 'missingWeekdayRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.rpywd_weekday_fk
+            );
         """.toString())
       }
     }
@@ -2463,17 +2679,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_template_metadata_rule
-          SET
-            ctmr_template_metadata_rule_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat' AND rdv.rdv_value = 'missingTemplateMetadataRuleFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.chronology_template_metadata_rule.ctmr_template_metadata_rule_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.chronology_template_metadata_rule table
+          SET ctmr_template_metadata_rule_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat'
+            AND rv.rdv_value = 'missingTemplateMetadataRuleFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.ctmr_template_metadata_rule_format_fk
+            );
         """.toString())
       }
     }
@@ -2530,17 +2752,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf
-          SET
-            cmtmrf_month_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.MonthFormat' AND rdv.rdv_value = 'missingMonthFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.chronology_monthtmrf.cmtmrf_month_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf table
+          SET cmtmrf_month_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.MonthFormat'
+            AND rv.rdv_value = 'missingMonthFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cmtmrf_month_format_fk
+            );
         """.toString())
       }
     }
@@ -2597,17 +2825,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf
-          SET
-            cmtmrf_year_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.chronology_monthtmrf.cmtmrf_year_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf table
+          SET cmtmrf_year_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.YearFormat'
+            AND rv.rdv_value = 'missingYearFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cmtmrf_year_format_fk
+            );
         """.toString())
       }
     }
@@ -2664,17 +2898,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_yeartmrf
-          SET
-            cytmrf_year_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'Global.YearFormat' AND rdv.rdv_value = 'missingYearFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.chronology_yeartmrf.cytmrf_year_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.chronology_yeartmrf table
+          SET cytmrf_year_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'Global.YearFormat'
+            AND rv.rdv_value = 'missingYearFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.cytmrf_year_format_fk
+            );
         """.toString())
       }
     }
@@ -2731,17 +2971,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf
-          SET
-            enltmrf_format_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Format' AND rdv.rdv_value = 'missingFormatRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.enumeration_numeric_leveltmrf.enltmrf_format_fk
-          );
+          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf table
+          SET enltmrf_format_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'EnumerationNumericLevelTMRF.Format'
+            AND rv.rdv_value = 'missingFormatRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.enltmrf_format_fk
+            );
         """.toString())
       }
     }
@@ -2798,17 +3044,23 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf
-          SET
-            enltmrf_sequence_fk = (
-              SELECT rdv.rdv_id FROM ${database.defaultSchemaName}.refdata_value rdv
-              JOIN ${database.defaultSchemaName}.refdata_category rdc ON rdv.rdv_owner = rdc.rdc_id
-              WHERE rdc.rdc_description = 'EnumerationNumericLevelTMRF.Sequence' AND rdv.rdv_value = 'missingSequenceRefDataValue' LIMIT 1
-            )
-          WHERE NOT EXISTS (
-            SELECT 1 FROM ${database.defaultSchemaName}.refdata_value
-            WHERE rdv_id = ${database.defaultSchemaName}.enumeration_numeric_leveltmrf.enltmrf_sequence_fk
-          );
+          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf table
+          SET enltmrf_sequence_fk = (
+            SELECT rv.rdv_id
+            FROM ${database.defaultSchemaName}.refdata_value rv
+            JOIN ${database.defaultSchemaName}.refdata_category rc
+            ON rv.rdv_owner = rc.rdc_id
+            WHERE rc.rdc_description = 'EnumerationNumericLevelTMRF.Sequence'
+            AND rv.rdv_value = 'missingSequenceRefDataValue'
+            LIMIT 1
+          )
+          WHERE
+            -- only touch rows whose current FK doesn't exist in refdata_value
+            NOT EXISTS (
+            SELECT 1
+            FROM ${database.defaultSchemaName}.refdata_value rvx
+            WHERE rvx.rdv_id = p.enltmrf_sequence_fk
+            );
         """.toString())
       }
     }
