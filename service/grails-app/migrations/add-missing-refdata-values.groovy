@@ -51,7 +51,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.model_ruleset table
+          UPDATE ${database.defaultSchemaName}.model_ruleset refdata_replace_table
           SET mr_ruleset_template_status = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -66,7 +66,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.mr_ruleset_template_status
+            WHERE rvx.rdv_id = refdata_replace_table.mr_ruleset_template_status
             );
         """.toString())
       }
@@ -124,7 +124,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.serial table
+          UPDATE ${database.defaultSchemaName}.serial refdata_replace_table
           SET s_serial_status = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -139,7 +139,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.s_serial_status
+            WHERE rvx.rdv_id = refdata_replace_table.s_serial_status
             );
         """.toString())
       }
@@ -197,7 +197,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.serial_ruleset table
+          UPDATE ${database.defaultSchemaName}.serial_ruleset refdata_replace_table
           SET sr_ruleset_status_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -212,7 +212,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.sr_ruleset_status_fk
+            WHERE rvx.rdv_id = refdata_replace_table.sr_ruleset_status_fk
             );
         """.toString())
       }
@@ -270,7 +270,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_rule table
+          UPDATE ${database.defaultSchemaName}.combination_rule refdata_replace_table
           SET cr_time_unit_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -285,7 +285,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cr_time_unit_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cr_time_unit_fk
             );
         """.toString())
       }
@@ -343,7 +343,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_rule table
+          UPDATE ${database.defaultSchemaName}.combination_rule refdata_replace_table
           SET cr_pattern_type_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -358,7 +358,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cr_pattern_type_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cr_pattern_type_fk
             );
         """.toString())
       }
@@ -416,7 +416,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_month refdata_replace_table
           SET cpdm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -431,7 +431,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpdm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpdm_month_fk
             );
         """.toString())
       }
@@ -489,7 +489,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week refdata_replace_table
           SET cpdw_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -504,7 +504,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpdw_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpdw_weekday_fk
             );
         """.toString())
       }
@@ -562,7 +562,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month refdata_replace_table
           SET cpdwm_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -577,7 +577,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpdwm_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpdwm_weekday_fk
             );
         """.toString())
       }
@@ -635,7 +635,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_week_month refdata_replace_table
           SET cpdwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -650,7 +650,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpdwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpdwm_month_fk
             );
         """.toString())
       }
@@ -708,7 +708,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_day_weekday table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_day_weekday refdata_replace_table
           SET cpdwd_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -723,7 +723,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpdwd_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpdwd_weekday_fk
             );
         """.toString())
       }
@@ -781,7 +781,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_month refdata_replace_table
           SET cpim_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -796,7 +796,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpim_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpim_month_fk
             );
         """.toString())
       }
@@ -854,7 +854,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_week_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_issue_week_month refdata_replace_table
           SET cpiwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -869,7 +869,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpiwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpiwm_month_fk
             );
         """.toString())
       }
@@ -927,7 +927,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_month refdata_replace_table
           SET cpm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -942,7 +942,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpm_month_fk
             );
         """.toString())
       }
@@ -1000,7 +1000,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.combination_pattern_week_month table
+          UPDATE ${database.defaultSchemaName}.combination_pattern_week_month refdata_replace_table
           SET cpwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1015,7 +1015,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cpwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cpwm_month_fk
             );
         """.toString())
       }
@@ -1073,7 +1073,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_leveluctmt table
+          UPDATE ${database.defaultSchemaName}.enumeration_leveluctmt refdata_replace_table
           SET eluctmt_value_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1088,7 +1088,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.eluctmt_value_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.eluctmt_value_format_fk
             );
         """.toString())
       }
@@ -1146,7 +1146,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.user_configured_template_metadata table
+          UPDATE ${database.defaultSchemaName}.user_configured_template_metadata refdata_replace_table
           SET uctm_user_configured_template_metadata_type_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1161,7 +1161,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.uctm_user_configured_template_metadata_type_fk
+            WHERE rvx.rdv_id = refdata_replace_table.uctm_user_configured_template_metadata_type_fk
             );
         """.toString())
       }
@@ -1219,7 +1219,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_rule table
+          UPDATE ${database.defaultSchemaName}.omission_rule refdata_replace_table
           SET or_time_unit_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1234,7 +1234,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.or_time_unit_fk
+            WHERE rvx.rdv_id = refdata_replace_table.or_time_unit_fk
             );
         """.toString())
       }
@@ -1292,7 +1292,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_rule table
+          UPDATE ${database.defaultSchemaName}.omission_rule refdata_replace_table
           SET or_pattern_type_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1307,7 +1307,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.or_pattern_type_fk
+            WHERE rvx.rdv_id = refdata_replace_table.or_pattern_type_fk
             );
         """.toString())
       }
@@ -1365,7 +1365,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_month refdata_replace_table
           SET opdm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1380,7 +1380,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opdm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opdm_month_fk
             );
         """.toString())
       }
@@ -1438,7 +1438,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week refdata_replace_table
           SET opdw_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1453,7 +1453,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opdw_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opdw_weekday_fk
             );
         """.toString())
       }
@@ -1511,7 +1511,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month refdata_replace_table
           SET opdwm_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1526,7 +1526,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opdwm_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opdwm_weekday_fk
             );
         """.toString())
       }
@@ -1584,7 +1584,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_week_month refdata_replace_table
           SET opdwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1599,7 +1599,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opdwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opdwm_month_fk
             );
         """.toString())
       }
@@ -1657,7 +1657,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_day_weekday table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_day_weekday refdata_replace_table
           SET opdwd_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1672,7 +1672,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opdwd_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opdwd_weekday_fk
             );
         """.toString())
       }
@@ -1730,7 +1730,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_month refdata_replace_table
           SET opim_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1745,7 +1745,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opim_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opim_month_fk
             );
         """.toString())
       }
@@ -1803,7 +1803,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_week_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_issue_week_month refdata_replace_table
           SET opiwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1818,7 +1818,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opiwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opiwm_month_fk
             );
         """.toString())
       }
@@ -1876,7 +1876,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_month refdata_replace_table
           SET opm_month_from_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1891,7 +1891,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opm_month_from_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opm_month_from_fk
             );
         """.toString())
       }
@@ -1949,7 +1949,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_month refdata_replace_table
           SET opm_month_to_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -1964,7 +1964,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opm_month_to_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opm_month_to_fk
             );
         """.toString())
       }
@@ -2022,7 +2022,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.omission_pattern_week_month table
+          UPDATE ${database.defaultSchemaName}.omission_pattern_week_month refdata_replace_table
           SET opwm_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2037,7 +2037,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.opwm_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.opwm_month_fk
             );
         """.toString())
       }
@@ -2095,7 +2095,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence table
+          UPDATE ${database.defaultSchemaName}.recurrence refdata_replace_table
           SET r_time_unit_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2110,7 +2110,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.r_time_unit_fk
+            WHERE rvx.rdv_id = refdata_replace_table.r_time_unit_fk
             );
         """.toString())
       }
@@ -2168,7 +2168,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_rule table
+          UPDATE ${database.defaultSchemaName}.recurrence_rule refdata_replace_table
           SET rr_pattern_type_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2183,7 +2183,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rr_pattern_type_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rr_pattern_type_fk
             );
         """.toString())
       }
@@ -2241,7 +2241,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_month_weekday table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_month_weekday refdata_replace_table
           SET rpmwd_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2256,7 +2256,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpmwd_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpmwd_weekday_fk
             );
         """.toString())
       }
@@ -2314,7 +2314,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_week table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_week refdata_replace_table
           SET rpw_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2329,7 +2329,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpw_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpw_weekday_fk
             );
         """.toString())
       }
@@ -2387,7 +2387,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_date table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_date refdata_replace_table
           SET rpyd_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2402,7 +2402,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpyd_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpyd_month_fk
             );
         """.toString())
       }
@@ -2460,7 +2460,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday refdata_replace_table
           SET rpymwd_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2475,7 +2475,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpymwd_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpymwd_weekday_fk
             );
         """.toString())
       }
@@ -2533,7 +2533,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_month_weekday refdata_replace_table
           SET rpymwd_month_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2548,7 +2548,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpymwd_month_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpymwd_month_fk
             );
         """.toString())
       }
@@ -2606,7 +2606,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_weekday table
+          UPDATE ${database.defaultSchemaName}.recurrence_pattern_year_weekday refdata_replace_table
           SET rpywd_weekday_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2621,7 +2621,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.rpywd_weekday_fk
+            WHERE rvx.rdv_id = refdata_replace_table.rpywd_weekday_fk
             );
         """.toString())
       }
@@ -2679,7 +2679,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_template_metadata_rule table
+          UPDATE ${database.defaultSchemaName}.chronology_template_metadata_rule refdata_replace_table
           SET ctmr_template_metadata_rule_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2694,7 +2694,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.ctmr_template_metadata_rule_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.ctmr_template_metadata_rule_format_fk
             );
         """.toString())
       }
@@ -2752,7 +2752,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf table
+          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf refdata_replace_table
           SET cmtmrf_month_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2767,7 +2767,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cmtmrf_month_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cmtmrf_month_format_fk
             );
         """.toString())
       }
@@ -2825,7 +2825,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf table
+          UPDATE ${database.defaultSchemaName}.chronology_monthtmrf refdata_replace_table
           SET cmtmrf_year_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2840,7 +2840,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cmtmrf_year_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cmtmrf_year_format_fk
             );
         """.toString())
       }
@@ -2898,7 +2898,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.chronology_yeartmrf table
+          UPDATE ${database.defaultSchemaName}.chronology_yeartmrf refdata_replace_table
           SET cytmrf_year_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2913,7 +2913,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.cytmrf_year_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.cytmrf_year_format_fk
             );
         """.toString())
       }
@@ -2971,7 +2971,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf table
+          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf refdata_replace_table
           SET enltmrf_format_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -2986,7 +2986,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.enltmrf_format_fk
+            WHERE rvx.rdv_id = refdata_replace_table.enltmrf_format_fk
             );
         """.toString())
       }
@@ -3044,7 +3044,7 @@ databaseChangeLog = {
     grailsChange {
       change {
         sql.execute("""
-          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf table
+          UPDATE ${database.defaultSchemaName}.enumeration_numeric_leveltmrf refdata_replace_table
           SET enltmrf_sequence_fk = (
             SELECT rv.rdv_id
             FROM ${database.defaultSchemaName}.refdata_value rv
@@ -3059,7 +3059,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = table.enltmrf_sequence_fk
+            WHERE rvx.rdv_id = refdata_replace_table.enltmrf_sequence_fk
             );
         """.toString())
       }
