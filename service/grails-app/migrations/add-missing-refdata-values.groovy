@@ -66,7 +66,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.mr_ruleset_template_status
+            WHERE rvx.rdv_id = table.mr_ruleset_template_status
             );
         """.toString())
       }
@@ -139,7 +139,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.s_serial_status
+            WHERE rvx.rdv_id = table.s_serial_status
             );
         """.toString())
       }
@@ -212,7 +212,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.sr_ruleset_status_fk
+            WHERE rvx.rdv_id = table.sr_ruleset_status_fk
             );
         """.toString())
       }
@@ -285,7 +285,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cr_time_unit_fk
+            WHERE rvx.rdv_id = table.cr_time_unit_fk
             );
         """.toString())
       }
@@ -358,7 +358,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cr_pattern_type_fk
+            WHERE rvx.rdv_id = table.cr_pattern_type_fk
             );
         """.toString())
       }
@@ -431,7 +431,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpdm_month_fk
+            WHERE rvx.rdv_id = table.cpdm_month_fk
             );
         """.toString())
       }
@@ -504,7 +504,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpdw_weekday_fk
+            WHERE rvx.rdv_id = table.cpdw_weekday_fk
             );
         """.toString())
       }
@@ -577,7 +577,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpdwm_weekday_fk
+            WHERE rvx.rdv_id = table.cpdwm_weekday_fk
             );
         """.toString())
       }
@@ -650,7 +650,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpdwm_month_fk
+            WHERE rvx.rdv_id = table.cpdwm_month_fk
             );
         """.toString())
       }
@@ -723,7 +723,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpdwd_weekday_fk
+            WHERE rvx.rdv_id = table.cpdwd_weekday_fk
             );
         """.toString())
       }
@@ -796,7 +796,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpim_month_fk
+            WHERE rvx.rdv_id = table.cpim_month_fk
             );
         """.toString())
       }
@@ -869,7 +869,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpiwm_month_fk
+            WHERE rvx.rdv_id = table.cpiwm_month_fk
             );
         """.toString())
       }
@@ -942,7 +942,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpm_month_fk
+            WHERE rvx.rdv_id = table.cpm_month_fk
             );
         """.toString())
       }
@@ -1015,7 +1015,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cpwm_month_fk
+            WHERE rvx.rdv_id = table.cpwm_month_fk
             );
         """.toString())
       }
@@ -1088,7 +1088,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.eluctmt_value_format_fk
+            WHERE rvx.rdv_id = table.eluctmt_value_format_fk
             );
         """.toString())
       }
@@ -1161,7 +1161,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.uctm_user_configured_template_metadata_type_fk
+            WHERE rvx.rdv_id = table.uctm_user_configured_template_metadata_type_fk
             );
         """.toString())
       }
@@ -1234,7 +1234,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.or_time_unit_fk
+            WHERE rvx.rdv_id = table.or_time_unit_fk
             );
         """.toString())
       }
@@ -1307,7 +1307,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.or_pattern_type_fk
+            WHERE rvx.rdv_id = table.or_pattern_type_fk
             );
         """.toString())
       }
@@ -1380,7 +1380,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opdm_month_fk
+            WHERE rvx.rdv_id = table.opdm_month_fk
             );
         """.toString())
       }
@@ -1453,7 +1453,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opdw_weekday_fk
+            WHERE rvx.rdv_id = table.opdw_weekday_fk
             );
         """.toString())
       }
@@ -1526,7 +1526,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opdwm_weekday_fk
+            WHERE rvx.rdv_id = table.opdwm_weekday_fk
             );
         """.toString())
       }
@@ -1599,7 +1599,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opdwm_month_fk
+            WHERE rvx.rdv_id = table.opdwm_month_fk
             );
         """.toString())
       }
@@ -1672,7 +1672,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opdwd_weekday_fk
+            WHERE rvx.rdv_id = table.opdwd_weekday_fk
             );
         """.toString())
       }
@@ -1745,7 +1745,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opim_month_fk
+            WHERE rvx.rdv_id = table.opim_month_fk
             );
         """.toString())
       }
@@ -1818,7 +1818,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opiwm_month_fk
+            WHERE rvx.rdv_id = table.opiwm_month_fk
             );
         """.toString())
       }
@@ -1891,7 +1891,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opm_month_from_fk
+            WHERE rvx.rdv_id = table.opm_month_from_fk
             );
         """.toString())
       }
@@ -1964,7 +1964,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opm_month_to_fk
+            WHERE rvx.rdv_id = table.opm_month_to_fk
             );
         """.toString())
       }
@@ -2037,7 +2037,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.opwm_month_fk
+            WHERE rvx.rdv_id = table.opwm_month_fk
             );
         """.toString())
       }
@@ -2110,7 +2110,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.r_time_unit_fk
+            WHERE rvx.rdv_id = table.r_time_unit_fk
             );
         """.toString())
       }
@@ -2183,7 +2183,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rr_pattern_type_fk
+            WHERE rvx.rdv_id = table.rr_pattern_type_fk
             );
         """.toString())
       }
@@ -2256,7 +2256,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpmwd_weekday_fk
+            WHERE rvx.rdv_id = table.rpmwd_weekday_fk
             );
         """.toString())
       }
@@ -2329,7 +2329,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpw_weekday_fk
+            WHERE rvx.rdv_id = table.rpw_weekday_fk
             );
         """.toString())
       }
@@ -2402,7 +2402,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpyd_month_fk
+            WHERE rvx.rdv_id = table.rpyd_month_fk
             );
         """.toString())
       }
@@ -2475,7 +2475,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpymwd_weekday_fk
+            WHERE rvx.rdv_id = table.rpymwd_weekday_fk
             );
         """.toString())
       }
@@ -2548,7 +2548,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpymwd_month_fk
+            WHERE rvx.rdv_id = table.rpymwd_month_fk
             );
         """.toString())
       }
@@ -2621,7 +2621,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.rpywd_weekday_fk
+            WHERE rvx.rdv_id = table.rpywd_weekday_fk
             );
         """.toString())
       }
@@ -2694,7 +2694,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.ctmr_template_metadata_rule_format_fk
+            WHERE rvx.rdv_id = table.ctmr_template_metadata_rule_format_fk
             );
         """.toString())
       }
@@ -2767,7 +2767,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cmtmrf_month_format_fk
+            WHERE rvx.rdv_id = table.cmtmrf_month_format_fk
             );
         """.toString())
       }
@@ -2840,7 +2840,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cmtmrf_year_format_fk
+            WHERE rvx.rdv_id = table.cmtmrf_year_format_fk
             );
         """.toString())
       }
@@ -2913,7 +2913,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.cytmrf_year_format_fk
+            WHERE rvx.rdv_id = table.cytmrf_year_format_fk
             );
         """.toString())
       }
@@ -2986,7 +2986,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.enltmrf_format_fk
+            WHERE rvx.rdv_id = table.enltmrf_format_fk
             );
         """.toString())
       }
@@ -3059,7 +3059,7 @@ databaseChangeLog = {
             NOT EXISTS (
             SELECT 1
             FROM ${database.defaultSchemaName}.refdata_value rvx
-            WHERE rvx.rdv_id = p.enltmrf_sequence_fk
+            WHERE rvx.rdv_id = table.enltmrf_sequence_fk
             );
         """.toString())
       }
