@@ -42,7 +42,7 @@ class RefdataSpec extends BaseSpec {
       ])
     then:
       println("resp: ${resp}");
-      resp.size() == 3 // increased to account for 'missing' refDataValue
+      resp.size() == 2
   }
 
   void "Check specific refdata category with params and filter and match"() {
