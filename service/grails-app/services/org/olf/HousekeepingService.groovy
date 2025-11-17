@@ -29,17 +29,20 @@ import com.github.fracpete.romannumerals4j.RomanNumeralFormat;
  * This service works at the module level, it's often called without a tenant context.
  */
 class HousekeepingService {
-
-
   /**
    * This is called by the eventing mechanism - There is no web request context
    * this method is called after the schema for a tenant is updated.
    */
   @Subscriber('okapi:schema_update')
-  public void onSchemaUpdate(tn, tid) {
-    log.debug("HousekeepingService::onSchemaUpdate(${tn},${tid})")
-    setupData(tn, tid);
-    cleanupEnumerationLevelMetadata(tn, tid);
+  public void onSchemaUpdate(schema_name, tenant_id) {
+    log.debug("HousekeepingService::onSchemaUpdate(${schema_name},${tenant_id})")
+    try {
+      // This causes issues in tests right now, where the tenant schema is not set up BEFORE the attempt to update it.
+      // TODO Should we be doing this cleanup here? Why does onSchemaUpdate run BEFORE datasource in ensured?
+      cleanupEnumerationLevelMetadata(tenant_id, schema_name);
+    } catch (Exception e) {
+      log.error("HousekeepingService::onSchemaUpdate: Error during housekeeping for tenant ${tenant_id} / schema ${schema_name}", e)
+    }
   }
 
   /**
@@ -89,48 +92,6 @@ class HousekeepingService {
     }
   }
 
-  private void setupData(tenantName, tenantId) {
-    log.info("HousekeepingService::setupData(${tenantName},${tenantId})");
-    // Establish a database session in the context of the activated tenant. You can use GORM domain classes inside the closure
-    Tenants.withId(tenantId) {
-      AppSetting.withNewTransaction { status ->
-        // Setup EnumerationTemplateMetadataRule refdata values
-        RefdataValue.lookupOrCreate(
-          "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
-          "Textual",
-          "enumeration_textual",
-          true
-        )
-        RefdataValue.lookupOrCreate(
-          "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
-          "Numeric",
-          "enumeration_numeric",
-          true
-        )
-
-        // Setup ChronologyTemplateMetadataRule refdata values
-        RefdataValue.lookupOrCreate(
-          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
-          "Date",
-          "chronology_date",
-          true
-        )
-        RefdataValue.lookupOrCreate(
-          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
-          "Month",
-          "chronology_month",
-          true
-        )
-        RefdataValue.lookupOrCreate(
-          "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
-          "Year",
-          "chronology_year",
-          true
-        )
-      }
-    }
-  }
-
   @Subscriber('okapi:tenant_load_sample')
   public void onTenantLoadSample(final String tenantId, 
                                  final String value, 
@@ -141,4 +102,52 @@ class HousekeepingService {
     log.debug("HousekeepingService::onTenantLoadSample(${tenantId},${value},${existing_tenant},${upgrading},${toVersion},${fromVersion}");
   }
 
+  @Subscriber('okapi:dataload:reference')
+  public void onLoadReference (final String tenantId, String value, final boolean existing_tenant, final boolean upgrading, final String toVersion, final String fromVersion) {
+    log.debug("HousekeepingService::onTenantLoadReference(${tenantId},${value},${existing_tenant},${upgrading},${toVersion},${fromVersion}");
+    final String tenant_schema_id = OkapiTenantResolver.getTenantSchemaName(tenantId)
+
+    try {
+      Tenants.withId(tenantId) {
+        AppSetting.withNewTransaction { status ->
+          // Setup EnumerationTemplateMetadataRule refdata values
+          RefdataValue.lookupOrCreate(
+            "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
+            "Textual",
+            "enumeration_textual",
+            true
+          )
+          RefdataValue.lookupOrCreate(
+            "EnumerationTemplateMetadataRule.TemplateMetadataRuleFormat",
+            "Numeric",
+            "enumeration_numeric",
+            true
+          )
+
+          // Setup ChronologyTemplateMetadataRule refdata values
+          RefdataValue.lookupOrCreate(
+            "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+            "Date",
+            "chronology_date",
+            true
+          )
+          RefdataValue.lookupOrCreate(
+            "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+            "Month",
+            "chronology_month",
+            true
+          )
+          RefdataValue.lookupOrCreate(
+            "ChronologyTemplateMetadataRule.TemplateMetadataRuleFormat",
+            "Year",
+            "chronology_year",
+            true
+          )
+        }
+      }
+    }
+    catch ( Exception e ) {
+      log.error("Problem with load reference",e);
+    }
+  }
 }
