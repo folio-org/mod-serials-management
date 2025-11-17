@@ -39,6 +39,7 @@ class HousekeepingService {
     try {
       // This causes issues in tests right now, where the tenant schema is not set up BEFORE the attempt to update it.
       // TODO Should we be doing this cleanup here? Why does onSchemaUpdate run BEFORE datasource in ensured?
+      // Regardless, it should probably be using the schema_name NOT the tenant_id, as per dataload
       cleanupEnumerationLevelMetadata(tenant_id, schema_name);
     } catch (Exception e) {
       log.error("HousekeepingService::onSchemaUpdate: Error during housekeeping for tenant ${tenant_id} / schema ${schema_name}", e)
@@ -58,7 +59,7 @@ class HousekeepingService {
 
     Pattern romanRegex = Pattern.compile("(?=.*I)|(?=.*M)|(?=.*C)|(?=.*D)|(?=.*L)|(?=.*X)|(?=.*V)")
     Pattern oridnalRegex = Pattern.compile("(?=.*st)|(?=.*nd)|(?=.*rd)|(?=.*th)")
-    
+
     Tenants.withId(tenantId) {
       AppSetting.withNewTransaction { status ->
 
@@ -108,7 +109,7 @@ class HousekeepingService {
     final String tenant_schema_id = OkapiTenantResolver.getTenantSchemaName(tenantId)
 
     try {
-      Tenants.withId(tenantId) {
+      Tenants.withId(tenant_schema_id) {
         AppSetting.withNewTransaction { status ->
           // Setup EnumerationTemplateMetadataRule refdata values
           RefdataValue.lookupOrCreate(
