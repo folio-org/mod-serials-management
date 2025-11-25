@@ -34,12 +34,16 @@ class HousekeepingService {
    * this method is called after the schema for a tenant is updated.
    */
   @Subscriber('okapi:tenant_enabled')
-  public void onTenantEnabled(schema_name, tenant_id) {
-    log.debug("HousekeepingService::onTenantEnabled(${schema_name},${tenant_id})")
+  public void onTenantEnabled(final String tenantId, 
+                              final boolean existing_tenant, 
+                              final boolean upgrading, 
+                              final String toVersion, 
+                              final String fromVersion) {
+    log.debug("HousekeepingService::(${tenantId},${existing_tenant},${upgrading},${toVersion},${fromVersion})")
     try {
-      cleanupEnumerationLevelMetadata(tenant_id, schema_name);
+      cleanupEnumerationLevelMetadata(tenantId);
     } catch (Exception e) {
-      log.error("HousekeepingService::onTenantEnabled: Error during housekeeping for tenant ${tenant_id} / schema ${schema_name}", e)
+      log.error("HousekeepingService::onTenantEnabled: Error during housekeeping for tenant ${tenantId}", e)
     }
   }
 
@@ -49,8 +53,8 @@ class HousekeepingService {
    * lookupOrCreate, or "upsert" type functions in here."
    */
 
-  private void cleanupEnumerationLevelMetadata(tenantName, tenantId) {
-    log.info("HousekeepingService::cleanupEnumerationLevelMetadata(${tenantName},${tenantId})");
+  private void cleanupEnumerationLevelMetadata(tenantId) {
+    log.info("HousekeepingService::cleanupEnumerationLevelMetadata(${tenantId})");
 
     RomanNumeralFormat formatter = new RomanNumeralFormat();
 
