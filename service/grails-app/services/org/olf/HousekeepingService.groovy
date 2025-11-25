@@ -33,16 +33,13 @@ class HousekeepingService {
    * This is called by the eventing mechanism - There is no web request context
    * this method is called after the schema for a tenant is updated.
    */
-  @Subscriber('okapi:schema_update')
-  public void onSchemaUpdate(schema_name, tenant_id) {
-    log.debug("HousekeepingService::onSchemaUpdate(${schema_name},${tenant_id})")
+  @Subscriber('okapi:tenant_enabled')
+  public void onTenantEnabled(schema_name, tenant_id) {
+    log.debug("HousekeepingService::onTenantEnabled(${schema_name},${tenant_id})")
     try {
-      // This causes issues in tests right now, where the tenant schema is not set up BEFORE the attempt to update it.
-      // TODO Should we be doing this cleanup here? Why does onSchemaUpdate run BEFORE datasource in ensured?
-      // Regardless, it should probably be using the schema_name NOT the tenant_id, as per dataload
       cleanupEnumerationLevelMetadata(tenant_id, schema_name);
     } catch (Exception e) {
-      log.error("HousekeepingService::onSchemaUpdate: Error during housekeeping for tenant ${tenant_id} / schema ${schema_name}", e)
+      log.error("HousekeepingService::onTenantEnabled: Error during housekeeping for tenant ${tenant_id} / schema ${schema_name}", e)
     }
   }
 
