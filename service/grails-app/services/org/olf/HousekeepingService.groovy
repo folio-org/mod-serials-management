@@ -39,7 +39,7 @@ class HousekeepingService {
                               final boolean upgrading, 
                               final String toVersion, 
                               final String fromVersion) {
-    log.debug("HousekeepingService::(${tenantId},${existing_tenant},${upgrading},${toVersion},${fromVersion})")
+    log.debug("HousekeepingService::onTenantEnabled(${tenantId},${existing_tenant},${upgrading},${toVersion},${fromVersion})")
     try {
       cleanupEnumerationLevelMetadata(tenantId);
     } catch (Exception e) {
@@ -55,15 +55,15 @@ class HousekeepingService {
 
   private void cleanupEnumerationLevelMetadata(tenantId) {
     log.info("HousekeepingService::cleanupEnumerationLevelMetadata(${tenantId})");
+    final String tenant_schema_id = OkapiTenantResolver.getTenantSchemaName(tenantId)
 
     RomanNumeralFormat formatter = new RomanNumeralFormat();
 
     Pattern romanRegex = Pattern.compile("(?=.*I)|(?=.*M)|(?=.*C)|(?=.*D)|(?=.*L)|(?=.*X)|(?=.*V)")
     Pattern oridnalRegex = Pattern.compile("(?=.*st)|(?=.*nd)|(?=.*rd)|(?=.*th)")
 
-    Tenants.withId(tenantId) {
+    Tenants.withId(tenant_schema_id) {
       AppSetting.withNewTransaction { status ->
-
         // Find all EnumerationLevelUCTMT of all format with missing rawValue/valueFormat
         List<EnumerationLevelUCTMT> incompleteLevels = EnumerationLevelUCTMT.executeQuery('''
           select eluctmt
