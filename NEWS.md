@@ -1,6 +1,13 @@
 ## 2.1.0 IN PROGRESS
   * MODSER-110: Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces
 
+## 2.0.4 2025-11-28
+  * ERM-3851 Long standing connection issues bug
+  * ERM-3292 Stack traces should not be included in API responses
+
+## 2.0.3 2025-04-28
+  * MODSER-118 Fixed Chronology/Enumeration template metadata rule primary key
+
 ## 2.0.2 2025-04-15
   * MODSER-115 Upgrade undertow from 2.2.28.Final to 2.2.37.Final fixing vulns
   * MODSER-114 kafka-clients 3.7.2, jackson 2.18.3 fixing vulns
