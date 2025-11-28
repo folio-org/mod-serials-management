@@ -1,3 +1,7 @@
+## 2.0.4 2025-11-28
+  * ERM-3851 Long standing connection issues bug
+  * ERM-3292 Stack traces should not be included in API responses
+
 ## 2.0.3 2025-04-28
   * MODSER-118 Fixed Chronology/Enumeration template metadata rule primary key
 
