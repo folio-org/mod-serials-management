@@ -13,11 +13,17 @@ dataSource:
   schemaHandler: com.k_int.okapi.OkapiSchemaHandler
   logSql: false
   properties:
-      jmxEnabled: false
-      maximumPoolSize: ${db.maxpoolsize:10}
-      transactionIsolation: TRANSACTION_READ_COMMITTED
+    jmxEnabled: ${db.jmxEnabled}
+    maximumPoolSize: ${db.maxpoolsize}
+    transactionIsolation: ${db.transactionIsolation}
   hibernate:
     enable_lazy_load_no_trans: true
+
+db:
+  maxpoolsize: 15
+  transactionIsolation: TRANSACTION_READ_COMMITTED
+  jmxEnabled: true
+  jmxExport: true
 
 okapi: 
   service:
@@ -26,7 +32,8 @@ okapi:
 logging:
   config: classpath:logback-development.xml
 
-
+endpoints:
+  include-stack-trace: true # This being true for dev builds allows us to see stacktraces in the responses
 
 #    register: true
 #    deploy: true

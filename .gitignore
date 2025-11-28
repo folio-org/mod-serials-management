@@ -3,10 +3,12 @@ Thumbs.db
 .gradle
 build/
 out/
-.idea
 *.iml
 *.ipr
 *.iws
 .project
 .settings
 .classpath
+
+.idea
+*/.idea
