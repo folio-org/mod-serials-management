@@ -1,3 +1,7 @@
+## 1.1.7 2025-12-17
+  * ERM-3851 Long standing connection issues bug
+  * ERM-3292 Stack traces should not be included in API responses
+
 ## 1.1.6 2025-04-03
   * MODSER-111 Prevent instability of grails modules during updates: Ramsons
 
