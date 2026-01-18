@@ -15,7 +15,9 @@ class UrlMappings {
 
     "/serials-management/serials" (resources: 'serial')
 
-    "/serials-management/modelRulesets" (resources: 'modelRuleset')
+    "/serials-management/modelRulesets" (resources: 'modelRuleset'){
+      '/replaceAndDelete' (controller: 'modelRuleset', action: 'replaceAndDelete', method: 'POST')
+    }
 
     "/serials-management/rulesets" (resources: 'serialRuleset'){
 
