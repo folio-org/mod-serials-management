@@ -277,6 +277,14 @@
         },
         {
           "methods": [
+            "POST"
+          ],
+          "pathPattern": "/serials-management/modelRulesets/{id}/replaceAndDelete",
+          "permissionsRequired": [ "serials-management.modelRulesets.replace-delete.execute" ]
+
+        },
+        {
+          "methods": [
             "DELETE"
           ],
           "pathPattern": "/serials-management/modelRulesets/{id}",
@@ -647,10 +655,16 @@
       "description": "Post a model ruleset record"
     },
     {
+      "permissionName": "serials-management.modelRulesets.replace-delete.execute",
+      "displayName": "Replace and delete a model ruleset",
+      "description": "Permit the deletion and replacement of a model ruleset"
+    },
+    {
       "permissionName": "serials-management.modelRulesets.edit",
       "subPermissions": [
         "serials-management.modelRulesets.view",
-        "serials-management.modelRulesets.item.post"
+        "serials-management.modelRulesets.item.post",
+        "serials-management.modelRulesets.replace-delete.execute"
       ]
     },
     {
