@@ -144,7 +144,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-undertow" // Replaces spring-boot-starter-tomcat
 	// security upgrade for undertow, using same exclusions as
   // https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-undertow/2.7.18/spring-boot-starter-undertow-2.7.18.pom
-  implementation("io.undertow:undertow-core:2.2.37.Final")
+  implementation("io.undertow:undertow-core:2.2.39.Final")
   implementation("io.undertow:undertow-servlet:2.2.37.Final") {
     exclude group: "org.jboss.spec.javax.servlet", module: "jboss-servlet-api_4.0_spec"
     exclude group: "org.jboss.spec.javax.annotation", module: "jboss-annotations-api_1.3_spec"
