@@ -20,16 +20,18 @@ on:
   push:
     paths:
       - 'openapi/**'
+      - 'service/src/main/okapi/ModuleDescriptor-template.json'
   pull_request:
     paths:
       - 'openapi/**'
+      - 'service/src/main/okapi/ModuleDescriptor-template.json'
 
 jobs:
   api-schema-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: Prepare folio-tools
