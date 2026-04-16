@@ -1,6 +1,14 @@
-## 2.1.0 IN PROGRESS
+## 2.1.0 2026-04-16
+  * MODSER-144: Upgrade undertow-core to 2.2.39
+  * MODSER-141: Add a 'replaceAndDelete' endpoint for model rulesets
+  * MODSER-130: Ensure "missingRefData" categories are only created where needed
+  * MODSER-127: Add FK constraints to refDataValue columns that are missing them
+  * MODSER-126: Check applied PK constraints are correct
+  * MODSER-123: Add missing primary keys to database tables
+  * MODSER-121: Implement ENDPOINTS_INCLUDE_STACK_TRACE env variable for mod-serials-managements
   * MODSER-110: Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces
-
+  * ERM-3851: Long standing connection issues bug
+  * ERM-3306: Dependency upgrades
 ## 2.0.4 2025-11-28
   * ERM-3851 Long standing connection issues bug
   * ERM-3292 Stack traces should not be included in API responses
