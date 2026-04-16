@@ -1,3 +1,5 @@
+## 2.2.0 IN PROGRESS
+
 ## 2.1.0 2026-04-16
   * MODSER-144: Upgrade undertow-core to 2.2.39
   * MODSER-141: Add a 'replaceAndDelete' endpoint for model rulesets
