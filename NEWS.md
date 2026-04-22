@@ -1,3 +1,7 @@
+## 2.0.5 2025-04-22
+  * MODSER-120 Backport version bumps to Sunflower: spring-security-core/-web 5.8.16, spring-expression 5.3.39
+  * MODSER-144 Upgrade undertow-core to 2.2.29 fixing OOM CVE-2024-4027
+
 ## 2.0.4 2025-11-28
   * ERM-3851 Long standing connection issues bug
   * ERM-3292 Stack traces should not be included in API responses
