@@ -20,11 +20,9 @@ on:
   push:
     paths:
       - 'openapi/**'
-      - 'service/src/main/okapi/ModuleDescriptor-template.json'
   pull_request:
     paths:
       - 'openapi/**'
-      - 'service/src/main/okapi/ModuleDescriptor-template.json'
 
 jobs:
   api-schema-lint:
