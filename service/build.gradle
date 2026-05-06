@@ -1,3 +1,6 @@
+// NOTE: We now use ReplaceTokens instead of expand, as expand is restricted to a 64K source file
+import org.apache.tools.ant.filters.ReplaceTokens
+
 /* configurations.all {
 	// Check for updates every build
 	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -5,7 +8,7 @@
 
 buildscript {
 	repositories {
-		//mavenLocal()
+		mavenLocal()
 		mavenCentral()
 		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url "https://repo.grails.org/grails/core" }
@@ -14,7 +17,7 @@ buildscript {
 	dependencies {
 		classpath "org.grails:grails-gradle-plugin:$grailsVersion"
 		classpath "org.grails.plugins:hibernate5:7.3.0"
-		classpath "org.grails.plugins:views-gradle:2.3.2"
+		classpath "org.grails.plugins:views-gradle:3.1.2"
 		classpath 'com.bmuschko:gradle-docker-plugin:6.6.1'
 	}
 }
@@ -39,6 +42,7 @@ group "org.olf"
 apply plugin: "eclipse"
 apply plugin: 'eclipse-wtp'
 apply plugin: "idea"
+apply plugin: "java"
 //apply plugin:"war"
 apply plugin: 'jacoco'
 apply plugin: "org.grails.grails-web"
@@ -60,7 +64,7 @@ bootJar {
 }
 
 repositories {
-	//mavenLocal()
+	mavenLocal()
 	mavenCentral()
 	maven { url "https://repo.grails.org/grails/core" }
 	maven { url "https://repo.grails.org/grails/plugins" }
@@ -165,6 +169,7 @@ dependencies {
 
 	implementation 'com.opencsv:opencsv:5.7.1'
   implementation 'commons-io:commons-io:2.14.0'
+  implementation 'commons-lang:commons-lang:2.6'
 	implementation('io.github.virtualdogbert:logback-groovy-config:1.14.1')
   compileOnly 'ch.qos.logback:logback-classic:1.4.7'
   // Is on runtime classpath via spring-boot-starter
@@ -200,12 +205,23 @@ bootRun {
 			'-Dspring.output.ansi.enabled=always',
 			'-noverify',
 			'-XX:TieredStopAtLevel=1',
-			'-Xmx1024m')
+			'-Xmx1024m',
+				// Prevent the JVM from dropping stacktraces on frequently-thrown exceptions.
+				'-XX:-OmitStackTraceInFastThrow')
 	sourceResources sourceSets.main
 	String springProfilesActive = 'spring.profiles.active'
 	systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
 
+
+// Ensure JSON views are compiled and resources (including generated Okapi descriptors)
+// are processed before bootRun starts.
+project.afterEvaluate {
+  tasks.named('bootRun') {
+    dependsOn tasks.named('compileGsonViews')
+    dependsOn tasks.named('processResources')
+  }
+}
 project.gradle.projectsEvaluated {
 
 	task generateDescriptors(type: Copy) {
@@ -214,7 +230,7 @@ project.gradle.projectsEvaluated {
 
 		File grailsBuildInfoFile = buildProperties.outputs.files.files.find { it.name == 'grails.build.info' }
 
-		final def props = [:]
+		final Properties props = new Properties()
 
 		if(!(grailsBuildInfoFile)) return // No need to continue if the file is not there
 
@@ -223,16 +239,9 @@ project.gradle.projectsEvaluated {
 			// Place the loading within a do first as the info file from the buildProperties
 			// task will not be present until it is executed. This owuld cause a file not found
 			// during task configureation otherwise.
-			Properties properties = new Properties()
-
-			// Read properties from the file
 			grailsBuildInfoFile.withInputStream {
-				properties.load(it)
+				props.load(it)
 			}
-
-			// Need to parse multi-dimensional keys.
-			ConfigSlurper cs = new ConfigSlurper()
-			props.putAll(cs.parse(properties))
 		}
 
 		from ('./src/main/okapi') {
@@ -240,7 +249,7 @@ project.gradle.projectsEvaluated {
 		}
 		into './build/resources/main/okapi'
 		filteringCharset = 'UTF-8'
-		expand(props)
+		filter(ReplaceTokens, tokens: props, beginToken : '${', endToken : '}')
 		rename { String fileName ->
 			fileName.replace('-template', '')
 		}
@@ -316,6 +325,12 @@ project.gradle.projectsEvaluated {
 
 	processResources.dependsOn generateDescriptors
 }
+tasks.named('bootJarMainClassName') { it.mustRunAfter(tasks.named('compileGsonViews')) }
+tasks.named('compileIntegrationTestGroovy') { it.mustRunAfter(tasks.named('compileGsonViews')) }
+tasks.named('test') { it.mustRunAfter(tasks.named('compileGsonViews')) }
+tasks.named('integrationTest') { it.mustRunAfter(tasks.named('compileGsonViews')) }
+tasks.named('mergeTestReports') { it.mustRunAfter(tasks.named('test')) }
+tasks.named('compileTestGroovy') { it.mustRunAfter(tasks.named('compileGsonViews')) }
 
 
 tasks.withType(GroovyCompile) {
