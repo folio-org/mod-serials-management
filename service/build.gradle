@@ -3,7 +3,7 @@ configurations.all {
 		force "org.glassfish:jakarta.el:$glassfishJakartaElVersion"
 
 		// Check for updates every build -- Useful for developing the plugins
-		cacheChangingModulesFor 0, 'seconds'
+		// cacheChangingModulesFor 0, 'seconds'
 
 		eachDependency { DependencyResolveDetails details ->
 			if (details.requested.group == 'org.glassfish' && details.requested.name == 'javax.el') {
