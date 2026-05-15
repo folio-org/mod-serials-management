@@ -1,7 +1,23 @@
-/* configurations.all {
-	// Check for updates every build
-	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-} */
+configurations.all {
+	resolutionStrategy {
+		force "org.glassfish:jakarta.el:$glassfishJakartaElVersion"
+
+		// Check for updates every build -- Useful for developing the plugins
+		cacheChangingModulesFor 0, 'seconds'
+
+		eachDependency { DependencyResolveDetails details ->
+			if (details.requested.group == 'org.glassfish' && details.requested.name == 'javax.el') {
+				details.useTarget("org.glassfish:jakarta.el:$glassfishJakartaElVersion")
+				details.because('Security fix for ERM-4022')
+			}
+
+			if (details.requested.group == 'javax.el' && details.requested.name == 'javax.el-api') {
+				details.useTarget("jakarta.el:jakarta.el-api:$glassfishJakartaElApiVersion")
+				details.because('Security fix for ERM-4022')
+			}
+		}
+	}
+}
 
 buildscript {
 	repositories {
@@ -13,9 +29,9 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-		classpath "org.grails.plugins:hibernate5:7.3.0"
-		classpath "org.grails.plugins:views-gradle:2.3.2"
-		classpath 'com.bmuschko:gradle-docker-plugin:6.6.1'
+		classpath "org.grails.plugins:hibernate5:$gormVersion"
+		classpath "org.grails.plugins:views-gradle:$viewsGradleVersion"
+		classpath "com.bmuschko:gradle-docker-plugin:$dockerPluginVersion"
 	}
 }
 
@@ -133,8 +149,8 @@ dependencies {
   //testImplementation("io.micronaut:micronaut-http-client")
 
 	/*  ---- Manually installed dependencies ---- */
-	implementation 'com.k_int.grails:web-toolkit-ce:10.4.0'
-	implementation('com.k_int.okapi:grails-okapi:8.0.2') {
+	implementation "com.k_int.grails:web-toolkit-ce:$webToolkitVersion"
+	implementation("com.k_int.okapi:grails-okapi:$grailsOkapiVersion") {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
   }
 	
