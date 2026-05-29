@@ -1,11 +1,12 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.1.0
   title: Folio Serials Management
   description: API for the Folio library services platform mod-serials-management app
 servers:
   - url: https://folio-snapshot-okapi.dev.folio.org
   - url: https://folio-snapshot-2-okapi.dev.folio.org
+  - url: https://folio-etesting-snapshot-kong.ci.folio.org
 security:
   - accessToken: []
   - okapiToken: []
@@ -378,7 +379,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/modelRuleset'
+              $ref: '#/components/schemas/ModelRuleset'
         description: Ruleset JSON
         required: true
       responses:
@@ -387,7 +388,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/modelRuleset'
+                $ref: '#/components/schemas/ModelRuleset'
         '400':
           description: Bad request error
         '403':
@@ -451,6 +452,44 @@ paths:
                 $ref: '#/components/schemas/HttpError'
         '500':
           description: Internal server error
+  /serials-management/modelRulesets/{uuid}/replaceAndDelete:
+    post:
+      summary: Replace and delete an unused publication pattern template (model ruleset)
+      operationId: replaceAndDeleteModelRuleset
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the model ruleset record to be replaced and deleted
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRuleset'
+        description: Ruleset JSON
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelRuleset'
+        '400':
+          description: Bad request error
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '500':
+          description: Internal server error
   /serials-management/rulesets:
     get:
       summary: Get a set of ruleset records
@@ -485,7 +524,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
         description: Ruleset JSON
         required: true
       responses:
@@ -494,7 +533,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/serialRuleset'
+                $ref: '#/components/schemas/SerialRuleset'
         '400':
           description: Bad request error
         '403':
@@ -987,6 +1026,8 @@ components:
           type: string
     SerialOrderLine:
       type: object
+      required:
+        - remoteId
       properties:
         owner:
           type: object
@@ -994,12 +1035,15 @@ components:
             id:
               type: string
               format: uuid
+        remoteId:
+          type: string
+          format: uuid
         title:
           type: string
         titleId:
           type: string
           format: uuid
-    TimeUnit:
+    RecurrenceTimeUnit:
       type: object
       properties:
         value:
@@ -1155,8 +1199,21 @@ components:
             - $ref: '#/components/schemas/RecurrencePatternYearWeekday'
         patternType:
           $ref: '#/components/schemas/RecurrencePatternType'
+    Recurrence:
+      type: object
+      required:
+        - timeUnit
+      properties:
         timeUnit:
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: '#/components/schemas/RecurrenceTimeUnit'
+        period:
+          type: integer
+        issues:
+          type: integer
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurrenceRule'
     OmissionPatternDay:
       type: object
       required:
@@ -1258,7 +1315,7 @@ components:
       type: object
       required:
         - issue
-        - month
+        - week
       properties:
         id:
           type: string
@@ -1357,9 +1414,27 @@ components:
           format: uuid
         label:
           type: string
+    OmissionTimeUnit:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - day
+            - week
+            - month
+            - issue
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
     OmissionRule:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         pattern:
           oneOf:
             - $ref: '#/components/schemas/OmissionPatternDay'
@@ -1377,7 +1452,7 @@ components:
         patternType:
           $ref: '#/components/schemas/OmissionPatternType'
         timeUnit:
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: '#/components/schemas/OmissionTimeUnit'
     Omission:
       type: object
       properties:
@@ -1414,7 +1489,7 @@ components:
       type: object
       required:
         - issue
-        - month
+        - week
       properties:
         id:
           type: string
@@ -1456,9 +1531,24 @@ components:
           format: uuid
         label:
           type: string
+    CombinationTimeUnit:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - issue
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
     CombinationRule:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         issuesToCombine:
           type: integer
         pattern:
@@ -1470,7 +1560,7 @@ components:
         patternType:
           $ref: '#/components/schemas/CombinationPatternType'
         timeUnit:
-          $ref: '#/components/schemas/TimeUnit'
+          $ref: '#/components/schemas/CombinationTimeUnit'
     Combination:
       type: object
       properties:
@@ -1478,34 +1568,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CombinationRule'
-    Recurrence:
-      type: object
-      required:
-        - timeUnit
-      properties:
-        timeUnit:
-          $ref: '#/components/schemas/TimeUnit'
-        period:
-          type: integer
-        issues:
-          type: integer
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecurrenceRule'
-        omission:
-          $ref: '#/components/schemas/Omission'
-        combination:
-          $ref: '#/components/schemas/Combination'
-        templateConfig:
-          $ref: '#/components/schemas/TemplateConfiguration'
-        owner:
-          $ref: '#/components/schemas/Serial'
     TemplateConfiguration:
       type: object
       required:
         - owner
-        - rules
         - templateString
       properties:
         id:
@@ -1526,7 +1592,7 @@ components:
     Serial:
       type: object
       required:
-        - status
+        - serialStatus
       properties:
         id:
           type: string
@@ -1814,7 +1880,7 @@ components:
     SerialNote:
       type: object
       required:
-        - text
+        - note
       properties:
         id:
           type: string
@@ -1873,33 +1939,6 @@ components:
           type: integer
         totalRecords:
           type: integer
-    modelRuleset:
-      type: object
-      required:
-        - name
-        - modelRulesetStatus
-      properties:
-        id:
-          type: string
-          format: uuid
-        dateCreated:
-          type: string
-          format: date-time
-        lastUpdated:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
-          type: string
-        exampleLabel:
-          type: string
-        modelRulesetStatus:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
-        serialRuleset:
-          $ref: '#/components/schemas/SerialRuleset'
     SerialRulesetResults:
       type: array
       items:
@@ -1929,7 +1968,6 @@ components:
       type: object
       required:
         - index
-        - value
         - rawValue
       properties:
         id:
@@ -1949,7 +1987,9 @@ components:
         value:
           type: string
         levels:
-          $ref: '#/components/schemas/EnumerationLevelUCTMT'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumerationLevelUCTMT'
     ChronologyUCTMT:
       type: object
       properties:
@@ -1976,14 +2016,12 @@ components:
           oneOf:
             - $ref: '#/components/schemas/EnumerationUCTMT'
             - $ref: '#/components/schemas/ChronologyUCTMT'
-        userConfiguredMetadataType:
+        userConfiguredTemplateMetadataType:
           oneOf:
             - type: string
             - $ref: '#/components/schemas/RefData'
     TemplateMetadata:
       type: object
-      required:
-        - standard
       properties:
         id:
           type: string
@@ -2033,12 +2071,13 @@ components:
               type: string
               format: date
     CombinationOrigin:
-      allOf:
-        - $ref: '#/components/schemas/InternalPiece'
-        - type: object
-          properties:
-            combinationRule:
-              $ref: '#/components/schemas/CombinationRule'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        combinationRule:
+          $ref: '#/components/schemas/CombinationRule'
     InternalCombinationPiece:
       type: object
       allOf:
@@ -2054,12 +2093,10 @@ components:
               items:
                 $ref: '#/components/schemas/CombinationOrigin'
     OmissionOrigin:
-      allOf:
-        - $ref: '#/components/schemas/InternalPiece'
-        - type: object
-          properties:
-            omissionRule:
-              $ref: '#/components/schemas/OmissionRule'
+      type: object
+      properties:
+        omissionRule:
+          $ref: '#/components/schemas/OmissionRule'
     InternalOmissionPiece:
       allOf:
         - $ref: '#/components/schemas/InternalPiece'
@@ -2077,7 +2114,7 @@ components:
       required:
         - startDate
         - pieces
-        - ruleSet
+        - ruleset
       properties:
         continuationPieceRecurrenceMetadata:
           $ref: '#/components/schemas/TemplateMetadata'
