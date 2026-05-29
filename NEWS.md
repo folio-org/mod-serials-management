@@ -1,5 +1,12 @@
 ## 2.2.0 IN PROGRESS
 
+## 2.1.1 2026-05-29
+  * MODSER-94: Sensitive data in logs cleanup
+  * ERM-4022: Security fix May 2026
+  * ERM-3984: Increase webToolkitVersion
+  * Updated OpenAPI documentation
+  * Updated dependencies for Trillium release
+
 ## 2.1.0 2026-04-16
   * MODSER-144: Upgrade undertow-core to 2.2.39
   * MODSER-141: Add a 'replaceAndDelete' endpoint for model rulesets
@@ -11,6 +18,7 @@
   * MODSER-110: Migrated pattern (Ramsons -> Sunflower) with combination generates incorrect labels for predicted pieces
   * ERM-3851: Long standing connection issues bug
   * ERM-3306: Dependency upgrades
+  
 ## 2.0.4 2025-11-28
   * ERM-3851 Long standing connection issues bug
   * ERM-3292 Stack traces should not be included in API responses
