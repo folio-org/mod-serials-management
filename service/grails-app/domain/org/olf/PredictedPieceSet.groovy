@@ -43,6 +43,8 @@ class PredictedPieceSet implements MultiTenant<PredictedPieceSet> {
 
   String note
 
+  Set<InternalPiece> pieces
+
   static hasMany = [
     pieces: InternalPiece
   ]
