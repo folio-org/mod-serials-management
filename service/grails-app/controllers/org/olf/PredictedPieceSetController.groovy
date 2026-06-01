@@ -59,6 +59,16 @@ class PredictedPieceSetController extends OkapiTenantAwareController<PredictedPi
     InternalPiece nextPiece = pieceGenerationService.generateNextPiece(ips.get(ips.size()-1), ruleset)
     TemplateMetadata continuationPieceRecurrenceMetadata = pieceLabellingService.generateTemplateMetadataForPiece(nextPiece, ips, ruleset?.templateConfig, startingValues, lastPieceLabelTemplateBindings?.enumerationArray)
 
+    // sort pieces by date so index based rules like "Issue 11" work correctly
+    ips.sort { ip ->
+      if (ip.hasProperty('date') && ip.date) {
+        return ip.date
+      } else if (ip.hasProperty('recurrencePieces')) {
+        return ip.recurrencePieces?.find { it }?.date
+      }
+      return null
+    }
+
     PredictedPieceSet pps = new PredictedPieceSet([
       ruleset: ruleset,
       pieces: ips,
