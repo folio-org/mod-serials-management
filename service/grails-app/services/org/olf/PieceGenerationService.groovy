@@ -103,7 +103,9 @@ public class PieceGenerationService {
         Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
 
         //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
-        if(opc.compareDate(rule, currentPiece.date, internalPieces)) {
+        if (opc.methods.any { it.name == 'compareDate' && it.parameterCount == 4 } ?
+            opc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues) :
+            opc.compareDate(rule, currentPiece.date, internalPieces)) {
           if(currentPiece instanceof InternalRecurrencePiece){
             iterator.remove()
             InternalOmissionPiece omissionPiece = new InternalOmissionPiece([date: currentPiece.date])
@@ -129,7 +131,9 @@ public class PieceGenerationService {
         // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
         String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
         Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-        if(cpc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues )) {
+        if (cpc.methods.any { it.name == 'compareDate' && it.parameterCount == 4 } ?
+            cpc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues ) :
+            cpc.compareDate(rule, currentPiece.date, internalPieces)) {
           // Assumption made that there are no omission pieces
           combinationOriginRules << rule}
       }
@@ -139,7 +143,10 @@ public class PieceGenerationService {
         combinationOriginRules.each{ cor -> 
           internalPieces.each{ ip ->
             if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
-              parentCombinationPieces << ip
+              if (InternalPiece.findIndexFromDate(internalPieces, ip.recurrencePieces.first().date).intdiv(ruleset?.recurrence?.issues) ==
+                  InternalPiece.findIndexFromDate(internalPieces, currentPiece.date).intdiv(ruleset?.recurrence?.issues)) {
+                parentCombinationPieces << ip
+              }
             }
           }
         } 
