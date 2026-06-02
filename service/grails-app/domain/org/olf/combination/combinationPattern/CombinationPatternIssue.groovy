@@ -24,12 +24,7 @@ public class CombinationPatternIssue extends CombinationPattern implements Multi
   }
 
   // Comparing the issue value to the index value of the dates array (+1 to since arrays initialise at 0)
-  public static boolean compareDate(
-    CombinationRule rule,
-    LocalDate date,
-    ArrayList<InternalPiece> internalPieces,
-    Integer issuesPerCycle
-) {
+  public static boolean compareDate( CombinationRule rule, LocalDate date, ArrayList<InternalPiece> internalPieces, Integer issuesPerCycle ) {
     Integer index = InternalPiece.findIndexFromDate(internalPieces, date)
 
     Integer issueInCycle = (index % issuesPerCycle) + 1

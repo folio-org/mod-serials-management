@@ -129,7 +129,7 @@ public class PieceGenerationService {
         // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
         String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
         Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-        if(cpc.compareDate(rule, currentPiece.date,internalPieces,ruleset?.recurrence?.issues )) {
+        if(cpc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues )) {
           // Assumption made that there are no omission pieces
           combinationOriginRules << rule}
       }
