@@ -93,10 +93,6 @@ public class PieceGenerationService {
 
 
   public void applyOmissionRules (ArrayList<InternalPiece> internalPieces, SerialRuleset ruleset){
-    // Ensure back-pointers are set for transient objects
-    ruleset.omission?.rules?.each { it.owner = ruleset.omission }
-    if (ruleset.omission) ruleset.omission.owner = ruleset
-
     // Internalpieces iteratorfor each piece check each rule passing in list of pieces and date from piece to see if it matches
     ListIterator<InternalPiece> iterator = internalPieces.listIterator()
     while(iterator.hasNext()){
@@ -125,24 +121,17 @@ public class PieceGenerationService {
   }
 
   public void applyCombinationRules (ArrayList<InternalPiece> internalPieces, SerialRuleset ruleset){
-    // Ensure back-pointers are set for transient objects
-    ruleset.combination?.rules?.each { it.owner = ruleset.combination }
-    if (ruleset.combination) ruleset.combination.owner = ruleset
-
     ListIterator<InternalPiece> iterator = internalPieces.listIterator()
     while(iterator.hasNext()){
       InternalPiece currentPiece = iterator.next()
-      // Safe way to get date for both regular and combination pieces
-      def currentPieceDate = currentPiece.hasProperty('date') ? currentPiece.date : currentPiece.recurrencePieces?.find { it }?.date
       Set<CombinationRule> combinationOriginRules = []
       ruleset?.combination?.rules.each { rule ->
         // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
         String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
         Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-        if(currentPieceDate && cpc.compareDate(rule, currentPieceDate, internalPieces)) {
+        if(cpc.compareDate(rule, currentPiece.date,internalPieces,ruleset?.recurrence?.issues )) {
           // Assumption made that there are no omission pieces
-          combinationOriginRules << rule
-        }
+          combinationOriginRules << rule}
       }
       if(combinationOriginRules.size() > 0){
         // Setup a set of combination pieces the current piece should belong to
@@ -150,11 +139,7 @@ public class PieceGenerationService {
         combinationOriginRules.each{ cor -> 
           internalPieces.each{ ip ->
             if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
-              // Check if the combination piece belongs to the same cycle to prevent cross-cycle combinations
-              def ipDate = ip.recurrencePieces?.find { it }?.date
-              if (ipDate && currentPieceDate && ipDate.year == currentPieceDate.year) {
-                parentCombinationPieces << ip
-              }
+              parentCombinationPieces << ip
             }
           }
         } 
@@ -231,7 +216,7 @@ public class PieceGenerationService {
 
     // Block for handling the last piece, if it is an internal combination piece, we need to grab the date from the first recurrence piece
     if(lastPiece instanceof InternalCombinationPiece){
-      date = lastPiece.recurrencePieces?.find { it }?.date
+      date = lastPiece.recurrencePieces.getAt(0).date
       initialDate = date
       currentTimeUnit = date
     } else {
