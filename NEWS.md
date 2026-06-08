@@ -1,3 +1,6 @@
+## 2.0.7 2026-06-08
+  * ERM-4055 Backport Security fix May 2026 to Sunflower
+
 ## 2.0.6 2026-06-08
   * ERM-4055 Backport Security fix May 2026 to Sunflower
 
