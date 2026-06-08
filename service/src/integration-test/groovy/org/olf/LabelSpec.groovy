@@ -272,8 +272,8 @@ class LabelSpec extends BaseSpec {
     ])
     Labels labels = getLabelsUsingResponse(respMap)
 
-    then: "The system responds with a list of 12 pieces"
-    assert labels.full_label == [1,2,4,5,6,7,8,9,10,11,12].collect { it as String }
+    then: "The system responds with a list of 10 pieces (due to 2 combinations over year boundary)"
+    assert labels.full_label == [1,2,4,5,6,7,9,10,11,12].collect { it as String }
   }
 
   /* ContinuationMetadata values -

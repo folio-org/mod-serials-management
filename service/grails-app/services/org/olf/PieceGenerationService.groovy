@@ -143,8 +143,18 @@ public class PieceGenerationService {
         combinationOriginRules.each{ cor -> 
           internalPieces.each{ ip ->
             if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
-              if (InternalPiece.findIndexFromDate(internalPieces, ip.recurrencePieces.first().date).intdiv(ruleset?.recurrence?.issues) ==
-                  InternalPiece.findIndexFromDate(internalPieces, currentPiece.date).intdiv(ruleset?.recurrence?.issues)) {
+              Integer issuesPerCycle = (ruleset?.recurrence?.issues as Integer) ?: 1
+              boolean sameCycle = false
+              LocalDate ipDate = ip.recurrencePieces?.collect { it.date }?.min()
+              if (ipDate && currentPiece.date) {
+                if (issuesPerCycle == 1) {
+                  sameCycle = ipDate.get(ChronoField.YEAR) == currentPiece.date.get(ChronoField.YEAR)
+                } else {
+                  sameCycle = InternalPiece.findIndexFromDate(internalPieces, ipDate).intdiv(issuesPerCycle) ==
+                              InternalPiece.findIndexFromDate(internalPieces, currentPiece.date).intdiv(issuesPerCycle)
+                }
+              }
+              if (sameCycle) {
                 parentCombinationPieces << ip
               }
             }
