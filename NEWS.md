@@ -1,3 +1,6 @@
+## 2.0.6 2026-06-08
+  * ERM-4055 Backport Security fix May 2026 to Sunflower
+
 ## 2.0.5 2025-04-22
   * MODSER-120 Backport version bumps to Sunflower: spring-security-core/-web 5.8.16, spring-expression 5.3.39
   * MODSER-144 Upgrade undertow-core to 2.2.29 fixing OOM CVE-2024-4027
