@@ -38,6 +38,6 @@ public class TemplateConfig implements MultiTenant<TemplateConfig> {
     owner nullable: false
     chronologyRules nullable: true
     enumerationRules nullable: true
-    templateString nullable: false
+    templateString nullable: true
   }
 }
