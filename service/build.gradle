@@ -1,19 +1,28 @@
-configurations.all {
-	resolutionStrategy {
-		force "org.glassfish:jakarta.el:$glassfishJakartaElVersion"
+configurations {
+	all {
+		resolutionStrategy {
+			// Check for updates every build -- Useful for developing the plugins
+			// cacheChangingModulesFor 0, 'seconds'
 
-		// Check for updates every build -- Useful for developing the plugins
-		// cacheChangingModulesFor 0, 'seconds'
+			forcedModules = [
+				"org.glassfish:jakarta.el:$glassfishJakartaElVersion",
+				"org.codehaus.plexus:plexus-utils:${plexusVersion}",
+				"commons-beanutils:commons-beanutils:${beanutilsVersion}",
+				"io.micronaut:micronaut-json-core:$micronautJsonCoreVersion",
+				"commons-fileupload:commons-fileupload:$commonsFileUploadVersion",
+				"org.apache.commons:commons-compress:$commonsCompressVersion"
+			]
 
-		eachDependency { DependencyResolveDetails details ->
-			if (details.requested.group == 'org.glassfish' && details.requested.name == 'javax.el') {
-				details.useTarget("org.glassfish:jakarta.el:$glassfishJakartaElVersion")
-				details.because('Security fix for ERM-4022')
-			}
+			eachDependency { DependencyResolveDetails details ->
+				if (details.requested.group == 'org.glassfish' && details.requested.name == 'javax.el') {
+					details.useTarget("org.glassfish:jakarta.el:$glassfishJakartaElVersion")
+					details.because('Security fix for ERM-4022')
+				}
 
-			if (details.requested.group == 'javax.el' && details.requested.name == 'javax.el-api') {
-				details.useTarget("jakarta.el:jakarta.el-api:$glassfishJakartaElApiVersion")
-				details.because('Security fix for ERM-4022')
+				if (details.requested.group == 'javax.el' && details.requested.name == 'javax.el-api') {
+					details.useTarget("jakarta.el:jakarta.el-api:$glassfishJakartaElApiVersion")
+					details.because('Security fix for ERM-4022')
+				}
 			}
 		}
 	}
@@ -92,7 +101,10 @@ configurations {
 	}
 }
 
-ext['jackson.version'] = '2.18.3'
+ext['jackson.version'] = jacksonVersion
+ext['netty.version'] = nettyBOMVersion
+ext['spring-security.version'] = springSecurityVersion
+ext['undertow.version'] = undertowVersion
 
 dependencies {
 	/* ---- Grails 6 ---- */
@@ -124,19 +136,14 @@ dependencies {
 	implementation("org.grails.plugins:async")
   implementation("org.grails.plugins:events")
   implementation("org.grails.plugins:hibernate5")
-  implementation("org.grails.plugins:spring-security-core:6.1.2") // NOT IN LINE WITH GRAILS PATCH VERSION
-  // 5.8.9 affected by https://security.snyk.io/vuln/SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-6457293
-  implementation("org.springframework.security:spring-security-core:5.8.16")
-  implementation("org.springframework.security:spring-security-web:5.8.16")
+	implementation("org.grails.plugins:spring-security-core:$grailsSpringSecurityVersion") // NOT IN LINE WITH GRAILS PATCH VERSION
+
 	
 	implementation("org.grails.plugins:views-json")
   implementation("org.grails.plugins:views-json-templates")
-  implementation("org.hibernate:hibernate-core:5.6.15.Final")
+	implementation("org.hibernate:hibernate-core:$hibernateCoreVersion")
 
-  //runtimeOnly("com.h2database:h2")
-  runtimeOnly("javax.xml.bind:jaxb-api:2.3.1")
-  //runtimeOnly("org.apache.tomcat:tomcat-jdbc")
-  //runtimeOnly("org.glassfish.web:el-impl:2.2.1-b05")
+	runtimeOnly("javax.xml.bind:jaxb-api:$javaBindVersion")
 
   testImplementation("io.micronaut:micronaut-inject-groovy")
   testImplementation("org.grails:grails-gorm-testing-support")
@@ -152,59 +159,54 @@ dependencies {
 	implementation("com.k_int.okapi:grails-okapi:$grailsOkapiVersion") {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
   }
-	
-	implementation 'io.github.http-builder-ng:http-builder-ng-core:1.0.4'
-	implementation 'org.codehaus.janino:janino:3.1.9'
-	
-	implementation "org.springframework.boot:spring-boot-starter-undertow" // Replaces spring-boot-starter-tomcat
-	// security upgrade for undertow, using same exclusions as
-  // https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-undertow/2.7.18/spring-boot-starter-undertow-2.7.18.pom
-  implementation("io.undertow:undertow-core:2.2.39.Final")
-  implementation("io.undertow:undertow-servlet:2.2.37.Final") {
-    exclude group: "org.jboss.spec.javax.servlet", module: "jboss-servlet-api_4.0_spec"
-    exclude group: "org.jboss.spec.javax.annotation", module: "jboss-annotations-api_1.3_spec"
-  }
-  implementation("io.undertow:undertow-websockets-jsr:2.2.37.Final") {
-    exclude group: "org.jboss.spec.javax.websocket", module: "jboss-websocket-api_1.1_spec"
-    exclude group: "org.jboss.spec.javax.servlet", module: "jboss-servlet-api_4.0_spec"
-    exclude group: "org.jboss.spec.javax.annotation", module: "jboss-annotations-api_1.3_spec"
-  }
+
+	implementation "io.github.http-builder-ng:http-builder-ng-core:$httpBuilderVersion"
+	implementation "org.codehaus.janino:janino:$janinoVersion"
+
+	// Replaces spring-boot-starter-tomcat
+	implementation ("org.springframework.boot:spring-boot-starter-undertow")
 
 	implementation "org.hibernate:hibernate-java8"
-	runtimeOnly "com.zaxxer:HikariCP:5.1.0"                             // Replaces Tomcat JDBC pool
-  runtimeOnly "org.postgresql:postgresql:42.7.3"
-	implementation ('org.grails.plugins:database-migration:4.2.1') {
-		exclude group: 'org.liquibase', module: 'liquibase-core'
-	}
-	implementation 'org.liquibase:liquibase-core:4.19.0'
+	runtimeOnly "com.zaxxer:HikariCP:${hikariVersion}"                             // Replaces Tomcat JDBC pool
+	runtimeOnly "org.postgresql:postgresql:${postgresVersion}"
 
-	implementation 'com.opencsv:opencsv:5.7.1'
-  implementation 'commons-io:commons-io:2.14.0'
-	implementation('io.github.virtualdogbert:logback-groovy-config:1.14.1')
-  compileOnly 'ch.qos.logback:logback-classic:1.4.7'
-  // Is on runtime classpath via spring-boot-starter
-  runtimeOnly 'ch.qos.logback:logback-classic:1.2.13'
+	// The ext approach used for other deps above causes us all kinds of problems for liquibase
+	implementation ("org.grails.plugins:database-migration:${grailsMigrationPluginVersion}") {
+		exclude group: 'org.liquibase', module: 'liquibase-core'
+		exclude group: 'org.liquibase.ext', module: 'liquibase-hibernate5'
+	}
+	implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+	runtimeOnly "org.liquibase.ext:liquibase-hibernate5:${liquibaseVersion}"
+
+	implementation "com.opencsv:opencsv:$openCSVVersion"
+	implementation "commons-io:commons-io:$commonsIOVersion"
+
+	// LOGBACK -- ensure we control classic and core versions
+	compileOnly "ch.qos.logback:logback-classic:${logbackCompileVersion}"
+	compileOnly "ch.qos.logback:logback-core:${logbackCompileVersion}"
+
+	// Is on runtime classpath via spring-boot-starter
+	runtimeOnly("ch.qos.logback:logback-classic:${logbackRuntimeVersion}")
+	runtimeOnly "ch.qos.logback:logback-core:${logbackRuntimeVersion}"
 
 	/*  ---- Manually installed testing dependencies ---- */
-	/* implementation "org.grails:grails-gorm-testing-support:2.6.1"
-	implementation "org.grails:grails-web-testing-support:2.6.1" */
 	testImplementation "org.grails.plugins:geb"
-	testImplementation "org.seleniumhq.selenium:selenium-remote-driver:3.14.0"
-	testImplementation "org.seleniumhq.selenium:selenium-api:3.14.0"
-	testImplementation "org.seleniumhq.selenium:selenium-support:3.14.0"
-	testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"
-	testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
+	testImplementation "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
+	testImplementation "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+	testImplementation "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+	testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+	testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
 
-	implementation 'uk.co.cacoethes:groovy-handlebars-engine:0.2'
-  implementation 'com.github.jknack:handlebars-helpers:4.3.1'
-	implementation 'com.github.fracpete:romannumerals4j:0.0.1'
+	implementation "uk.co.cacoethes:groovy-handlebars-engine:$handlebarsEngineVersion"
+  implementation "com.github.jknack:handlebars-helpers:$handlebarsHelpersVersion"
+	implementation "com.github.fracpete:romannumerals4j:$romanNumeralsVersion"
 
 	/* ---- Custom non profile deps ---- */
-  implementation 'org.apache.kafka:kafka-clients:3.7.2'
-  implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.14.4'
+	implementation "org.apache.kafka:kafka-clients:$kafkaVersion"
+	implementation "com.github.everit-org.json-schema:org.everit.json.schema:$jsonSchemaVersion"
 
 	// Better test reports.
-	testImplementation( 'com.athaydes:spock-reports:2.3.2-groovy-3.0' ) {
+	testImplementation( "com.athaydes:spock-reports:$spockReportsVersion" ) {
 		transitive = false // this avoids affecting your version of Groovy/Spock
 	}
 }
