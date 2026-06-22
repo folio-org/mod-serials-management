@@ -103,9 +103,7 @@ public class PieceGenerationService {
         Class<? extends OmissionPattern> opc = Class.forName("org.olf.omission.omissionPattern.OmissionPattern${formattedOmissionPatternType.capitalize()}")
 
         //Once omission pattern has been grabbed, compare dates using the comain models compareDate method
-        if (opc.methods.any { it.name == 'compareDate' && it.parameterCount == 4 } ?
-            opc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues) :
-            opc.compareDate(rule, currentPiece.date, internalPieces)) {
+        if (opc.compareDate(rule, currentPiece.date, getCyclePieces(internalPieces, currentPiece, ruleset))) {
           if(currentPiece instanceof InternalRecurrencePiece){
             iterator.remove()
             InternalOmissionPiece omissionPiece = new InternalOmissionPiece([date: currentPiece.date])
@@ -131,9 +129,7 @@ public class PieceGenerationService {
         // Convert pattern type to associated combination pattern i.e day_month -> CombinationPatternDayMonth
         String formattedCombinationPatternType = RGX_REFDATA_VALUE.matcher(rule?.patternType?.value).replaceAll { match -> match.group(1).toUpperCase() }
         Class<? extends CombinationPattern> cpc = Class.forName("org.olf.combination.combinationPattern.CombinationPattern${formattedCombinationPatternType.capitalize()}")
-        if (cpc.methods.any { it.name == 'compareDate' && it.parameterCount == 4 } ?
-            cpc.compareDate(rule, currentPiece.date, internalPieces, ruleset?.recurrence?.issues ) :
-            cpc.compareDate(rule, currentPiece.date, internalPieces)) {
+        if (cpc.compareDate(rule, currentPiece.date, getCyclePieces(internalPieces, currentPiece, ruleset))) {
           // Assumption made that there are no omission pieces
           combinationOriginRules << rule}
       }
@@ -141,22 +137,9 @@ public class PieceGenerationService {
         // Setup a set of combination pieces the current piece should belong to
         Set<InternalCombinationPiece> parentCombinationPieces = []
         combinationOriginRules.each{ cor -> 
-          internalPieces.each{ ip ->
+          getCyclePieces(internalPieces, currentPiece, ruleset).each{ ip ->
             if(ip instanceof InternalCombinationPiece && ip.combinationOrigins.any{it.combinationRule == cor}){
-              Integer issuesPerCycle = (ruleset?.recurrence?.issues as Integer) ?: 1
-              boolean sameCycle = false
-              LocalDate ipDate = ip.recurrencePieces?.collect { it.date }?.min()
-              if (ipDate && currentPiece.date) {
-                if (issuesPerCycle == 1) {
-                  sameCycle = ipDate.get(ChronoField.YEAR) == currentPiece.date.get(ChronoField.YEAR)
-                } else {
-                  sameCycle = InternalPiece.findIndexFromDate(internalPieces, ipDate).intdiv(issuesPerCycle) ==
-                              InternalPiece.findIndexFromDate(internalPieces, currentPiece.date).intdiv(issuesPerCycle)
-                }
-              }
-              if (sameCycle) {
-                parentCombinationPieces << ip
-              }
+              parentCombinationPieces << ip
             }
           }
         } 
@@ -271,5 +254,36 @@ public class PieceGenerationService {
     }
 
     return nextPiece
+  }
+
+  private ArrayList<InternalPiece> getCyclePieces(ArrayList<InternalPiece> internalPieces, InternalPiece currentPiece, SerialRuleset ruleset) {
+    Integer issuesPerCycle = (ruleset?.recurrence?.issues as Integer) ?: 1
+
+    // Calculate current cycle number
+    Integer globalIndex = InternalPiece.findIndexFromDate(internalPieces, currentPiece.date)
+    if (globalIndex == -1) return internalPieces
+    Integer currentCycle = globalIndex.intdiv(issuesPerCycle)
+
+    if (issuesPerCycle == 1) {
+      // Group by year
+      Integer currentYear = currentPiece.date.get(ChronoField.YEAR)
+      return internalPieces.findAll { ip ->
+        if (ip instanceof InternalCombinationPiece) {
+          return ip.recurrencePieces.any { it.date.get(ChronoField.YEAR) == currentYear }
+        }
+        return ip.date.get(ChronoField.YEAR) == currentYear
+      }
+    }
+
+    return internalPieces.findAll { ip ->
+      if (ip instanceof InternalCombinationPiece) {
+        return ip.recurrencePieces.any { rp ->
+          Integer idx = InternalPiece.findIndexFromDate(internalPieces, rp.date)
+          return idx != -1 && idx.intdiv(issuesPerCycle) == currentCycle
+        }
+      }
+      Integer idx = InternalPiece.findIndexFromDate(internalPieces, ip.date)
+      return idx != -1 && idx.intdiv(issuesPerCycle) == currentCycle
+    }
   }
 }
