@@ -44,8 +44,8 @@ public class PieceLabellingService {
   ){
     StandardTemplateMetadata standardTM = generateStandardMetadata(piece, internalPieces)
     // Having to enforce a sort here
-    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig.chronologyRules?.sort{ it.index }
-    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.enumerationRules?.sort{ it.index }
+    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig?.chronologyRules?.sort{ it.index }
+    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig?.enumerationRules?.sort{ it.index }
 
     ArrayList<UserConfiguredTemplateMetadata> sortedStartingValues = startingValues?.sort{ it.index }
 
@@ -67,6 +67,9 @@ public class PieceLabellingService {
   }
 
   public String generateLabelForPiece(LabelTemplateBindings ltb, String templateString){
+    if (!templateString) {
+      return null
+    }
     Template template = hte.createTemplate(templateString);
     // Template template = hte.createTemplate("EA {{chronology1.year}} {{chronologyArray.0.year}} {{test}}")
     
@@ -240,8 +243,8 @@ public class PieceLabellingService {
     // This block here is doing alot of what was copied from the code blocks above except instead of seperating into chronology and enumeration arrays
     // they are instead being compiled into a single template UserConfiguredTemplateMetadata array
     Set<UserConfiguredTemplateMetadata> uctmArray = []
-    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig.chronologyRules?.sort{ it.index }
-    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig.enumerationRules?.sort{ it.index }
+    Set<ChronologyTemplateMetadataRule> sortedChronologyRules = templateConfig?.chronologyRules?.sort{ it.index }
+    Set<EnumerationTemplateMetadataRule> sortedEnumerationRules = templateConfig?.enumerationRules?.sort{ it.index }
 
     // FIXME upon creation of a new UserConfiguredTemplateMetadata we use the refdata binding previously seen in recurrence, omission etc.
     // However due to the dynamically assigned class already being created (EnumerationUCTMT) prior to instanciating the UserConfiguredTemplateMetadata this has some weird behaviour
