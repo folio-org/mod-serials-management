@@ -1,0 +1,10 @@
+type: object
+properties:
+  weekday:
+    type: string
+  monthDay:
+    type: string
+  month:
+    type: string
+  year:
+    type: string

@@ -1,0 +1,9 @@
+type: object
+required: 
+  - week
+properties:
+  id:
+    type: string
+    format: uuid
+  week:
+    type: integer

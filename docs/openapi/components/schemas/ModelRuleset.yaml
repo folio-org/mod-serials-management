@@ -1,0 +1,27 @@
+type: object
+required:
+  - name
+  - modelRulesetStatus
+properties:
+  id:
+    type: string
+    format: uuid
+  dateCreated:
+    type: string
+    format: date-time
+  lastUpdated:
+    type: string
+    format: date-time
+  name:
+    type: string
+  description:
+    type: string
+  exampleLabel:
+    type: string
+  modelRulesetStatus:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  serialRuleset:
+    $ref: SerialRuleset.yaml
+  

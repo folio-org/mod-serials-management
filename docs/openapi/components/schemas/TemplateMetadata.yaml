@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  #standard template metadata explicitly excluded from view so not exposed in API currently
+  #standard:
+  #  $ref: StandardTemplateMetadata.yaml
+  userConfigured:
+    type: array
+    items:
+      $ref: UserConfiguredTemplateMetadata.yaml

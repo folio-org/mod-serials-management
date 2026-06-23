@@ -1,0 +1,18 @@
+get:
+  summary: Get a set of locales
+  operationId: getLocales
+  parameters:
+    - $ref: ../components/parameters/keyLocales.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Locales.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '500':
+      description: Internal server error

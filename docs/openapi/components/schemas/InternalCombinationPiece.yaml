@@ -1,0 +1,14 @@
+type: object
+allOf:
+  - $ref: InternalPiece.yaml
+  - type: object
+    properties: 
+      recurrencePieces:
+        type: array
+        items: 
+          $ref: InternalRecurrencePiece.yaml
+      combinationOrigins:
+        type: array
+        items:
+          $ref: CombinationOrigin.yaml
+

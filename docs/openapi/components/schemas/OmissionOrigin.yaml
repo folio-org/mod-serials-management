@@ -1,0 +1,4 @@
+type: object
+properties: 
+  omissionRule:
+    $ref: OmissionRule.yaml

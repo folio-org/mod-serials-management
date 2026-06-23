@@ -1,0 +1,21 @@
+type: object
+required: 
+  - index
+  - templateMetadataRuleType
+  - ruleType
+properties:
+  id:
+    type: string
+    format: uuid
+  owner:
+    $ref: TemplateConfiguration.yaml
+  index:
+    type: integer
+  ruleType:
+    oneOf: 
+      - $ref: ChronologyTemplateMetadataRule.yaml
+      - $ref: EnumerationTemplateMetadataRule.yaml
+  templateMetadataRuleType:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

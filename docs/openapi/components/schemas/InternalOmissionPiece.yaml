@@ -1,0 +1,11 @@
+allOf:
+  - $ref: InternalPiece.yaml
+  - type: object
+    properties: 
+      omissionOrigins:
+        type: array
+        items:
+          $ref: OmissionOrigin.yaml
+      date:
+        type: string
+        format: date

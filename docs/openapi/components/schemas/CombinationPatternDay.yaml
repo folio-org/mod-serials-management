@@ -1,0 +1,9 @@
+type: object
+required: 
+  -  day
+properties:
+  id:
+    type: string
+    format: uuid
+  day:
+    type: integer

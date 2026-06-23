@@ -1,0 +1,29 @@
+post: 
+  summary: Deprecate a ruleset
+  operationId: depricateRuleset
+  parameters:
+    - name: uuid
+      in: path
+      description: The uuid of the ruleset to be deprecated
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SerialRuleset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SerialRuleset.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '500':
+      description: Internal server error

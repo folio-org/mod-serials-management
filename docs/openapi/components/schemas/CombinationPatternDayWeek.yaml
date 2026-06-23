@@ -1,0 +1,14 @@
+type: object
+required: 
+  - week
+  - weekday
+properties:
+  id:
+    type: string
+    format: uuid
+  week:
+    type: integer
+  weekday:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

@@ -1,0 +1,14 @@
+type: object
+required: 
+  -  day
+  - month
+properties:
+  id:
+    type: string
+    format: uuid
+  day:
+    type: integer
+  month:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

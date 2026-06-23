@@ -1,0 +1,12 @@
+type:
+  object
+required: 
+  -  levels
+properties: 
+  id:
+    type: string
+    format: uuid
+  levels:
+    type: array
+    items: 
+      $ref: EnumerationNumericLevelTMRF.yaml

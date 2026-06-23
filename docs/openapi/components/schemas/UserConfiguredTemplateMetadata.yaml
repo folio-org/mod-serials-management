@@ -1,0 +1,18 @@
+type: object
+required:
+  - index
+  - metadataType
+properties:
+  id:
+    type: string
+    format: uuid
+  index:
+    type: integer
+  metadataType:
+    oneOf: 
+      - $ref: EnumerationUCTMT.yaml
+      - $ref: ChronologyUCTMT.yaml
+  userConfiguredTemplateMetadataType:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

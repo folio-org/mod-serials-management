@@ -1,0 +1,18 @@
+type: object
+properties: 
+  id:
+    type: string
+    format: uuid
+  class:
+    type: string
+  templateString:
+    type: string
+  label:
+    type: string
+  receivingId:
+    type: string
+    format: uuid
+  receivingPieces:
+    type: array
+    items: 
+      $ref: ReceivingPiece.yaml

@@ -1,0 +1,14 @@
+type: object
+required: 
+  - weekFrom
+  - isRange
+properties:
+  id:
+    type: string
+    format: uuid
+  weekFrom:
+    type: integer
+  weekTo:
+    type: integer
+  isRange:
+    type: boolean

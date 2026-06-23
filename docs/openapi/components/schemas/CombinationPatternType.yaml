@@ -1,0 +1,10 @@
+type: object
+properties:
+  value:
+    type: string
+    enum: ["issue", "issue_week", "issue_week_month", "issue_month"]
+  id:
+    type: string
+    format: uuid
+  label:
+    type: string

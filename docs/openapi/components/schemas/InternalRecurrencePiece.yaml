@@ -1,0 +1,9 @@
+allOf:
+  - $ref: InternalPiece.yaml
+  - type: object
+    properties: 
+      recurrenceRule:
+        $ref: RecurrenceRule.yaml
+      date:
+        type: string
+        format: date

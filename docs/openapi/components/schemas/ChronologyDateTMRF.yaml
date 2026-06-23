@@ -1,0 +1,26 @@
+type: object
+required:
+  - weekdayFormat
+  - monthDayFormat
+  - monthFormat
+  - yearFormat
+properties: 
+  id: 
+    type: string
+    format: uuid
+  weekdayFormat:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  monthDayFormat:
+    oneOf: 
+      -  type: string
+      - $ref: RefData.yaml
+  monthFormat:
+    oneOf: 
+      -  type: string
+      - $ref: RefData.yaml
+  yearFormat:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

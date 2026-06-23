@@ -1,0 +1,5 @@
+allOf:
+  - $ref: RefData.yaml
+  - type: object
+    required:
+      - id

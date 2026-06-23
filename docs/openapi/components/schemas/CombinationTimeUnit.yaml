@@ -1,0 +1,10 @@
+type: object
+properties:
+  value:
+    type: string
+    enum: ["issue"]
+  id:
+    type: string
+    format: uuid
+  label:
+    type: string

@@ -1,0 +1,37 @@
+post:
+  summary: Replace and deprecate an used publicaiton patter
+  operationId: replaceAndDeprecateRuleset
+  parameters:
+    - name: uuid
+      in: path
+      description: The uuid of the ruleset record to be replaced and deprecated
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SerialRuleset.yaml
+    description: Ruleset JSON
+    required: true
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SerialRuleset.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '404':
+      description: Not found error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/HttpError.yaml
+    '500':
+      description: Internal server error
