@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 2.1.0
   title: Folio Serials Management
-  description: API for the Folio library services platform mod-serials-management app
+  description: API documentation for the Folio library services platform mod-serials-management app
 servers:
   - url: 'https://folio-snapshot-okapi.dev.folio.org'
   - url: 'https://folio-snapshot-2-okapi.dev.folio.org'
