@@ -1,0 +1,9 @@
+type: object
+required: 
+  - issue
+properties:
+  id:
+    type: string
+    format: uuid
+  issue:
+    type: integer

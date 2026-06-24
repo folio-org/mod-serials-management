@@ -1,0 +1,8 @@
+type: object
+properties:
+  value:
+    type: string
+  levels:
+    type: array
+    items:
+      $ref: EnumerationLevelUCTMT.yaml

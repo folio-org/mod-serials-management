@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 2.1.0
   title: Folio Serials Management
-  description: API for the Folio library services platform mod-serials-management app
+  description: API documentation for the Folio library services platform mod-serials-management app
 servers:
   - url: https://folio-snapshot-okapi.dev.folio.org
   - url: https://folio-snapshot-2-okapi.dev.folio.org
@@ -613,14 +613,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/serialRuleset'
+                $ref: '#/components/schemas/SerialRuleset'
         '400':
           description: Bad request error
         '403':
@@ -643,14 +643,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/serialRuleset'
+                $ref: '#/components/schemas/SerialRuleset'
         '400':
           description: Bad request error
         '403':
@@ -673,14 +673,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/serialRuleset'
+                $ref: '#/components/schemas/SerialRuleset'
         '400':
           description: Bad request error
         '403':
@@ -703,7 +703,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
         description: Ruleset JSON
         required: true
       responses:
@@ -741,7 +741,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serialRuleset'
+              $ref: '#/components/schemas/SerialRuleset'
         description: Ruleset JSON
         required: true
       responses:
@@ -1568,57 +1568,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CombinationRule'
-    TemplateConfiguration:
-      type: object
-      required:
-        - owner
-        - templateString
-      properties:
-        id:
-          type: string
-          format: uuid
-        owner:
-          $ref: '#/components/schemas/SerialRuleset'
-        templateString:
-          type: string
-        chronologyRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChronologyTemplateMetadataRule'
-        enumerationRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumerationTemplateMetadataRule'
-    Serial:
-      type: object
-      required:
-        - serialStatus
-      properties:
-        id:
-          type: string
-          format: uuid
-        description:
-          type: string
-        serialStatus:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
-        orderLine:
-          $ref: '#/components/schemas/SerialOrderLine'
-        serialRulesets:
-          type: array
-          items:
-            $ref: '#/components/schemas/serialRuleset'
-        notes:
-          type: array
-          items:
-            $ref: '#/components/schemas/SerialNote'
-        dateCreated:
-          type: string
-          format: datetime
-        lastUpdated:
-          type: string
-          format: datetime
     SerialRuleset:
       type: object
       required:
@@ -1648,33 +1597,6 @@ components:
             - $ref: '#/components/schemas/ModelRuleset'
         rulesetNumber:
           type: string
-    ModelRuleset:
-      type: object
-      required:
-        - name
-        - modelRulesetStatus
-      properties:
-        id:
-          type: string
-          format: uuid
-        dateCreated:
-          type: string
-          format: date-time
-        lastUpdated:
-          type: string
-          format: date-time
-        name:
-          type: string
-        description:
-          type: string
-        exampleLabel:
-          type: string
-        modelRulesetStatus:
-          oneOf:
-            - type: string
-            - $ref: '#/components/schemas/RefData'
-        serialRuleset:
-          $ref: '#/components/schemas/SerialRuleset'
     ChronologyDateTMRF:
       type: object
       required:
@@ -1848,35 +1770,84 @@ components:
           oneOf:
             - $ref: '#/components/schemas/EnumerationNumericTMRF'
             - $ref: '#/components/schemas/EnumerationTextualTMRF'
-    serialRuleset:
+    TemplateConfiguration:
       type: object
       required:
-        - rulesetStatus
         - owner
+        - templateString
       properties:
         id:
           type: string
           format: uuid
-        rulesetStatus:
+        owner:
+          $ref: '#/components/schemas/SerialRuleset'
+        templateString:
+          type: string
+        chronologyRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChronologyTemplateMetadataRule'
+        enumerationRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumerationTemplateMetadataRule'
+    Serial:
+      type: object
+      required:
+        - serialStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        serialStatus:
           oneOf:
             - type: string
             - $ref: '#/components/schemas/RefData'
+        orderLine:
+          $ref: '#/components/schemas/SerialOrderLine'
+        serialRulesets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerialRuleset'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerialNote'
+        dateCreated:
+          type: string
+          format: datetime
+        lastUpdated:
+          type: string
+          format: datetime
+    ModelRuleset:
+      type: object
+      required:
+        - name
+        - modelRulesetStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        dateCreated:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        name:
+          type: string
         description:
           type: string
-        recurrence:
-          $ref: '#/components/schemas/Recurrence'
-        omission:
-          $ref: '#/components/schemas/Omission'
-        combination:
-          $ref: '#/components/schemas/Combination'
-        templateConfig:
-          $ref: '#/components/schemas/TemplateConfiguration'
-        owner:
-          oneOf:
-            - $ref: '#/components/schemas/Serial'
-            - $ref: '#/components/schemas/ModelRuleset'
-        rulesetNumber:
+        exampleLabel:
           type: string
+        modelRulesetStatus:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/RefData'
+        serialRuleset:
+          $ref: '#/components/schemas/SerialRuleset'
     SerialNote:
       type: object
       required:
@@ -1916,17 +1887,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ModelRuleset'
-    ModelRuleSetResults:
-      type: array
-      items:
-        $ref: '#/components/schemas/ModelRuleset'
     ModelRulesetResultsArray:
       type: object
       required:
         - results
       properties:
         results:
-          $ref: '#/components/schemas/ModelRuleSetResults'
+          $ref: '#/components/schemas/ModelRulesetResults'
         meta:
           type: object
         page:

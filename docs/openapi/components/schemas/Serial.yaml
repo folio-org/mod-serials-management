@@ -1,0 +1,29 @@
+type: object
+required:
+  - serialStatus
+properties:
+  id:
+    type: string
+    format: uuid
+  description:
+    type: string
+  serialStatus:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  orderLine:
+    $ref: SerialOrderLine.yaml
+  serialRulesets:
+    type: array
+    items: 
+      $ref: SerialRuleset.yaml
+  notes:
+    type: array
+    items:
+      $ref: SerialNote.yaml
+  dateCreated:
+    type: string
+    format: datetime
+  lastUpdated:
+    type: string
+    format: datetime

@@ -1,0 +1,18 @@
+type: object
+required: 
+  -  remoteId
+properties:
+  owner:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+  remoteId:
+    type: string
+    format: uuid
+  title:
+    type: string
+  titleId:
+    type: string
+    format: uuid

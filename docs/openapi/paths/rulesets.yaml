@@ -1,0 +1,49 @@
+get:
+  summary: Get a set of ruleset records
+  operationId: getRulesets
+  parameters: 
+    - $ref: ../components/parameters/filters.yaml
+    - $ref: ../components/parameters/match.yaml
+    - $ref: ../components/parameters/term.yaml
+    - $ref: ../components/parameters/sort.yaml
+    - $ref: ../components/parameters/stats.yaml
+    - $ref: ../components/parameters/perPage.yaml
+    - $ref: ../components/parameters/offset.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../components/schemas/SerialRulesetResults.yaml
+              - $ref: ../components/schemas/SerialRulesetResultsArray.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '500':
+      description: Internal server error
+post:
+  summary: Create ruleset record
+  operationId: postRuleset
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SerialRuleset.yaml
+    description: Ruleset JSON
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SerialRuleset.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '500':
+      description: Internal server error

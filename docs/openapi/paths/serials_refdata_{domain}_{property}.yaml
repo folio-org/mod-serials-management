@@ -1,0 +1,35 @@
+get:
+  summary: Get a specified reference data property
+  operationId: getReferenceDataPropertybyDomainandField
+  parameters:
+    - name: domain
+      in: path
+      description: The DomainClass of the reference data category to which the property belongs
+      required: true
+      schema:
+        type: string
+    - name: property
+      in: path
+      description: The FieldName of the reference data property to be fetched
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/RefData.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '404':
+      description: Not found error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/HttpError.yaml
+    '500':
+      description: Internal server error

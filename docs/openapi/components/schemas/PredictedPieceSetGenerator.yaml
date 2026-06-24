@@ -1,0 +1,12 @@
+allOf:
+  - $ref: SerialRuleset.yaml
+  - type: object
+    properties: 
+        note:
+          type: string
+        numberOfCycles:
+          type: integer
+        startingValues:
+          type: array
+          items: 
+            $ref: UserConfiguredTemplateMetadata.yaml

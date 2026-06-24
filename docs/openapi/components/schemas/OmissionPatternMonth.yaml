@@ -1,0 +1,18 @@
+type: object
+required: 
+  - monthFrom
+  - isRange
+properties:
+  id:
+    type: string
+    format: uuid
+  monthFrom:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  monthTo:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  isRange:
+    type: boolean

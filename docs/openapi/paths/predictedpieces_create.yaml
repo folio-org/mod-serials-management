@@ -1,0 +1,21 @@
+post:
+  summary: Create predicted pieces
+  operationId: createPieces
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PredictedPieceSetGenerator.yaml
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PredictedPieceSet.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '500':
+      description: Internal server error

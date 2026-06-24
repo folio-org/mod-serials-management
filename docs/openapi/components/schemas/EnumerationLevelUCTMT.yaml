@@ -1,0 +1,16 @@
+type: object
+required: 
+  - index
+  - rawValue
+properties:
+  id:
+    type: string
+    format: uuid
+  value:
+    type: string
+  rawValue:
+    type: integer
+  index:
+    type: integer
+  valueFormat:
+    $ref: RefData.yaml

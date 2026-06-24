@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  version: 2.1.0
+  title: Folio Serials Management
+  description: API documentation for the Folio library services platform mod-serials-management app
+servers:
+  - url: 'https://folio-snapshot-okapi.dev.folio.org'
+  - url: 'https://folio-snapshot-2-okapi.dev.folio.org'
+  - url: 'https://folio-etesting-snapshot-kong.ci.folio.org'
+paths:
+  /serials-management/locales:
+    $ref: paths/locales.yaml
+  /serials-management/refdata:
+    $ref: paths/serials_refdata.yaml
+  /serials-management/refdata/{uuid}:
+    $ref: paths/serials_refdata_{uuid}.yaml
+  /serials-management/refdata/{domain}/{property}:
+    $ref: paths/serials_refdata_{domain}_{property}.yaml
+  /serials-management/serials:
+    $ref: paths/serials.yaml
+  /serials-management/serials/{uuid}:
+    $ref: paths/serials_{uuid}.yaml
+  /serials-management/modelRulesets:
+    $ref: paths/modelrulesets.yaml
+  /serials-management/modelRulesets/{uuid}:
+    $ref: paths/modelrulesets_{uuid}.yaml 
+  /serials-management/modelRulesets/{uuid}/replaceAndDelete:
+    $ref: paths/modelrulesets_{uuid}_replaceanddelete.yaml
+  /serials-management/rulesets:
+    $ref: paths/rulesets.yaml
+  /serials-management/rulesets/{uuid}:
+    $ref: paths/rulesets_{uuid}.yaml
+  /serials-management/rulesets/{uuid}/active:
+    $ref: paths/rulesets_{uuid}_active.yaml
+  /serials-management/rulesets/{uuid}/deprecated:
+    $ref: paths/rulesets_{uuid}_deprecated.yaml
+  /serials-management/rulesets/{uuid}/draft:
+    $ref: paths/rulesets_{uuid}_draft.yaml
+  /serials-management/rulesets/{uuid}/replaceAndDelete:
+    $ref: paths/rulesets_{uuid}_replaceanddelete.yaml
+  /serials-management/rulesets/{uuid}/replaceAndDeprecate:
+    $ref: paths/rulesets_{uuid}_replaceanddeprecate.yaml
+  /serials-management/predictedPieces:
+    $ref: paths/predictedpieces.yaml
+  /serials-management/predictedPieces/{uuid}:
+    $ref: paths/predictedpieces_{uuid}.yaml
+  /serials-management/predictedPieces/generate:
+    $ref: paths/predictedpieces_generate.yaml
+  /serials-management/predictedPieces/create:
+    $ref: paths/predictedpieces_create.yaml
+components:
+  securitySchemes:
+      okapiToken:
+        type: apiKey
+        in: header
+        name: x-okapi-token
+      accessToken:
+        type: apiKey
+        in: cookie
+        name: folioAccessToken
+security:
+  - accessToken: []
+  - okapiToken: []

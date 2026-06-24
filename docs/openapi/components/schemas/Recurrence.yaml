@@ -1,0 +1,14 @@
+type: object
+required:
+  - timeUnit
+properties:
+  timeUnit:
+    $ref: RecurrenceTimeUnit.yaml
+  period:
+    type: integer
+  issues:
+    type: integer
+  rules:
+    type: array
+    items:
+      $ref: RecurrenceRule.yaml

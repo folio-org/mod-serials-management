@@ -1,0 +1,25 @@
+type:
+  object
+required: 
+  - index
+  - units
+  - format
+  - sequence
+properties: 
+  id:
+    type: string
+    format: uuid
+  index:
+    type: integer
+  units:
+    type: integer
+  format:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  sequence:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  internalNote:
+    type: string

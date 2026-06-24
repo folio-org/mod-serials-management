@@ -1,0 +1,12 @@
+type: object
+required:
+  -   note
+properties:
+  id:
+    type: string
+    format: uuid
+  note:
+    type: string
+  owner:
+    $ref: Serial.yaml
+    

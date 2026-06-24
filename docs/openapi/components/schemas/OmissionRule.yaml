@@ -1,0 +1,23 @@
+type: object
+properties: 
+  id:
+      type: string
+      format: uuid
+  pattern:
+    oneOf: 
+      -  $ref: OmissionPatternDay.yaml
+      -  $ref: OmissionPatternDayMonth.yaml
+      -  $ref: OmissionPatternDayWeek.yaml
+      -  $ref: OmissionPatternDayWeekday.yaml
+      -  $ref: OmissionPatternDayWeekMonth.yaml
+      -  $ref: OmissionPatternIssue.yaml
+      -  $ref: OmissionPatternIssueMonth.yaml
+      -  $ref: OmissionPatternIssueWeek.yaml
+      -  $ref: OmissionPatternIssueWeekMonth.yaml
+      -  $ref: OmissionPatternMonth.yaml
+      -  $ref: OmissionPatternWeek.yaml
+      -  $ref: OmissionPatternWeekMonth.yaml
+  patternType:
+    $ref: OmissionPatternType.yaml
+  timeUnit:
+    $ref: OmissionTimeUnit.yaml

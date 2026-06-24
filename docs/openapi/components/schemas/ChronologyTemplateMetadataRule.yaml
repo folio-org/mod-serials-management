@@ -1,0 +1,21 @@
+type: object
+required: 
+  - ruleLocale
+  - ruleFormat
+properties:
+  id:
+    type: string
+    format: uuid
+  index:
+    type: integer
+  templateMetadataRuleFormat:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml
+  ruleFormat:
+    oneOf: 
+      - $ref: ChronologyDateTMRF.yaml
+      - $ref: ChronologyMonthTMRF.yaml
+      - $ref: ChronologyYearTMRF.yaml
+  ruleLocale:
+    type: string

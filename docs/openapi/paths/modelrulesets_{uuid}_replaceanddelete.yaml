@@ -1,0 +1,37 @@
+post:
+  summary: Replace and delete an unused publication pattern template (model ruleset)
+  operationId: replaceAndDeleteModelRuleset
+  parameters:
+    - name: uuid
+      in: path
+      description: The uuid of the model ruleset record to be replaced and deleted
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ModelRuleset.yaml
+    description: Ruleset JSON
+    required: true
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ModelRuleset.yaml
+    '400':
+      description: Bad request error
+    '403':
+      description: Forbidden
+    '404':
+      description: Not found error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/HttpError.yaml
+    '500':
+      description: Internal server error

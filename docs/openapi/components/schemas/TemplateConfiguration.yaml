@@ -1,0 +1,21 @@
+type: object
+required: 
+  - owner
+  - templateString
+properties:
+  id:
+    type: string
+    format: uuid
+  owner: 
+    $ref: SerialRuleset.yaml
+  templateString:
+    type: string
+  chronologyRules:
+    type: array
+    items: 
+      $ref: ChronologyTemplateMetadataRule.yaml
+  enumerationRules:
+    type: array
+    items: 
+      $ref: EnumerationTemplateMetadataRule.yaml
+  

@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  owner:
+    type: string
+    format: uuid
+  week:
+    type: integer
+    minimum: 1
+    maximum: 4
+  weekday:
+    oneOf:
+      - type: string
+      - $ref: RefData.yaml

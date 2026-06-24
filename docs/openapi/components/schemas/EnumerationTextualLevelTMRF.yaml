@@ -1,0 +1,19 @@
+type:
+  object
+required: 
+  - index
+  - units
+properties: 
+  id:
+    type: string
+    format: uuid
+  index:
+    type: integer
+  units:
+    type: integer
+  staticValue:
+    type: string
+  refdataValue:
+    $ref: RefDataIDRequired.yml
+  internalNote:
+    type: string
