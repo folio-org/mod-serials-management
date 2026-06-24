@@ -11,8 +11,6 @@ import com.k_int.web.toolkit.refdata.CategoryId
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 
-import java.time.temporal.ChronoField
-
 public class CombinationPatternIssue extends CombinationPattern implements MultiTenant<CombinationPatternIssue> {
 
   Integer issue
