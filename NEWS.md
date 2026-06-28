@@ -1,3 +1,6 @@
+## 2.1.2 2026-06-29
+  * ERM-4108: Security fixes for Grails modules in Trillium
+
 ## 2.1.1 2026-05-29
   * MODSER-94: Sensitive data in logs cleanup
   * ERM-4022: Security fix May 2026
