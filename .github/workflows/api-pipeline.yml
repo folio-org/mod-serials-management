@@ -7,9 +7,13 @@ on:
 
 jobs:
   run-openapi-pipeline:
-    uses: k-int/github-actions/.github/workflows/folio-api-build.yml@main
+    uses: k-int/github-actions/.github/workflows/folio-api-build.yml@test
+    permissions:
+      contents: write
+      pull-requests: write
     with:
-      working-directory: docs
+      redocly-dir: docs/API/config
+      spec-dir: docs/API/yamls
       openapi-filename: serials-management.yaml
     secrets:
       S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}

@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "redocly preview --product redoc",
-    "build": "redocly bundle ./openapi/openapi.yaml -o serials-management.yaml",
+    "build": "redocly bundle ./openapi/openapi.yaml -o ../yamls/serials-management.yaml",
     "test": "redocly lint"
   }
 }
